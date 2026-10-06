@@ -559,6 +559,7 @@ select {
     max-height:135px;
     overflow-y:auto;
 }
+.history{max-height:170px;overflow-y:auto;}
 .floating-position{
     position:absolute;
     right:82px;
@@ -613,6 +614,35 @@ select {
     .right-panel{max-height:none}
     .floating-position{right:15px}
     .drawing-help{display:none}
+}
+
+
+/* ===== V4 REPLAY + HISTORY ===== */
+.replay-bar{
+    display:flex;align-items:end;gap:8px;padding:7px 9px;
+    background:#081422;border-bottom:1px solid #182b40;
+    overflow-x:auto;
+}
+.replay-title{
+    color:#43e37b;font-size:10px;font-weight:800;
+    white-space:nowrap;padding-bottom:9px;
+}
+.replay-bar label{
+    color:#71859e;font-size:9px;display:flex;flex-direction:column;
+    gap:4px;white-space:nowrap;
+}
+.replay-bar input{
+    width:132px;background:#0b192a;color:#eef4ff;
+    border:1px solid #29405a;border-radius:6px;padding:7px 8px;
+}
+.replay-bar button{white-space:nowrap}
+#replayStatus{
+    color:#687d96;font-size:10px;white-space:nowrap;padding-bottom:9px
+}
+.history-row{
+    display:grid;grid-template-columns:110px 105px 1fr 70px;
+    gap:10px;padding:8px 12px;border-bottom:1px solid #15273a;
+    font-size:11px;align-items:center
 }
 
 </style>
@@ -711,6 +741,33 @@ select {
         <div class="chart-wrapper">
 
             
+
+<div class="replay-bar">
+    <div class="replay-title">HISTORICAL REPLAY</div>
+
+    <label>
+        Date
+        <input type="date" id="replayDate">
+    </label>
+
+    <label>
+        Time
+        <input type="time" id="replayTime" step="300">
+    </label>
+
+    <button class="tool-btn" onclick="jumpToReplayPoint()">
+        Jump to Replay
+    </button>
+
+    <button class="tool-btn" onclick="startReplayFromSelected()">
+        ▶ Start Replay
+    </button>
+
+    <span id="replayStatus">
+        Choose a historical date/time.
+    </span>
+</div>
+
 <div class="drawing-bar">
     <button class="draw-btn active" id="drawCursor" onclick="setDrawTool('cursor')" title="Cursor">✦</button>
     <button class="draw-btn" id="drawHLine" onclick="setDrawTool('hline')" title="Horizontal line">—</button>
@@ -1385,6 +1442,102 @@ function undoDrawing(){
 function clearDrawings(){
     drawings=[];
     drawChart();
+}
+
+
+
+/* ===== HISTORICAL DATE/TIME REPLAY ===== */
+
+function initReplayPicker(){
+
+    if(!candles.length) return;
+
+    const dateInput=document.getElementById("replayDate");
+    const timeInput=document.getElementById("replayTime");
+
+    if(!dateInput || !timeInput) return;
+
+    dateInput.min=toDateInputValue(candles[0].time);
+    dateInput.max=toDateInputValue(candles[candles.length-1].time);
+
+    const current=candles[Math.min(currentIndex,candles.length-1)].time;
+
+    dateInput.value=toDateInputValue(current);
+    timeInput.value=toTimeInputValue(current);
+}
+
+function toDateInputValue(date){
+    return date.getFullYear()+"-"+
+        String(date.getMonth()+1).padStart(2,"0")+"-"+
+        String(date.getDate()).padStart(2,"0");
+}
+
+function toTimeInputValue(date){
+    return String(date.getHours()).padStart(2,"0")+":"+
+        String(date.getMinutes()).padStart(2,"0");
+}
+
+function jumpToReplayPoint(){
+
+    if(!candles.length) return;
+
+    const date=document.getElementById("replayDate").value;
+    const time=document.getElementById("replayTime").value;
+
+    if(!date || !time) return;
+
+    const target=new Date(date+"T"+time+":00");
+
+    let bestIndex=0;
+    let bestDiff=Infinity;
+
+    for(let i=0;i<candles.length;i++){
+        const diff=Math.abs(candles[i].time-target);
+
+        if(diff<bestDiff){
+            bestDiff=diff;
+            bestIndex=i;
+        }
+    }
+
+    if(bestIndex<1){
+        document.getElementById("replayStatus").textContent=
+            "Choose a point after the first candle.";
+        return;
+    }
+
+    pauseReplay();
+
+    currentIndex=bestIndex;
+    openPosition=null;
+
+    trades=[];
+    balance=startingBalance;
+
+    updateStats();
+    updateHistory();
+    updatePosition();
+    updateQuotes();
+    updateOpenTradeStrip();
+    updateFloatingPosition();
+    drawChart();
+
+    const selected=candles[currentIndex];
+
+    document.getElementById("replayStatus").textContent=
+        "Replay: "+formatDate(selected.time);
+
+    document.getElementById("dateInfo").textContent=
+        formatDate(selected.time)+" | "+selected.close.toFixed(2);
+}
+
+function startReplayFromSelected(){
+
+    jumpToReplayPoint();
+
+    setTimeout(()=>{
+        if(!isPlaying) togglePlay();
+    },120);
 }
 
 
@@ -2408,9 +2561,9 @@ function updatePosition() {
 
         <div class="position-box">
 
-            <div class="position-type ₹{openPosition.direction === "BUY" ? "profit" : "loss"}">
+            <div class="position-type ${openPosition.direction === "BUY" ? "profit" : "loss"}">
 
-                ₹{openPosition.direction}
+                ${openPosition.direction}
                 BANKNIFTY
 
             </div>
@@ -2418,28 +2571,28 @@ function updatePosition() {
             <div class="position-line">
                 <span>Entry</span>
                 <strong>
-                    ₹{openPosition.entry.toFixed(2)}
+                    ${openPosition.entry.toFixed(2)}
                 </strong>
             </div>
 
             <div class="position-line">
                 <span>Stop Loss</span>
                 <strong>
-                    ₹{openPosition.sl.toFixed(2)}
+                    ${openPosition.sl.toFixed(2)}
                 </strong>
             </div>
 
             <div class="position-line">
                 <span>Take Profit</span>
                 <strong>
-                    ₹{openPosition.tp.toFixed(2)}
+                    ${openPosition.tp.toFixed(2)}
                 </strong>
             </div>
 
             <div class="position-line">
                 <span>Size</span>
                 <strong>
-                    ₹{openPosition.positionSize.toFixed(3)}
+                    ${openPosition.positionSize.toFixed(3)}
                 </strong>
             </div>
 
@@ -2447,10 +2600,10 @@ function updatePosition() {
 
                 <span>Floating P&L</span>
 
-                <strong class="₹{floatingClass}">
+                <strong class="${floatingClass}">
 
-                    ₹{floating >= 0 ? "+" : ""}
-                    ₹{floating.toFixed(2)}
+                    ${floating >= 0 ? "+" : ""}
+                    ${floating.toFixed(2)}
 
                 </strong>
 
@@ -2521,86 +2674,49 @@ function updateStats() {
 
 function updateHistory() {
 
-    const history =
-        document.getElementById(
-            "history"
-        );
+    const history = document.getElementById("history");
 
-
-    if (
-        trades.length === 0
-    ) {
-
+    if (!trades.length) {
         history.innerHTML = `
             <div style="color:#64768e;font-size:12px;">
                 No trades yet.
             </div>
         `;
-
         return;
     }
 
+    history.innerHTML = trades.slice().reverse().map((trade, index) => {
 
-    history.innerHTML =
-        trades
-        .slice()
-        .reverse()
-        .map(
-            trade => `
+        const pnl = Number(trade.pnl) || 0;
+        const directionClass = trade.direction === "BUY" ? "profit" : "loss";
+        const pnlClass = pnl >= 0 ? "profit" : "loss";
+        const sign = pnl >= 0 ? "+" : "-";
+        const number = trade.number ?? (trades.length - index);
+        const result = trade.result || (pnl >= 0 ? "WIN" : "LOSS");
 
+        return `
             <div class="trade">
-
                 <div class="trade-top">
-
                     <strong>
-
-                        #₹{trade.number}
-
-                        <span class="₹{
-                            trade.direction === "BUY"
-                            ? "profit"
-                            : "loss"
-                        }">
-
-                            ₹{trade.direction}
-
+                        #${number}
+                        <span class="${directionClass}">
+                            ${trade.direction}
                         </span>
-
                     </strong>
 
-                    <strong class="₹{
-                        trade.pnl >= 0
-                        ? "profit"
-                        : "loss"
-                    }">
-
-                        ₹{trade.pnl >= 0 ? "+" : ""}
-                        ₹{trade.pnl.toFixed(2)}
-
+                    <strong class="${pnlClass}">
+                        ${sign}₹${Math.abs(pnl).toFixed(2)}
                     </strong>
-
                 </div>
 
                 <div class="trade-bottom">
-
-                    Entry:
-                    ₹{trade.entry.toFixed(2)}
-
-                    →
-                    Exit:
-                    ₹{trade.exit.toFixed(2)}
-
-                    ·
-
-                    ₹{trade.result}
-
+                    Entry: ${Number(trade.entry).toFixed(2)}
+                    → Exit: ${Number(trade.exit).toFixed(2)}
+                    · ${result}
                 </div>
-
             </div>
-
-        `
-        )
-        .join("");
+        `;
+    }).join("");
 }
 
 
@@ -2818,13 +2934,13 @@ function updateOpenTradeStrip(){
     const floating=p.direction==="BUY"?(current-p.entry)*p.positionSize:(p.entry-current)*p.positionSize;
     box.innerHTML=`
       <div class="trade-table">
-        <strong>BANKNIFTY <span class="₹{p.direction==="BUY"?"profit":"loss"}">● ₹{p.direction}</span></strong>
-        <strong>₹{p.lots||1} Lot</strong>
-        <span>Entry<br><strong>₹{p.entry.toFixed(2)}</strong></span>
-        <span>Current<br><strong>₹{current.toFixed(2)}</strong></span>
-        <span>TP<br><strong class="profit">₹{p.tp.toFixed(2)}</strong></span>
-        <span>SL<br><strong class="loss">₹{p.sl.toFixed(2)}</strong></span>
-        <strong class="₹{floating>=0?"profit":"loss"}">₹{floating>=0?"+":""}₹{floating.toFixed(0)}</strong>
+        <strong>BANKNIFTY <span class="${p.direction==="BUY"?"profit":"loss"}">● ${p.direction}</span></strong>
+        <strong>${p.lots||1} Lot</strong>
+        <span>Entry<br><strong>${p.entry.toFixed(2)}</strong></span>
+        <span>Current<br><strong>${current.toFixed(2)}</strong></span>
+        <span>TP<br><strong class="profit">${p.tp.toFixed(2)}</strong></span>
+        <span>SL<br><strong class="loss">${p.sl.toFixed(2)}</strong></span>
+        <strong class="${floating>=0?"profit":"loss"}">${floating>=0?"+":""}${floating.toFixed(0)}</strong>
       </div>`;
 }
 
