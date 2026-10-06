@@ -648,33 +648,35 @@ select {
 
 /* ===== V5 TERMINAL POLISH ===== */
 html,body{
-    height:100%;
-    overflow:hidden;
+    min-height:100%;
+    height:auto;
+    overflow-x:hidden;
+    overflow-y:auto;
 }
 body{
     margin:0;
 }
 .main-layout{
-    height:calc(100vh - 126px);
     min-height:0;
-    overflow:hidden;
+    height:auto;
+    overflow:visible;
 }
 .chart-area{
     min-height:0;
-    height:100%;
+    height:auto;
 }
 .chart-wrapper{
-    height:calc(100vh - 430px);
-    min-height:320px;
-    flex:1 1 auto;
+    height:560px;
+    min-height:420px;
+    flex:0 0 560px;
 }
 .right-panel{
-    height:100%;
+    height:auto;
     max-height:none;
-    overflow-y:auto;
+    overflow:visible;
 }
 .bottom-panel{
-    max-height:120px;
+    max-height:160px;
     overflow-y:auto;
 }
 .trade-strip{
@@ -699,7 +701,10 @@ body{
     max-width:260px;
 }
 @media(max-width:900px){
-    html,body{overflow:auto}
+    html,body{
+        overflow-x:hidden;
+        overflow-y:auto;
+    }
     .main-layout{
         height:auto;
         overflow:visible;
@@ -708,10 +713,12 @@ body{
     .chart-wrapper{
         height:460px;
         min-height:460px;
+        flex-basis:460px;
     }
     .right-panel{
         height:auto;
         max-height:none;
+        overflow:visible;
     }
     .trade-strip{max-height:none}
 }
@@ -719,6 +726,19 @@ body{
 
 .trade-strip .profit{color:#43e37b!important}
 .trade-strip .loss{color:#ff6678!important}
+
+
+/* ===== V6 SCROLL FIX ===== */
+.main-layout{
+    overflow:visible !important;
+}
+.chart-wrapper{
+    overflow:hidden;
+}
+.trade-strip{
+    position:relative;
+    z-index:2;
+}
 
 </style>
 </head>
