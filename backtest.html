@@ -653,6 +653,80 @@ select {
 .dm-preview th{position:sticky;top:0;background:#0b1c2e;color:#7e98b5}
 .dm-foot{padding:9px 12px;color:#6f89a5;font-size:10px;border-top:1px solid #17304a}
 @media(max-width:800px){.dm-grid{grid-template-columns:repeat(2,1fr)} }
+
+/* ===== V10.2 DATA PIPELINE ===== */
+.data-pipeline{
+  background:#07111f;
+  border-top:1px solid #1b2d42;
+  padding:18px 20px 24px;
+}
+.pipeline-head{
+  display:flex;align-items:center;justify-content:space-between;
+  max-width:1400px;margin:0 auto 12px;gap:12px;
+}
+.pipeline-kicker{
+  color:#43e37b;font-size:9px;font-weight:900;letter-spacing:1.4px;
+}
+.pipeline-head h2{margin:4px 0 2px;color:#eef5ff;font-size:18px}
+.pipeline-head p{margin:0;color:#71869e;font-size:10px}
+.pipeline-status{
+  border:1px solid #29405a;background:#0a192a;color:#8297ae;
+  border-radius:14px;padding:6px 10px;font-size:9px;font-weight:900;
+  white-space:nowrap;
+}
+.pipeline-status.ready{color:#43e37b;border-color:#286b48;background:#103222}
+.pipeline-status.warn{color:#ffd36a;border-color:#715d27;background:#2b2512}
+.pipeline-status.error{color:#ff7b8b;border-color:#63313c;background:#2b151b}
+.pipeline-steps{
+  max-width:1400px;margin:auto;display:flex;align-items:stretch;
+  gap:5px;
+}
+.pipe-step{
+  flex:1;min-width:0;background:#0a192a;border:1px solid #1c334c;
+  border-radius:7px;padding:8px 9px;display:grid;
+  grid-template-columns:25px 1fr;column-gap:7px;align-items:center;
+}
+.pipe-step span{grid-row:1/3;color:#526a83;font-size:9px;font-weight:900}
+.pipe-step b{color:#dbe7f5;font-size:10px}
+.pipe-step small{color:#637991;font-size:8px;margin-top:2px}
+.pipe-step.done{border-color:#286b48;background:#0d251a}
+.pipe-step.done span{color:#43e37b}
+.pipe-step.active{border-color:#3d6389;background:#0d2033}
+.pipe-step.error{border-color:#63313c;background:#2b151b}
+.pipe-arrow{align-self:center;color:#4c647d;font-size:14px}
+.pipeline-actions{
+  max-width:1400px;margin:11px auto;display:flex;gap:7px;align-items:center;
+}
+.file-picker{
+  cursor:pointer;border:1px solid #29405a;background:#0b1b2d;
+  color:#dce8f5;border-radius:6px;padding:7px 10px;font-size:10px;font-weight:800;
+}
+.file-picker input{display:none}
+.pipeline-run,.pipeline-export{
+  border-radius:6px;padding:7px 10px;font-size:10px;font-weight:800;cursor:pointer;
+}
+.pipeline-run{border:1px solid #286b48;background:#123a28;color:#43e37b}
+.pipeline-export{border:1px solid #29405a;background:#0b1b2d;color:#9bb0c6}
+.pipeline-run:disabled,.pipeline-export:disabled{opacity:.45;cursor:not-allowed}
+.pipeline-report{
+  max-width:1400px;margin:auto;display:grid;
+  grid-template-columns:repeat(6,1fr);gap:6px;
+}
+.pipeline-metric{
+  background:#091a2b;border:1px solid #1b334b;border-radius:6px;padding:8px;
+}
+.pipeline-metric span{display:block;color:#667d96;font-size:8px}
+.pipeline-metric strong{display:block;color:#edf4fc;font-size:12px;margin-top:3px}
+.pipeline-metric strong.good{color:#43e37b}
+.pipeline-metric strong.bad{color:#ff7b8b}
+.pipeline-empty{grid-column:1/-1;color:#647a93;font-size:10px;padding:6px 0}
+@media(max-width:900px){
+  .pipeline-steps{overflow-x:auto}
+  .pipe-step{min-width:135px}
+  .pipe-arrow{display:none}
+  .pipeline-report{grid-template-columns:repeat(2,1fr)}
+}
+
 </style>
 </head>
 
@@ -1085,7 +1159,263 @@ select {
   <div id="analyticsTrades" class="analytics-trades" style="display:none"></div>
 </section>
 
+
+<section class="data-pipeline" id="dataPipeline">
+  <div class="pipeline-head">
+    <div>
+      <div class="pipeline-kicker">V10.2 • DATA PIPELINE</div>
+      <h2>Historical Data Pipeline</h2>
+      <p>Validate → Normalize → Clean → Detect Gaps → Ready for Replay</p>
+    </div>
+    <div id="pipelineStatus" class="pipeline-status">WAITING FOR DATA</div>
+  </div>
+
+  <div class="pipeline-steps">
+    <div class="pipe-step" id="pipeValidate"><span>01</span><b>Validate</b><small>OHLC format</small></div>
+    <div class="pipe-arrow">→</div>
+    <div class="pipe-step" id="pipeNormalize"><span>02</span><b>Normalize</b><small>Date + numbers</small></div>
+    <div class="pipe-arrow">→</div>
+    <div class="pipe-step" id="pipeClean"><span>03</span><b>Clean</b><small>Duplicates</small></div>
+    <div class="pipe-arrow">→</div>
+    <div class="pipe-step" id="pipeGaps"><span>04</span><b>Detect Gaps</b><small>5-minute flow</small></div>
+    <div class="pipe-arrow">→</div>
+    <div class="pipe-step" id="pipeReady"><span>05</span><b>Replay Ready</b><small>Clean dataset</small></div>
+  </div>
+
+  <div class="pipeline-actions">
+    <label class="file-picker">
+      <input type="file" id="pipelineFile" accept=".csv,text/csv">
+      <span>📂 Import CSV</span>
+    </label>
+    <button type="button" id="runPipelineBtn" class="pipeline-run" disabled>Run Pipeline</button>
+    <button type="button" id="exportCleanBtn" class="pipeline-export" disabled>Export Clean CSV</button>
+  </div>
+
+  <div class="pipeline-report" id="pipelineReport">
+    <div class="pipeline-empty">Import a historical CSV to begin.</div>
+  </div>
+</section>
+
 <script>
+
+/* ===== V10.2 DATA PIPELINE ===== */
+let pipelineRows = [];
+let cleanedRows = [];
+let pipelineFileName = "";
+
+function setPipelineStep(id, state){
+  const el=document.getElementById(id);
+  if(!el)return;
+  el.classList.remove("done","active","error");
+  if(state)el.classList.add(state);
+}
+
+function pipelineStatus(text,state=""){
+  const el=document.getElementById("pipelineStatus");
+  if(!el)return;
+  el.textContent=text;
+  el.className="pipeline-status"+(state?" "+state:"");
+}
+
+function detectKey(headers, candidates){
+  const normalized=headers.map(h=>String(h).trim().toLowerCase().replace(/[^a-z0-9]/g,""));
+  for(const c of candidates){
+    const i=normalized.indexOf(c);
+    if(i>=0)return headers[i];
+  }
+  return null;
+}
+
+function parseCSV(text){
+  const lines=text.replace(/^\uFEFF/,"").split(/\r?\n/).filter(x=>x.trim());
+  if(!lines.length) return [];
+  const delimiter=(lines[0].match(/;/g)||[]).length>(lines[0].match(/,/g)||[]).length?";":",";
+  const parseLine=line=>{
+    const out=[];let cur="",quoted=false;
+    for(let i=0;i<line.length;i++){
+      const ch=line[i];
+      if(ch==='"'){
+        if(quoted && line[i+1]==='"'){cur+='"';i++} else quoted=!quoted;
+      }else if(ch===delimiter && !quoted){out.push(cur.trim());cur=""}
+      else cur+=ch;
+    }
+    out.push(cur.trim());
+    return out;
+  };
+  const headers=parseLine(lines[0]);
+  return lines.slice(1).map(line=>{
+    const vals=parseLine(line), obj={};
+    headers.forEach((h,i)=>obj[h]=(vals[i]??"").trim());
+    return obj;
+  });
+}
+
+function toDate(v){
+  const d=new Date(v);
+  if(!Number.isNaN(d.getTime()))return d;
+  const n=Number(v);
+  if(Number.isFinite(n)){
+    // Excel serial date support.
+    const base=new Date(Date.UTC(1899,11,30));
+    const x=new Date(base.getTime()+n*86400000);
+    if(!Number.isNaN(x.getTime()))return x;
+  }
+  return null;
+}
+
+function num(v){
+  if(v===null||v===undefined||v==="")return NaN;
+  return Number(String(v).replace(/,/g,"").trim());
+}
+
+function runDataPipeline(){
+  if(!pipelineRows.length)return;
+
+  ["pipeValidate","pipeNormalize","pipeClean","pipeGaps","pipeReady"].forEach(id=>setPipelineStep(id,""));
+  pipelineStatus("VALIDATING…","active");
+
+  const headers=Object.keys(pipelineRows[0]||{});
+  const timeKey=detectKey(headers,["datetime","timestamp","date","time"]);
+  const openKey=detectKey(headers,["open","o"]);
+  const highKey=detectKey(headers,["high","h"]);
+  const lowKey=detectKey(headers,["low","l"]);
+  const closeKey=detectKey(headers,["close","c"]);
+  const volumeKey=detectKey(headers,["volume","vol","v"]);
+
+  const missing=[["Time",timeKey],["Open",openKey],["High",highKey],["Low",lowKey],["Close",closeKey]]
+    .filter(x=>!x[1]).map(x=>x[0]);
+
+  if(missing.length){
+    setPipelineStep("pipeValidate","error");
+    pipelineStatus("INVALID DATA","error");
+    renderPipelineReport({
+      rows:pipelineRows.length,cleaned:0,duplicates:0,invalid:0,gaps:0,
+      interval:"—",range:"—",message:"Missing required column(s): "+missing.join(", ")
+    });
+    document.getElementById("exportCleanBtn").disabled=true;
+    return;
+  }
+  setPipelineStep("pipeValidate","done");
+
+  const normalized=[];
+  let invalid=0;
+  for(const r of pipelineRows){
+    const time=toDate(r[timeKey]);
+    const o=num(r[openKey]),h=num(r[highKey]),l=num(r[lowKey]),c=num(r[closeKey]);
+    const v=volumeKey?num(r[volumeKey]):null;
+    const bad=!time||![o,h,l,c].every(Number.isFinite)||h<Math.max(o,c)||l>Math.min(o,c)||h<l;
+    if(bad){invalid++;continue}
+    normalized.push({time,o,h,l,c,v});
+  }
+  setPipelineStep("pipeNormalize",invalid?"active":"done");
+
+  normalized.sort((a,b)=>a.time-b.time);
+
+  const unique=[];
+  const seen=new Set();
+  let duplicates=0;
+  for(const r of normalized){
+    const key=r.time.getTime();
+    if(seen.has(key)){duplicates++;continue}
+    seen.add(key);unique.push(r);
+  }
+  cleanedRows=unique;
+  setPipelineStep("pipeClean","done");
+
+  let intervalMinutes=null,gaps=0;
+  const diffs=[];
+  for(let i=1;i<unique.length;i++){
+    const diff=(unique[i].time-unique[i-1].time)/60000;
+    if(diff>0)diffs.push(diff);
+  }
+  if(diffs.length){
+    const freq={};
+    diffs.forEach(d=>freq[d]=(freq[d]||0)+1);
+    intervalMinutes=Number(Object.keys(freq).sort((a,b)=>freq[b]-freq[a]||a-b)[0]);
+    if(intervalMinutes===5){
+      gaps=diffs.filter(d=>d>5).length;
+    }else{
+      gaps=diffs.filter(d=>d>intervalMinutes).length;
+    }
+  }
+  setPipelineStep("pipeGaps",gaps?"active":"done");
+
+  const quality=invalid===0&&gaps===0;
+  setPipelineStep("pipeReady",quality?"done":"active");
+  pipelineStatus(quality?"READY FOR REPLAY":"READY WITH WARNINGS",quality?"ready":"warn");
+
+  const fmt=d=>d?d.toLocaleString("en-IN",{day:"2-digit",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"}):"—";
+  renderPipelineReport({
+    rows:pipelineRows.length,cleaned:unique.length,duplicates,invalid,gaps,
+    interval:intervalMinutes?intervalMinutes+" min":"—",
+    range:unique.length?fmt(unique[0].time)+" → "+fmt(unique[unique.length-1].time):"—",
+    message:quality?"Dataset passed the current checks.":"Dataset is usable, but review the warnings before replay."
+  });
+  document.getElementById("exportCleanBtn").disabled=unique.length===0;
+}
+
+function renderPipelineReport(x){
+  const report=document.getElementById("pipelineReport");
+  report.innerHTML=`
+    <div class="pipeline-metric"><span>RAW ROWS</span><strong>${x.rows}</strong></div>
+    <div class="pipeline-metric"><span>CLEAN ROWS</span><strong>${x.cleaned}</strong></div>
+    <div class="pipeline-metric"><span>DUPLICATES REMOVED</span><strong>${x.duplicates}</strong></div>
+    <div class="pipeline-metric"><span>INVALID OHLC</span><strong class="${x.invalid?'bad':'good'}">${x.invalid}</strong></div>
+    <div class="pipeline-metric"><span>GAPS</span><strong class="${x.gaps?'bad':'good'}">${x.gaps}</strong></div>
+    <div class="pipeline-metric"><span>INTERVAL</span><strong>${x.interval}</strong></div>
+    <div class="pipeline-metric" style="grid-column:1/-1"><span>DATE RANGE</span><strong>${x.range}</strong></div>
+    <div class="pipeline-metric" style="grid-column:1/-1"><span>STATUS</span><strong>${x.message}</strong></div>
+  `;
+}
+
+document.getElementById("pipelineFile")?.addEventListener("change",function(){
+  const file=this.files?.[0];
+  if(!file)return;
+  pipelineFileName=file.name;
+  const reader=new FileReader();
+  reader.onload=()=>{
+    try{
+      pipelineRows=parseCSV(String(reader.result||""));
+      document.getElementById("runPipelineBtn").disabled=!pipelineRows.length;
+      pipelineStatus(pipelineRows.length?"DATA LOADED":"EMPTY FILE",pipelineRows.length?"active":"error");
+      if(pipelineRows.length){
+        ["pipeValidate","pipeNormalize","pipeClean","pipeGaps","pipeReady"].forEach(id=>setPipelineStep(id,""));
+        document.getElementById("pipelineReport").innerHTML=
+          `<div class="pipeline-empty">${pipelineRows.length.toLocaleString()} rows loaded from <b>${pipelineFileName}</b>. Click <b>Run Pipeline</b>.</div>`;
+      }
+    }catch(e){
+      pipelineRows=[];
+      document.getElementById("runPipelineBtn").disabled=true;
+      pipelineStatus("CSV READ ERROR","error");
+      document.getElementById("pipelineReport").innerHTML=`<div class="pipeline-empty">${e.message}</div>`;
+    }
+  };
+  reader.readAsText(file);
+});
+
+document.getElementById("runPipelineBtn")?.addEventListener("click",runDataPipeline);
+
+document.getElementById("exportCleanBtn")?.addEventListener("click",()=>{
+  if(!cleanedRows.length)return;
+  const rows=[
+    ["datetime","open","high","low","close","volume"],
+    ...cleanedRows.map(r=>[
+      r.time.toISOString(),r.o,r.h,r.l,r.c,r.v??""
+    ])
+  ];
+  const csv=rows.map(row=>row.map(v=>{
+    const s=String(v);
+    return /[",\n]/.test(s)?`"${s.replaceAll('"','""')}"`:s;
+  }).join(",")).join("\n");
+  const blob=new Blob([csv],{type:"text/csv;charset=utf-8"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download=(pipelineFileName.replace(/\.csv$/i,"")||"historical-data")+"-clean.csv";
+  a.click();
+  URL.revokeObjectURL(a.href);
+});
+
+
 
 /* ============================================================
    BFT TRADE LAB
