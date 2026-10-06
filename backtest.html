@@ -512,7 +512,7 @@ select {
     font-weight:700;
 }
 .close-trade-btn:hover { background:#542a32; }
-.hide-position-btn {
+.positions-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}.close-all-btn{background:#321c22;color:#ff8794;border:1px solid #713743;border-radius:6px;padding:5px 8px;font-size:10px;font-weight:700;cursor:pointer}.position-card{background:#0d1c2e;border:1px solid #22374f;padding:10px;border-radius:8px;margin-bottom:8px}.position-card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}.position-card-head strong{font-size:11px}.position-card-id{color:#7f91a9;font-size:10px}.position-actions{display:flex;gap:6px;margin-top:8px}.position-actions button{flex:1}.position-hidden{color:#64768e;font-size:11px;display:flex;justify-content:space-between;align-items:center}.hide-position-btn {
     background:#101f32;
     color:#8fa0b7;
     border:1px solid #293c54;
@@ -924,7 +924,9 @@ let balance = 10000;
 
 let startingBalance = 10000;
 
-let openPosition = null;
+let openPositions = [];
+let selectedPositionId = null;
+let nextPositionId = 1;
 let pendingOrder = null;
 let orderMode = "MARKET";
 let pendingType = "BUY LIMIT";
@@ -1026,7 +1028,7 @@ window.addEventListener(
 ------------------------------ */
 
 function getVisibleCount() {
-    return Math.max(12, Math.min(180, Math.round(80 / chartZoom)));
+    return Math.max(10, Math.min(220, Math.round(80 / chartZoom)));
 }
 
 function zoomChart(direction) {
@@ -1339,27 +1341,11 @@ function drawChart() {
 
 
     /* Open position lines */
-
-    if (openPosition) {
-
-        drawPriceLine(
-            openPosition.entry,
-            "#4da6ff",
-            "ENTRY"
-        );
-
-        drawPriceLine(
-            openPosition.sl,
-            "#ff6678",
-            "SL"
-        );
-
-        drawPriceLine(
-            openPosition.tp,
-            "#43e37b",
-            "TP"
-        );
-    }
+    openPositions.forEach(p => {
+        drawPriceLine(p.entry, "#4da6ff", `#${p.id} ENTRY`, `${p.id}:entry`);
+        drawPriceLine(p.sl, "#ff6678", `#${p.id} SL`, `${p.id}:sl`);
+        drawPriceLine(p.tp, "#43e37b", `#${p.id} TP`, `${p.id}:tp`);
+    });
 
     if (pendingOrder) {
         drawPriceLine(pendingOrder.entry, "#f6b94a", pendingOrder.type);
@@ -1375,7 +1361,7 @@ function drawChart() {
 function getChartMetrics() {
     const width = canvas.clientWidth;
     const height = canvas.clientHeight;
-    const visibleCount = 80;
+    const visibleCount = getVisibleCount();
     const start = Math.max(0, currentIndex - visibleCount + 1);
     const visible = candles.slice(start, currentIndex + 1);
     if (!visible.length) return null;
@@ -1400,25 +1386,16 @@ function canvasYToPrice(y) {
     return m.highest - ((y - m.top) / m.chartHeight) * m.range;
 }
 
-function drawPriceLine(price, color, label) {
+function drawPriceLine(price, color, label, key) {
     const m = getChartMetrics();
     if (!m || !Number.isFinite(price)) return;
     const y = priceToCanvasY(price);
-
     ctx.strokeStyle = color;
-    ctx.lineWidth = dragLevel === label.toLowerCase() ? 2 : 1;
+    ctx.lineWidth = dragLevel === key ? 2 : 1;
     ctx.setLineDash([6,4]);
-    ctx.beginPath();
-    ctx.moveTo(0, y);
-    ctx.lineTo(m.width, y);
-    ctx.stroke();
-    ctx.setLineDash([]);
-
-    // compact level badge
-    ctx.fillStyle = color;
-    ctx.font = "700 10px Arial";
-    const text = label + " " + price.toFixed(2);
-    ctx.fillText(text, 8, Math.max(14, y - 6));
+    ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(m.width,y); ctx.stroke(); ctx.setLineDash([]);
+    ctx.fillStyle = color; ctx.font = "700 10px Arial";
+    ctx.fillText(label + " " + price.toFixed(2), 8, Math.max(14, y - 6));
 }
 
 function getPointerY(event) {
@@ -1427,73 +1404,42 @@ function getPointerY(event) {
 }
 
 function getNearestTradeLevel(y) {
-    const levels = [];
-    if (openPosition) { levels.push({key:"entry",label:"entry",price:openPosition.entry},{key:"sl",label:"sl",price:openPosition.sl},{key:"tp",label:"tp",price:openPosition.tp}); }
-    if (pendingOrder) levels.push({key:"pending",label:"pending",price:pendingOrder.entry});
-    if (!levels.length) return null;
-    let nearest = null;
-    let best = 10; // pixels
-    for (const level of levels) {
-        const ly = priceToCanvasY(level.price);
-        const distance = Math.abs(y - ly);
-        if (distance <= best) {
-            best = distance;
-            nearest = level;
-        }
-    }
+    const levels=[];
+    openPositions.forEach(p=>{
+        levels.push({key:`${p.id}:entry`,type:"position",id:p.id,level:"entry",price:p.entry});
+        levels.push({key:`${p.id}:sl`,type:"position",id:p.id,level:"sl",price:p.sl});
+        levels.push({key:`${p.id}:tp`,type:"position",id:p.id,level:"tp",price:p.tp});
+    });
+    if(pendingOrder) levels.push({key:"pending:entry",type:"pending",level:"entry",price:pendingOrder.entry});
+    let nearest=null,best=10;
+    for(const level of levels){const ly=priceToCanvasY(level.price);const d=Math.abs(y-ly);if(d<=best){best=d;nearest=level;}}
     return nearest;
 }
 
-canvas.addEventListener("pointerdown", function(event) {
-    if (!openPosition && !pendingOrder) return;
-    const nearest = getNearestTradeLevel(getPointerY(event));
-    if (!nearest) return;
-    dragLevel = nearest.label;
-    canvas.classList.add("dragging");
-    canvas.setPointerCapture?.(event.pointerId);
-    event.preventDefault();
+canvas.addEventListener("pointerdown",function(event){
+    const nearest=getNearestTradeLevel(getPointerY(event));
+    if(!nearest)return;
+    dragLevel=nearest.key;
+    selectedPositionId=nearest.type==="position"?nearest.id:null;
+    canvas.classList.add("dragging"); canvas.setPointerCapture?.(event.pointerId); event.preventDefault();
 });
 
-canvas.addEventListener("pointermove", function(event) {
-    if (!openPosition || !dragLevel) return;
-    const price = canvasYToPrice(getPointerY(event));
-    if (!Number.isFinite(price)) return;
-
-    const rounded = Math.round(price * 100) / 100;
-
-    if (dragLevel === "entry") openPosition.entry = rounded;
-    if (dragLevel === "sl") openPosition.sl = rounded;
-    if (dragLevel === "tp") openPosition.tp = rounded;
-
-    // Keep the order logically valid while dragging.
-    if (openPosition.direction === "BUY") {
-        openPosition.sl = Math.min(openPosition.sl, openPosition.entry - 0.01);
-        openPosition.tp = Math.max(openPosition.tp, openPosition.entry + 0.01);
-    } else {
-        openPosition.sl = Math.max(openPosition.sl, openPosition.entry + 0.01);
-        openPosition.tp = Math.min(openPosition.tp, openPosition.entry - 0.01);
-    }
-
-    document.getElementById("entry").value = openPosition.entry.toFixed(2);
-    document.getElementById("sl").value = openPosition.sl.toFixed(2);
-    document.getElementById("tp").value = openPosition.tp.toFixed(2);
-    updateTradePreview();
-    updatePosition();
-    drawChart();
+canvas.addEventListener("pointermove",function(event){
+    if(!dragLevel)return;
+    const price=canvasYToPrice(getPointerY(event)); if(!Number.isFinite(price))return;
+    const rounded=Math.round(price*100)/100;
+    if(dragLevel==="pending:entry"&&pendingOrder){pendingOrder.entry=rounded;updatePendingArea();updateTradePreview();drawChart();return;}
+    const [idText,level]=dragLevel.split(":"); const p=openPositions.find(x=>x.id===Number(idText)); if(!p)return;
+    if(level==="entry")p.entry=rounded; if(level==="sl")p.sl=rounded; if(level==="tp")p.tp=rounded;
+    if(p.direction==="BUY"){p.sl=Math.min(p.sl,p.entry-0.01);p.tp=Math.max(p.tp,p.entry+0.01);}else{p.sl=Math.max(p.sl,p.entry+0.01);p.tp=Math.min(p.tp,p.entry-0.01);}
+    p.positionSize=p.riskMoney/Math.max(0.01,Math.abs(p.entry-p.sl));
+    selectedPositionId=p.id;
+    document.getElementById("entry").value=p.entry.toFixed(2);document.getElementById("sl").value=p.sl.toFixed(2);document.getElementById("tp").value=p.tp.toFixed(2);
+    updateTradePreview();updatePosition();drawChart();
 });
 
-function stopDragging(event) {
-    if (!dragLevel) return;
-    dragLevel = null;
-    canvas.classList.remove("dragging");
-    try { canvas.releasePointerCapture?.(event.pointerId); } catch(e) {}
-}
-
-canvas.addEventListener("pointerup", stopDragging);
-canvas.addEventListener("pointercancel", stopDragging);
-canvas.addEventListener("pointerleave", function() {
-    // Keep drag active while pointer capture is supported.
-});
+function stopDragging(event){if(!dragLevel)return;dragLevel=null;canvas.classList.remove("dragging");try{canvas.releasePointerCapture?.(event.pointerId);}catch(e){}}
+canvas.addEventListener("pointerup",stopDragging);canvas.addEventListener("pointercancel",stopDragging);
 
 
 /* ------------------------------
@@ -1757,32 +1703,10 @@ function updateTradePreview() {
     document.getElementById("previewSize").textContent = size > 0 ? size.toFixed(3) : "0.000";
 }
 
-function hidePositionCard() {
-    const area = document.getElementById("positionArea");
-    if (openPosition) {
-        area.dataset.hidden = "1";
-        area.innerHTML = `<div style="color:#64768e;font-size:12px;display:flex;justify-content:space-between;align-items:center;">Position hidden <button class="hide-position-btn" onclick="showPositionCard()">↗</button></div>`;
-    }
-}
-
-function showPositionCard() {
-    document.getElementById("positionArea").dataset.hidden = "";
-    updatePosition();
-}
-
-function manualCloseTrade() {
-    if (!openPosition) return;
-    const candle = candles[currentIndex];
-    if (!candle) return;
-    const exitPrice = candle.close;
-    const p = openPosition;
-    const pnl = p.direction === "BUY"
-        ? (exitPrice - p.entry) * p.positionSize
-        : (p.entry - exitPrice) * p.positionSize;
-    const result = pnl > 0 ? "WIN" : pnl < 0 ? "LOSS" : "BREAK EVEN";
-    closeTrade(result, exitPrice, pnl);
-    showTradeMessage("Trade closed manually at current price.", "success");
-}
+function hidePositionCard(id){const p=openPositions.find(x=>x.id===Number(id));if(p){p.hidden=true;updatePosition();}}
+function showPositionCard(id){const p=openPositions.find(x=>x.id===Number(id));if(p){p.hidden=false;updatePosition();}}
+function manualCloseTrade(id){const p=openPositions.find(x=>x.id===Number(id)),candle=candles[currentIndex];if(!p||!candle)return;const exitPrice=candle.close;const pnl=p.direction==="BUY"?(exitPrice-p.entry)*p.positionSize:(p.entry-exitPrice)*p.positionSize;const result=pnl>0?"WIN":pnl<0?"LOSS":"BREAK EVEN";closeTrade(p,result,exitPrice,pnl);showTradeMessage(`Trade #${p.id} closed manually at current price.`,"success");}
+function closeAllTrades(){const candle=candles[currentIndex];if(!candle||!openPositions.length)return;[...openPositions].forEach(p=>{const exitPrice=candle.close;const pnl=p.direction==="BUY"?(exitPrice-p.entry)*p.positionSize:(p.entry-exitPrice)*p.positionSize;const result=pnl>0?"WIN":pnl<0?"LOSS":"BREAK EVEN";closeTrade(p,result,exitPrice,pnl);});showTradeMessage("All open trades closed at current price.","success");}
 
 /* ------------------------------
    ORDER MODE / PENDING ORDERS
@@ -1791,530 +1715,56 @@ function setOrderMode(mode){orderMode=mode;document.getElementById("marketModeBt
 function setPendingType(type){pendingType=type;["buyLimitBtn","sellLimitBtn","buyStopBtn","sellStopBtn"].forEach(id=>document.getElementById(id).classList.remove("active"));const map={"BUY LIMIT":"buyLimitBtn","SELL LIMIT":"sellLimitBtn","BUY STOP":"buyStopBtn","SELL STOP":"sellStopBtn"};document.getElementById(map[type]).classList.add("active");updateOrderButtons();updateTradePreview();}
 function updateOrderButtons(){const b=document.getElementById("buyOrderBtn"),s=document.getElementById("sellOrderBtn");if(orderMode==="MARKET"){b.textContent="BUY";s.textContent="SELL";}else{b.textContent=pendingType.startsWith("BUY")?"PLACE BUY":"BUY";s.textContent=pendingType.startsWith("SELL")?"PLACE SELL":"SELL";}}
 function submitOrder(direction){if(orderMode==="PENDING"){const expected=pendingType.startsWith("BUY")?"BUY":"SELL";if(direction!==expected){showTradeMessage(`Select ${expected} pending order type first.`,'error');return;}placePendingOrder();}else openTrade(direction);}
-function placePendingOrder(){if(openPosition){showTradeMessage("Close the open position before placing a pending order.","error");return;}if(pendingOrder){showTradeMessage("A pending order already exists. Cancel it first.","error");return;}const c=candles[currentIndex],entry=parseFloat(document.getElementById("entry").value),sl=parseFloat(document.getElementById("sl").value),tp=parseFloat(document.getElementById("tp").value),riskPercent=parseFloat(document.getElementById("risk").value)||1,market=c.close,direction=pendingType.startsWith("BUY")?"BUY":"SELL";if(!Number.isFinite(entry)||!Number.isFinite(sl)||!Number.isFinite(tp)){showTradeMessage("Enter pending price, Stop Loss and Take Profit.","error");return;}if(direction==="BUY"&&(sl>=entry||tp<=entry)){showTradeMessage("For BUY: SL must be below Entry and TP above Entry.","error");return;}if(direction==="SELL"&&(sl<=entry||tp>=entry)){showTradeMessage("For SELL: SL must be above Entry and TP below Entry.","error");return;}if(pendingType==="BUY LIMIT"&&entry>=market){showTradeMessage("Buy Limit must be below current price.","error");return;}if(pendingType==="BUY STOP"&&entry<=market){showTradeMessage("Buy Stop must be above current price.","error");return;}if(pendingType==="SELL LIMIT"&&entry<=market){showTradeMessage("Sell Limit must be above current price.","error");return;}if(pendingType==="SELL STOP"&&entry>=market){showTradeMessage("Sell Stop must be below current price.","error");return;}pendingOrder={type:pendingType,direction,entry,sl,tp,riskPercent,createdTime:c.time};updatePendingArea();showTradeMessage(`${pendingType} placed at ${entry.toFixed(2)}.` ,"success");drawChart();}
+function placePendingOrder(){
+    if(pendingOrder){showTradeMessage("A pending order already exists. Cancel it first.","error");return;}
+    const c=candles[currentIndex],entry=parseFloat(document.getElementById("entry").value),sl=parseFloat(document.getElementById("sl").value),tp=parseFloat(document.getElementById("tp").value),riskPercent=parseFloat(document.getElementById("risk").value)||1,market=c.close,direction=pendingType.startsWith("BUY")?"BUY":"SELL";
+    if(!Number.isFinite(entry)||!Number.isFinite(sl)||!Number.isFinite(tp)){showTradeMessage("Enter pending price, Stop Loss and Take Profit.","error");return;}
+    if(direction==="BUY"&&(sl>=entry||tp<=entry)){showTradeMessage("For BUY: SL must be below Entry and TP above Entry.","error");return;}
+    if(direction==="SELL"&&(sl<=entry||tp>=entry)){showTradeMessage("For SELL: SL must be above Entry and TP below Entry.","error");return;}
+    if(pendingType==="BUY LIMIT"&&entry>=market){showTradeMessage("Buy Limit must be below current price.","error");return;} if(pendingType==="BUY STOP"&&entry<=market){showTradeMessage("Buy Stop must be above current price.","error");return;} if(pendingType==="SELL LIMIT"&&entry<=market){showTradeMessage("Sell Limit must be above current price.","error");return;} if(pendingType==="SELL STOP"&&entry>=market){showTradeMessage("Sell Stop must be below current price.","error");return;}
+    pendingOrder={type:pendingType,direction,entry,sl,tp,riskPercent,createdTime:c.time};updatePendingArea();showTradeMessage(`${pendingType} placed at ${entry.toFixed(2)}.` ,"success");drawChart();
+}
 function cancelPendingOrder(){pendingOrder=null;updatePendingArea();showTradeMessage("Pending order cancelled.","success");drawChart();}
 function updatePendingArea(){const panel=document.getElementById("pendingPanel"),area=document.getElementById("pendingArea");if(!pendingOrder){panel.style.display="none";area.innerHTML="";return;}panel.style.display="block";area.innerHTML=`<div class="pending-card"><div class="pending-head"><strong>${pendingOrder.type} XAUUSD</strong><button class="pending-cancel" onclick="cancelPendingOrder()">Cancel</button></div><div class="pending-line"><span>Entry</span><b>${pendingOrder.entry.toFixed(2)}</b></div><div class="pending-line"><span>Stop Loss</span><b>${pendingOrder.sl.toFixed(2)}</b></div><div class="pending-line"><span>Take Profit</span><b>${pendingOrder.tp.toFixed(2)}</b></div><div class="pending-line"><span>Status</span><b style="color:#f6b94a">Waiting</b></div></div>`;}
-function checkPendingOrder(){if(!pendingOrder||openPosition)return;const c=candles[currentIndex];if(!c)return;let hit=false;if(pendingOrder.type==="BUY LIMIT"||pendingOrder.type==="SELL STOP")hit=c.low<=pendingOrder.entry;else hit=c.high>=pendingOrder.entry;if(!hit)return;const p=pendingOrder;pendingOrder=null;updatePendingArea();activatePendingTrade(p);}
-function activatePendingTrade(p){const riskMoney=balance*(p.riskPercent/100),distance=Math.abs(p.entry-p.sl);if(distance<=0)return;openPosition={direction:p.direction,entry:p.entry,sl:p.sl,tp:p.tp,riskMoney,positionSize:riskMoney/distance,openTime:candles[currentIndex].time};document.getElementById("entry").value=p.entry.toFixed(2);document.getElementById("sl").value=p.sl.toFixed(2);document.getElementById("tp").value=p.tp.toFixed(2);showTradeMessage(`${p.type} triggered at ${p.entry.toFixed(2)}. Position opened.` ,"success");updateTradePreview();updatePosition();drawChart();}
+function checkPendingOrder(){if(!pendingOrder)return;const c=candles[currentIndex];if(!c)return;let hit=false;if(pendingOrder.type==="BUY LIMIT"||pendingOrder.type==="SELL STOP")hit=c.low<=pendingOrder.entry;else hit=c.high>=pendingOrder.entry;if(!hit)return;const p=pendingOrder;pendingOrder=null;updatePendingArea();activatePendingTrade(p);}
+function activatePendingTrade(p){const riskMoney=balance*(p.riskPercent/100),distance=Math.abs(p.entry-p.sl);if(distance<=0)return;const position={id:nextPositionId++,direction:p.direction,entry:p.entry,sl:p.sl,tp:p.tp,riskMoney,positionSize:riskMoney/distance,openTime:candles[currentIndex].time,hidden:false};openPositions.push(position);selectedPositionId=position.id;document.getElementById("entry").value=p.entry.toFixed(2);document.getElementById("sl").value=p.sl.toFixed(2);document.getElementById("tp").value=p.tp.toFixed(2);showTradeMessage(`${p.type} triggered at ${p.entry.toFixed(2)}. Position #${position.id} opened.` ,"success");updateTradePreview();updatePosition();drawChart();}
 
 /* ------------------------------
    OPEN TRADE
 ------------------------------ */
 
-function openTrade(
-    direction
-) {
-
-    if (openPosition) {
-
-        showTradeMessage("You already have an open position. Close it before opening another.", "error");
-        return;
-    }
-
-
-    const candle =
-        candles[currentIndex];
-
-
-    if (!candle) {
-        return;
-    }
-
-
-    let entryInput =
-        parseFloat(
-            document.getElementById(
-                "entry"
-            ).value
-        );
-
-
-    let sl =
-        parseFloat(
-            document.getElementById(
-                "sl"
-            ).value
-        );
-
-
-    let tp =
-        parseFloat(
-            document.getElementById(
-                "tp"
-            ).value
-        );
-
-
-    let riskPercent =
-        parseFloat(
-            document.getElementById(
-                "risk"
-            ).value
-        );
-
-
-    const entry =
-        entryInput ||
-        candle.close;
-
-
-    if (
-        !sl ||
-        !tp
-    ) {
-
-        showTradeMessage("Please enter Stop Loss and Take Profit.", "error");
-        return;
-    }
-
-
-    if (
-        direction === "BUY"
-        &&
-        (
-            sl >= entry
-            ||
-            tp <= entry
-        )
-    ) {
-
-        showTradeMessage("For BUY: SL must be below Entry and TP above Entry.", "error");
-        return;
-    }
-
-
-    if (
-        direction === "SELL"
-        &&
-        (
-            sl <= entry
-            ||
-            tp >= entry
-        )
-    ) {
-
-        showTradeMessage("For SELL: SL must be above Entry and TP below Entry.", "error");
-        return;
-    }
-
-
-    const riskMoney =
-        balance *
-        (riskPercent / 100);
-
-
-    const riskDistance =
-        Math.abs(
-            entry - sl
-        );
-
-
-    if (
-        riskDistance <= 0
-    ) {
-
-        showTradeMessage("Invalid risk distance.", "error");
-        return;
-    }
-
-
-    const positionSize =
-        riskMoney /
-        riskDistance;
-
-
-    openPosition = {
-
-        direction:
-            direction,
-
-        entry:
-            entry,
-
-        sl:
-            sl,
-
-        tp:
-            tp,
-
-        riskMoney:
-            riskMoney,
-
-        positionSize:
-            positionSize,
-
-        openTime:
-            candles[currentIndex].time
-    };
-
-    document.getElementById("positionArea").dataset.hidden = "";
-    document.getElementById("entry").value = entry.toFixed(2);
-    document.getElementById("sl").value = sl.toFixed(2);
-    document.getElementById("tp").value = tp.toFixed(2);
-    updateTradePreview();
-
-    updatePosition();
-
-    drawChart();
-
+function openTrade(direction){
+    const candle=candles[currentIndex]; if(!candle)return;
+    const entryInput=parseFloat(document.getElementById("entry").value),sl=parseFloat(document.getElementById("sl").value),tp=parseFloat(document.getElementById("tp").value),riskPercent=parseFloat(document.getElementById("risk").value)||1,entry=Number.isFinite(entryInput)?entryInput:candle.close;
+    if(!Number.isFinite(sl)||!Number.isFinite(tp)){showTradeMessage("Please enter Stop Loss and Take Profit.","error");return;}
+    if(direction==="BUY"&&(sl>=entry||tp<=entry)){showTradeMessage("For BUY: SL must be below Entry and TP above Entry.","error");return;}
+    if(direction==="SELL"&&(sl<=entry||tp>=entry)){showTradeMessage("For SELL: SL must be above Entry and TP below Entry.","error");return;}
+    const riskMoney=balance*(riskPercent/100),riskDistance=Math.abs(entry-sl); if(riskDistance<=0){showTradeMessage("Invalid risk distance.","error");return;}
+    const position={id:nextPositionId++,direction,entry,sl,tp,riskMoney,positionSize:riskMoney/riskDistance,openTime:candles[currentIndex].time,hidden:false};
+    openPositions.push(position);selectedPositionId=position.id;document.getElementById("positionArea").dataset.hidden="";document.getElementById("entry").value=entry.toFixed(2);document.getElementById("sl").value=sl.toFixed(2);document.getElementById("tp").value=tp.toFixed(2);updateTradePreview();updatePosition();drawChart();showTradeMessage(`${direction} position #${position.id} opened.`,"success");
 }
-
 
 /* ------------------------------
    CHECK SL / TP
 ------------------------------ */
 
-function checkOpenPosition() {
-    checkPendingOrder();
-    if (!openPosition) {
-        return;
-    }
-
-
-    const candle =
-        candles[currentIndex];
-
-
-    if (!candle) {
-        return;
-    }
-
-
-    let result = null;
-
-    let exitPrice = null;
-
-
-    if (
-        openPosition.direction
-        ===
-        "BUY"
-    ) {
-
-        /*
-           Conservative rule:
-           If SL and TP both hit
-           inside the same candle,
-           SL is assumed to hit first.
-        */
-
-        if (
-            candle.low
-            <=
-            openPosition.sl
-        ) {
-
-            result = "LOSS";
-
-            exitPrice =
-                openPosition.sl;
-
-        } else if (
-            candle.high
-            >=
-            openPosition.tp
-        ) {
-
-            result = "WIN";
-
-            exitPrice =
-                openPosition.tp;
-        }
-
-    } else {
-
-
-        if (
-            candle.high
-            >=
-            openPosition.sl
-        ) {
-
-            result = "LOSS";
-
-            exitPrice =
-                openPosition.sl;
-
-        } else if (
-            candle.low
-            <=
-            openPosition.tp
-        ) {
-
-            result = "WIN";
-
-            exitPrice =
-                openPosition.tp;
-        }
-    }
-
-
-    if (result) {
-
-        closeTrade(
-            result,
-            exitPrice
-        );
-    }
+function checkOpenPosition(){
+    checkPendingOrder(); if(!openPositions.length)return; const candle=candles[currentIndex];if(!candle)return;
+    [...openPositions].forEach(p=>{let result=null,exitPrice=null;if(p.direction==="BUY"){if(candle.low<=p.sl){result="LOSS";exitPrice=p.sl;}else if(candle.high>=p.tp){result="WIN";exitPrice=p.tp;}}else{if(candle.high>=p.sl){result="LOSS";exitPrice=p.sl;}else if(candle.low<=p.tp){result="WIN";exitPrice=p.tp;}}if(result)closeTrade(p,result,exitPrice);});
 }
-
-
-/* ------------------------------
-   CLOSE TRADE
------------------------------- */
-
-function closeTrade(
-    result,
-    exitPrice,
-    manualPnl = null
-) {
-
-    const p =
-        openPosition;
-
-
-    let priceDifference;
-
-
-    if (
-        p.direction ===
-        "BUY"
-    ) {
-
-        priceDifference =
-            exitPrice -
-            p.entry;
-
-    } else {
-
-        priceDifference =
-            p.entry -
-            exitPrice;
-    }
-
-
-    let pnl = manualPnl !== null
-        ? manualPnl
-        : priceDifference * p.positionSize;
-
-
-    /*
-       Force exact risk/reward
-       based on SL/TP.
-    */
-
-    if (result === "LOSS") {
-
-        pnl =
-            -p.riskMoney;
-
-    }
-
-
-    if (result === "WIN") {
-
-        let rewardDistance =
-            Math.abs(
-                p.tp -
-                p.entry
-            );
-
-        pnl =
-            rewardDistance *
-            p.positionSize;
-    }
-
-
-    balance += pnl;
-
-
-    if (pnl >= 0) {
-
-        wins++;
-
-        totalProfit += pnl;
-
-    } else {
-
-        losses++;
-
-        totalLoss +=
-            Math.abs(pnl);
-    }
-
-
-    trades.push({
-
-        number:
-            trades.length + 1,
-
-        direction:
-            p.direction,
-
-        entry:
-            p.entry,
-
-        exit:
-            exitPrice,
-
-        sl:
-            p.sl,
-
-        tp:
-            p.tp,
-
-        pnl:
-            pnl,
-
-        result:
-            result,
-
-        time:
-            candles[currentIndex].time
-    });
-
-
-    openPosition = null;
-
-
-    updateStats();
-
-    updateHistory();
-
-    updatePosition();
-
-    drawChart();
-
-}
-
+function closeTrade(p,result,exitPrice,manualPnl=null){if(!p)return;const priceDifference=p.direction==="BUY"?exitPrice-p.entry:p.entry-exitPrice;let pnl=manualPnl!==null?manualPnl:priceDifference*p.positionSize;if(result==="LOSS")pnl=-p.riskMoney;if(result==="WIN")pnl=Math.abs(p.tp-p.entry)*p.positionSize;balance+=pnl;if(pnl>=0){wins++;totalProfit+=pnl;}else{losses++;totalLoss+=Math.abs(pnl);}trades.push({number:trades.length+1,positionId:p.id,direction:p.direction,entry:p.entry,exit:exitPrice,sl:p.sl,tp:p.tp,pnl,result,time:candles[currentIndex].time});openPositions=openPositions.filter(x=>x.id!==p.id);if(selectedPositionId===p.id)selectedPositionId=openPositions.length?openPositions[openPositions.length-1].id:null;updateStats();updateHistory();updatePosition();drawChart();}
 
 /* ------------------------------
    UPDATE POSITION
 ------------------------------ */
 
-function updatePosition() {
-
-    const area =
-        document.getElementById(
-            "positionArea"
-        );
-
-    if (area.dataset.hidden === "1" && openPosition) {
-        return;
-    }
-
-    if (!openPosition) {
-
-        area.innerHTML = `
-            <div style="color:#64768e;font-size:12px;">
-                No open position
-            </div>
-        `;
-
-        return;
-    }
-
-
-    const candle =
-        candles[currentIndex];
-
-
-    let floating = 0;
-
-
-    if (
-        openPosition.direction
-        ===
-        "BUY"
-    ) {
-
-        floating =
-            (
-                candle.close -
-                openPosition.entry
-            )
-            *
-            openPosition.positionSize;
-
-    } else {
-
-        floating =
-            (
-                openPosition.entry -
-                candle.close
-            )
-            *
-            openPosition.positionSize;
-    }
-
-
-    const floatingClass =
-        floating >= 0
-        ? "profit"
-        : "loss";
-
-
-    area.innerHTML = `
-
-        <div class="position-box">
-
-            <div class="position-type ${openPosition.direction === "BUY" ? "profit" : "loss"}">
-
-                ${openPosition.direction}
-                XAUUSD
-
-            </div>
-
-            <div class="position-line">
-                <span>Entry</span>
-                <strong>
-                    ${openPosition.entry.toFixed(2)}
-                </strong>
-            </div>
-
-            <div class="position-line">
-                <span>Stop Loss</span>
-                <strong>
-                    ${openPosition.sl.toFixed(2)}
-                </strong>
-            </div>
-
-            <div class="position-line">
-                <span>Take Profit</span>
-                <strong>
-                    ${openPosition.tp.toFixed(2)}
-                </strong>
-            </div>
-
-            <div class="position-line">
-                <span>Size</span>
-                <strong>
-                    ${openPosition.positionSize.toFixed(3)}
-                </strong>
-            </div>
-
-            <div class="position-line">
-
-                <span>Floating P&L</span>
-
-                <strong class="${floatingClass}">
-
-                    ${floating >= 0 ? "+" : ""}
-                    $${floating.toFixed(2)}
-
-                </strong>
-
-            </div>
-
-            <div class="position-actions">
-                <button class="close-trade-btn" onclick="manualCloseTrade()">Close Trade</button>
-                <button class="hide-position-btn" onclick="hidePositionCard()" title="Hide position card">×</button>
-            </div>
-
-        </div>
-    `;
+function updatePosition(){
+    const area=document.getElementById("positionArea");
+    if(!openPositions.length){area.innerHTML=`<div style="color:#64768e;font-size:12px;">No open position</div>`;return;}
+    const candle=candles[currentIndex];
+    const cards=openPositions.map(p=>{const floating=p.direction==="BUY"?(candle.close-p.entry)*p.positionSize:(p.entry-candle.close)*p.positionSize,cls=floating>=0?"profit":"loss";if(p.hidden)return `<div class="position-card"><div class="position-hidden"><span>Position #${p.id} hidden</span><button class="hide-position-btn" onclick="showPositionCard(${p.id})">↗</button></div></div>`;return `<div class="position-card"><div class="position-card-head"><strong class="${p.direction==="BUY"?"profit":"loss"}">${p.direction} XAUUSD <span class="position-card-id">#${p.id}</span></strong><button class="hide-position-btn" onclick="hidePositionCard(${p.id})" title="Hide">×</button></div><div class="position-line"><span>Entry</span><strong>${p.entry.toFixed(2)}</strong></div><div class="position-line"><span>SL</span><strong>${p.sl.toFixed(2)}</strong></div><div class="position-line"><span>TP</span><strong>${p.tp.toFixed(2)}</strong></div><div class="position-line"><span>Size</span><strong>${p.positionSize.toFixed(3)}</strong></div><div class="position-line"><span>Floating P&L</span><strong class="${cls}">${floating>=0?"+":""}$${floating.toFixed(2)}</strong></div><div class="position-actions"><button class="close-trade-btn" onclick="manualCloseTrade(${p.id})">Close Trade</button></div></div>`;}).join("");
+    area.innerHTML=`<div class="positions-head"><span style="font-size:11px;color:#71839b">${openPositions.length} open trade${openPositions.length>1?'s':''}</span><button class="close-all-btn" onclick="closeAllTrades()">Close All</button></div>${cards}`;
 }
-
 
 /* ------------------------------
    UPDATE STATS
@@ -2486,8 +1936,9 @@ function resetReplay() {
     chartZoom = 1;
     chartPan = 0;
 
-    openPosition =
-        null;
+    openPositions = [];
+    selectedPositionId = null;
+    nextPositionId = 1;
     pendingOrder = null;
     updatePendingArea();
 
@@ -2549,7 +2000,7 @@ document.getElementById(
         if (
             trades.length === 0
             &&
-            !openPosition
+            openPositions.length === 0
         ) {
 
             startingBalance =
