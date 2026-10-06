@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Trading Backtesting & Market Replay Platform | BFT Trade Lab</title>
+
+  <meta
+    name="description"
+    content="BFT Trade Lab is a trading backtesting and market replay platform where traders can practice historical markets, test strategies, forward test setups, analyze trades, manage risk and improve trading performance."
+  >
+
+  <meta
+    name="keywords"
+    content="trading backtesting, backtesting platform, online trading backtesting, trading strategy backtesting, forex backtesting, XAUUSD backtesting, gold trading backtesting, market replay, trading simulator, forward testing, trading journal, trading strategy tester, risk reward calculator, position size calculator"
+  >
+
+  <meta name="robots" content="index, follow, max-image-preview:large">
+
+  <meta name="author" content="BFT Trade Lab">
+
+  <!-- Canonical: replace with your final custom domain later -->
+  <link
+    rel="canonical"
+    href="https://saifanwarjobs-tech.github.io/Backward-Forward-Test-Trade-Lab/"
+  >
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta
+    property="og:title"
+    content="BFT Trade Lab | Trading Backtesting & Market Replay"
+  >
+  <meta
+    property="og:description"
+    content="Backtest historical markets, replay trades, forward test strategies and analyze your trading performance without risking real money."
+  >
+  <meta
+    property="og:url"
+    content="https://saifanwarjobs-tech.github.io/Backward-Forward-Test-Trade-Lab/"
+  >
+  <meta property="og:site_name" content="BFT Trade Lab">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta
+    name="twitter:title"
+    content="BFT Trade Lab | Trading Backtesting Platform"
+  >
+  <meta
+    name="twitter:description"
+    content="Test historical markets, practice trading and forward test your strategy with BFT Trade Lab."
+  >
+
+  <!-- Theme -->
+  <meta name="theme-color" content="#07111f">
+
+  <!-- Favicon placeholder -->
+  <link rel="icon" href="data:,">
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "BFT Trade Lab",
+    "alternateName": "Backward Forward Test Trade Lab",
+    "url": "https://saifanwarjobs-tech.github.io/Backward-Forward-Test-Trade-Lab/",
+    "description": "Trading backtesting, market replay, forward testing and trading analytics platform.",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Web",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #07111f;
+      color: #eef4ff;
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: min(1180px, 92%);
+      margin: auto;
+    }
+
+    header {
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      background: rgba(7,17,31,.96);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    nav {
+      min-height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .logo {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: .5px;
+    }
+
+    .logo span {
+      color: #4ade80;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+      font-size: 14px;
+      color: #b8c4d6;
+    }
+
+    .hero {
+      padding: 90px 0 70px;
+      text-align: center;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 7px 14px;
+      border: 1px solid rgba(74,222,128,.35);
+      border-radius: 999px;
+      color: #4ade80;
+      font-size: 13px;
+      margin-bottom: 22px;
+    }
+
+    h1 {
+      max-width: 900px;
+      margin: auto;
+      font-size: clamp(40px, 6vw, 72px);
+      line-height: 1.05;
+      letter-spacing: -2px;
+    }
+
+    .hero h1 span {
+      color: #4ade80;
+    }
+
+    .hero p {
+      max-width: 760px;
+      margin: 25px auto;
+      color: #aebbd0;
+      font-size: 18px;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 30px;
+    }
+
+    .btn {
+      padding: 14px 23px;
+      border-radius: 10px;
+      font-weight: 700;
+      border: 1px solid rgba(255,255,255,.12);
+    }
+
+    .primary {
+      background: #4ade80;
+      color: #06100b;
+    }
+
+    .secondary {
+      background: #101c2d;
+    }
+
+    section {
+      padding: 65px 0;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .section-title h2 {
+      font-size: 36px;
+      margin-bottom: 10px;
+    }
+
+    .section-title p {
+      color: #9eabc0;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .card {
+      background: #0d1929;
+      border: 1px solid rgba(255,255,255,.08);
+      padding: 25px;
+      border-radius: 15px;
+    }
+
+    .card h3 {
+      margin-bottom: 10px;
+      font-size: 20px;
+    }
+
+    .card p {
+      color: #9eabc0;
+      font-size: 15px;
+    }
+
+    .replay {
+      background: #0b1625;
+    }
+
+    .chart-demo {
+      max-width: 950px;
+      min-height: 380px;
+      margin: auto;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.1);
+      background:
+        linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px),
+        #081321;
+      background-size: 50px 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #6f7f95;
+      font-size: 18px;
+    }
+
+    .seo-content {
+      max-width: 900px;
+      margin: auto;
+    }
+
+    .seo-content h2 {
+      margin: 35px 0 12px;
+      font-size: 28px;
+    }
+
+    .seo-content h3 {
+      margin: 25px 0 8px;
+    }
+
+    .seo-content p {
+      color: #aebbd0;
+      margin-bottom: 15px;
+    }
+
+    .seo-content ul {
+      margin: 15px 0 20px 22px;
+      color: #aebbd0;
+    }
+
+    .faq {
+      max-width: 850px;
+      margin: auto;
+    }
+
+    details {
+      background: #0d1929;
+      border: 1px solid rgba(255,255,255,.08);
+      padding: 18px 20px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    details p {
+      color: #9eabc0;
+      margin-top: 10px;
+    }
+
+    footer {
+      padding: 35px 0;
+      border-top: 1px solid rgba(255,255,255,.08);
+      text-align: center;
+      color: #78879b;
+      font-size: 14px;
+    }
+
+    @media (max-width: 800px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .hero {
+        padding: 65px 0 45px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="container">
+    <nav>
+      <a class="logo" href="./">
+        BFT <span>TRADE LAB</span>
+      </a>
+
+      <div class="nav-links">
+        <a href="#backtesting">Backtesting</a>
+        <a href="#forward-testing">Forward Testing</a>
+        <a href="#tools">Trading Tools</a>
+        <a href="#learn">Learn</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+
+<main>
+
+  <!-- HERO -->
+
+  <section class="hero">
+    <div class="container">
+
+      <div class="badge">
+        Trading Backtesting & Market Replay Platform
+      </div>
+
+      <h1>
+        <span>Backtest.</span>
+        Forward Test.
+        Trade Smarter.
+      </h1>
+
+      <p>
+        Practice historical markets, replay price action candle by candle,
+        test trading strategies, manage risk and analyze your performance
+        without risking real money.
+      </p>
+
+      <div class="buttons">
+        <a class="btn primary" href="#backtesting">
+          Start Backtesting
+        </a>
+
+        <a class="btn secondary" href="#forward-testing">
+          Explore Forward Testing
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- CORE FEATURES -->
+
+  <section id="backtesting">
+    <div class="container">
+
+      <div class="section-title">
+        <h2>Online Trading Backtesting Platform</h2>
+        <p>
+          Test your trading strategy on historical market data.
+        </p>
+      </div>
+
+      <div class="grid">
+
+        <article class="card">
+          <h3>Historical Market Replay</h3>
+          <p>
+            Replay historical price action candle by candle and make
+            trading decisions without seeing future candles.
+          </p>
+        </article>
+
+        <article class="card">
+          <h3>Trading Strategy Backtesting</h3>
+          <p>
+            Test entries, stop loss, take profit, position sizing,
+            risk-reward and complete trading strategies.
+          </p>
+        </article>
+
+        <article class="card">
+          <h3>Trade Performance Analytics</h3>
+          <p>
+            Measure win rate, profit factor, drawdown, average R:R,
+            equity curve and other trading performance metrics.
+          </p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- REPLAY -->
+
+  <section class="replay">
+    <div class="container">
+
+      <div class="section-title">
+        <h2>Market Replay Trading Simulator</h2>
+        <p>
+          Learn by making decisions inside historical market conditions.
+        </p>
+      </div>
+
+      <div class="chart-demo">
+        XAUUSD Historical Replay — Coming Soon
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- FORWARD TESTING -->
+
+  <section id="forward-testing">
+    <div class="container">
+
+      <div class="section-title">
+        <h2>Forward Testing</h2>
+        <p>
+          Validate your strategy with simulated trades before risking
+          real capital.
+        </p>
+      </div>
+
+      <div class="grid">
+
+        <article class="card">
+          <h3>Paper Trading</h3>
+          <p>
+            Practice your strategy using simulated trades and track
+            decisions without using real money.
+          </p>
+        </article>
+
+        <article class="card">
+          <h3>Strategy Tracking</h3>
+          <p>
+            Save strategies and compare their performance across
+            different market conditions.
+          </p>
+        </article>
+
+        <article class="card">
+          <h3>Performance Reports</h3>
+          <p>
+            Analyze trades, winning percentage, risk, drawdown and
+            strategy consistency.
+          </p>
+        </article>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- TOOLS -->
+
+  <section id="tools">
+    <div class="container">
+
+      <div class="section-title">
+        <h2>Free Trading Tools</h2>
+        <p>
+          Tools designed to help traders plan and analyze trades.
+        </p>
+      </div>
+
+      <div class="grid">
+
+        <article class="card">
+          <h3>Position Size Calculator</h3>
+          <p>
+            Calculate position size based on account balance,
+            risk percentage and stop loss.
+          </p>
+        </article>
+
+        <article class="card">
+          <h3>Risk Reward Calculator</h3>
+          <p>
+            Calculate potential risk, reward and risk-to-reward ratio
+            before entering a trade.
+          </p>
+        </article>
+
+        <article class="card">
+          <h3>Trading Journal</h3>
+          <p>
+            Record trades, trading decisions, setups and performance
+            for future analysis.
+          </p>
+        </article>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- SEO CONTENT -->
+
+  <section id="learn">
+    <div class="container">
+
+      <div class="seo-content">
+
+        <h2>What Is Trading Backtesting?</h2>
+
+        <p>
+          Trading backtesting is the process of testing a trading strategy
+          against historical market data to understand how the strategy
+          could have performed under previous market conditions.
+        </p>
+
+        <p>
+          A proper backtesting process can help traders study entries,
+          exits, stop loss placement, take profit levels, risk management,
+          win rate, drawdown and overall strategy performance.
+        </p>
+
+
+        <h2>Why Use a Trading Backtesting Platform?</h2>
+
+        <p>
+          Manually scrolling through historical charts can make it easy
+          to accidentally see future price movements. A market replay
+          system can hide future candles and allow traders to make
+          decisions sequentially.
+        </p>
+
+        <p>
+          BFT Trade Lab is being developed around this idea: practice
+          historical trading conditions, record decisions and analyze
+          the results systematically.
+        </p>
+
+
+        <h2>XAUUSD and Gold Trading Backtesting</h2>
+
+        <p>
+          Gold traders can use historical XAUUSD price action to study
+          setups such as breakouts, fake breakouts, support and resistance,
+          retests, trend continuation and liquidity-based trading concepts.
+        </p>
+
+
+        <h2>Trading Strategy Testing</h2>
+
+        <p>
+          A strategy should not be judged only by a few profitable trades.
+          Traders can evaluate a larger sample of historical trades using
+          metrics such as win rate, average reward-to-risk ratio,
+          profit factor and maximum drawdown.
+        </p>
+
+
+        <h2>Backtesting vs Forward Testing</h2>
+
+        <p>
+          Backtesting uses historical market data. Forward testing,
+          often performed through paper trading or simulated trading,
+          evaluates how a strategy behaves on new market data that was
+          not used during the original strategy development.
+        </p>
+
+
+        <h2>Trading Risk Management</h2>
+
+        <p>
+          Risk management is an important part of strategy testing.
+          Position sizing, stop loss, account risk and risk-to-reward
+          calculations can be analyzed alongside trading performance.
+        </p>
+
+
+        <h2>Learn Trading Through Practice</h2>
+
+        <p>
+          BFT Trade Lab is designed as a practice and analysis environment,
+          not as a promise of trading profits. The goal is to help traders
+          develop a systematic process for testing, recording and
+          evaluating trading decisions.
+        </p>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- FAQ -->
+
+  <section>
+    <div class="container">
+
+      <div class="section-title">
+        <h2>Trading Backtesting FAQ</h2>
+      </div>
+
+      <div class="faq">
+
+        <details>
+          <summary>What is trading backtesting?</summary>
+          <p>
+            Trading backtesting means testing a trading strategy using
+            historical market data before applying the strategy to
+            future markets.
+          </p>
+        </details>
+
+        <details>
+          <summary>What is market replay?</summary>
+          <p>
+            Market replay recreates historical price movement step by
+            step so traders can make decisions without seeing future
+            candles in advance.
+          </p>
+        </details>
+
+        <details>
+          <summary>What is forward testing?</summary>
+          <p>
+            Forward testing evaluates a strategy on new market data,
+            usually using simulated or paper trades rather than real
+            money.
+          </p>
+        </details>
+
+        <details>
+          <summary>Can I backtest a gold trading strategy?</summary>
+          <p>
+            BFT Trade Lab is being designed to support historical
+            XAUUSD and other market data for strategy testing.
+          </p>
+        </details>
+
+        <details>
+          <summary>Can backtesting guarantee trading profits?</summary>
+          <p>
+            No. Historical performance does not guarantee future results.
+            Backtesting should be used for research, practice and
+            strategy evaluation.
+          </p>
+        </details>
+
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+
+<footer>
+  <div class="container">
+    © 2026 BFT Trade Lab — Backward Forward Test Trade Lab.
+    Trading practice, backtesting and strategy analysis platform.
+  </div>
+</footer>
+
+</body>
+</html>
