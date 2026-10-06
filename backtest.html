@@ -740,6 +740,22 @@ body{
     z-index:2;
 }
 
+
+/* ===== V7 DRAGGABLE TRADE LEVELS ===== */
+.trade-level-handle{
+    position:absolute;
+    right:72px;
+    pointer-events:none;
+}
+.chart-wrapper.trade-drag-ready{cursor:ns-resize}
+.trade-drag-toast{
+    position:absolute;left:50%;top:10px;transform:translateX(-50%);
+    z-index:10;display:none;padding:6px 10px;border-radius:6px;
+    background:#0b192a;border:1px solid #31506d;color:#dce8f6;
+    font-size:10px;box-shadow:0 8px 22px rgba(0,0,0,.25);
+}
+.trade-drag-toast.show{display:block}
+
 </style>
 </head>
 
@@ -877,7 +893,7 @@ body{
 </div>
 
 <canvas id="chart"></canvas>
-            <div class="chart-status" id="chartStatus">BANKNIFTY • 5 MIN • REAL DATA</div>
+            <div class="chart-status" id="chartStatus">BANKNIFTY • 5 MIN • REAL DATA • DRAG ENTRY / SL / TP</div>
 <div class="floating-position" id="floatingPosition">
     <div class="fp-head">
         <span id="fpTitle">● BUY BANKNIFTY</span>
@@ -894,6 +910,7 @@ body{
 </div>
 
             <div class="crosshair-label" id="crosshairLabel"></div>
+<div class="trade-drag-toast" id="tradeDragToast">Drag SL / TP / Entry to adjust</div>
 
             <div class="chart-price" id="priceLabel">
                 --
@@ -1387,6 +1404,221 @@ window.addEventListener(
    DRAW CHART
 ------------------------------ */
 
+
+
+
+/* ===== DRAGGABLE ENTRY / SL / TP ===== */
+
+let draggingTradeLevel = null;
+let dragOriginalRisk = 0;
+
+function screenPriceAtY(y){
+    const height=canvas.clientHeight;
+    const top=30,bottom=30;
+
+    const visibleCount=Math.max(25,Math.min(chartView.visibleCount,currentIndex+1));
+    const start=Math.max(0,currentIndex-visibleCount+1);
+    const visible=candles.slice(start,currentIndex+1);
+
+    if(!visible.length) return null;
+
+    let highest=Math.max(...visible.map(c=>c.high));
+    let lowest=Math.min(...visible.map(c=>c.low));
+
+    if(openPosition){
+        highest=Math.max(highest,openPosition.tp,openPosition.entry,openPosition.sl);
+        lowest=Math.min(lowest,openPosition.tp,openPosition.entry,openPosition.sl);
+    }
+
+    const pad=(highest-lowest||1)*0.08;
+    highest+=pad;
+    lowest-=pad;
+
+    return highest-(y-top)/(height-top-bottom)*(highest-lowest);
+}
+
+function findTradeLevelAtPoint(y){
+
+    if(!openPosition) return null;
+
+    const levels=[
+        {name:"entry",price:openPosition.entry},
+        {name:"sl",price:openPosition.sl},
+        {name:"tp",price:openPosition.tp}
+    ];
+
+    let closest=null;
+    let distance=Infinity;
+
+    levels.forEach(level=>{
+        const screenY=priceToScreen(level.price);
+        if(screenY===null) return;
+
+        const d=Math.abs(y-screenY);
+
+        if(d<distance){
+            distance=d;
+            closest=level.name;
+        }
+    });
+
+    return distance<=14 ? closest : null;
+}
+
+function showTradeDragToast(text){
+    const el=document.getElementById("tradeDragToast");
+    if(!el) return;
+    el.textContent=text;
+    el.classList.add("show");
+}
+
+function hideTradeDragToast(){
+    document.getElementById("tradeDragToast")?.classList.remove("show");
+}
+
+function clampTradeLevel(type,price){
+
+    const p=openPosition;
+    const gap=0.05;
+
+    if(type==="sl"){
+        if(p.direction==="BUY") return Math.min(price,p.entry-gap);
+        return Math.max(price,p.entry+gap);
+    }
+
+    if(type==="tp"){
+        if(p.direction==="BUY") return Math.max(price,p.entry+gap);
+        return Math.min(price,p.entry-gap);
+    }
+
+    // Entry can move, but must stay between SL and TP.
+    if(p.direction==="BUY"){
+        return Math.max(p.sl+gap,Math.min(p.tp-gap,price));
+    }
+
+    return Math.max(p.tp+gap,Math.min(p.sl-gap,price));
+}
+
+function syncDraggedTradeToTicket(){
+
+    if(!openPosition) return;
+
+    document.getElementById("entry").value=openPosition.entry.toFixed(2);
+    document.getElementById("sl").value=openPosition.sl.toFixed(2);
+    document.getElementById("tp").value=openPosition.tp.toFixed(2);
+
+    const riskPercent=balance>0
+        ? (openPosition.riskMoney/balance)*100
+        : 0;
+
+    document.getElementById("risk").value=riskPercent.toFixed(2);
+
+    updateTicketMetrics();
+    updatePosition();
+    updateOpenTradeStrip();
+    updateFloatingPosition();
+    drawChart();
+}
+
+function startTradeLevelDrag(e){
+
+    if(!openPosition || drawTool!=="cursor") return;
+
+    const pt=canvasPoint(e);
+    const level=findTradeLevelAtPoint(pt.y);
+
+    if(!level) return;
+
+    draggingTradeLevel=level;
+    dragOriginalRisk=openPosition.riskMoney;
+
+    canvas.classList.add("dragging-trade-level");
+    document.querySelector(".chart-wrapper")?.classList.add("trade-drag-ready");
+
+    showTradeDragToast("Dragging "+level.toUpperCase()+" • release to set");
+}
+
+function moveTradeLevelDrag(e){
+
+    if(!draggingTradeLevel || !openPosition) return;
+
+    const pt=canvasPoint(e);
+    let price=screenPriceAtY(pt.y);
+
+    if(price===null) return;
+
+    price=Math.round(price*100)/100;
+    price=clampTradeLevel(draggingTradeLevel,price);
+
+    if(draggingTradeLevel==="entry"){
+
+        openPosition.entry=price;
+
+        const distance=Math.abs(openPosition.entry-openPosition.sl);
+
+        if(distance>0){
+            // Preserve the original monetary risk while moving entry.
+            openPosition.positionSize=
+                dragOriginalRisk/distance;
+        }
+
+    }else if(draggingTradeLevel==="sl"){
+
+        openPosition.sl=price;
+
+        // Preserve position size; monetary risk changes with SL distance.
+        openPosition.riskMoney=
+            Math.abs(openPosition.entry-openPosition.sl)
+            *openPosition.positionSize;
+
+    }else if(draggingTradeLevel==="tp"){
+
+        openPosition.tp=price;
+    }
+
+    syncDraggedTradeToTicket();
+}
+
+function endTradeLevelDrag(){
+
+    if(!draggingTradeLevel) return;
+
+    draggingTradeLevel=null;
+    canvas.classList.remove("dragging-trade-level");
+    document.querySelector(".chart-wrapper")?.classList.remove("trade-drag-ready");
+
+    showTradeDragToast("Trade levels updated");
+    setTimeout(hideTradeDragToast,900);
+}
+
+canvas.addEventListener("mousedown",startTradeLevelDrag);
+window.addEventListener("mousemove",moveTradeLevelDrag);
+window.addEventListener("mouseup",endTradeLevelDrag);
+
+canvas.addEventListener("mousemove",function(e){
+
+    if(draggingTradeLevel || !openPosition || drawTool!=="cursor"){
+        return;
+    }
+
+    const pt=canvasPoint(e);
+    const level=findTradeLevelAtPoint(pt.y);
+
+    if(level){
+        canvas.style.cursor="ns-resize";
+        showTradeDragToast("↕ Drag "+level.toUpperCase());
+    }else{
+        canvas.style.cursor="";
+        hideTradeDragToast();
+    }
+});
+
+canvas.addEventListener("mouseleave",function(){
+    if(!draggingTradeLevel){
+        canvas.style.cursor="";
+        hideTradeDragToast();
+    }
+});
 
 
 /* ===== DRAWING TOOLS ===== */
@@ -1967,16 +2199,27 @@ function drawPriceLine(price,color,label,highestOverride=null,lowestOverride=nul
 
     ctx.strokeStyle=color;
     ctx.setLineDash([6,4]);
+    ctx.lineWidth=1;
     ctx.beginPath();
     ctx.moveTo(42,y);
     ctx.lineTo(width-68,y);
     ctx.stroke();
     ctx.setLineDash([]);
 
+    // Draggable handle at the right side of the chart.
+    ctx.fillStyle=color;
+    ctx.beginPath();
+    ctx.arc(width-78,y,5,0,Math.PI*2);
+    ctx.fill();
+
     ctx.fillStyle=color;
     ctx.font="bold 10px Arial";
     ctx.textAlign="left";
     ctx.fillText(label+" "+price.toFixed(2),48,y-5);
+
+    ctx.font="bold 9px Arial";
+    ctx.textAlign="center";
+    ctx.fillText("↕",width-78,y+3);
 }
 
 /* ------------------------------
@@ -2860,6 +3103,8 @@ function updateHistory() {
 ------------------------------ */
 
 function resetReplay() {
+    draggingTradeLevel=null;
+    hideTradeDragToast();
 
     pauseReplay();
 
