@@ -5,7 +5,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>XAUUSD Backtesting Lab | BFT Trade Lab</title>
+<title>BFT Trade Lab V10.1 - XAUUSD Backtesting Lab | BFT Trade Lab</title>
 
 <meta name="description"
 content="Practice XAUUSD gold trading with historical market replay, candle-by-candle backtesting, stop loss, take profit and trading performance analytics.">
@@ -634,6 +634,25 @@ select {
 .data-btn:hover{border-color:#3b5877;color:#fff}
 @media(max-width:800px){.data-source-bar{height:auto;min-height:40px;flex-wrap:wrap;padding:6px 10px}.data-source-meta{display:none}}
 
+
+/* ===== V10.1 DATA MANAGER ===== */
+.data-manager{display:none;margin:0 12px 10px;border:1px solid #17304a;border-radius:10px;background:#071525;overflow:hidden}
+.data-manager.open{display:block}
+.dm-head{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-bottom:1px solid #17304a}
+.dm-title{font-size:12px;font-weight:800;letter-spacing:.08em;color:#dce8f7}
+.dm-close{border:0;background:transparent;color:#7890aa;font-size:18px;cursor:pointer}
+.dm-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:10px 12px}
+.dm-card{border:1px solid #17304a;border-radius:8px;padding:9px 10px;background:#091a2c}
+.dm-card span{display:block;color:#6f89a5;font-size:10px;text-transform:uppercase;letter-spacing:.05em}
+.dm-card strong{display:block;margin-top:4px;color:#eef6ff;font-size:13px}
+.dm-ok{color:#39e889!important}.dm-warn{color:#ffc857!important}.dm-bad{color:#ff667a!important}
+.dm-preview{max-height:180px;overflow:auto;border-top:1px solid #17304a}
+.dm-preview table{width:100%;border-collapse:collapse;font-size:10px}
+.dm-preview th,.dm-preview td{padding:7px 9px;border-bottom:1px solid #11263d;text-align:right;white-space:nowrap}
+.dm-preview th:first-child,.dm-preview td:first-child{text-align:left}
+.dm-preview th{position:sticky;top:0;background:#0b1c2e;color:#7e98b5}
+.dm-foot{padding:9px 12px;color:#6f89a5;font-size:10px;border-top:1px solid #17304a}
+@media(max-width:800px){.dm-grid{grid-template-columns:repeat(2,1fr)} }
 </style>
 </head>
 
@@ -715,7 +734,24 @@ select {
         <input id="csvFileInput" type="file" accept=".csv,text/csv" hidden onchange="loadHistoricalCSV(event)">
         <button class="data-btn" onclick="document.getElementById('csvFileInput').click()">Load Historical CSV</button>
         <button class="data-btn" onclick="downloadCSVTemplate()">CSV Template</button>
+        <button class="data-btn" onclick="toggleDataManager()">Inspect Data</button>
     </div>
+</div>
+
+<!-- DATA QUALITY / PREVIEW -->
+<div class="data-manager" id="dataManager">
+  <div class="dm-head">
+    <span class="dm-title">HISTORICAL DATA INSPECTOR</span>
+    <button class="dm-close" onclick="toggleDataManager(false)" aria-label="Close">×</button>
+  </div>
+  <div class="dm-grid">
+    <div class="dm-card"><span>Rows</span><strong id="dmRows">—</strong></div>
+    <div class="dm-card"><span>Date Range</span><strong id="dmRange">—</strong></div>
+    <div class="dm-card"><span>Detected Interval</span><strong id="dmInterval">—</strong></div>
+    <div class="dm-card"><span>Data Quality</span><strong id="dmQuality">—</strong></div>
+  </div>
+  <div class="dm-preview"><table><thead><tr><th>Time</th><th>Open</th><th>High</th><th>Low</th><th>Close</th><th>Volume</th></tr></thead><tbody id="dmBody"></tbody></table></div>
+  <div class="dm-foot" id="dmFoot">Load a historical CSV to inspect it.</div>
 </div>
 
 <!-- MAIN -->
@@ -1165,6 +1201,37 @@ function updateDataSourceUI(sourceLabel="BUILT-IN DEMO"){
     if(status) status.innerHTML=sourceLabel.includes("CSV")?"• HISTORICAL CSV":"• SIMULATION MODE";
 }
 
+function toggleDataManager(force){
+    const el=document.getElementById('dataManager');
+    if(!el) return;
+    const open=force===undefined ? !el.classList.contains('open') : !!force;
+    el.classList.toggle('open',open);
+    if(open) updateDataInspector();
+}
+
+function updateDataInspector(){
+    const rows=candles||[];
+    const rowEl=document.getElementById('dmRows'), rangeEl=document.getElementById('dmRange'), intEl=document.getElementById('dmInterval'), qEl=document.getElementById('dmQuality'), body=document.getElementById('dmBody'), foot=document.getElementById('dmFoot');
+    if(!rowEl)return;
+    rowEl.textContent=rows.length?rows.length.toLocaleString():'—';
+    if(!rows.length){rangeEl.textContent='—';intEl.textContent='—';qEl.textContent='No data';qEl.className='dm-bad';body.innerHTML='';foot.textContent='Load a historical CSV to inspect it.';return;}
+    const first=rows[0].time, last=rows[rows.length-1].time;
+    rangeEl.textContent=`${fmtShortDate(first)} → ${fmtShortDate(last)}`;
+    const diffs=[]; for(let i=1;i<rows.length;i++){const d=Math.round((rows[i].time-rows[i-1].time)/60000);if(d>0)diffs.push(d)}
+    const freq={}; diffs.forEach(d=>freq[d]=(freq[d]||0)+1);
+    const interval=Object.keys(freq).length?Number(Object.entries(freq).sort((a,b)=>b[1]-a[1])[0][0]):0;
+    intEl.textContent=interval?`${interval} min`:'—';
+    const gaps=interval?diffs.filter(d=>d!==interval).length:0;
+    const badOHLC=rows.filter(c=>c.high<Math.max(c.open,c.close)||c.low>Math.min(c.open,c.close)||c.high<c.low).length;
+    const qualityIssues=gaps+badOHLC;
+    qEl.textContent=qualityIssues===0?'READY':`${qualityIssues} issue${qualityIssues===1?'':'s'}`;
+    qEl.className=qualityIssues===0?'dm-ok':(qualityIssues<10?'dm-warn':'dm-bad');
+    body.innerHTML=rows.slice(0,12).map(c=>`<tr><td>${fmtShortDate(c.time)}</td><td>${fmtNum(c.open)}</td><td>${fmtNum(c.high)}</td><td>${fmtNum(c.low)}</td><td>${fmtNum(c.close)}</td><td>${Number(c.volume||0).toLocaleString()}</td></tr>`).join('');
+    foot.textContent=`Showing first ${Math.min(12,rows.length)} candles • ${gaps?gaps+' interval gap(s) detected • ':''}${badOHLC?badOHLC+' OHLC validation issue(s) • ':''}Chronological order validated.`;
+}
+function fmtShortDate(d){return new Date(d).toLocaleString('en-IN',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',hour12:false})}
+function fmtNum(v){return Number(v).toLocaleString(undefined,{maximumFractionDigits:5})}
+
 function normalizeDateValue(v){
     if(v===undefined || v===null || v==="") return null;
     let raw=String(v).trim();
@@ -1220,9 +1287,10 @@ function resetForNewData(){
     chartZoom=1; chartPan=0;
     setReplayInputs(currentIndex);
     updateDataSourceUI("HISTORICAL CSV");
+    updateDataInspector();
     updateSessionUI();
     updateDateInfo();
-    drawChart(); updateTerminal();
+    drawChart(); updateTerminal(); updateDataInspector();
 }
 
 function loadHistoricalCSV(event){
