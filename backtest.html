@@ -1083,6 +1083,122 @@ body{
     margin-top:10px;
 }
 
+
+/* ===== V12 TOP REPLAY / CHART-FIRST LAYOUT ===== */
+.topbar{
+    height:48px !important;
+    min-height:48px !important;
+    padding:4px 18px !important;
+}
+.header{
+    height:46px !important;
+    padding:0 18px !important;
+}
+
+/* Replay controls are now the first row, like a professional replay terminal. */
+.replay-bar{
+    height:44px !important;
+    min-height:44px !important;
+    padding:4px 10px !important;
+    gap:6px !important;
+    flex-wrap:nowrap !important;
+    border-top:0 !important;
+    border-bottom:1px solid #1b2b40 !important;
+    overflow:hidden !important;
+}
+.replay-title{
+    font-size:11px !important;
+    font-weight:800 !important;
+    color:#43e37b !important;
+    white-space:nowrap !important;
+}
+.replay-bar label{
+    font-size:9px !important;
+    color:#71839b !important;
+}
+.replay-bar input{
+    height:30px !important;
+    padding:5px 8px !important;
+    font-size:11px !important;
+}
+.replay-bar .tool-btn{
+    padding:6px 10px !important;
+    font-size:10px !important;
+}
+#replayStatus{
+    font-size:10px !important;
+    white-space:nowrap !important;
+    overflow:hidden !important;
+    text-overflow:ellipsis !important;
+}
+
+/* Give the chart back the vertical space previously consumed by replay rows. */
+.chart-wrapper{
+    height:560px !important;
+    min-height:560px !important;
+}
+
+/* Controls moved below chart become a compact terminal strip. */
+.chart-toolbar{
+    height:40px !important;
+    padding:0 10px !important;
+    gap:5px !important;
+    border-top:1px solid #18283b !important;
+}
+.chart-toolbar .tool-btn{
+    padding:6px 9px !important;
+    font-size:10px !important;
+}
+.chart-info{
+    margin-left:auto !important;
+    font-size:9px !important;
+}
+
+/* Drawing tools also stay out of the chart area. */
+.drawing-bar{
+    height:38px !important;
+    padding:0 10px !important;
+    gap:4px !important;
+    border-bottom:1px solid #18283b !important;
+}
+.draw-btn{
+    width:30px !important;
+    height:28px !important;
+    font-size:11px !important;
+}
+
+/* Small status strip instead of another large replay panel. */
+.replay-secondary-note{
+    height:28px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:0 12px;
+    border-bottom:1px solid #1b2b40;
+    background:#091525;
+    font-size:10px;
+    color:#43e37b;
+    text-transform:uppercase;
+    letter-spacing:.5px;
+}
+.replay-secondary-note .muted{
+    color:#687c95;
+    text-transform:none;
+    letter-spacing:0;
+}
+
+/* Make the action sidebar easier to use. */
+.sidebar .panel{
+    padding:12px 16px !important;
+}
+.sidebar .balance{
+    font-size:23px !important;
+}
+.order-buttons button{
+    min-height:48px !important;
+    font-size:13px !important;
+}
+
 </style>
 </head>
 
@@ -1103,6 +1219,34 @@ body{
     </div>
 
 </header>
+
+<!-- TOP REPLAY CONTROLS -->
+<div class="replay-bar">
+    <div class="replay-title">HISTORICAL REPLAY</div>
+
+    <label>
+        Date
+        <input type="date" id="replayDate">
+    </label>
+
+    <label>
+        Time
+        <input type="time" id="replayTime" step="300">
+    </label>
+
+    <button class="tool-btn" onclick="jumpToReplayPoint()">
+        Jump to Replay
+    </button>
+
+    <button class="tool-btn" onclick="startReplayFromSelected()">
+        ▶ Start Replay
+    </button>
+
+    <span id="replayStatus">
+        Choose a historical date/time.
+    </span>
+</div>
+
 
 
 <!-- TOP BAR -->
@@ -1150,7 +1294,18 @@ body{
 
     <section class="chart-area">
 
-        <div class="chart-toolbar">
+        
+
+
+        <div class="chart-wrapper">
+
+
+
+
+<canvas id="chart"></canvas>
+            <div class="chart-status" id="chartStatus">BANKNIFTY • 5 MIN • REAL DATA • DRAG ENTRY / SL / TP</div>
+
+<div class="chart-toolbar">
 
             <button class="tool-btn" onclick="resetReplay()">↻ Reset</button>
             <button class="tool-btn chart-tool active" id="cursorTool" onclick="setChartMode('cursor')" title="Cursor">✦</button>
@@ -1175,37 +1330,6 @@ body{
 
         </div>
 
-
-        <div class="chart-wrapper">
-
-            
-
-<div class="replay-bar">
-    <div class="replay-title">HISTORICAL REPLAY</div>
-
-    <label>
-        Date
-        <input type="date" id="replayDate">
-    </label>
-
-    <label>
-        Time
-        <input type="time" id="replayTime" step="300">
-    </label>
-
-    <button class="tool-btn" onclick="jumpToReplayPoint()">
-        Jump to Replay
-    </button>
-
-    <button class="tool-btn" onclick="startReplayFromSelected()">
-        ▶ Start Replay
-    </button>
-
-    <span id="replayStatus">
-        Choose a historical date/time.
-    </span>
-</div>
-
 <div class="drawing-bar">
     <button class="draw-btn active" id="drawCursor" onclick="setDrawTool('cursor')" title="Cursor">✦</button>
     <button class="draw-btn" id="drawHLine" onclick="setDrawTool('hline')" title="Horizontal line">—</button>
@@ -1219,8 +1343,6 @@ body{
     <span class="drawing-help">Click/drag on chart to draw</span>
 </div>
 
-<canvas id="chart"></canvas>
-            <div class="chart-status" id="chartStatus">BANKNIFTY • 5 MIN • REAL DATA • DRAG ENTRY / SL / TP</div>
 <div class="floating-position" id="floatingPosition">
     <div class="fp-head">
         <span id="fpTitle">● BUY BANKNIFTY</span>
