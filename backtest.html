@@ -522,6 +522,8 @@ select {
     line-height:1;
 }
 
+/* PENDING ORDER UI */
+.order-mode{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:9px}.order-mode button{background:#0d1c2e;color:#8fa0b7;border:1px solid #263a53;border-radius:7px;padding:7px 5px;font-size:11px;font-weight:700;cursor:pointer}.order-mode button.active{background:#17324d;color:#eaf2fc;border-color:#3c648c}.pending-types{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:0 0 8px}.pending-types button{background:#0d1c2e;color:#8295ad;border:1px solid #22374f;border-radius:6px;padding:6px 3px;font-size:10px;cursor:pointer}.pending-types button.active{background:#163a2a;color:#4be985;border-color:#2c8450}.pending-card{background:#0d1c2e;border:1px solid #263a53;border-radius:8px;padding:10px}.pending-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px}.pending-head strong{font-size:11px;color:#eaf2fc}.pending-cancel{background:#2c2025;color:#ff8794;border:1px solid #693945;border-radius:5px;padding:4px 7px;font-size:10px;cursor:pointer}.pending-line{display:flex;justify-content:space-between;font-size:11px;padding:2px 0;color:#8295ad}.pending-line b{color:#eaf2fc}
 /* MOBILE */
 
 @media(max-width: 900px) {
@@ -784,8 +786,8 @@ select {
             <div class="panel-title">
                 Order Panel
             </div>
-
-
+            <div class="order-mode"><button id="marketModeBtn" class="active" onclick="setOrderMode('MARKET')">Market</button><button id="pendingModeBtn" onclick="setOrderMode('PENDING')">Pending</button></div>
+            <div id="pendingTypes" class="pending-types" style="display:none;"><button id="buyLimitBtn" class="active" onclick="setPendingType('BUY LIMIT')">Buy Limit</button><button id="sellLimitBtn" onclick="setPendingType('SELL LIMIT')">Sell Limit</button><button id="buyStopBtn" onclick="setPendingType('BUY STOP')">Buy Stop</button><button id="sellStopBtn" onclick="setPendingType('SELL STOP')">Sell Stop</button></div>
             <div class="order-row">
 
                 <div class="field">
@@ -834,11 +836,10 @@ select {
 
             <div class="order-buttons">
 
-                <button class="buy" onclick="openTrade('BUY')">
+                <button id="buyOrderBtn" class="buy" onclick="submitOrder('BUY')">
                     BUY
                 </button>
-
-                <button class="sell" onclick="openTrade('SELL')">
+                <button id="sellOrderBtn" class="sell" onclick="submitOrder('SELL')">
                     SELL
                 </button>
 
@@ -866,6 +867,7 @@ select {
         </div>
 
 
+        <div class="panel" id="pendingPanel" style="display:none;"><div class="panel-title">Pending Order</div><div id="pendingArea"></div></div>
         <!-- TRADE HISTORY -->
 
         <div class="panel">
@@ -923,6 +925,9 @@ let balance = 10000;
 let startingBalance = 10000;
 
 let openPosition = null;
+let pendingOrder = null;
+let orderMode = "MARKET";
+let pendingType = "BUY LIMIT";
 
 let dragLevel = null;
 
@@ -1356,6 +1361,10 @@ function drawChart() {
         );
     }
 
+    if (pendingOrder) {
+        drawPriceLine(pendingOrder.entry, "#f6b94a", pendingOrder.type);
+    }
+
 }
 
 
@@ -1418,12 +1427,10 @@ function getPointerY(event) {
 }
 
 function getNearestTradeLevel(y) {
-    if (!openPosition) return null;
-    const levels = [
-        { key: "entry", label: "entry", price: openPosition.entry },
-        { key: "sl", label: "sl", price: openPosition.sl },
-        { key: "tp", label: "tp", price: openPosition.tp }
-    ];
+    const levels = [];
+    if (openPosition) { levels.push({key:"entry",label:"entry",price:openPosition.entry},{key:"sl",label:"sl",price:openPosition.sl},{key:"tp",label:"tp",price:openPosition.tp}); }
+    if (pendingOrder) levels.push({key:"pending",label:"pending",price:pendingOrder.entry});
+    if (!levels.length) return null;
     let nearest = null;
     let best = 10; // pixels
     for (const level of levels) {
@@ -1438,7 +1445,7 @@ function getNearestTradeLevel(y) {
 }
 
 canvas.addEventListener("pointerdown", function(event) {
-    if (!openPosition) return;
+    if (!openPosition && !pendingOrder) return;
     const nearest = getNearestTradeLevel(getPointerY(event));
     if (!nearest) return;
     dragLevel = nearest.label;
@@ -1778,6 +1785,19 @@ function manualCloseTrade() {
 }
 
 /* ------------------------------
+   ORDER MODE / PENDING ORDERS
+------------------------------ */
+function setOrderMode(mode){orderMode=mode;document.getElementById("marketModeBtn").classList.toggle("active",mode==="MARKET");document.getElementById("pendingModeBtn").classList.toggle("active",mode==="PENDING");document.getElementById("pendingTypes").style.display=mode==="PENDING"?"grid":"none";document.getElementById("entry").placeholder=mode==="PENDING"?"Pending Price":"Auto";updateOrderButtons();updateTradePreview();}
+function setPendingType(type){pendingType=type;["buyLimitBtn","sellLimitBtn","buyStopBtn","sellStopBtn"].forEach(id=>document.getElementById(id).classList.remove("active"));const map={"BUY LIMIT":"buyLimitBtn","SELL LIMIT":"sellLimitBtn","BUY STOP":"buyStopBtn","SELL STOP":"sellStopBtn"};document.getElementById(map[type]).classList.add("active");updateOrderButtons();updateTradePreview();}
+function updateOrderButtons(){const b=document.getElementById("buyOrderBtn"),s=document.getElementById("sellOrderBtn");if(orderMode==="MARKET"){b.textContent="BUY";s.textContent="SELL";}else{b.textContent=pendingType.startsWith("BUY")?"PLACE BUY":"BUY";s.textContent=pendingType.startsWith("SELL")?"PLACE SELL":"SELL";}}
+function submitOrder(direction){if(orderMode==="PENDING"){const expected=pendingType.startsWith("BUY")?"BUY":"SELL";if(direction!==expected){showTradeMessage(`Select ${expected} pending order type first.`,'error');return;}placePendingOrder();}else openTrade(direction);}
+function placePendingOrder(){if(openPosition){showTradeMessage("Close the open position before placing a pending order.","error");return;}if(pendingOrder){showTradeMessage("A pending order already exists. Cancel it first.","error");return;}const c=candles[currentIndex],entry=parseFloat(document.getElementById("entry").value),sl=parseFloat(document.getElementById("sl").value),tp=parseFloat(document.getElementById("tp").value),riskPercent=parseFloat(document.getElementById("risk").value)||1,market=c.close,direction=pendingType.startsWith("BUY")?"BUY":"SELL";if(!Number.isFinite(entry)||!Number.isFinite(sl)||!Number.isFinite(tp)){showTradeMessage("Enter pending price, Stop Loss and Take Profit.","error");return;}if(direction==="BUY"&&(sl>=entry||tp<=entry)){showTradeMessage("For BUY: SL must be below Entry and TP above Entry.","error");return;}if(direction==="SELL"&&(sl<=entry||tp>=entry)){showTradeMessage("For SELL: SL must be above Entry and TP below Entry.","error");return;}if(pendingType==="BUY LIMIT"&&entry>=market){showTradeMessage("Buy Limit must be below current price.","error");return;}if(pendingType==="BUY STOP"&&entry<=market){showTradeMessage("Buy Stop must be above current price.","error");return;}if(pendingType==="SELL LIMIT"&&entry<=market){showTradeMessage("Sell Limit must be above current price.","error");return;}if(pendingType==="SELL STOP"&&entry>=market){showTradeMessage("Sell Stop must be below current price.","error");return;}pendingOrder={type:pendingType,direction,entry,sl,tp,riskPercent,createdTime:c.time};updatePendingArea();showTradeMessage(`${pendingType} placed at ${entry.toFixed(2)}.` ,"success");drawChart();}
+function cancelPendingOrder(){pendingOrder=null;updatePendingArea();showTradeMessage("Pending order cancelled.","success");drawChart();}
+function updatePendingArea(){const panel=document.getElementById("pendingPanel"),area=document.getElementById("pendingArea");if(!pendingOrder){panel.style.display="none";area.innerHTML="";return;}panel.style.display="block";area.innerHTML=`<div class="pending-card"><div class="pending-head"><strong>${pendingOrder.type} XAUUSD</strong><button class="pending-cancel" onclick="cancelPendingOrder()">Cancel</button></div><div class="pending-line"><span>Entry</span><b>${pendingOrder.entry.toFixed(2)}</b></div><div class="pending-line"><span>Stop Loss</span><b>${pendingOrder.sl.toFixed(2)}</b></div><div class="pending-line"><span>Take Profit</span><b>${pendingOrder.tp.toFixed(2)}</b></div><div class="pending-line"><span>Status</span><b style="color:#f6b94a">Waiting</b></div></div>`;}
+function checkPendingOrder(){if(!pendingOrder||openPosition)return;const c=candles[currentIndex];if(!c)return;let hit=false;if(pendingOrder.type==="BUY LIMIT"||pendingOrder.type==="SELL STOP")hit=c.low<=pendingOrder.entry;else hit=c.high>=pendingOrder.entry;if(!hit)return;const p=pendingOrder;pendingOrder=null;updatePendingArea();activatePendingTrade(p);}
+function activatePendingTrade(p){const riskMoney=balance*(p.riskPercent/100),distance=Math.abs(p.entry-p.sl);if(distance<=0)return;openPosition={direction:p.direction,entry:p.entry,sl:p.sl,tp:p.tp,riskMoney,positionSize:riskMoney/distance,openTime:candles[currentIndex].time};document.getElementById("entry").value=p.entry.toFixed(2);document.getElementById("sl").value=p.sl.toFixed(2);document.getElementById("tp").value=p.tp.toFixed(2);showTradeMessage(`${p.type} triggered at ${p.entry.toFixed(2)}. Position opened.` ,"success");updateTradePreview();updatePosition();drawChart();}
+
+/* ------------------------------
    OPEN TRADE
 ------------------------------ */
 
@@ -1945,7 +1965,7 @@ function openTrade(
 ------------------------------ */
 
 function checkOpenPosition() {
-
+    checkPendingOrder();
     if (!openPosition) {
         return;
     }
@@ -2468,6 +2488,8 @@ function resetReplay() {
 
     openPosition =
         null;
+    pendingOrder = null;
+    updatePendingArea();
 
 
     trades = [];
@@ -2562,6 +2584,8 @@ updateStats();
 updateHistory();
 
 updatePosition();
+updatePendingArea();
+updateOrderButtons();
 updateTradePreview();
 drawChart();
 
