@@ -760,6 +760,13 @@ select {
 <style id="v13-session-style">
 .v13-session{margin:14px 0 0;background:#0b1626;border:1px solid #1d3048;border-radius:10px;padding:12px;color:#dce7f4}.v13-head{display:flex;align-items:center;justify-content:space-between;gap:10px}.v13-head h3{margin:0;font-size:14px}.v13-actions{display:flex;gap:7px;flex-wrap:wrap}.v13-btn{border:1px solid #29415d;background:#102238;color:#dce7f4;border-radius:7px;padding:7px 10px;font-size:11px;font-weight:700;cursor:pointer}.v13-btn.primary{background:#173a5e;border-color:#2d70a8}.v13-btn.danger{border-color:#63313a;color:#ffb5bd}.v13-meta{font-size:10px;color:#7f92a8;margin:7px 0 10px}.v13-list{display:grid;gap:7px}.v13-row{display:grid;grid-template-columns:minmax(180px,1.5fr) repeat(4,minmax(70px,.6fr)) auto;gap:8px;align-items:center;background:#0e1d30;border:1px solid #1b3047;border-radius:7px;padding:8px}.v13-row strong{font-size:11px}.v13-row span{font-size:10px;color:#91a4b9}.v13-empty{padding:16px;text-align:center;color:#71849b;font-size:11px}.v13-modal{position:fixed;inset:0;background:rgba(0,0,0,.62);display:none;align-items:center;justify-content:center;z-index:9999}.v13-modal.open{display:flex}.v13-card{width:min(560px,92vw);background:#0b1728;border:1px solid #2a405a;border-radius:12px;padding:16px;box-shadow:0 20px 70px rgba(0,0,0,.5)}.v13-card h3{margin:0 0 12px}.v13-field{margin:9px 0}.v13-field label{display:block;font-size:10px;color:#8296ad;margin-bottom:5px}.v13-field input{width:100%;box-sizing:border-box;background:#07111f;border:1px solid #263c55;color:#eaf2fb;border-radius:7px;padding:9px;font-size:12px}.v13-note{font-size:10px;color:#71849b;line-height:1.45;margin-top:10px}@media(max-width:900px){.v13-row{grid-template-columns:1fr 1fr}.v13-row .v13-name{grid-column:1/-1}}
 </style>
+
+<style id="v14-mtf-style">
+.v14-mtf{margin:14px 0 0;background:#0a1524;border:1px solid #1d3048;border-radius:10px;padding:14px;color:#dce7f4}
+.v14-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:11px}.v14-kicker{font-size:10px;font-weight:800;letter-spacing:1.2px;color:#39df82}.v14-head h2{font-size:18px;margin:3px 0}.v14-head p{font-size:11px;color:#71859c}.v14-controls{display:flex;align-items:center;gap:7px;flex-wrap:wrap}.v14-controls label{font-size:10px;color:#71859c}.v14-select{background:#0e1d30;border:1px solid #29415d;color:#e8f1fa;border-radius:7px;padding:7px 9px;font-size:11px}.v14-sync{font-size:10px;color:#86a0ba;padding:7px 9px;border:1px solid #1c334c;border-radius:7px;background:#0d1b2c}.v14-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}.v14-card{background:#0d1c2e;border:1px solid #1d344d;border-radius:8px;padding:10px;min-width:0}.v14-card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px}.v14-card-head strong{font-size:12px}.v14-card-head span{font-size:9px;color:#71859c}.v14-chart{display:block;width:100%;height:118px;background:#081321;border:1px solid #182d43;border-radius:6px}.v14-stats{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:7px}.v14-stat{background:#091626;border:1px solid #172c43;border-radius:5px;padding:6px}.v14-stat span{display:block;font-size:8px;color:#70859d;text-transform:uppercase}.v14-stat b{display:block;font-size:10px;margin-top:2px}.v14-bull{color:#39df82}.v14-bear{color:#ff6675}.v14-range{color:#f1c75b}.v14-muted{color:#71859c}.v14-foot{font-size:9px;color:#637a93;margin-top:9px}.v14-note{padding:8px 10px;border:1px dashed #29425c;border-radius:7px;background:#091625;color:#7890aa;font-size:10px;margin-top:9px}
+@media(max-width:1050px){.v14-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:650px){.v14-grid{grid-template-columns:1fr}}
+</style>
+
 </head>
 
 
@@ -1225,6 +1232,33 @@ select {
     <div class="strategy-note" id="v12Insight">No trades yet. Complete a few backtest trades to unlock strategy diagnostics.</div>
   </div>
   <div id="strategySetupsTab" class="hidden"></div><div id="strategyTimingTab" class="hidden"></div><div id="strategyRTab" class="hidden"></div>
+</section>
+
+
+<!-- V14 MULTI-TIMEFRAME CONTEXT -->
+<section class="v14-mtf" id="mtfAnalysis">
+  <div class="v14-head">
+    <div>
+      <div class="v14-kicker">V14 • MULTI-TIMEFRAME</div>
+      <h2>Multi-Timeframe Market Context</h2>
+      <p>Higher-timeframe context stays synchronized with the current replay candle — no future candles are used.</p>
+    </div>
+    <div class="v14-controls">
+      <label for="v14EntryTf">ENTRY TIMEFRAME</label>
+      <select id="v14EntryTf" class="v14-select" onchange="updateV14MTF()">
+        <option value="5">M5</option><option value="15">M15</option><option value="30">M30</option><option value="60">H1</option>
+      </select>
+      <span class="v14-sync" id="v14SyncStatus">Replay time: —</span>
+    </div>
+  </div>
+  <div class="v14-grid">
+    <div class="v14-card"><div class="v14-card-head"><strong>H4</strong><span>Higher trend</span></div><canvas id="mtfH4" class="v14-chart"></canvas><div class="v14-stats"><div class="v14-stat"><span>Trend</span><b id="mtfH4Trend">—</b></div><div class="v14-stat"><span>Last Close</span><b id="mtfH4Close">—</b></div></div></div>
+    <div class="v14-card"><div class="v14-card-head"><strong>H1</strong><span>Primary context</span></div><canvas id="mtfH1" class="v14-chart"></canvas><div class="v14-stats"><div class="v14-stat"><span>Trend</span><b id="mtfH1Trend">—</b></div><div class="v14-stat"><span>Last Close</span><b id="mtfH1Close">—</b></div></div></div>
+    <div class="v14-card"><div class="v14-card-head"><strong>M15</strong><span>Setup context</span></div><canvas id="mtfM15" class="v14-chart"></canvas><div class="v14-stats"><div class="v14-stat"><span>Trend</span><b id="mtfM15Trend">—</b></div><div class="v14-stat"><span>Last Close</span><b id="mtfM15Close">—</b></div></div></div>
+    <div class="v14-card"><div class="v14-card-head"><strong id="mtfEntryTitle">M5</strong><span>Entry timeframe</span></div><canvas id="mtfEntry" class="v14-chart"></canvas><div class="v14-stats"><div class="v14-stat"><span>Trend</span><b id="mtfEntryTrend">—</b></div><div class="v14-stat"><span>Last Close</span><b id="mtfEntryClose">—</b></div></div></div>
+  </div>
+  <div class="v14-foot" id="mtfFoot">Load historical data to calculate synchronized multi-timeframe context.</div>
+  <div class="v14-note">Replay-safe rule: each timeframe is built only from candles whose timestamp is at or before the current replay time. Higher-timeframe candles may be partial while the replay is inside that candle.</div>
 </section>
 
 <!-- V11 JOURNAL MODAL -->
@@ -2930,6 +2964,39 @@ function v12ScoreData(){const n=trades.length;if(!n)return {score:0};const win=t
 function updateV12StrategyAnalytics(){const n=trades.length,setupGroups=v12Group(trades,t=>t.journal?.setup||'Unspecified'),condGroups=v12Group(trades,t=>t.journal?.condition||'Unspecified'),hourGroups=v12Group(trades,t=>String(v12Hour(t))),dayGroups=v12Group(trades,t=>v12Day(t)),dirGroups=v12Group(trades,t=>t.direction),avgR=n?trades.reduce((a,t)=>a+v12R(t),0)/n:0,exp=n?trades.reduce((a,t)=>a+t.pnl,0)/n:0,setupRank=v12SortedGroups(setupGroups),hourRank=v12SortedGroups(hourGroups),bestSetup=setupRank.find(x=>x.name!=='Unspecified')||setupRank[0],bestHour=hourRank[0],score=v12ScoreData();const set=(id,val)=>{const e=document.getElementById(id);if(e)e.textContent=val};set('v12Expectancy',n?(exp>=0?'+':'')+v12Money(exp):'—');set('v12AvgR',n?(avgR>=0?'+':'')+avgR.toFixed(2)+'R':'—');set('v12BestSetup',bestSetup?bestSetup.name:'—');set('v12BestHour',bestHour?String(bestHour.name).padStart(2,'0')+':00':'—');set('v12Score',n?score.score+'/100':'—');const dirRows=['BUY','SELL'].map(k=>{const st=v12GroupStats(dirGroups[k]||[]);return `<tr><td>${k}</td><td>${st.n}</td><td>${st.win.toFixed(1)}%</td><td>${st.pf===null?'—':st.pf.toFixed(2)}</td><td class="${st.avgR>=0?'positive':'negative'}">${st.avgR>=0?'+':''}${st.avgR.toFixed(2)}R</td><td class="${st.net>=0?'positive':'negative'}">${st.net>=0?'+':''}${v12Money(st.net)}</td></tr>`});document.getElementById('v12DirectionTable').innerHTML=v12Table(dirRows,['Side','Trades','Win Rate','PF','Avg R','Net P&L']);v12Bars('v12ConditionBars',condGroups);v12Bars('v12HourBars',hourGroups);const scoreEl=document.getElementById('v12ScorePanel');if(!n)scoreEl.innerHTML='<div class="strategy-empty">Complete trades to calculate the strategy score.</div>';else{const deg=score.score*3.6;scoreEl.innerHTML=`<div class="score-wrap"><div class="score-ring" style="background:conic-gradient(#39df82 ${deg}deg,#102338 ${deg}deg)"><b>${score.score}</b></div><div class="score-copy"><strong>${score.score>=75?'Strong':'Needs more evidence'}</strong><p>Diagnostic only — not a trading signal.</p></div></div>`}let insight;if(!n)insight='No trades yet. Complete a few backtest trades to unlock strategy diagnostics.';else if(n<20)insight=`You have ${n} closed trades. Treat these results as an early sample; collect more trades before trusting a setup or time-of-day edge.`;else{const weak=setupRank.filter(x=>x.name!=='Unspecified').at(-1);insight=`Current expectancy is ${exp>=0?'+':''}${v12Money(exp)} per trade and average R is ${avgR>=0?'+':''}${avgR.toFixed(2)}R. ${bestSetup?`Best setup: ${bestSetup.name}.`:''} ${weak&&weak!==bestSetup?`Lowest setup result: ${weak.name}.`:''}`}document.getElementById('v12Insight').textContent=insight;v12BuildSetupTab(setupGroups);v12BuildTimingTab(dayGroups,hourGroups);v12BuildRTab();}
 function showStrategyTab(tab,btn){document.querySelectorAll('#strategyAnalytics .strategy-btn').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active');['overview','setups','timing','r'].forEach(x=>{const id='strategy'+(x==='overview'?'Overview':x==='setups'?'Setups':x==='timing'?'Timing':'R')+'Tab';document.getElementById(id)?.classList.toggle('hidden',x!==tab);});}
 
+
+
+/* ==============================
+   V14 MULTI-TIMEFRAME CONTEXT
+================================ */
+function v14BaseMinutes(){
+  if(!candles || candles.length<2) return Number(document.getElementById('timeframe')?.value||5);
+  const diffs=[]; for(let i=1;i<Math.min(candles.length,300);i++){const d=(new Date(candles[i].time)-new Date(candles[i-1].time))/60000;if(d>0)diffs.push(d);}
+  if(!diffs.length)return 5; diffs.sort((a,b)=>a-b); return Math.max(1,Math.round(diffs[Math.floor(diffs.length/2)]));
+}
+function v14Aggregate(minutes, untilTime){
+  const base=v14BaseMinutes(); if(minutes<base)return [];
+  const end=new Date(untilTime||candles[currentIndex]?.time||0).getTime();
+  const src=candles.filter(c=>new Date(c.time).getTime()<=end); if(!src.length)return [];
+  const out=[]; const bucketMs=minutes*60000; let cur=null;
+  src.forEach(c=>{const ts=new Date(c.time).getTime();const key=Math.floor(ts/bucketMs)*bucketMs;if(!cur||cur.key!==key){if(cur)out.push(cur.bar);cur={key,bar:{time:new Date(key),open:c.open,high:c.high,low:c.low,close:c.close,volume:c.volume||0}}}else{cur.bar.high=Math.max(cur.bar.high,c.high);cur.bar.low=Math.min(cur.bar.low,c.low);cur.bar.close=c.close;cur.bar.volume+=(c.volume||0);}});if(cur)out.push(cur.bar);return out;
+}
+function v14EMA(vals,period){if(!vals.length)return null;const p=Math.min(period,vals.length);let ema=vals.slice(0,p).reduce((a,b)=>a+b,0)/p;const k=2/(period+1);for(let i=p;i<vals.length;i++)ema=vals[i]*k+ema*(1-k);return ema;}
+function v14Trend(data){if(data.length<3)return {label:'Insufficient',cls:'v14-muted'};const closes=data.map(x=>x.close),fast=v14EMA(closes,8),slow=v14EMA(closes,21),last=closes.at(-1),look=Math.min(6,closes.length-1),slope=last-closes[closes.length-1-look];if(fast>slow&&slope>0)return {label:'Bullish',cls:'v14-bull'};if(fast<slow&&slope<0)return {label:'Bearish',cls:'v14-bear'};return {label:'Range',cls:'v14-range'};}
+function v14Draw(canvasId,data){const canvas=document.getElementById(canvasId);if(!canvas)return;const dpr=window.devicePixelRatio||1,w=Math.max(180,canvas.clientWidth||260),h=118;canvas.width=w*dpr;canvas.height=h*dpr;const ctx=canvas.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,w,h);ctx.fillStyle='#081321';ctx.fillRect(0,0,w,h);ctx.strokeStyle='rgba(255,255,255,.045)';for(let y=20;y<h;y+=25){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(w,y);ctx.stroke();}if(!data.length){ctx.fillStyle='#637a93';ctx.font='10px Arial';ctx.fillText('No synchronized data',10,58);return;}const vis=data.slice(-28),hi=Math.max(...vis.map(x=>x.high)),lo=Math.min(...vis.map(x=>x.low)),range=hi-lo||1,left=7,step=(w-14)/vis.length,cw=Math.max(2,step*.58);const py=p=>8+(hi-p)/range*(h-20);vis.forEach((c,i)=>{const x=left+i*step+step/2,yo=py(c.open),yc=py(c.close),yh=py(c.high),yl=py(c.low),up=c.close>=c.open;ctx.strokeStyle=up?'#39df82':'#ff6675';ctx.fillStyle=up?'#39df82':'#ff6675';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(x,yh);ctx.lineTo(x,yl);ctx.stroke();const top=Math.min(yo,yc),bh=Math.max(2,Math.abs(yc-yo));ctx.fillRect(x-cw/2,top,cw,bh);});}
+function v14UpdateCard(tf,canvasId,trendId,closeId){const data=v14Aggregate(tf);v14Draw(canvasId,data);const trend=v14Trend(data),te=document.getElementById(trendId),ce=document.getElementById(closeId);if(te){te.textContent=trend.label;te.className=trend.cls}if(ce)ce.textContent=data.length?Number(data.at(-1).close).toFixed(2):'—';return data;}
+function updateV14MTF(){
+  const base=v14BaseMinutes(), entry=Number(document.getElementById('v14EntryTf')?.value||5), cur=candles[currentIndex]?.time;
+  const sync=document.getElementById('v14SyncStatus'),foot=document.getElementById('mtfFoot');
+  if(!cur||!candles.length){if(sync)sync.textContent='Replay time: —';return;}
+  if(sync)sync.textContent='Replay time: '+formatDate(cur);
+  const entryTitle=document.getElementById('mtfEntryTitle');if(entryTitle)entryTitle.textContent=entry>=60?`H${entry/60}`:`M${entry}`;
+  if(entry<base){['mtfEntryTrend','mtfEntryClose'].forEach(id=>{const e=document.getElementById(id);if(e){e.textContent='Unavailable';e.className='v14-muted'}});v14Draw('mtfEntry',[]);}else v14UpdateCard(entry,'mtfEntry','mtfEntryTrend','mtfEntryClose');
+  v14UpdateCard(240,'mtfH4','mtfH4Trend','mtfH4Close');v14UpdateCard(60,'mtfH1','mtfH1Trend','mtfH1Close');v14UpdateCard(15,'mtfM15','mtfM15Trend','mtfM15Close');
+  if(foot)foot.textContent=`Base data: ${base}-minute • Synchronized through ${formatDate(cur)} • Context candles available only up to the current replay point.`;
+}
+window.addEventListener('resize',()=>{if(typeof updateV14MTF==='function')updateV14MTF()});
+
 /* ------------------------------
    RESET
 ------------------------------ */
@@ -3115,7 +3182,7 @@ function v13CurrentState(){return {
   currentIndex,sessionStartIndex,sessionEndIndex,sessionActive,sessionStatus,
   startingBalance,balance,totalProfit,totalLoss,wins,losses,nextPositionId,selectedPositionId,
   openPositions:JSON.parse(JSON.stringify(openPositions)),pendingOrder:pendingOrder?JSON.parse(JSON.stringify(pendingOrder)):null,
-  trades:JSON.parse(JSON.stringify(trades)),journalTradeId,chartZoom,chartPan,
+  trades:JSON.parse(JSON.stringify(trades)),journalTradeId,chartZoom,chartPan,mtfEntryTf:document.getElementById('v14EntryTf')?.value||'5',
   savedAt:new Date().toISOString()
 };}
 async function v13SaveSession(){
@@ -3145,7 +3212,7 @@ async function v13Resume(id){
   const st=item.state||{};
   v13DatasetId=item.datasetId||v13DatasetKey();
   currentIndex=Math.min(st.currentIndex??100,candles.length-1);sessionStartIndex=Math.max(0,Math.min(st.sessionStartIndex??currentIndex,candles.length-1));sessionEndIndex=Math.max(sessionStartIndex,Math.min(st.sessionEndIndex??candles.length-1,candles.length-1));
-  sessionActive=!!st.sessionActive;sessionStatus=st.sessionStatus||'READY';startingBalance=Number(st.startingBalance)||10000;balance=Number(st.balance);totalProfit=Number(st.totalProfit)||0;totalLoss=Number(st.totalLoss)||0;wins=Number(st.wins)||0;losses=Number(st.losses)||0;nextPositionId=Number(st.nextPositionId)||1;selectedPositionId=st.selectedPositionId??null;journalTradeId=st.journalTradeId??null;chartZoom=Number(st.chartZoom)||1;chartPan=Number(st.chartPan)||0;
+  sessionActive=!!st.sessionActive;sessionStatus=st.sessionStatus||'READY';startingBalance=Number(st.startingBalance)||10000;balance=Number(st.balance);totalProfit=Number(st.totalProfit)||0;totalLoss=Number(st.totalLoss)||0;wins=Number(st.wins)||0;losses=Number(st.losses)||0;nextPositionId=Number(st.nextPositionId)||1;selectedPositionId=st.selectedPositionId??null;journalTradeId=st.journalTradeId??null;chartZoom=Number(st.chartZoom)||1;chartPan=Number(st.chartPan)||0; if(document.getElementById('v14EntryTf')&&st.mtfEntryTf)document.getElementById('v14EntryTf').value=String(st.mtfEntryTf);
   openPositions=Array.isArray(st.openPositions)?st.openPositions:[];pendingOrder=st.pendingOrder||null;trades=Array.isArray(st.trades)?st.trades:[];
   updateDataSourceUI('HISTORICAL CSV');updateDataInspector();updatePendingArea();updateStats();updateAnalytics();updateHistory();updatePosition();updateTradePreview();setReplayInputs(currentIndex);updateSessionUI();updateDateInfo();drawChart();updateTerminal();
   showTradeMessage(`Session “${item.name}” resumed.`,'success');
@@ -3179,6 +3246,19 @@ window.loadHistoricalCSV=async function(event){
 document.getElementById('v13SaveModal')?.addEventListener('click',e=>{if(e.target.id==='v13SaveModal')v13CloseSave();});
 
 setTimeout(()=>{v13DatasetId=v13DatasetKey();v13RefreshSessions();},250);
+
+
+
+/* V14 hooks: refresh synchronized context after replay/data updates. */
+const v14OriginalDrawChart = window.drawChart;
+if(typeof v14OriginalDrawChart==='function'){
+  window.drawChart=function(){v14OriginalDrawChart.apply(this,arguments);try{updateV14MTF()}catch(e){}};
+}
+const v14OriginalResetReplay = window.resetReplay;
+if(typeof v14OriginalResetReplay==='function'){
+  window.resetReplay=function(){const r=v14OriginalResetReplay.apply(this,arguments);setTimeout(updateV14MTF,0);return r;};
+}
+setTimeout(()=>{try{updateV14MTF()}catch(e){}},350);
 
 </script>
 
