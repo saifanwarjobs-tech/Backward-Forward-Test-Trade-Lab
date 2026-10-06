@@ -270,6 +270,20 @@ select {
     border-color: #2c8450;
 }
 
+/* BACKTEST SESSION */
+.session-bar{min-height:48px;background:#081526;border-bottom:1px solid #1b2b40;display:flex;align-items:center;gap:8px;padding:7px 12px;flex-wrap:wrap}
+.session-label{font-size:10px;font-weight:800;letter-spacing:.8px;color:#43e37b;text-transform:uppercase;margin-right:2px}
+.session-field{height:32px;background:#0d1c2e;color:#eaf2fc;border:1px solid #263a53;border-radius:6px;padding:5px 8px;font-size:12px}
+.session-btn{height:32px;background:#102239;color:#dce7f5;border:1px solid #2a405a;border-radius:6px;padding:0 10px;font-size:11px;font-weight:700;cursor:pointer}
+.session-btn:hover{background:#17304b}
+.session-btn.primary{background:#123d28;border-color:#237347;color:#4be985}
+.session-btn.danger{background:#3d1d25;border-color:#713441;color:#ff7b88}
+.session-status{margin-left:auto;display:flex;align-items:center;gap:7px;color:#7f91aa;font-size:11px}
+.session-dot{width:7px;height:7px;border-radius:50%;background:#6b7b90}.session-dot.running{background:#43e37b;box-shadow:0 0 8px rgba(67,227,123,.5)}.session-dot.paused{background:#f0c75e}.session-dot.done{background:#7f91aa}
+.session-progress{width:90px;height:4px;background:#17283d;border-radius:10px;overflow:hidden}.session-progress span{display:block;height:100%;width:0;background:#43e37b;transition:width .15s}
+.session-meta{font-size:10px;color:#71839b}
+@media(max-width:900px){.session-status{width:100%;margin-left:0}.session-bar{padding-bottom:8px}}
+
 /* SIDEBAR */
 
 .sidebar {
@@ -607,6 +621,19 @@ select {
 .analytics-trades{border:1px solid #1d344c;background:#08192a;border-radius:9px;overflow:auto}.analytics-trades table{width:100%;border-collapse:collapse;font-size:11px}.analytics-trades th,.analytics-trades td{padding:11px 12px;border-bottom:1px solid #1d344c;text-align:left;white-space:nowrap}.analytics-trades th{color:#71869e;font-weight:600}.analytics-trades td{color:#d8e2ef}.analytics-trades .win{color:#39e67b}.analytics-trades .loss{color:#ff5f73}
 @media(max-width:900px){.metric-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.analytics-two-col{grid-template-columns:1fr}.analytics-head{align-items:flex-start;flex-direction:column}}
 @media(max-width:560px){.analytics-section{padding:22px 12px 35px}.metric-grid{grid-template-columns:1fr 1fr}.metric-card strong{font-size:15px}.equity-wrap{height:190px}}
+
+
+/* DATA SOURCE */
+.data-source-bar{height:40px;background:#081423;border-bottom:1px solid #17283d;display:flex;align-items:center;justify-content:space-between;padding:0 14px;gap:12px}
+.data-source-left{display:flex;align-items:center;gap:9px;min-width:0}
+.data-source-title{font-size:10px;letter-spacing:.14em;color:#7890ab;font-weight:700}
+.data-source-badge{font-size:10px;font-weight:700;color:#42e980;background:#09281b;border:1px solid #175f3a;border-radius:999px;padding:4px 8px;white-space:nowrap}
+.data-source-meta{font-size:10px;color:#6d829c;white-space:nowrap}
+.data-source-actions{display:flex;gap:7px}
+.data-btn{height:27px;padding:0 10px;border:1px solid #263c55;background:#0c1b2d;color:#a9bdd4;border-radius:6px;font-size:10px;cursor:pointer}
+.data-btn:hover{border-color:#3b5877;color:#fff}
+@media(max-width:800px){.data-source-bar{height:auto;min-height:40px;flex-wrap:wrap;padding:6px 10px}.data-source-meta{display:none}}
+
 </style>
 </head>
 
@@ -664,6 +691,32 @@ select {
 
 </div>
 
+
+<!-- BACKTEST SESSION BAR -->
+<div class="session-bar">
+    <span class="session-label">Replay</span>
+    <input id="replayDate" class="session-field" type="date" aria-label="Replay date">
+    <input id="replayTime" class="session-field" type="time" step="300" aria-label="Replay time">
+    <button class="session-btn" onclick="jumpToReplay()">Jump to Replay</button>
+    <button class="session-btn primary" id="startSessionBtn" onclick="beginBacktestSession()">▶ Start Replay</button>
+    <button class="session-btn danger" onclick="finishBacktestSession()">Finish Session</button>
+    <span class="session-meta" id="sessionRange">09:00–08:55</span>
+    <span class="session-status"><i class="session-dot" id="sessionDot"></i><span id="sessionStatus">READY</span><span class="session-progress"><span id="sessionProgress"></span></span></span>
+</div>
+
+<!-- DATA SOURCE BAR -->
+<div class="data-source-bar">
+    <div class="data-source-left">
+        <span class="data-source-title">DATA SOURCE</span>
+        <span class="data-source-badge" id="dataSourceBadge">BUILT-IN DEMO</span>
+        <span class="data-source-meta" id="dataSourceMeta">600 candles • 5 minute</span>
+    </div>
+    <div class="data-source-actions">
+        <input id="csvFileInput" type="file" accept=".csv,text/csv" hidden onchange="loadHistoricalCSV(event)">
+        <button class="data-btn" onclick="document.getElementById('csvFileInput').click()">Load Historical CSV</button>
+        <button class="data-btn" onclick="downloadCSVTemplate()">CSV Template</button>
+    </div>
+</div>
 
 <!-- MAIN -->
 
@@ -951,10 +1004,12 @@ select {
       <div class="analytics-kicker">BFT ANALYTICS</div>
       <h2>Backtest Results</h2>
       <p>Understand your strategy performance after every closed trade.</p>
+      <div class="session-meta" id="analyticsSessionMeta">Session not started</div>
     </div>
     <div class="analytics-actions">
       <button class="analytics-tab active" onclick="showAnalyticsTab('overview',this)">Overview</button>
       <button class="analytics-tab" onclick="showAnalyticsTab('trades',this)">Trades</button>
+      <button class="analytics-tab" onclick="exportTradesCSV()">Export CSV</button>
     </div>
   </div>
 
@@ -1046,6 +1101,12 @@ let wins = 0;
 
 let losses = 0;
 
+/* Backtest session state */
+let sessionActive = false;
+let sessionStartIndex = 100;
+let sessionEndIndex = candles.length ? candles.length - 1 : 0;
+let sessionStatus = "READY";
+
 
 /* ------------------------------
    GENERATE DEMO XAUUSD DATA
@@ -1090,8 +1151,106 @@ function generateCandles() {
             close: close
         });
     }
+ }
+
+/* ------------------------------
+   HISTORICAL DATA ENGINE
+------------------------------ */
+function updateDataSourceUI(sourceLabel="BUILT-IN DEMO"){
+    const badge=document.getElementById("dataSourceBadge");
+    const meta=document.getElementById("dataSourceMeta");
+    const status=document.querySelector("header .status");
+    if(badge) badge.textContent=sourceLabel;
+    if(meta) meta.textContent=`${candles.length.toLocaleString()} candles • ${document.getElementById("timeframe")?.value||5} minute`;
+    if(status) status.innerHTML=sourceLabel.includes("CSV")?"• HISTORICAL CSV":"• SIMULATION MODE";
 }
 
+function normalizeDateValue(v){
+    if(v===undefined || v===null || v==="") return null;
+    let raw=String(v).trim();
+    if(/^\d{10,13}$/.test(raw)){
+        const n=Number(raw); return new Date(raw.length===10?n*1000:n);
+    }
+    raw=raw.replace(/^"|"$/g,"");
+    const d=new Date(raw.replace(" ","T"));
+    return Number.isNaN(d.getTime()) ? null : d;
+}
+
+function parseHistoricalCSV(text){
+    const lines=text.replace(/^\uFEFF/,'').split(/\r?\n/).map(x=>x.trim()).filter(Boolean);
+    if(lines.length<2) throw new Error("CSV has no data rows.");
+    const rows=lines.map(line=>{
+        const out=[]; let cur=""; let quoted=false;
+        for(let i=0;i<line.length;i++){
+            const ch=line[i];
+            if(ch==='"' && line[i+1]==='"'){cur+='"';i++;continue;}
+            if(ch==='"'){quoted=!quoted;continue;}
+            if(ch===',' && !quoted){out.push(cur.trim());cur="";} else cur+=ch;
+        }
+        out.push(cur.trim()); return out;
+    });
+    const headers=rows[0].map(h=>h.toLowerCase().replace(/[\s_-]+/g,''));
+    const find=(names)=>{for(const n of names){const i=headers.indexOf(n);if(i>=0)return i;}return -1;};
+    const ti=find(["timestamp","datetime","date","time","timestamputc","datetimeutc"]);
+    const oi=find(["open","o"]), hi=find(["high","h"]), li=find(["low","l"]), ci=find(["close","c"]), vi=find(["volume","vol","v"]);
+    if([ti,oi,hi,li,ci].some(i=>i<0)) throw new Error("CSV must contain timestamp/date, open, high, low and close columns.");
+    const parsed=[];
+    for(let r=1;r<rows.length;r++){
+        const row=rows[r]; if(row.length<5) continue;
+        const time=normalizeDateValue(row[ti]);
+        const open=Number(row[oi]), high=Number(row[hi]), low=Number(row[li]), close=Number(row[ci]);
+        if(!time || ![open,high,low,close].every(Number.isFinite)) continue;
+        parsed.push({time,open,high,low,close,volume:vi>=0?Number(row[vi])||0:0});
+    }
+    parsed.sort((a,b)=>a.time-b.time);
+    const unique=[]; let last=0;
+    for(const c of parsed){const t=c.time.getTime();if(t===last) continue;unique.push(c);last=t;}
+    if(unique.length<20) throw new Error("Not enough valid candles found in CSV.");
+    return unique;
+}
+
+function resetForNewData(){
+    pauseReplay();
+    clearBacktestState();
+    currentIndex=Math.min(100,candles.length-1);
+    sessionStartIndex=currentIndex;
+    sessionEndIndex=candles.length-1;
+    sessionActive=false;
+    sessionStatus="READY";
+    chartZoom=1; chartPan=0;
+    setReplayInputs(currentIndex);
+    updateDataSourceUI("HISTORICAL CSV");
+    updateSessionUI();
+    updateDateInfo();
+    drawChart(); updateTerminal();
+}
+
+function loadHistoricalCSV(event){
+    const file=event.target.files?.[0];
+    if(!file)return;
+    const reader=new FileReader();
+    reader.onload=()=>{
+        try{
+            candles=parseHistoricalCSV(String(reader.result));
+            resetForNewData();
+            showTradeMessage(`${file.name} loaded: ${candles.length.toLocaleString()} historical candles.`,"success");
+        }catch(err){showTradeMessage(err.message||"Could not read CSV.","error");}
+        event.target.value="";
+    };
+    reader.onerror=()=>{showTradeMessage("Could not read the selected file.","error");event.target.value="";};
+    reader.readAsText(file);
+}
+
+function downloadCSVTemplate(){
+    const sample=[
+        ["timestamp","open","high","low","close","volume"],
+        ["2025-03-15 09:00:00","3340.00","3342.10","3338.90","3341.20","1000"],
+        ["2025-03-15 09:05:00","3341.20","3343.50","3339.80","3342.40","1100"]
+    ];
+    const csv=sample.map(r=>r.join(",")).join("\n");
+    const blob=new Blob([csv],{type:"text/csv;charset=utf-8"});
+    const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="BFT-XAUUSD-M5-template.csv";a.click();URL.revokeObjectURL(a.href);
+}
 
 /* ------------------------------
    CANVAS RESIZE
@@ -1565,6 +1724,96 @@ function formatDate(date) {
 
 
 /* ------------------------------
+   BACKTEST SESSION
+------------------------------ */
+function formatInputDateTime(date){
+    const pad=n=>String(n).padStart(2,"0");
+    return {date:`${date.getFullYear()}-${pad(date.getMonth()+1)}-${pad(date.getDate())}`,time:`${pad(date.getHours())}:${pad(date.getMinutes())}`};
+}
+function setReplayInputs(index){
+    const c=candles[index]; if(!c)return;
+    const v=formatInputDateTime(c.time);
+    document.getElementById("replayDate").value=v.date;
+    document.getElementById("replayTime").value=v.time;
+}
+function updateSessionUI(){
+    const dot=document.getElementById("sessionDot"), status=document.getElementById("sessionStatus"), progress=document.getElementById("sessionProgress"), meta=document.getElementById("analyticsSessionMeta"), range=document.getElementById("sessionRange"), startBtn=document.getElementById("startSessionBtn");
+    if(!dot)return;
+    dot.className="session-dot"+(sessionStatus==="RUNNING"?" running":sessionStatus==="PAUSED"?" paused":sessionStatus==="COMPLETED"?" done":"");
+    status.textContent=sessionStatus;
+    const span=Math.max(1,sessionEndIndex-sessionStartIndex);
+    const pct=Math.max(0,Math.min(100,((currentIndex-sessionStartIndex)/span)*100));
+    progress.style.width=pct.toFixed(1)+"%";
+    const st=candles[sessionStartIndex], en=candles[sessionEndIndex], cur=candles[currentIndex];
+    if(st&&en&&range){range.textContent=`${st.time.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}–${en.time.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}`;}
+    if(meta){meta.textContent=sessionActive&&st&&cur?`Session: ${formatDate(st.time)} → ${formatDate(cur.time)} · ${Math.round(pct)}% complete`:"Session not started";}
+    if(startBtn)startBtn.textContent=sessionActive?"↻ Restart Replay":"▶ Start Replay";
+}
+function findReplayIndex(){
+    const date=document.getElementById("replayDate").value;
+    const time=document.getElementById("replayTime").value||"09:00";
+    if(!date)return null;
+    const target=new Date(`${date}T${time}:00`);
+    if(Number.isNaN(target.getTime()))return null;
+    let best=0,bestDiff=Infinity;
+    candles.forEach((c,i)=>{const d=Math.abs(c.time-target);if(d<bestDiff){bestDiff=d;best=i;}});
+    return best;
+}
+function jumpToReplay(){
+    const idx=findReplayIndex();
+    if(idx===null){showTradeMessage("Select a replay date first.","error");return;}
+    pauseReplay();
+    currentIndex=idx;
+    sessionStartIndex=idx;
+    sessionEndIndex=candles.length-1;
+    sessionActive=false;
+    sessionStatus="READY";
+    setReplayInputs(idx);
+    showTradeMessage(`Replay positioned at ${formatDate(candles[idx].time)}. Click Start Replay when ready.`,`success`);
+    updateSessionUI();
+    drawChart(); updatePosition(); updateTerminal();
+}
+function clearBacktestState(){
+    openPositions=[];selectedPositionId=null;nextPositionId=1;pendingOrder=null;
+    trades=[];totalProfit=0;totalLoss=0;wins=0;losses=0;
+    balance=startingBalance;
+    const e=document.getElementById("entry"),sl=document.getElementById("sl"),tp=document.getElementById("tp");
+    if(e)e.value="";if(sl)sl.value="";if(tp)tp.value="";
+    updatePendingArea();updateStats();updateHistory();updatePosition();updateTradePreview();
+}
+function beginBacktestSession(){
+    const idx=findReplayIndex();
+    const start=idx===null?currentIndex:idx;
+    pauseReplay();
+    clearBacktestState();
+    currentIndex=Math.max(0,Math.min(candles.length-1,start));
+    sessionStartIndex=currentIndex;
+    sessionEndIndex=candles.length-1;
+    sessionActive=true;
+    sessionStatus="RUNNING";
+    setReplayInputs(currentIndex);
+    updateSessionUI();
+    drawChart();updateTerminal();
+    startReplay();
+}
+function finishBacktestSession(){
+    if(!sessionActive){showTradeMessage("No active backtest session.","error");return;}
+    pauseReplay();
+    if(openPositions.length)closeAllTrades();
+    sessionActive=false;sessionStatus="COMPLETED";
+    updateSessionUI();updateAnalytics();updateTerminal();
+    showTradeMessage("Backtest session completed. Results are available below.","success");
+}
+function exportTradesCSV(){
+    if(!trades.length){showTradeMessage("No closed trades to export yet.","error");return;}
+    const headers=["Trade","Side","Entry","Exit","SL","TP","P&L","Result","Risk Money","Time"];
+    const rows=trades.map(t=>[t.number,t.direction,t.entry.toFixed(2),t.exit.toFixed(2),t.sl.toFixed(2),t.tp.toFixed(2),t.pnl.toFixed(2),t.result,(t.riskMoney||0).toFixed(2),t.time.toISOString()]);
+    const csv=[headers,...rows].map(r=>r.map(v=>`"${String(v).replaceAll('"','""')}"`).join(",")).join("\n");
+    const blob=new Blob([csv],{type:"text/csv;charset=utf-8"});
+    const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=`BFT-XAUUSD-Backtest-${new Date().toISOString().slice(0,10)}.csv`;a.click();URL.revokeObjectURL(a.href);
+}
+
+/* ------------------------------
    NEXT CANDLE
 ------------------------------ */
 
@@ -1594,6 +1843,15 @@ function nextCandle() {
     updatePosition();
 
     updateStats();
+    updateSessionUI();
+
+    if(sessionActive && currentIndex >= sessionEndIndex){
+        pauseReplay();
+        sessionActive=false;
+        sessionStatus="COMPLETED";
+        updateSessionUI();
+        showTradeMessage("Replay reached the end of available historical data.","success");
+    }
 }
 
 
@@ -1612,6 +1870,7 @@ function previousCandle() {
     drawChart();
 
     updatePosition();
+    updateSessionUI();
 }
 
 
@@ -1643,6 +1902,7 @@ function nextFive() {
     updatePosition();
 
     updateStats();
+    updateSessionUI();
 }
 
 
@@ -1674,6 +1934,7 @@ function nextTen() {
     updatePosition();
 
     updateStats();
+    updateSessionUI();
 }
 
 
@@ -1697,6 +1958,9 @@ function togglePlay() {
 
 function startReplay() {
 
+    if(!sessionActive){sessionActive=true;sessionStartIndex=currentIndex;sessionEndIndex=candles.length-1;}
+    sessionStatus="RUNNING";
+    updateSessionUI();
     playing = true;
 
     document.getElementById(
@@ -1712,6 +1976,8 @@ function startReplay() {
 function pauseReplay() {
 
     playing = false;
+    if(sessionActive) sessionStatus="PAUSED";
+    updateSessionUI();
 
     clearTimeout(playTimer);
 
@@ -2120,6 +2386,11 @@ function resetReplay() {
     currentIndex =
         100;
 
+    sessionStartIndex=currentIndex;
+    sessionEndIndex=candles.length-1;
+    sessionActive=false;
+    sessionStatus="READY";
+
     chartZoom = 1;
     chartPan = 0;
 
@@ -2171,6 +2442,8 @@ function resetReplay() {
     updateHistory();
     updatePosition();
     updateTradePreview();
+    setReplayInputs(currentIndex);
+    updateSessionUI();
     drawChart();
 }
 
@@ -2216,6 +2489,9 @@ document.getElementById(
 
 generateCandles();
 
+sessionEndIndex=candles.length-1;
+setReplayInputs(currentIndex);
+
 resizeCanvas();
 
 updateStats();
@@ -2227,6 +2503,7 @@ updatePosition();
 updatePendingArea();
 updateOrderButtons();
 updateTradePreview();
+updateSessionUI();
 drawChart();
 
 </script>
