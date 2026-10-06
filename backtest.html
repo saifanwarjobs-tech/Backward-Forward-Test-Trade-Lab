@@ -5,7 +5,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>BANKNIFTY Backtesting Lab | BFT Trade Lab</title>
+<title>BFT Trade Lab | Historical Trading Backtesting & Replay</title>
 
 <meta name="description"
 content="Practice BANKNIFTY trading with real historical 5-minute market replay, candle-by-candle backtesting, stop loss, take profit and trading performance analytics.">
@@ -1199,6 +1199,16 @@ body{
     font-size:13px !important;
 }
 
+
+/* ===== V13 MARKET HUB + RISK PRESETS ===== */
+.market-selector-wrap{display:flex!important;align-items:center;gap:7px}
+.market-select{appearance:none;background:transparent;border:0;color:#f2f7ff;font-size:16px;font-weight:800;padding:2px 18px 2px 0;cursor:pointer;outline:none}
+.market-select option{background:#0b1828;color:#eef4ff}
+.market-selector-wrap small{white-space:nowrap}
+.risk-presets{display:flex;gap:4px;margin:-4px 0 9px}
+.risk-presets button{flex:1;padding:5px 3px;border-radius:5px;border:1px solid #263b54;background:#0a192a;color:#7f94ad;font-size:9px;cursor:pointer}
+.risk-presets button:hover,.risk-presets button.active{color:#43e37b;border-color:#286b48;background:#123322}
+
 </style>
 </head>
 
@@ -1215,7 +1225,7 @@ body{
 
     <div class="header-right">
         <span class="market-status">● SIMULATION MODE</span>
-        <span>BANKNIFTY Backtesting</span>
+        <span>BFT Backtesting Lab</span>
     </div>
 
 </header>
@@ -1253,9 +1263,13 @@ body{
 
 <div class="topbar">
 
-    <div class="symbol">
-        BANKNIFTY
-        <small>NSE Bank Nifty • 5 Minute</small>
+    <div class="symbol market-selector-wrap">
+        <select id="marketSelect" class="market-select" aria-label="Select market">
+            <option value="BANKNIFTY">BANKNIFTY</option>
+            <option value="NIFTY" disabled>NIFTY — Coming Soon</option>
+            <option value="XAUUSD" disabled>XAUUSD — Coming Soon</option>
+        </select>
+        <small id="marketSubtitle">NSE Bank Nifty • 5 Minute • REAL DATA</small>
     </div>
 
     <div class="control">
@@ -1474,6 +1488,12 @@ body{
     <div class="ticket-field">
         <label><span>Risk %</span><span id="riskMoneyLabel">₹1,000 risk</span></label>
         <input id="risk" type="number" value="1" step="0.1" min="0.1">
+    </div>
+    <div class="risk-presets" aria-label="Risk presets">
+        <button type="button" onclick="setRiskPreset(0.25)">0.25%</button>
+        <button type="button" onclick="setRiskPreset(0.5)">0.5%</button>
+        <button type="button" class="active" onclick="setRiskPreset(1)">1%</button>
+        <button type="button" onclick="setRiskPreset(2)">2%</button>
     </div>
 
     <div class="ticket-field">
@@ -2141,6 +2161,23 @@ let losses = 0;
    Keep bank-nifty-5m-data.csv in the
    same GitHub Pages folder as this file.
 ------------------------------ */
+
+
+function setRiskPreset(value){
+    const input=document.getElementById("risk");
+    if(!input) return;
+    input.value=value;
+    document.querySelectorAll(".risk-presets button").forEach(b=>{
+        b.classList.toggle("active", Number.parseFloat(b.textContent)===value);
+    });
+    if(typeof updateTicketMetrics==="function") updateTicketMetrics();
+}
+
+document.getElementById("marketSelect")?.addEventListener("change",function(){
+    if(this.value==="BANKNIFTY"){
+        document.getElementById("marketSubtitle").textContent="NSE Bank Nifty • 5 Minute • REAL DATA";
+    }
+});
 
 async function loadBankNiftyCSV() {
     try {
