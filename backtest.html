@@ -756,6 +756,166 @@ body{
 }
 .trade-drag-toast.show{display:block}
 
+
+/* ===== V8 BACKTEST ANALYTICS ===== */
+.analytics-panel{
+    margin:0;
+    padding:26px 22px 42px;
+    background:#06101d;
+    border-top:1px solid #1a2c41;
+}
+.analytics-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    gap:20px;
+    max-width:1400px;
+    margin:0 auto 18px;
+}
+.analytics-kicker{
+    color:#43e37b;
+    font-size:10px;
+    font-weight:900;
+    letter-spacing:1.5px;
+}
+.analytics-head h2{
+    margin:5px 0 3px;
+    color:#f1f6fd;
+    font-size:24px;
+}
+.analytics-head p{
+    margin:0;
+    color:#71859d;
+    font-size:12px;
+}
+.analytics-actions{
+    display:flex;
+    gap:6px;
+}
+.analytics-tab{
+    border:1px solid #29405a;
+    background:#0b192a;
+    color:#91a4bb;
+    border-radius:7px;
+    padding:8px 13px;
+    cursor:pointer;
+    font-size:11px;
+}
+.analytics-tab.active{
+    background:#153a29;
+    color:#43e37b;
+    border-color:#286b48;
+}
+.analytics-cards{
+    max-width:1400px;
+    margin:0 auto 16px;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
+}
+.a-card{
+    min-height:72px;
+    padding:13px 14px;
+    border:1px solid #1b3047;
+    background:#0a1828;
+    border-radius:9px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+}
+.a-card span{
+    color:#71859d;
+    font-size:10px;
+}
+.a-card strong{
+    color:#eef4fc;
+    font-size:18px;
+}
+.a-card strong.profit{color:#43e37b}
+.a-card strong.loss{color:#ff6678}
+.a-card strong.neutral{color:#eef4fc}
+.analytics-grid{
+    max-width:1400px;
+    margin:0 auto;
+    display:grid;
+    grid-template-columns:minmax(0,1.55fr) minmax(300px,.8fr);
+    gap:12px;
+}
+.analytics-box{
+    border:1px solid #1b3047;
+    background:#091625;
+    border-radius:10px;
+    overflow:hidden;
+}
+.box-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:12px 14px;
+    border-bottom:1px solid #172a40;
+}
+.box-head strong{color:#eaf2fb;font-size:12px}
+.box-head span{color:#667b94;font-size:10px}
+#equityChart{
+    display:block;
+    width:100%;
+    height:240px;
+}
+.breakdown{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+}
+.breakdown div{
+    min-height:55px;
+    padding:10px 13px;
+    border-bottom:1px solid #15283d;
+}
+.breakdown div:nth-child(odd){border-right:1px solid #15283d}
+.breakdown span{
+    display:block;
+    color:#6f839c;
+    font-size:9px;
+    margin-bottom:5px;
+}
+.breakdown strong{
+    color:#eaf2fb;
+    font-size:13px;
+}
+.breakdown .profit{color:#43e37b}
+.breakdown .loss{color:#ff6678}
+.analytics-trades-empty{
+    padding:22px 14px;
+    color:#657a93;
+    font-size:11px;
+}
+.analytics-trade-row{
+    display:grid;
+    grid-template-columns:55px 80px 1fr 100px 75px 75px;
+    gap:10px;
+    padding:10px 13px;
+    border-bottom:1px solid #15283d;
+    align-items:center;
+    font-size:11px;
+}
+.analytics-trade-row .muted{color:#71859d}
+.analytics-trade-row .profit{color:#43e37b;font-weight:800}
+.analytics-trade-row .loss{color:#ff6678;font-weight:800}
+.analytics-table-head{
+    color:#61758d;
+    font-size:9px;
+    background:#07121f;
+}
+@media(max-width:950px){
+    .analytics-cards{grid-template-columns:repeat(2,1fr)}
+    .analytics-grid{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+    .analytics-panel{padding:20px 10px 32px}
+    .analytics-head{align-items:flex-start;flex-direction:column}
+    .analytics-cards{grid-template-columns:1fr 1fr;gap:7px}
+    .analytics-head h2{font-size:20px}
+}
+
 </style>
 </head>
 
@@ -1143,12 +1303,359 @@ body{
 
 
 
+
+<!-- BACKTEST ANALYTICS -->
+<section class="analytics-panel" id="analyticsPanel">
+    <div class="analytics-head">
+        <div>
+            <div class="analytics-kicker">BFT ANALYTICS</div>
+            <h2>Backtest Results</h2>
+            <p>Understand your strategy performance after every closed trade.</p>
+        </div>
+        <div class="analytics-actions">
+            <button class="analytics-tab active" onclick="setAnalyticsTab('overview',this)">Overview</button>
+            <button class="analytics-tab" onclick="setAnalyticsTab('trades',this)">Trades</button>
+        </div>
+    </div>
+
+    <div id="analyticsOverview">
+        <div class="analytics-cards">
+            <div class="a-card"><span>Total Trades</span><strong id="aTrades">0</strong></div>
+            <div class="a-card"><span>Win Rate</span><strong id="aWinRate">0%</strong></div>
+            <div class="a-card"><span>Net P&amp;L</span><strong id="aNetPnl" class="neutral">₹0</strong></div>
+            <div class="a-card"><span>Profit Factor</span><strong id="aProfitFactor">—</strong></div>
+            <div class="a-card"><span>Average R</span><strong id="aAvgR">—</strong></div>
+            <div class="a-card"><span>Max Drawdown</span><strong id="aDrawdown" class="loss">₹0</strong></div>
+            <div class="a-card"><span>Best Streak</span><strong id="aBestStreak">0</strong></div>
+            <div class="a-card"><span>Worst Streak</span><strong id="aWorstStreak">0</strong></div>
+        </div>
+
+        <div class="analytics-grid">
+            <div class="analytics-box">
+                <div class="box-head">
+                    <strong>Equity Curve</strong>
+                    <span id="equitySummary">Starting ₹1,00,000</span>
+                </div>
+                <canvas id="equityChart"></canvas>
+            </div>
+
+            <div class="analytics-box">
+                <div class="box-head">
+                    <strong>Trade Breakdown</strong>
+                    <span>Closed trades</span>
+                </div>
+                <div class="breakdown">
+                    <div><span>Wins</span><strong id="aWins">0</strong></div>
+                    <div><span>Losses</span><strong id="aLosses">0</strong></div>
+                    <div><span>Gross Profit</span><strong id="aGrossProfit" class="profit">₹0</strong></div>
+                    <div><span>Gross Loss</span><strong id="aGrossLoss" class="loss">₹0</strong></div>
+                    <div><span>Average Win</span><strong id="aAvgWin">₹0</strong></div>
+                    <div><span>Average Loss</span><strong id="aAvgLoss">₹0</strong></div>
+                    <div><span>Long / BUY</span><strong id="aBuyCount">0</strong></div>
+                    <div><span>Short / SELL</span><strong id="aSellCount">0</strong></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="analyticsTrades" style="display:none">
+        <div class="analytics-box">
+            <div class="box-head">
+                <strong>Trade Analysis</strong>
+                <span>Latest first</span>
+            </div>
+            <div id="analyticsTradeTable" class="analytics-trades-empty">
+                No closed trades yet.
+            </div>
+        </div>
+    </div>
+</section>
+
+
 <script>
 
 /* ============================================================
    BFT TRADE LAB
    BANKNIFTY BACKTEST ENGINE
    ============================================================ */
+
+
+
+/* ============================================================
+   V8 BACKTEST ANALYTICS
+   ============================================================ */
+
+function formatMoney(value, decimals=0){
+    const n=Number(value)||0;
+    return "₹"+n.toLocaleString("en-IN",{
+        minimumFractionDigits:decimals,
+        maximumFractionDigits:decimals
+    });
+}
+
+function calculateAnalytics(){
+
+    const count=trades.length;
+    const net=balance-startingBalance;
+
+    const grossProfit=trades
+        .filter(t=>(Number(t.pnl)||0)>0)
+        .reduce((s,t)=>s+(Number(t.pnl)||0),0);
+
+    const grossLoss=trades
+        .filter(t=>(Number(t.pnl)||0)<0)
+        .reduce((s,t)=>s+Math.abs(Number(t.pnl)||0),0);
+
+    const profitFactor=grossLoss>0 ? grossProfit/grossLoss : null;
+
+    const rValues=trades
+        .map(t=>Number.isFinite(Number(t.rMultiple))
+            ? Number(t.rMultiple)
+            : (Number(t.riskMoney)>0 ? Number(t.pnl)/Number(t.riskMoney) : null))
+        .filter(v=>Number.isFinite(v));
+
+    const avgR=rValues.length
+        ? rValues.reduce((a,b)=>a+b,0)/rValues.length
+        : null;
+
+    let equity=startingBalance;
+    let peak=startingBalance;
+    let maxDD=0;
+    const curve=[startingBalance];
+
+    trades.forEach(t=>{
+        equity += Number(t.pnl)||0;
+        curve.push(equity);
+        peak=Math.max(peak,equity);
+        maxDD=Math.max(maxDD,peak-equity);
+    });
+
+    let currentWin=0,currentLoss=0,bestWin=0,worstLoss=0;
+
+    trades.forEach(t=>{
+        if((Number(t.pnl)||0)>=0){
+            currentWin++;
+            currentLoss=0;
+            bestWin=Math.max(bestWin,currentWin);
+        }else{
+            currentLoss++;
+            currentWin=0;
+            worstLoss=Math.max(worstLoss,currentLoss);
+        }
+    });
+
+    const winsList=trades.filter(t=>(Number(t.pnl)||0)>0);
+    const lossesList=trades.filter(t=>(Number(t.pnl)||0)<0);
+
+    const avgWin=winsList.length
+        ? winsList.reduce((s,t)=>s+Number(t.pnl),0)/winsList.length
+        : 0;
+
+    const avgLoss=lossesList.length
+        ? lossesList.reduce((s,t)=>s+Math.abs(Number(t.pnl)),0)/lossesList.length
+        : 0;
+
+    const buys=trades.filter(t=>t.direction==="BUY").length;
+    const sells=trades.filter(t=>t.direction==="SELL").length;
+
+    return {
+        count,net,grossProfit,grossLoss,profitFactor,avgR,maxDD,
+        bestWin,worstLoss,winRate:count?wins/count*100:0,
+        wins:wins,losses:losses,avgWin,avgLoss,buys,sells,curve
+    };
+}
+
+function updateAnalytics(){
+
+    const a=calculateAnalytics();
+
+    const set=(id,value)=>{
+        const el=document.getElementById(id);
+        if(el) el.textContent=value;
+    };
+
+    set("aTrades",a.count);
+    set("aWinRate",a.winRate.toFixed(1)+"%");
+    set("aNetPnl",(a.net>=0?"+":"-")+formatMoney(Math.abs(a.net)));
+
+    const pf=document.getElementById("aProfitFactor");
+    if(pf) pf.textContent=a.profitFactor===null
+        ? "—"
+        : a.profitFactor.toFixed(2);
+
+    const avgR=document.getElementById("aAvgR");
+    if(avgR) avgR.textContent=a.avgR===null
+        ? "—"
+        : (a.avgR>=0?"+":"")+a.avgR.toFixed(2)+"R";
+
+    set("aDrawdown","-"+formatMoney(a.maxDD));
+    set("aBestStreak",a.bestWin);
+    set("aWorstStreak",a.worstLoss);
+
+    set("aWins",a.wins);
+    set("aLosses",a.losses);
+    set("aGrossProfit",formatMoney(a.grossProfit));
+    set("aGrossLoss","-"+formatMoney(a.grossLoss));
+    set("aAvgWin",formatMoney(a.avgWin));
+    set("aAvgLoss","-"+formatMoney(a.avgLoss));
+    set("aBuyCount",a.buys);
+    set("aSellCount",a.sells);
+    set("equitySummary","Starting "+formatMoney(startingBalance)+" • Current "+formatMoney(balance));
+
+    const netEl=document.getElementById("aNetPnl");
+    if(netEl) netEl.className=a.net>=0?"profit":"loss";
+
+    const equityEl=document.getElementById("equityChart");
+    if(equityEl) drawEquityCurve(equityEl,a.curve);
+
+    updateAnalyticsTrades();
+}
+
+function drawEquityCurve(canvasEl,values){
+
+    const dpr=window.devicePixelRatio||1;
+    const width=Math.max(300,canvasEl.clientWidth);
+    const height=240;
+
+    canvasEl.width=width*dpr;
+    canvasEl.height=height*dpr;
+
+    const c=canvasEl.getContext("2d");
+    c.setTransform(dpr,0,0,dpr,0,0);
+
+    c.fillStyle="#091625";
+    c.fillRect(0,0,width,height);
+
+    if(values.length<2){
+        c.fillStyle="#526981";
+        c.font="11px Arial";
+        c.fillText("Close a trade to build the equity curve.",16,30);
+        return;
+    }
+
+    const pad={left:52,right:18,top:20,bottom:28};
+    const w=width-pad.left-pad.right;
+    const h=height-pad.top-pad.bottom;
+
+    let min=Math.min(...values);
+    let max=Math.max(...values);
+
+    if(min===max){
+        min-=100;
+        max+=100;
+    }
+
+    const extra=(max-min)*.12;
+    min-=extra;
+    max+=extra;
+
+    // Grid
+    c.strokeStyle="rgba(255,255,255,.06)";
+    c.lineWidth=1;
+
+    for(let i=0;i<=4;i++){
+        const y=pad.top+h*i/4;
+        c.beginPath();
+        c.moveTo(pad.left,y);
+        c.lineTo(width-pad.right,y);
+        c.stroke();
+
+        const value=max-(max-min)*i/4;
+        c.fillStyle="#647991";
+        c.font="9px Arial";
+        c.textAlign="right";
+        c.fillText(formatMoney(value),pad.left-7,y+3);
+    }
+
+    const xAt=i=>pad.left+(values.length===1?0:(i/(values.length-1))*w);
+    const yAt=v=>pad.top+(max-v)/(max-min)*h;
+
+    // Fill area
+    const baseline=yAt(values[0]);
+    c.beginPath();
+    values.forEach((v,i)=>{
+        const x=xAt(i),y=yAt(v);
+        if(i===0)c.moveTo(x,y);
+        else c.lineTo(x,y);
+    });
+    c.lineTo(xAt(values.length-1),baseline);
+    c.lineTo(xAt(0),baseline);
+    c.closePath();
+    c.fillStyle="rgba(67,227,123,.08)";
+    c.fill();
+
+    // Equity line
+    c.beginPath();
+    values.forEach((v,i)=>{
+        const x=xAt(i),y=yAt(v);
+        if(i===0)c.moveTo(x,y);
+        else c.lineTo(x,y);
+    });
+    c.strokeStyle="#43e37b";
+    c.lineWidth=2;
+    c.stroke();
+
+    c.fillStyle="#61758d";
+    c.font="9px Arial";
+    c.textAlign="left";
+    c.fillText("Trade 0",pad.left,height-8);
+    c.textAlign="right";
+    c.fillText("Trade "+(values.length-1),width-pad.right,height-8);
+
+    const last=values[values.length-1];
+    c.fillStyle="#eef4fc";
+    c.font="bold 10px Arial";
+    c.textAlign="right";
+    c.fillText(formatMoney(last),width-pad.right,yAt(last)-8);
+}
+
+function updateAnalyticsTrades(){
+
+    const box=document.getElementById("analyticsTradeTable");
+    if(!box)return;
+
+    if(!trades.length){
+        box.innerHTML='<div class="analytics-trades-empty">No closed trades yet.</div>';
+        return;
+    }
+
+    const rows=trades.slice().reverse().map((t,index)=>{
+        const pnl=Number(t.pnl)||0;
+        const r=Number.isFinite(Number(t.rMultiple))
+            ? Number(t.rMultiple)
+            : (Number(t.riskMoney)>0 ? pnl/Number(t.riskMoney) : 0);
+
+        return `
+            <div class="analytics-trade-row">
+                <span>#${t.number||trades.length-index}</span>
+                <strong>${t.direction}</strong>
+                <span class="muted">${formatDate(t.time)}</span>
+                <span class="${pnl>=0?"profit":"loss"}">${pnl>=0?"+":"-"}${formatMoney(Math.abs(pnl))}</span>
+                <span>${r>=0?"+":""}${r.toFixed(2)}R</span>
+                <span class="${pnl>=0?"profit":"loss"}">${t.result|| (pnl>=0?"WIN":"LOSS")}</span>
+            </div>
+        `;
+    }).join("");
+
+    box.innerHTML=`
+        <div class="analytics-trade-row analytics-table-head">
+            <span>#</span><span>Side</span><span>Time</span><span>P&amp;L</span><span>R</span><span>Result</span>
+        </div>
+        ${rows}
+    `;
+}
+
+function setAnalyticsTab(tab,button){
+
+    document.querySelectorAll(".analytics-tab").forEach(b=>b.classList.remove("active"));
+    if(button)button.classList.add("active");
+
+    document.getElementById("analyticsOverview").style.display=
+        tab==="overview"?"block":"none";
+
+    document.getElementById("analyticsTrades").style.display=
+        tab==="trades"?"block":"none";
+}
 
 
 /* ------------------------------
@@ -2847,6 +3354,12 @@ function closeTrade(
         pnl:
             pnl,
 
+        riskMoney:
+            p.riskMoney,
+
+        rMultiple:
+            p.riskMoney > 0 ? pnl / p.riskMoney : 0,
+
         result:
             result,
 
@@ -2861,6 +3374,8 @@ function closeTrade(
     updateStats();
 
     updateHistory();
+
+    updateAnalytics();
 
     updatePosition();
     updateQuotes();
@@ -3147,6 +3662,7 @@ function resetReplay() {
     losses =
         0;
 
+    updateAnalytics();
 
     document.getElementById(
         "entry"
@@ -3199,6 +3715,7 @@ document.getElementById(
                 startingBalance;
 
             updateStats();
+            updateAnalytics();
         }
 
     }
