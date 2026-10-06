@@ -5,10 +5,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>XAUUSD Backtesting Lab | BFT Trade Lab</title>
+<title>BANKNIFTY Backtesting Lab | BFT Trade Lab</title>
 
 <meta name="description"
-content="Practice XAUUSD gold trading with historical market replay, candle-by-candle backtesting, stop loss, take profit and trading performance analytics.">
+content="Practice BANKNIFTY trading with real historical 5-minute market replay, candle-by-candle backtesting, stop loss, take profit and trading performance analytics.">
 
 <meta name="robots" content="index, follow">
 
@@ -491,7 +491,7 @@ select {
 
     <div class="header-right">
         <span class="market-status">● SIMULATION MODE</span>
-        <span>XAUUSD Backtesting</span>
+        <span>BANKNIFTY Backtesting</span>
     </div>
 
 </header>
@@ -502,8 +502,8 @@ select {
 <div class="topbar">
 
     <div class="symbol">
-        XAUUSD
-        <small>Gold / US Dollar</small>
+        BANKNIFTY
+        <small>NSE Bank Nifty • 5 Minute</small>
     </div>
 
     <div class="control">
@@ -520,9 +520,9 @@ select {
         <label>Starting Balance</label>
 
         <select id="balanceSelect">
-            <option value="10000">$10,000</option>
-            <option value="5000">$5,000</option>
-            <option value="50000">$50,000</option>
+            <option value="100000">₹1,00,000</option>
+            <option value="50000">₹50,000</option>
+            <option value="500000">₹5,00,000</option>
         </select>
     </div>
 
@@ -783,7 +783,7 @@ select {
 
 /* ============================================================
    BFT TRADE LAB
-   DEMO BACKTEST ENGINE
+   BANKNIFTY BACKTEST ENGINE
    ============================================================ */
 
 
@@ -804,9 +804,9 @@ let speed = 1;
 
 let playTimer = null;
 
-let balance = 10000;
+let balance = 100000;
 
-let startingBalance = 10000;
+let startingBalance = 100000;
 
 let openPosition = null;
 
@@ -822,50 +822,183 @@ let losses = 0;
 
 
 /* ------------------------------
-   GENERATE DEMO XAUUSD DATA
+   LOAD REAL BANKNIFTY CSV DATA
+   Keep bank-nifty-5m-data.csv in the
+   same GitHub Pages folder as this file.
 ------------------------------ */
 
-function generateCandles() {
-
-    candles = [];
-
-    let price = 3340;
-
-    let startTime = new Date("2025-03-15T09:00:00");
-
-    for (let i = 0; i < 600; i++) {
-
-        let open = price;
-
-        let movement =
-            (Math.random() - 0.48) * 8;
-
-        let close =
-            open + movement;
-
-        let high =
-            Math.max(open, close)
-            + Math.random() * 4;
-
-        let low =
-            Math.min(open, close)
-            - Math.random() * 4;
-
-        price = close;
-
-        let time =
-            new Date(startTime.getTime() + i * 5 * 60000);
-
-        candles.push({
-            time: time,
-            open: open,
-            high: high,
-            low: low,
-            close: close
+async function loadBankNiftyCSV() {
+    try {
+        const response = await fetch("bank-nifty-5m-data.csv", {
+            cache: "no-store"
         });
+
+        if (!response.ok) {
+            throw new Error(
+                "bank-nifty-5m-data.csv was not found."
+            );
+        }
+
+        const text = await response.text();
+
+        const lines = text
+            .split(/\r?\n/)
+            .map(line => line.trim())
+            .filter(Boolean);
+
+        if (lines.length < 2) {
+            throw new Error("CSV file is empty.");
+        }
+
+        const headers = lines[0]
+            .split(",")
+            .map(h => h.trim().toLowerCase());
+
+        const dateIndex = headers.indexOf("date");
+        const timeIndex = headers.indexOf("time");
+        const openIndex = headers.indexOf("open");
+        const highIndex = headers.indexOf("high");
+        const lowIndex = headers.indexOf("low");
+        const closeIndex = headers.indexOf("close");
+
+        if ([dateIndex, timeIndex, openIndex, highIndex, lowIndex, closeIndex]
+            .includes(-1)) {
+            throw new Error(
+                "CSV must contain Date, Time, Open, High, Low and Close."
+            );
+        }
+
+        candles = [];
+
+        for (let i = 1; i < lines.length; i++) {
+            const row = parseCSVLine(lines[i]);
+
+            if (row.length < headers.length) continue;
+
+            const time = parseBankNiftyDate(
+                row[dateIndex],
+                row[timeIndex]
+            );
+
+            const open = Number(row[openIndex]);
+            const high = Number(row[highIndex]);
+            const low = Number(row[lowIndex]);
+            const close = Number(row[closeIndex]);
+
+            if (
+                Number.isNaN(time.getTime()) ||
+                !Number.isFinite(open) ||
+                !Number.isFinite(high) ||
+                !Number.isFinite(low) ||
+                !Number.isFinite(close)
+            ) {
+                continue;
+            }
+
+            candles.push({
+                time,
+                open,
+                high,
+                low,
+                close
+            });
+        }
+
+        candles.sort((a, b) => a.time - b.time);
+
+        if (!candles.length) {
+            throw new Error("No valid candles found in CSV.");
+        }
+
+        currentIndex = Math.min(80, candles.length - 1);
+
+        document.querySelector(".market-status").textContent =
+            "● REAL HISTORICAL DATA";
+
+        drawChart();
+        updateStats();
+        updateHistory();
+        updatePosition();
+
+        console.log(
+            "BANKNIFTY candles loaded:",
+            candles.length
+        );
+
+    } catch (error) {
+        console.error(error);
+
+        alert(
+            "BANKNIFTY data load failed.\n\n" +
+            error.message +
+            "\n\nMake sure bank-nifty-5m-data.csv is uploaded " +
+            "in the same GitHub folder as backtest.html."
+        );
     }
 }
 
+function parseCSVLine(line) {
+    const result = [];
+    let current = "";
+    let quoted = false;
+
+    for (let i = 0; i < line.length; i++) {
+        const ch = line[i];
+
+        if (ch === '"') {
+            quoted = !quoted;
+        } else if (ch === "," && !quoted) {
+            result.push(
+                current.trim().replace(/^"|"$/g, "")
+            );
+            current = "";
+        } else {
+            current += ch;
+        }
+    }
+
+    result.push(
+        current.trim().replace(/^"|"$/g, "")
+    );
+
+    return result;
+}
+
+function parseBankNiftyDate(dateText, timeText) {
+    const parts = dateText.split(/[-\/]/);
+    let d;
+
+    if (parts.length === 3) {
+        if (parts[0].length === 4) {
+            d = new Date(
+                Number(parts[0]),
+                Number(parts[1]) - 1,
+                Number(parts[2])
+            );
+        } else {
+            d = new Date(
+                Number(parts[2]),
+                Number(parts[1]) - 1,
+                Number(parts[0])
+            );
+        }
+    } else {
+        d = new Date(dateText);
+    }
+
+    const t = timeText.split(":").map(Number);
+
+    if (!Number.isNaN(d.getTime()) && t.length >= 2) {
+        d.setHours(
+            Number(t[0]) || 0,
+            Number(t[1]) || 0,
+            Number(t[2]) || 0,
+            0
+        );
+    }
+
+    return d;
+}
 
 /* ------------------------------
    CANVAS RESIZE
@@ -1989,7 +2122,7 @@ function updatePosition() {
             <div class="position-type ${openPosition.direction === "BUY" ? "profit" : "loss"}">
 
                 ${openPosition.direction}
-                XAUUSD
+                BANKNIFTY
 
             </div>
 
@@ -2028,7 +2161,7 @@ function updatePosition() {
                 <strong class="${floatingClass}">
 
                     ${floating >= 0 ? "+" : ""}
-                    $${floating.toFixed(2)}
+                    ₹${floating.toFixed(2)}
 
                 </strong>
 
@@ -2079,7 +2212,7 @@ function updateStats() {
     document.getElementById(
         "profit"
     ).textContent =
-        "$"
+        "₹"
         +
         totalProfit.toFixed(2);
 
@@ -2087,7 +2220,7 @@ function updateStats() {
     document.getElementById(
         "loss"
     ).textContent =
-        "$"
+        "₹"
         +
         totalLoss.toFixed(2);
 }
@@ -2153,7 +2286,7 @@ function updateHistory() {
                     }">
 
                         ${trade.pnl >= 0 ? "+" : ""}
-                        $${trade.pnl.toFixed(2)}
+                        ₹${trade.pnl.toFixed(2)}
 
                     </strong>
 
@@ -2204,7 +2337,7 @@ function resetReplay() {
 
 
     currentIndex =
-        30;
+        Math.min(80, candles.length - 1);
 
 
     openPosition =
@@ -2290,8 +2423,6 @@ document.getElementById(
    INIT
 ------------------------------ */
 
-generateCandles();
-
 resizeCanvas();
 
 updateStats();
@@ -2301,6 +2432,8 @@ updateHistory();
 updatePosition();
 
 drawChart();
+
+loadBankNiftyCSV();
 
 </script>
 
