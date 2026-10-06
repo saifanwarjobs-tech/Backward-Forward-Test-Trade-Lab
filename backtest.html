@@ -963,6 +963,99 @@ body{
 .journal-empty{padding:24px;color:#657a93;font-size:11px}
 @media(max-width:900px){.journal-layout{grid-template-columns:1fr}}
 
+
+/* ===== V10 CLEAN COMPACT TERMINAL ===== */
+.header{
+    height:48px !important;
+    padding:0 18px !important;
+}
+.logo{font-size:20px !important}
+.market-status{padding:5px 9px !important;font-size:11px !important}
+
+.topbar{
+    min-height:50px !important;
+    height:50px !important;
+    gap:12px !important;
+    padding:5px 18px !important;
+    flex-wrap:nowrap !important;
+}
+.symbol{font-size:17px !important}
+.symbol small{font-size:10px !important}
+.control label{font-size:10px !important}
+.topbar select{padding:7px 9px !important;font-size:11px !important}
+.date-info{font-size:11px !important}
+
+.chart-toolbar{
+    height:42px !important;
+    padding:0 10px !important;
+    gap:5px !important;
+}
+.tool-btn{
+    padding:6px 9px !important;
+    font-size:11px !important;
+}
+
+.chart-wrapper{
+    height:400px !important;
+    min-height:400px !important;
+}
+.replay-bar{
+    min-height:42px !important;
+    height:42px !important;
+    padding:4px 9px !important;
+    gap:6px !important;
+    flex-wrap:nowrap !important;
+}
+.replay-btn,.play-btn{padding:7px 11px !important;font-size:11px !important}
+.speed-group{margin-left:3px !important}
+.speed{padding:5px 8px !important;font-size:10px !important}
+
+.main{
+    min-height:0 !important;
+}
+.chart-area{
+    min-height:0 !important;
+}
+
+/* Journal stays compact until explicitly opened. */
+.journal-panel{
+    padding:12px 18px 18px !important;
+}
+.journal-head{
+    margin:0 auto !important;
+    align-items:center !important;
+}
+.journal-head h2{font-size:18px !important}
+.journal-head p{display:none !important}
+.journal-layout{
+    display:none;
+    margin-top:12px !important;
+}
+.journal-panel.journal-open .journal-layout{
+    display:grid;
+}
+.journal-add{
+    padding:7px 11px !important;
+    font-size:11px !important;
+}
+
+
+/* ===== V10 CLEAN FLOATING POSITION CARD ===== */
+.floating-position{
+    width:205px !important;
+    padding:10px 11px !important;
+    border-radius:9px !important;
+    box-shadow:0 10px 30px rgba(0,0,0,.28) !important;
+}
+.fp-head{padding-right:20px !important}
+.fp-grid{gap:4px 8px !important}
+.fp-pnl{margin-top:7px !important;font-size:12px !important}
+.fp-close-trade{
+    margin-top:7px !important;
+    padding:6px !important;
+    font-size:10px !important;
+}
+
 </style>
 </head>
 
@@ -1504,20 +1597,30 @@ let journalEntries=[];
 let journalRating=0;
 
 function openJournalForLatest(){
+  const panel=document.getElementById("journalPanel");
+  if(panel) panel.classList.add("journal-open");
+
   if(!trades.length){
-    document.getElementById("journalPanel")?.scrollIntoView({behavior:"smooth"});
+    document.getElementById("journalFormTitle").textContent="Trade Journal";
+    document.getElementById("journalList").innerHTML=
+      '<div class="journal-empty">Close a trade first. Then you can attach a journal to that trade.</div>';
+    panel?.scrollIntoView({behavior:"smooth",block:"start"});
     return;
   }
+
   const t=trades[trades.length-1];
   document.getElementById("journalTradeNumber").value=t.number||trades.length;
   document.getElementById("journalFormTitle").textContent="Trade #"+(t.number||trades.length)+" Journal";
-  document.getElementById("journalPanel")?.scrollIntoView({behavior:"smooth"});
+  panel?.scrollIntoView({behavior:"smooth",block:"start"});
 }
 function closeJournalForm(){
-  ["journalTradeNumber","journalReason","journalMistake","journalLesson"].forEach(id=>{const e=document.getElementById(id);if(e)e.value=""});
+  ["journalTradeNumber","journalReason","journalMistake","journalLesson"].forEach(id=>{
+    const e=document.getElementById(id); if(e)e.value="";
+  });
   document.getElementById("journalSetup").value="";
   document.querySelectorAll("#journalRating button").forEach(b=>b.classList.remove("active"));
   journalRating=0;
+  document.getElementById("journalPanel")?.classList.remove("journal-open");
 }
 function setJournalRating(n){
   journalRating=n;
@@ -1537,7 +1640,13 @@ function saveJournalEntry(){
     lesson:document.getElementById("journalLesson").value.trim(),
     rating:journalRating,created:new Date().toLocaleString("en-IN")
   });
-  renderJournal(); closeJournalForm();
+  renderJournal();
+  const panel=document.getElementById("journalPanel");
+  if(panel) panel.classList.add("journal-open");
+  document.getElementById("journalReason").value="";
+  document.getElementById("journalMistake").value="";
+  document.getElementById("journalLesson").value="";
+  document.getElementById("journalTradeNumber").value="";
 }
 function deleteJournalEntry(id){journalEntries=journalEntries.filter(e=>e.id!==id);renderJournal()}
 function escJ(v){return String(v).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}
@@ -1562,10 +1671,9 @@ function hideFloatingPosition(){
 function closeActiveTrade(){
   if(!openPosition)return;
   const price=candles[currentIndex]?.close??openPosition.entry;
-  if(typeof closeTradeAtPrice==="function"){closeTradeAtPrice(price,"MANUAL CLOSE");return}
-  // Fallback: trigger existing close control if available.
-  const btn=document.querySelector("[data-close-trade]");
-  if(btn)btn.click();
+  if(typeof closeTrade==="function"){
+    closeTrade("MANUAL CLOSE",price);
+  }
 }
 renderJournal();
 
