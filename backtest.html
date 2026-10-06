@@ -789,6 +789,16 @@ select {
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style id="v181-range-css">
+.v181-tools{margin-top:10px;padding:10px;border:1px solid #17304a;background:#081725;border-radius:8px}
+.v181-line{display:flex;flex-wrap:wrap;gap:7px;align-items:center}
+.v181-input{height:29px;background:#07131f;border:1px solid #29445f;color:#dceafa;border-radius:5px;padding:0 8px;font-size:10px}
+.v181-search{min-width:190px;flex:1}
+.v181-label{font-size:9px;color:#70869e;text-transform:uppercase;letter-spacing:.06em}
+.v181-info{margin-top:7px;font-size:9px;color:#667d95;line-height:1.4}
+</style>
+
 </head>
 
 
@@ -3006,6 +3016,69 @@ function exportBacktestReport(){
   <div class="v16-report"><div class="v16-card-head" style="margin-bottom:8px"><strong>Forward Test Report</strong><span>Compare this later with Backtest Report</span></div><div class="v16-report-grid"><div class="v16-report-card"><span>TOTAL TRADES</span><b id="v16RptTrades">0</b></div><div class="v16-report-card"><span>WIN RATE</span><b id="v16RptWin">0%</b></div><div class="v16-report-card"><span>NET P&L</span><b id="v16RptPnl">$0.00</b></div><div class="v16-report-card"><span>PROFIT FACTOR</span><b id="v16RptPF">—</b></div><div class="v16-report-card"><span>AVG R</span><b id="v16RptR">—</b></div><div class="v16-report-card"><span>MAX DD</span><b id="v16RptDD">$0.00</b></div></div></div>
 </section>
 
+
+<script id="v181-range-script">
+/* ===== V18.1 DATASET SEARCH + DATE RANGE LOADER ===== */
+let v181Library=[];
+function v181Esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+function v181ToKey(id,ms){return id+'|'+ms;}
+function v181IsoInput(v){if(!v)return '';const d=new Date(v);if(!Number.isFinite(d.getTime()))return '';const z=n=>String(n).padStart(2,'0');return `${d.getFullYear()}-${z(d.getMonth()+1)}-${z(d.getDate())}T${z(d.getHours())}:${z(d.getMinutes())}`;}
+function v181ClearSearch(){const e=document.getElementById('v181Search');if(e)e.value='';v181RenderLibrary();}
+function v181ClearRange(){['v181From','v181To'].forEach(id=>{const e=document.getElementById(id);if(e)e.value=''});const i=document.getElementById('v181RangeInfo');if(i)i.textContent='Range cleared. Standard replay-limit loader remains available.';}
+function v181RenderLibrary(){
+  const el=document.getElementById('v18DatasetList');if(!el)return;
+  const q=(document.getElementById('v181Search')?.value||'').trim().toLowerCase();
+  const list=(v181Library||[]).filter(x=>!q||String(x.name||'').toLowerCase().includes(q)||String(x.symbol||'').toLowerCase().includes(q));
+  if(!list.length){el.innerHTML='<div class="v18-empty">No datasets match the search.</div>';return;}
+  el.innerHTML=list.map(x=>`<div class="v18-row"><div><strong>${v181Esc(x.name)}</strong><br><span>${(x.rows||0).toLocaleString()} bars • ${v18Date(x.first)} → ${v18Date(x.last)}</span></div><div><span>Interval ${x.interval||'—'} min</span></div><div><span>Invalid ${x.invalid||0} • Dup ${x.duplicates||0}</span></div><div class="v18-row-actions"><button class="v18-btn" onclick="v18SelectDataset('${x.id}')">${x.id===v18ActiveId?'Active':'Select'}</button> <button class="v18-btn danger" onclick="v18DeleteDataset('${x.id}')">Delete</button></div></div>`).join('');
+}
+async function v181BarsByRange(id,fromMs,toMs,limit){
+  /* Use the chronological datasetSeq index for correctness. The older V18 datasetTime key is a string key, so it is intentionally not used for date ordering. */
+  return new Promise((res,rej)=>{
+    const out=[]; const idx=v18Tx('bars').index('datasetSeq');
+    const req=idx.openCursor(IDBKeyRange.bound([id,0],[id,Number.MAX_SAFE_INTEGER]),'next');
+    req.onsuccess=e=>{
+      const c=e.target.result;
+      if(!c){res(out);return;}
+      const b=c.value, ms=new Date(b.time).getTime();
+      if(Number.isFinite(ms)){
+        if(ms>toMs){res(out);return;}
+        if(ms>=fromMs && ms<=toMs){out.push(b);if(out.length>=limit){res(out);return;}}
+      }
+      c.continue();
+    };
+    req.onerror=()=>rej(req.error);
+  });
+}
+async function v181LoadRangeToReplay(){
+  if(!v18ActiveId){v18SetStatus('Select a dataset first.');return;}
+  const meta=await v18Get('datasets',v18ActiveId);if(!meta){v18SetStatus('Dataset metadata not found.');return;}
+  const fromRaw=document.getElementById('v181From')?.value, toRaw=document.getElementById('v181To')?.value;
+  let fromMs=fromRaw?new Date(fromRaw).getTime():new Date(meta.first).getTime();
+  let toMs=toRaw?new Date(toRaw).getTime():new Date(meta.last).getTime();
+  if(!Number.isFinite(fromMs)||!Number.isFinite(toMs)){v18SetStatus('Invalid date range.');return;}
+  if(fromMs>toMs){const t=fromMs;fromMs=toMs;toMs=t;}
+  const hardMax=Math.max(100,Math.min(200000,Number(document.getElementById('v18LoadLimit')?.value||50000)));
+  v18SetStatus('Loading selected date range…');v18SetProgress(8);
+  try{
+    const bars=await v181BarsByRange(v18ActiveId,fromMs,toMs,hardMax);
+    if(bars.length<20){v18SetProgress(0);v18SetStatus('Range contains fewer than 20 valid bars. Widen the range.');return;}
+    const mapped=bars.map(b=>({time:new Date(b.time),open:b.o,high:b.h,low:b.l,close:b.c,volume:b.v}));
+    candles=mapped;pauseReplay();clearBacktestState();currentIndex=Math.min(100,candles.length-1);sessionStartIndex=currentIndex;sessionEndIndex=candles.length-1;sessionActive=false;sessionStatus='READY';chartZoom=1;chartPan=0;setReplayInputs(currentIndex);updateDataSourceUI('V18 RANGE DATA');updateDataInspector();updateSessionUI();updateDateInfo();drawChart();updateTerminal();
+    const clipped=bars.length>=hardMax;
+    v18SetProgress(100);
+    const info=document.getElementById('v181RangeInfo');if(info)info.textContent=`Loaded ${bars.length.toLocaleString()} bars • ${v18Date(bars[0].time)} → ${v18Date(bars[bars.length-1].time)}${clipped?' • Replay limit reached; narrow the range for a smaller window.':''}`;
+    v18SetStatus(`Range loaded into Replay • ${bars.length.toLocaleString()} bars`);
+  }catch(e){v18SetProgress(0);v18SetStatus('Range load failed: '+(e?.message||e));console.error('V18.1 range',e);}
+}
+async function v181Init(){
+  try{await v18OpenDB();v181Library=await v18All('datasets');v181Library.sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));v181RenderLibrary();
+    const active=v181Library.find(x=>x.id===v18ActiveId)||v181Library[0];if(active){v18ActiveId=active.id;const f=document.getElementById('v181From'),t=document.getElementById('v181To');if(f&&!f.value)f.value=v181IsoInput(active.first);if(t&&!t.value)t.value=v181IsoInput(active.last);}
+  }catch(e){console.warn('V18.1 init',e);}
+}
+setTimeout(v181Init,500);
+</script>
+
 </body></html>`;
   const blob=new Blob([html],{type:'text/html;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`BFT-Backtest-Report-${new Date().toISOString().slice(0,10)}.html`;a.click();URL.revokeObjectURL(a.href);
 }
@@ -3712,6 +3785,23 @@ function v17Refresh(){
       <button class="v18-btn" onclick="v18LoadActiveToReplay()">Load Active → Replay</button>
     </div>
     <div class="v18-progress"><i id="v18Progress"></i></div>
+    <div class="v181-tools">
+      <div class="v181-line">
+        <span class="v181-label">Dataset search</span>
+        <input class="v181-input v181-search" id="v181Search" placeholder="Search dataset name…" oninput="v181RenderLibrary()">
+        <button class="v18-btn" onclick="v181ClearSearch()">Clear</button>
+      </div>
+      <div class="v181-line" style="margin-top:8px">
+        <span class="v181-label">Replay range</span>
+        <input class="v181-input" id="v181From" type="datetime-local" title="Start date/time">
+        <span class="v181-label">to</span>
+        <input class="v181-input" id="v181To" type="datetime-local" title="End date/time">
+        <button class="v18-btn primary" onclick="v181LoadRangeToReplay()">Load Range → Replay</button>
+        <button class="v18-btn" onclick="v181ClearRange()">Clear Range</button>
+      </div>
+      <div class="v181-info" id="v181RangeInfo">Range loader uses only stored bars from the selected dataset. If no range is supplied, the standard replay-limit loader is used.</div>
+    </div>
+
     <div class="v18-status" id="v18Status">Opening local historical data engine…</div>
     <div class="v18-list" id="v18DatasetList"><div class="v18-empty">No large datasets stored yet.</div></div>
     <div class="v18-note">V18 stores raw normalized OHLC bars in the browser's IndexedDB instead of keeping the entire historical library in page memory. Replay still loads a controlled window so very large datasets do not automatically flood the chart engine.</div>
