@@ -645,6 +645,81 @@ select {
     font-size:11px;align-items:center
 }
 
+
+/* ===== V5 TERMINAL POLISH ===== */
+html,body{
+    height:100%;
+    overflow:hidden;
+}
+body{
+    margin:0;
+}
+.main-layout{
+    height:calc(100vh - 126px);
+    min-height:0;
+    overflow:hidden;
+}
+.chart-area{
+    min-height:0;
+    height:100%;
+}
+.chart-wrapper{
+    height:calc(100vh - 430px);
+    min-height:320px;
+    flex:1 1 auto;
+}
+.right-panel{
+    height:100%;
+    max-height:none;
+    overflow-y:auto;
+}
+.bottom-panel{
+    max-height:120px;
+    overflow-y:auto;
+}
+.trade-strip{
+    max-height:108px;
+    min-height:76px;
+    overflow:auto;
+}
+.floating-position{
+    top:70px;
+    right:18px;
+}
+.replay-bar{
+    min-height:48px;
+}
+.replay-bar input{
+    height:32px;
+    box-sizing:border-box;
+}
+#replayStatus{
+    overflow:hidden;
+    text-overflow:ellipsis;
+    max-width:260px;
+}
+@media(max-width:900px){
+    html,body{overflow:auto}
+    .main-layout{
+        height:auto;
+        overflow:visible;
+    }
+    .chart-area{height:auto}
+    .chart-wrapper{
+        height:460px;
+        min-height:460px;
+    }
+    .right-panel{
+        height:auto;
+        max-height:none;
+    }
+    .trade-strip{max-height:none}
+}
+
+
+.trade-strip .profit{color:#43e37b!important}
+.trade-strip .loss{color:#ff6678!important}
+
 </style>
 </head>
 
@@ -795,6 +870,7 @@ select {
         <span>Take Profit</span><strong id="fpTP">—</strong>
     </div>
     <div class="fp-pnl" id="fpPnl">Floating P&L ₹0</div>
+    <div id="fpState" style="font-size:9px;color:#71839b;margin-top:5px;">LIVE SIMULATION</div>
 </div>
 
             <div class="crosshair-label" id="crosshairLabel"></div>
@@ -1464,17 +1540,50 @@ function initReplayPicker(){
 
     dateInput.value=toDateInputValue(current);
     timeInput.value=toTimeInputValue(current);
+
+    updateReplayStatus(current);
 }
 
 function toDateInputValue(date){
-    return date.getFullYear()+"-"+
-        String(date.getMonth()+1).padStart(2,"0")+"-"+
-        String(date.getDate()).padStart(2,"0");
+    const d=new Date(date);
+    return d.getFullYear()+"-"+
+        String(d.getMonth()+1).padStart(2,"0")+"-"+
+        String(d.getDate()).padStart(2,"0");
 }
 
 function toTimeInputValue(date){
-    return String(date.getHours()).padStart(2,"0")+":"+
-        String(date.getMinutes()).padStart(2,"0");
+    const d=new Date(date);
+    return String(d.getHours()).padStart(2,"0")+":"+
+        String(d.getMinutes()).padStart(2,"0");
+}
+
+function parseLocalDateTime(dateString,timeString){
+
+    const parts=dateString.split("-").map(Number);
+    const tparts=timeString.split(":").map(Number);
+
+    if(parts.length!==3 || tparts.length<2) return null;
+
+    const d=new Date(
+        parts[0],
+        parts[1]-1,
+        parts[2],
+        tparts[0],
+        tparts[1],
+        0,
+        0
+    );
+
+    return Number.isNaN(d.getTime()) ? null : d;
+}
+
+function updateReplayStatus(date){
+
+    const status=document.getElementById("replayStatus");
+
+    if(status){
+        status.textContent="Replay: "+formatDate(date);
+    }
 }
 
 function jumpToReplayPoint(){
@@ -1486,7 +1595,13 @@ function jumpToReplayPoint(){
 
     if(!date || !time) return;
 
-    const target=new Date(date+"T"+time+":00");
+    const target=parseLocalDateTime(date,time);
+
+    if(!target){
+        document.getElementById("replayStatus").textContent=
+            "Invalid date/time.";
+        return;
+    }
 
     let bestIndex=0;
     let bestDiff=Infinity;
@@ -2854,6 +2969,11 @@ function updateFloatingPosition(){
     pnlEl.textContent=(pnl>=0?"+":"-")+"₹"+Math.abs(pnl).toFixed(0)+" Floating P&L";
     pnlEl.style.color=pnl>=0?"#43e37b":"#ff6678";
 
+    const state=document.getElementById("fpState");
+    state.textContent=pnl>=0?"PROFIT • LIVE SIMULATION":"LOSS • LIVE SIMULATION";
+    state.style.color=pnl>=0?"#43e37b":"#ff6678";
+
+    card.style.borderColor=pnl>=0?"#286c49":"#713442";
     card.classList.add("show");
 }
 
