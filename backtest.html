@@ -475,6 +475,38 @@ select {
         margin-left: 0;
     }
 }
+
+/* BFT PRO TRADING WORKSPACE */
+.trade-ticket{position:sticky;top:0}
+.ticket-tabs{display:grid;grid-template-columns:1fr 1fr;background:#0a1524;border:1px solid #22374f;border-radius:9px;padding:3px;margin-bottom:12px}
+.ticket-tab{border:0;background:transparent;color:#7890aa;padding:9px;border-radius:7px;cursor:pointer;font-weight:700}
+.ticket-tab.active{background:#172b43;color:#eef4ff}
+.quote-box{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.quote{border-radius:9px;padding:10px;cursor:pointer;text-align:center;border:1px solid;transition:.15s}
+.quote.sell{background:#321821;border-color:#713442}
+.quote.buy{background:#123522;border-color:#267a49}
+.quote:hover{transform:translateY(-1px);filter:brightness(1.12)}
+.quote-label{font-size:10px;text-transform:uppercase;color:#9caabd;letter-spacing:.5px}
+.quote-price{font-size:19px;font-weight:800;margin-top:3px}
+.sell .quote-price{color:#ff7786}.buy .quote-price{color:#4be985}
+.ticket-field{margin-bottom:10px}.ticket-field label{display:flex;justify-content:space-between;color:#8092aa;font-size:11px;margin-bottom:5px}
+.ticket-field input{width:100%;background:#0b192a;color:#edf5ff;border:1px solid #29405a;padding:10px;border-radius:7px;outline:none}
+.ticket-field input:focus{border-color:#43e37b}
+.stepper{display:grid;grid-template-columns:38px 1fr 38px;gap:5px}
+.stepper button{background:#122238;border:1px solid #2b405a;color:#dce7f5;border-radius:7px;cursor:pointer;font-size:16px}
+.quick-stats{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:10px 0 12px}
+.quick-stat{background:#0b192a;border:1px solid #1d3148;border-radius:7px;padding:8px}
+.quick-stat span{display:block;color:#71839b;font-size:10px}.quick-stat strong{display:block;margin-top:2px;font-size:12px}
+.big-order-buttons{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.big-order-buttons button{padding:14px 8px;border-radius:9px;font-weight:900;cursor:pointer;font-size:14px}
+.big-buy{background:#164a2d;border:1px solid #35a961;color:#5cf291}.big-sell{background:#4a2029;border:1px solid #a94355;color:#ff8492}
+.trade-strip{background:#081321;border-top:1px solid #1b2b40;border-bottom:1px solid #1b2b40;min-height:88px;overflow-x:auto}
+.trade-strip-head{height:34px;display:flex;align-items:center;gap:20px;padding:0 14px;border-bottom:1px solid #18283b;color:#8294aa;font-size:12px}
+.trade-strip-head .active{color:#eef4ff;border-bottom:2px solid #43e37b;height:34px;display:flex;align-items:center}
+.trade-table{min-width:800px;display:grid;grid-template-columns:1.4fr .8fr .8fr .9fr .9fr .9fr .9fr;padding:9px 14px;gap:8px;font-size:12px;align-items:center}
+.trade-table span{color:#7f91a9}.trade-table strong{color:#eaf2fc}
+@media(max-width:900px){.trade-ticket{position:static}}
+
 </style>
 </head>
 
@@ -683,61 +715,69 @@ select {
         </div>
 
 
-        <!-- ORDER -->
+        <!-- PRO ORDER TICKET -->
+<div class="panel trade-ticket">
+    <div class="panel-title">Trade Ticket</div>
 
-        <div class="panel">
+    <div class="ticket-tabs">
+        <button class="ticket-tab active" id="marketTab">Market</button>
+        <button class="ticket-tab" id="pendingTab">Pending</button>
+    </div>
 
-            <div class="panel-title">
-                Order Panel
-            </div>
+    <div class="quote-box">
+        <button class="quote sell" onclick="selectDirection('SELL')">
+            <div class="quote-label">Sell</div>
+            <div class="quote-price" id="sellQuote">--</div>
+        </button>
+        <button class="quote buy" onclick="selectDirection('BUY')">
+            <div class="quote-label">Buy</div>
+            <div class="quote-price" id="buyQuote">--</div>
+        </button>
+    </div>
 
-
-            <div class="order-row">
-
-                <div class="field">
-                    <label>Entry Price</label>
-                    <input id="entry" type="number" step="0.01" placeholder="Auto">
-                </div>
-
-                <div class="field">
-                    <label>Risk %</label>
-                    <input id="risk" type="number" value="1" step="0.1">
-                </div>
-
-            </div>
-
-
-            <div class="order-row">
-
-                <div class="field">
-                    <label>Stop Loss</label>
-                    <input id="sl" type="number" step="0.01" placeholder="Price">
-                </div>
-
-                <div class="field">
-                    <label>Take Profit</label>
-                    <input id="tp" type="number" step="0.01" placeholder="Price">
-                </div>
-
-            </div>
-
-
-            <div class="order-buttons">
-
-                <button class="buy" onclick="openTrade('BUY')">
-                    BUY
-                </button>
-
-                <button class="sell" onclick="openTrade('SELL')">
-                    SELL
-                </button>
-
-            </div>
-
+    <div class="ticket-field">
+        <label><span>Quantity / Lots</span><span>Simulator</span></label>
+        <div class="stepper">
+            <button onclick="changeLots(-1)">−</button>
+            <input id="lots" type="number" min="1" step="1" value="1">
+            <button onclick="changeLots(1)">+</button>
         </div>
+    </div>
 
+    <div class="ticket-field">
+        <label><span>Entry Price</span><span>Auto = current</span></label>
+        <input id="entry" type="number" step="0.05" placeholder="Auto">
+    </div>
 
-        <!-- OPEN POSITION -->
+    <div class="ticket-field">
+        <label><span>Risk %</span><span id="riskMoneyLabel">₹1,000 risk</span></label>
+        <input id="risk" type="number" value="1" step="0.1" min="0.1">
+    </div>
+
+    <div class="ticket-field">
+        <label><span>Stop Loss</span><span>Price</span></label>
+        <input id="sl" type="number" step="0.05" placeholder="Enter SL">
+    </div>
+
+    <div class="ticket-field">
+        <label><span>Take Profit</span><span>Price</span></label>
+        <input id="tp" type="number" step="0.05" placeholder="Enter TP">
+    </div>
+
+    <div class="quick-stats">
+        <div class="quick-stat"><span>RISK</span><strong id="ticketRisk">₹0</strong></div>
+        <div class="quick-stat"><span>REWARD</span><strong id="ticketReward">₹0</strong></div>
+        <div class="quick-stat"><span>R:R</span><strong id="ticketRR">—</strong></div>
+        <div class="quick-stat"><span>POSITION</span><strong id="ticketPosition">1 Lot</strong></div>
+    </div>
+
+    <div class="big-order-buttons">
+        <button class="big-sell" onclick="openTrade('SELL')">SELL</button>
+        <button class="big-buy" onclick="openTrade('BUY')">BUY</button>
+    </div>
+</div>
+
+<!-- OPEN POSITION -->
 
         <div class="panel">
 
@@ -777,6 +817,21 @@ select {
     </aside>
 
 </main>
+
+<!-- OPEN TRADE STRIP -->
+<section class="trade-strip" id="tradeStrip">
+    <div class="trade-strip-head">
+        <span class="active">Open <b id="openCount" style="margin-left:4px">0</b></span>
+        <span>Pending</span>
+        <span>Closed <b id="closedCount" style="margin-left:4px">0</b></span>
+    </div>
+    <div id="openTradeTable">
+        <div style="padding:13px 14px;color:#64768e;font-size:12px">
+            No open trades. Choose BUY or SELL from the trade ticket.
+        </div>
+    </div>
+</section>
+
 
 
 <script>
@@ -919,6 +974,8 @@ async function loadBankNiftyCSV() {
         updateStats();
         updateHistory();
         updatePosition();
+        updateQuotes();
+        updateOpenTradeStrip();
 
         console.log(
             "BANKNIFTY candles loaded:",
@@ -1475,6 +1532,8 @@ function nextCandle() {
     updatePosition();
 
     updateStats();
+    updateQuotes();
+    updateOpenTradeStrip();
 }
 
 
@@ -1793,6 +1852,9 @@ function openTrade(
         riskDistance;
 
 
+    const lots =
+        Math.max(1, parseInt(document.getElementById("lots").value) || 1);
+
     openPosition = {
 
         direction:
@@ -1813,12 +1875,17 @@ function openTrade(
         positionSize:
             positionSize,
 
+        lots:
+            lots,
+
         openTime:
             candles[currentIndex].time
     };
 
 
     updatePosition();
+    updateQuotes();
+    updateOpenTradeStrip();
 
     drawChart();
 
@@ -2417,6 +2484,106 @@ document.getElementById(
 
     }
 );
+
+
+
+/* PRO TRADE TICKET */
+
+function getCurrentPrice(){
+    const c=candles[currentIndex];
+    return c ? c.close : 0;
+}
+
+function updateQuotes(){
+    const price=getCurrentPrice();
+    if(!price) return;
+    const spread=Math.max(0.05,price*0.00005);
+    document.getElementById("sellQuote").textContent=(price-spread).toFixed(2);
+    document.getElementById("buyQuote").textContent=(price+spread).toFixed(2);
+    const risk=parseFloat(document.getElementById("risk").value)||0;
+    document.getElementById("riskMoneyLabel").textContent="₹"+(balance*risk/100).toFixed(0)+" risk";
+    updateTicketMetrics();
+}
+
+function selectDirection(direction){
+    const price=getCurrentPrice();
+    if(!price) return;
+    document.getElementById("entry").value=price.toFixed(2);
+    const sl=document.getElementById("sl"),tp=document.getElementById("tp");
+    const distance=Math.max(20,price*0.001);
+    if(direction==="BUY"){
+        if(!sl.value) sl.value=(price-distance).toFixed(2);
+        if(!tp.value) tp.value=(price+distance*2).toFixed(2);
+    }else{
+        if(!sl.value) sl.value=(price+distance).toFixed(2);
+        if(!tp.value) tp.value=(price-distance*2).toFixed(2);
+    }
+    document.getElementById("entry").dataset.direction=direction;
+    updateTicketMetrics();
+}
+
+function changeLots(amount){
+    const input=document.getElementById("lots");
+    input.value=Math.max(1,(parseInt(input.value)||1)+amount);
+    updateTicketMetrics();
+}
+
+function updateTicketMetrics(){
+    const entry=parseFloat(document.getElementById("entry").value);
+    const sl=parseFloat(document.getElementById("sl").value);
+    const tp=parseFloat(document.getElementById("tp").value);
+    const risk=parseFloat(document.getElementById("risk").value)||0;
+    const riskMoney=balance*risk/100;
+    document.getElementById("ticketRisk").textContent="₹"+riskMoney.toFixed(0);
+    document.getElementById("ticketPosition").textContent=(parseInt(document.getElementById("lots").value)||1)+" Lot";
+    if(Number.isFinite(entry)&&Number.isFinite(sl)&&Number.isFinite(tp)){
+        const rd=Math.abs(entry-sl),wd=Math.abs(tp-entry);
+        const rr=rd>0?wd/rd:0;
+        document.getElementById("ticketReward").textContent="₹"+(riskMoney*rr).toFixed(0);
+        document.getElementById("ticketRR").textContent=rr>0?"1:"+rr.toFixed(2):"—";
+    }else{
+        document.getElementById("ticketReward").textContent="₹0";
+        document.getElementById("ticketRR").textContent="—";
+    }
+}
+
+function updateOpenTradeStrip(){
+    const box=document.getElementById("openTradeTable");
+    document.getElementById("openCount").textContent=openPosition?"1":"0";
+    document.getElementById("closedCount").textContent=trades.length;
+    if(!openPosition){
+        box.innerHTML='<div style="padding:13px 14px;color:#64768e;font-size:12px">No open trades. Choose BUY or SELL from the trade ticket.</div>';
+        return;
+    }
+    const p=openPosition,current=getCurrentPrice();
+    const floating=p.direction==="BUY"?(current-p.entry)*p.positionSize:(p.entry-current)*p.positionSize;
+    box.innerHTML=`
+      <div class="trade-table">
+        <strong>BANKNIFTY <span class="${p.direction==="BUY"?"profit":"loss"}">● ${p.direction}</span></strong>
+        <strong>${p.lots||1} Lot</strong>
+        <span>Entry<br><strong>${p.entry.toFixed(2)}</strong></span>
+        <span>Current<br><strong>${current.toFixed(2)}</strong></span>
+        <span>TP<br><strong class="profit">${p.tp.toFixed(2)}</strong></span>
+        <span>SL<br><strong class="loss">${p.sl.toFixed(2)}</strong></span>
+        <strong class="${floating>=0?"profit":"loss"}">${floating>=0?"+":""}₹${floating.toFixed(0)}</strong>
+      </div>`;
+}
+
+document.getElementById("risk").addEventListener("input",updateTicketMetrics);
+document.getElementById("entry").addEventListener("input",updateTicketMetrics);
+document.getElementById("sl").addEventListener("input",updateTicketMetrics);
+document.getElementById("tp").addEventListener("input",updateTicketMetrics);
+document.getElementById("lots").addEventListener("input",updateTicketMetrics);
+
+document.getElementById("marketTab").addEventListener("click",()=>{
+    document.getElementById("marketTab").classList.add("active");
+    document.getElementById("pendingTab").classList.remove("active");
+});
+document.getElementById("pendingTab").addEventListener("click",()=>{
+    document.getElementById("pendingTab").classList.add("active");
+    document.getElementById("marketTab").classList.remove("active");
+    alert("Pending orders will be added in the next upgrade.");
+});
 
 
 /* ------------------------------
