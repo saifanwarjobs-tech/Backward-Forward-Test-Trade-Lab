@@ -5,10 +5,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>BFT Trade Lab | Historical Trading Backtesting & Replay</title>
+<title>XAUUSD Backtesting Lab | BFT Trade Lab</title>
 
 <meta name="description"
-content="Practice BANKNIFTY trading with real historical 5-minute market replay, candle-by-candle backtesting, stop loss, take profit and trading performance analytics.">
+content="Practice XAUUSD gold trading with historical market replay, candle-by-candle backtesting, stop loss, take profit and trading performance analytics.">
 
 <meta name="robots" content="index, follow">
 
@@ -432,6 +432,84 @@ select {
     margin-top: 4px;
 }
 
+/* TRADE PREVIEW */
+.trade-preview {
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+    margin-top:10px;
+}
+.trade-preview > div {
+    background:#0d1c2e;
+    border:1px solid #1d3047;
+    border-radius:7px;
+    padding:8px 9px;
+}
+.trade-preview span {
+    display:block;
+    color:#71839b;
+    font-size:10px;
+}
+.trade-preview strong {
+    display:block;
+    margin-top:3px;
+    font-size:12px;
+}
+.risk-presets {
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:6px;
+    margin-top:8px;
+}
+.risk-presets button {
+    background:#0e1c2d;
+    color:#8fa0b7;
+    border:1px solid #263a53;
+    border-radius:6px;
+    padding:6px 3px;
+    font-size:10px;
+    cursor:pointer;
+}
+.risk-presets button.active, .risk-presets button:hover {
+    background:#173d2a;
+    color:#4be985;
+    border-color:#2c8450;
+}
+.trade-message {
+    min-height:18px;
+    margin-top:7px;
+    color:#ffb454;
+    font-size:10px;
+}
+.trade-message.success { color:#43e37b; }
+.trade-message.error { color:#ff6678; }
+.position-actions {
+    display:grid;
+    grid-template-columns:1fr 34px;
+    gap:7px;
+    margin-top:10px;
+}
+.close-trade-btn {
+    background:#3b2228;
+    color:#ff8794;
+    border:1px solid #7d3b48;
+    border-radius:7px;
+    padding:8px;
+    cursor:pointer;
+    font-size:11px;
+    font-weight:700;
+}
+.close-trade-btn:hover { background:#542a32; }
+.hide-position-btn {
+    background:#101f32;
+    color:#8fa0b7;
+    border:1px solid #293c54;
+    border-radius:7px;
+    cursor:pointer;
+    font-size:18px;
+    line-height:1;
+}
+
 /* MOBILE */
 
 @media(max-width: 900px) {
@@ -475,740 +553,6 @@ select {
         margin-left: 0;
     }
 }
-
-/* BFT PRO TRADING WORKSPACE */
-.trade-ticket{position:sticky;top:0}
-.ticket-tabs{display:grid;grid-template-columns:1fr 1fr;background:#0a1524;border:1px solid #22374f;border-radius:9px;padding:3px;margin-bottom:12px}
-.ticket-tab{border:0;background:transparent;color:#7890aa;padding:9px;border-radius:7px;cursor:pointer;font-weight:700}
-.ticket-tab.active{background:#172b43;color:#eef4ff}
-.quote-box{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
-.quote{border-radius:9px;padding:10px;cursor:pointer;text-align:center;border:1px solid;transition:.15s}
-.quote.sell{background:#321821;border-color:#713442}
-.quote.buy{background:#123522;border-color:#267a49}
-.quote:hover{transform:translateY(-1px);filter:brightness(1.12)}
-.quote-label{font-size:10px;text-transform:uppercase;color:#9caabd;letter-spacing:.5px}
-.quote-price{font-size:19px;font-weight:800;margin-top:3px}
-.sell .quote-price{color:#ff7786}.buy .quote-price{color:#4be985}
-.ticket-field{margin-bottom:10px}.ticket-field label{display:flex;justify-content:space-between;color:#8092aa;font-size:11px;margin-bottom:5px}
-.ticket-field input{width:100%;background:#0b192a;color:#edf5ff;border:1px solid #29405a;padding:10px;border-radius:7px;outline:none}
-.ticket-field input:focus{border-color:#43e37b}
-.stepper{display:grid;grid-template-columns:38px 1fr 38px;gap:5px}
-.stepper button{background:#122238;border:1px solid #2b405a;color:#dce7f5;border-radius:7px;cursor:pointer;font-size:16px}
-.quick-stats{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:10px 0 12px}
-.quick-stat{background:#0b192a;border:1px solid #1d3148;border-radius:7px;padding:8px}
-.quick-stat span{display:block;color:#71839b;font-size:10px}.quick-stat strong{display:block;margin-top:2px;font-size:12px}
-.big-order-buttons{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.big-order-buttons button{padding:14px 8px;border-radius:9px;font-weight:900;cursor:pointer;font-size:14px}
-.big-buy{background:#164a2d;border:1px solid #35a961;color:#5cf291}.big-sell{background:#4a2029;border:1px solid #a94355;color:#ff8492}
-.trade-strip{background:#081321;border-top:1px solid #1b2b40;border-bottom:1px solid #1b2b40;min-height:88px;overflow-x:auto}
-.trade-strip-head{height:34px;display:flex;align-items:center;gap:20px;padding:0 14px;border-bottom:1px solid #18283b;color:#8294aa;font-size:12px}
-.trade-strip-head .active{color:#eef4ff;border-bottom:2px solid #43e37b;height:34px;display:flex;align-items:center}
-.trade-table{min-width:800px;display:grid;grid-template-columns:1.4fr .8fr .8fr .9fr .9fr .9fr .9fr;padding:9px 14px;gap:8px;font-size:12px;align-items:center}
-.trade-table span{color:#7f91a9}.trade-table strong{color:#eaf2fc}
-@media(max-width:900px){.trade-ticket{position:static}}
-
-
-/* ===== BFT CHART PRO ===== */
-.chart-area{display:flex;flex-direction:column;min-width:0;min-height:0}
-.chart-wrapper{height:calc(100vh - 300px);min-height:470px}
-.chart-toolbar{gap:6px}
-.chart-toolbar .tool-btn{padding:7px 10px;font-size:12px}
-.chart-tool{
-    width:34px;height:34px;padding:0!important;
-    display:inline-flex;align-items:center;justify-content:center;
-    font-size:15px!important;
-}
-.chart-tool.active{background:#173d2a;border-color:#43e37b;color:#43e37b}
-.chart-info{
-    margin-left:auto;display:flex;align-items:center;gap:12px;
-    color:#71839b;font-size:11px
-}
-.crosshair-label{
-    position:absolute;display:none;pointer-events:none;
-    background:#0b192a;border:1px solid #334a64;color:#dce7f5;
-    padding:5px 7px;border-radius:5px;font-size:10px;z-index:5
-}
-.chart-wrapper.crosshair-on{cursor:crosshair}
-.chart-wrapper.pan-on{cursor:grab}
-.chart-wrapper.pan-on:active{cursor:grabbing}
-.chart-status{
-    position:absolute;left:10px;top:8px;z-index:3;
-    background:rgba(7,17,31,.82);border:1px solid rgba(255,255,255,.08);
-    border-radius:6px;padding:5px 8px;color:#8fa0b7;font-size:10px;
-    pointer-events:none
-}
-@media(max-width:900px){
-    .chart-wrapper{height:470px}
-    .chart-info{display:none}
-}
-
-
-/* ===== BFT V3 TERMINAL POLISH ===== */
-.main-layout{min-height:0}
-.chart-area{min-height:0}
-.chart-wrapper{
-    height:calc(100vh - 330px);
-    min-height:430px;
-}
-.right-panel{
-    max-height:calc(100vh - 126px);
-    overflow-y:auto;
-    scrollbar-width:thin;
-}
-.bottom-panel{
-    max-height:135px;
-    overflow-y:auto;
-}
-.history{max-height:170px;overflow-y:auto;}
-.floating-position{
-    position:absolute;
-    right:82px;
-    top:54px;
-    z-index:8;
-    min-width:190px;
-    background:rgba(7,17,31,.96);
-    border:1px solid #29445f;
-    border-radius:10px;
-    box-shadow:0 12px 35px rgba(0,0,0,.35);
-    padding:11px 12px;
-    display:none;
-}
-.floating-position.show{display:block}
-.fp-head{
-    display:flex;justify-content:space-between;align-items:center;
-    margin-bottom:8px;font-size:12px;font-weight:800
-}
-.fp-close{
-    border:0;background:transparent;color:#70839a;cursor:pointer;
-}
-.fp-grid{
-    display:grid;grid-template-columns:1fr 1fr;gap:5px 12px;font-size:10px
-}
-.fp-grid span{color:#7488a0}.fp-grid strong{color:#eef4ff}
-.fp-pnl{
-    margin-top:8px;padding-top:8px;border-top:1px solid #1c3046;
-    font-size:14px;font-weight:900
-}
-.drawing-bar{
-    display:flex;align-items:center;gap:5px;padding:6px 8px;
-    border-bottom:1px solid #17283b;background:#091524;
-    overflow-x:auto
-}
-.draw-btn{
-    flex:0 0 auto;width:31px;height:29px;border:1px solid #263d56;
-    border-radius:6px;background:#0d1c2d;color:#9db0c8;cursor:pointer
-}
-.draw-btn:hover,.draw-btn.active{
-    background:#173d2a;color:#43e37b;border-color:#43e37b
-}
-.draw-sep{width:1px;height:20px;background:#23374d;margin:0 2px}
-.drawing-help{
-    margin-left:auto;color:#62758c;font-size:10px;white-space:nowrap
-}
-.chart-empty-note{
-    position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
-    color:#5e7189;font-size:12px;pointer-events:none
-}
-@media(max-width:900px){
-    .chart-wrapper{height:460px}
-    .right-panel{max-height:none}
-    .floating-position{right:15px}
-    .drawing-help{display:none}
-}
-
-
-/* ===== V4 REPLAY + HISTORY ===== */
-.replay-bar{
-    display:flex;align-items:end;gap:8px;padding:7px 9px;
-    background:#081422;border-bottom:1px solid #182b40;
-    overflow-x:auto;
-}
-.replay-title{
-    color:#43e37b;font-size:10px;font-weight:800;
-    white-space:nowrap;padding-bottom:9px;
-}
-.replay-bar label{
-    color:#71859e;font-size:9px;display:flex;flex-direction:column;
-    gap:4px;white-space:nowrap;
-}
-.replay-bar input{
-    width:132px;background:#0b192a;color:#eef4ff;
-    border:1px solid #29405a;border-radius:6px;padding:7px 8px;
-}
-.replay-bar button{white-space:nowrap}
-#replayStatus{
-    color:#687d96;font-size:10px;white-space:nowrap;padding-bottom:9px
-}
-.history-row{
-    display:grid;grid-template-columns:110px 105px 1fr 70px;
-    gap:10px;padding:8px 12px;border-bottom:1px solid #15273a;
-    font-size:11px;align-items:center
-}
-
-
-/* ===== V5 TERMINAL POLISH ===== */
-html,body{
-    min-height:100%;
-    height:auto;
-    overflow-x:hidden;
-    overflow-y:auto;
-}
-body{
-    margin:0;
-}
-.main-layout{
-    min-height:0;
-    height:auto;
-    overflow:visible;
-}
-.chart-area{
-    min-height:0;
-    height:auto;
-}
-.chart-wrapper{
-    height:560px;
-    min-height:420px;
-    flex:0 0 560px;
-}
-.right-panel{
-    height:auto;
-    max-height:none;
-    overflow:visible;
-}
-.bottom-panel{
-    max-height:160px;
-    overflow-y:auto;
-}
-.trade-strip{
-    max-height:108px;
-    min-height:76px;
-    overflow:auto;
-}
-.floating-position{
-    top:70px;
-    right:18px;
-}
-.replay-bar{
-    min-height:48px;
-}
-.replay-bar input{
-    height:32px;
-    box-sizing:border-box;
-}
-#replayStatus{
-    overflow:hidden;
-    text-overflow:ellipsis;
-    max-width:260px;
-}
-@media(max-width:900px){
-    html,body{
-        overflow-x:hidden;
-        overflow-y:auto;
-    }
-    .main-layout{
-        height:auto;
-        overflow:visible;
-    }
-    .chart-area{height:auto}
-    .chart-wrapper{
-        height:460px;
-        min-height:460px;
-        flex-basis:460px;
-    }
-    .right-panel{
-        height:auto;
-        max-height:none;
-        overflow:visible;
-    }
-    .trade-strip{max-height:none}
-}
-
-
-.trade-strip .profit{color:#43e37b!important}
-.trade-strip .loss{color:#ff6678!important}
-
-
-/* ===== V6 SCROLL FIX ===== */
-.main-layout{
-    overflow:visible !important;
-}
-.chart-wrapper{
-    overflow:hidden;
-}
-.trade-strip{
-    position:relative;
-    z-index:2;
-}
-
-
-/* ===== V7 DRAGGABLE TRADE LEVELS ===== */
-.trade-level-handle{
-    position:absolute;
-    right:72px;
-    pointer-events:none;
-}
-.chart-wrapper.trade-drag-ready{cursor:ns-resize}
-.trade-drag-toast{
-    position:absolute;left:50%;top:10px;transform:translateX(-50%);
-    z-index:10;display:none;padding:6px 10px;border-radius:6px;
-    background:#0b192a;border:1px solid #31506d;color:#dce8f6;
-    font-size:10px;box-shadow:0 8px 22px rgba(0,0,0,.25);
-}
-.trade-drag-toast.show{display:block}
-
-
-/* ===== V8 BACKTEST ANALYTICS ===== */
-.analytics-panel{
-    margin:0;
-    padding:26px 22px 42px;
-    background:#06101d;
-    border-top:1px solid #1a2c41;
-}
-.analytics-head{
-    display:flex;
-    justify-content:space-between;
-    align-items:flex-end;
-    gap:20px;
-    max-width:1400px;
-    margin:0 auto 18px;
-}
-.analytics-kicker{
-    color:#43e37b;
-    font-size:10px;
-    font-weight:900;
-    letter-spacing:1.5px;
-}
-.analytics-head h2{
-    margin:5px 0 3px;
-    color:#f1f6fd;
-    font-size:24px;
-}
-.analytics-head p{
-    margin:0;
-    color:#71859d;
-    font-size:12px;
-}
-.analytics-actions{
-    display:flex;
-    gap:6px;
-}
-.analytics-tab{
-    border:1px solid #29405a;
-    background:#0b192a;
-    color:#91a4bb;
-    border-radius:7px;
-    padding:8px 13px;
-    cursor:pointer;
-    font-size:11px;
-}
-.analytics-tab.active{
-    background:#153a29;
-    color:#43e37b;
-    border-color:#286b48;
-}
-.analytics-cards{
-    max-width:1400px;
-    margin:0 auto 16px;
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:10px;
-}
-.a-card{
-    min-height:72px;
-    padding:13px 14px;
-    border:1px solid #1b3047;
-    background:#0a1828;
-    border-radius:9px;
-    display:flex;
-    flex-direction:column;
-    justify-content:space-between;
-}
-.a-card span{
-    color:#71859d;
-    font-size:10px;
-}
-.a-card strong{
-    color:#eef4fc;
-    font-size:18px;
-}
-.a-card strong.profit{color:#43e37b}
-.a-card strong.loss{color:#ff6678}
-.a-card strong.neutral{color:#eef4fc}
-.analytics-grid{
-    max-width:1400px;
-    margin:0 auto;
-    display:grid;
-    grid-template-columns:minmax(0,1.55fr) minmax(300px,.8fr);
-    gap:12px;
-}
-.analytics-box{
-    border:1px solid #1b3047;
-    background:#091625;
-    border-radius:10px;
-    overflow:hidden;
-}
-.box-head{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:12px 14px;
-    border-bottom:1px solid #172a40;
-}
-.box-head strong{color:#eaf2fb;font-size:12px}
-.box-head span{color:#667b94;font-size:10px}
-#equityChart{
-    display:block;
-    width:100%;
-    height:240px;
-}
-.breakdown{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-}
-.breakdown div{
-    min-height:55px;
-    padding:10px 13px;
-    border-bottom:1px solid #15283d;
-}
-.breakdown div:nth-child(odd){border-right:1px solid #15283d}
-.breakdown span{
-    display:block;
-    color:#6f839c;
-    font-size:9px;
-    margin-bottom:5px;
-}
-.breakdown strong{
-    color:#eaf2fb;
-    font-size:13px;
-}
-.breakdown .profit{color:#43e37b}
-.breakdown .loss{color:#ff6678}
-.analytics-trades-empty{
-    padding:22px 14px;
-    color:#657a93;
-    font-size:11px;
-}
-.analytics-trade-row{
-    display:grid;
-    grid-template-columns:55px 80px 1fr 100px 75px 75px;
-    gap:10px;
-    padding:10px 13px;
-    border-bottom:1px solid #15283d;
-    align-items:center;
-    font-size:11px;
-}
-.analytics-trade-row .muted{color:#71859d}
-.analytics-trade-row .profit{color:#43e37b;font-weight:800}
-.analytics-trade-row .loss{color:#ff6678;font-weight:800}
-.analytics-table-head{
-    color:#61758d;
-    font-size:9px;
-    background:#07121f;
-}
-@media(max-width:950px){
-    .analytics-cards{grid-template-columns:repeat(2,1fr)}
-    .analytics-grid{grid-template-columns:1fr}
-}
-@media(max-width:600px){
-    .analytics-panel{padding:20px 10px 32px}
-    .analytics-head{align-items:flex-start;flex-direction:column}
-    .analytics-cards{grid-template-columns:1fr 1fr;gap:7px}
-    .analytics-head h2{font-size:20px}
-}
-
-
-/* ===== V9 CLEAN / COMPACT TERMINAL ===== */
-.top-header{height:46px!important;min-height:46px!important;padding:0 18px!important}
-.instrument-bar{height:54px!important;min-height:54px!important}
-.control-bar{min-height:44px!important;padding:4px 12px!important}
-.replay-bar{min-height:40px!important;padding:4px 8px!important}
-.drawing-bar{min-height:36px!important;padding:3px 8px!important}
-.chart-wrapper{height:520px!important;min-height:420px!important}
-.floating-position{top:44px!important;right:12px!important}
-.fp-close{position:absolute;right:7px;top:4px;border:0;background:transparent;color:#7d91aa;font-size:18px;cursor:pointer}
-.fp-close:hover{color:#fff}
-.fp-close-trade{width:100%;margin-top:9px;padding:7px;border:1px solid #b83c4d;background:#7f2635;color:#fff;border-radius:6px;font-weight:800;font-size:10px;cursor:pointer}
-.fp-close-trade:hover{background:#a52f40}
-
-/* JOURNAL */
-.journal-panel{padding:22px 22px 44px;background:#06101d;border-top:1px solid #1a2c41}
-.journal-head{max-width:1400px;margin:0 auto 14px;display:flex;justify-content:space-between;align-items:flex-end;gap:15px}
-.journal-kicker{color:#43e37b;font-size:10px;font-weight:900;letter-spacing:1.5px}
-.journal-head h2{margin:5px 0 3px;color:#f1f6fd;font-size:22px}
-.journal-head p{margin:0;color:#71859d;font-size:12px}
-.journal-add,.journal-save{border:1px solid #286b48;background:#123a28;color:#43e37b;border-radius:7px;padding:8px 12px;font-weight:800;cursor:pointer}
-.journal-layout{max-width:1400px;margin:auto;display:grid;grid-template-columns:390px minmax(0,1fr);gap:12px}
-.journal-form-box,.journal-list-box{border:1px solid #1b3047;background:#091625;border-radius:10px}
-.journal-form-box{padding:13px}
-.journal-form-title,.journal-list-head{display:flex;align-items:center;justify-content:space-between;padding-bottom:9px;margin-bottom:9px;border-bottom:1px solid #172a40}
-.journal-form-title strong,.journal-list-head strong{color:#eaf2fb;font-size:12px}
-.journal-x{border:0;background:transparent;color:#7d91aa;font-size:20px;cursor:pointer}
-.journal-form-box label{display:block;color:#72869e;font-size:10px;margin:8px 0}
-.journal-form-box select,.journal-form-box textarea{width:100%;box-sizing:border-box;margin-top:5px;background:#071525;border:1px solid #263c55;color:#edf4fc;border-radius:6px;padding:7px;font-size:11px}
-.journal-form-box textarea{min-height:54px;resize:vertical}
-.journal-two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.rating{display:flex;gap:5px;margin-top:5px}
-.rating button{width:30px;height:27px;border:1px solid #29405a;background:#0b192a;color:#8fa2b9;border-radius:6px;cursor:pointer}
-.rating button.active{background:#153a29;border-color:#43e37b;color:#43e37b}
-.journal-form-actions{display:flex;justify-content:flex-end;gap:7px;margin-top:10px}
-.journal-cancel{border:1px solid #29405a;background:#0b192a;color:#8ea1b8;border-radius:7px;padding:8px 12px;cursor:pointer}
-.journal-list-head{padding:13px;margin:0}
-.journal-list-head span{color:#647a93;font-size:10px}
-.journal-entry{padding:12px 13px;border-bottom:1px solid #15283d}
-.je-top{display:flex;justify-content:space-between;gap:10px}
-.je-title{color:#eaf2fb;font-weight:800;font-size:12px}.je-meta{color:#647a93;font-size:9px;margin-top:3px}
-.je-tags{display:flex;gap:5px;flex-wrap:wrap;margin:7px 0}.je-tag{padding:3px 6px;border-radius:10px;background:#102238;border:1px solid #213b56;color:#8fa4bb;font-size:9px}
-.je-text{color:#a8b8ca;font-size:10px;line-height:1.5;margin-top:5px}.je-actions{margin-top:7px;text-align:right}
-.je-delete{border:1px solid #59313a;background:#24151a;color:#ff7b8b;border-radius:5px;padding:4px 7px;font-size:9px;cursor:pointer}
-.journal-empty{padding:24px;color:#657a93;font-size:11px}
-@media(max-width:900px){.journal-layout{grid-template-columns:1fr}}
-
-
-/* ===== V10 CLEAN COMPACT TERMINAL ===== */
-.header{
-    height:48px !important;
-    padding:0 18px !important;
-}
-.logo{font-size:20px !important}
-.market-status{padding:5px 9px !important;font-size:11px !important}
-
-.topbar{
-    min-height:50px !important;
-    height:50px !important;
-    gap:12px !important;
-    padding:5px 18px !important;
-    flex-wrap:nowrap !important;
-}
-.symbol{font-size:17px !important}
-.symbol small{font-size:10px !important}
-.control label{font-size:10px !important}
-.topbar select{padding:7px 9px !important;font-size:11px !important}
-.date-info{font-size:11px !important}
-
-.chart-toolbar{
-    height:42px !important;
-    padding:0 10px !important;
-    gap:5px !important;
-}
-.tool-btn{
-    padding:6px 9px !important;
-    font-size:11px !important;
-}
-
-.chart-wrapper{
-    height:400px !important;
-    min-height:400px !important;
-}
-.replay-bar{
-    min-height:42px !important;
-    height:42px !important;
-    padding:4px 9px !important;
-    gap:6px !important;
-    flex-wrap:nowrap !important;
-}
-.replay-btn,.play-btn{padding:7px 11px !important;font-size:11px !important}
-.speed-group{margin-left:3px !important}
-.speed{padding:5px 8px !important;font-size:10px !important}
-
-.main{
-    min-height:0 !important;
-}
-.chart-area{
-    min-height:0 !important;
-}
-
-/* Journal stays compact until explicitly opened. */
-.journal-panel{
-    padding:12px 18px 18px !important;
-}
-.journal-head{
-    margin:0 auto !important;
-    align-items:center !important;
-}
-.journal-head h2{font-size:18px !important}
-.journal-head p{display:none !important}
-.journal-layout{
-    display:none;
-    margin-top:12px !important;
-}
-.journal-panel.journal-open .journal-layout{
-    display:grid;
-}
-.journal-add{
-    padding:7px 11px !important;
-    font-size:11px !important;
-}
-
-
-/* ===== V10 CLEAN FLOATING POSITION CARD ===== */
-.floating-position{
-    width:205px !important;
-    padding:10px 11px !important;
-    border-radius:9px !important;
-    box-shadow:0 10px 30px rgba(0,0,0,.28) !important;
-}
-.fp-head{padding-right:20px !important}
-.fp-grid{gap:4px 8px !important}
-.fp-pnl{margin-top:7px !important;font-size:12px !important}
-.fp-close-trade{
-    margin-top:7px !important;
-    padding:6px !important;
-    font-size:10px !important;
-}
-
-
-/* ===== V11 ACTION-FIRST SIDEBAR ===== */
-.sidebar{
-    background:#091525;
-    overflow-y:auto;
-}
-.sidebar .trade-ticket{
-    border-top:1px solid #1a2b40;
-}
-.sidebar .trade-ticket .panel-title{
-    color:#c9d7e8;
-    font-weight:800;
-}
-.sidebar .panel{
-    padding:13px 17px;
-}
-.sidebar .trade-ticket{
-    padding-top:14px;
-    padding-bottom:14px;
-}
-.sidebar .trade-ticket .quote-box{
-    margin-top:5px;
-}
-.sidebar .trade-ticket .big-order-buttons{
-    margin-top:10px;
-}
-
-
-/* ===== V12 TOP REPLAY / CHART-FIRST LAYOUT ===== */
-.topbar{
-    height:48px !important;
-    min-height:48px !important;
-    padding:4px 18px !important;
-}
-.header{
-    height:46px !important;
-    padding:0 18px !important;
-}
-
-/* Replay controls are now the first row, like a professional replay terminal. */
-.replay-bar{
-    height:44px !important;
-    min-height:44px !important;
-    padding:4px 10px !important;
-    gap:6px !important;
-    flex-wrap:nowrap !important;
-    border-top:0 !important;
-    border-bottom:1px solid #1b2b40 !important;
-    overflow:hidden !important;
-}
-.replay-title{
-    font-size:11px !important;
-    font-weight:800 !important;
-    color:#43e37b !important;
-    white-space:nowrap !important;
-}
-.replay-bar label{
-    font-size:9px !important;
-    color:#71839b !important;
-}
-.replay-bar input{
-    height:30px !important;
-    padding:5px 8px !important;
-    font-size:11px !important;
-}
-.replay-bar .tool-btn{
-    padding:6px 10px !important;
-    font-size:10px !important;
-}
-#replayStatus{
-    font-size:10px !important;
-    white-space:nowrap !important;
-    overflow:hidden !important;
-    text-overflow:ellipsis !important;
-}
-
-/* Give the chart back the vertical space previously consumed by replay rows. */
-.chart-wrapper{
-    height:560px !important;
-    min-height:560px !important;
-}
-
-/* Controls moved below chart become a compact terminal strip. */
-.chart-toolbar{
-    height:40px !important;
-    padding:0 10px !important;
-    gap:5px !important;
-    border-top:1px solid #18283b !important;
-}
-.chart-toolbar .tool-btn{
-    padding:6px 9px !important;
-    font-size:10px !important;
-}
-.chart-info{
-    margin-left:auto !important;
-    font-size:9px !important;
-}
-
-/* Drawing tools also stay out of the chart area. */
-.drawing-bar{
-    height:38px !important;
-    padding:0 10px !important;
-    gap:4px !important;
-    border-bottom:1px solid #18283b !important;
-}
-.draw-btn{
-    width:30px !important;
-    height:28px !important;
-    font-size:11px !important;
-}
-
-/* Small status strip instead of another large replay panel. */
-.replay-secondary-note{
-    height:28px;
-    display:flex;
-    align-items:center;
-    gap:10px;
-    padding:0 12px;
-    border-bottom:1px solid #1b2b40;
-    background:#091525;
-    font-size:10px;
-    color:#43e37b;
-    text-transform:uppercase;
-    letter-spacing:.5px;
-}
-.replay-secondary-note .muted{
-    color:#687c95;
-    text-transform:none;
-    letter-spacing:0;
-}
-
-/* Make the action sidebar easier to use. */
-.sidebar .panel{
-    padding:12px 16px !important;
-}
-.sidebar .balance{
-    font-size:23px !important;
-}
-.order-buttons button{
-    min-height:48px !important;
-    font-size:13px !important;
-}
-
-
-/* ===== V13 MARKET HUB + RISK PRESETS ===== */
-.market-selector-wrap{display:flex!important;align-items:center;gap:7px}
-.market-select{appearance:none;background:transparent;border:0;color:#f2f7ff;font-size:16px;font-weight:800;padding:2px 18px 2px 0;cursor:pointer;outline:none}
-.market-select option{background:#0b1828;color:#eef4ff}
-.market-selector-wrap small{white-space:nowrap}
-.risk-presets{display:flex;gap:4px;margin:-4px 0 9px}
-.risk-presets button{flex:1;padding:5px 3px;border-radius:5px;border:1px solid #263b54;background:#0a192a;color:#7f94ad;font-size:9px;cursor:pointer}
-.risk-presets button:hover,.risk-presets button.active{color:#43e37b;border-color:#286b48;background:#123322}
-
 </style>
 </head>
 
@@ -1225,51 +569,19 @@ body{
 
     <div class="header-right">
         <span class="market-status">● SIMULATION MODE</span>
-        <span>BFT Backtesting Lab</span>
+        <span>XAUUSD Backtesting</span>
     </div>
 
 </header>
-
-<!-- TOP REPLAY CONTROLS -->
-<div class="replay-bar">
-    <div class="replay-title">HISTORICAL REPLAY</div>
-
-    <label>
-        Date
-        <input type="date" id="replayDate">
-    </label>
-
-    <label>
-        Time
-        <input type="time" id="replayTime" step="300">
-    </label>
-
-    <button class="tool-btn" onclick="jumpToReplayPoint()">
-        Jump to Replay
-    </button>
-
-    <button class="tool-btn" onclick="startReplayFromSelected()">
-        ▶ Start Replay
-    </button>
-
-    <span id="replayStatus">
-        Choose a historical date/time.
-    </span>
-</div>
-
 
 
 <!-- TOP BAR -->
 
 <div class="topbar">
 
-    <div class="symbol market-selector-wrap">
-        <select id="marketSelect" class="market-select" aria-label="Select market">
-            <option value="BANKNIFTY">BANKNIFTY</option>
-            <option value="NIFTY" disabled>NIFTY — Coming Soon</option>
-            <option value="XAUUSD" disabled>XAUUSD — Coming Soon</option>
-        </select>
-        <small id="marketSubtitle">NSE Bank Nifty • 5 Minute • REAL DATA</small>
+    <div class="symbol">
+        XAUUSD
+        <small>Gold / US Dollar</small>
     </div>
 
     <div class="control">
@@ -1286,9 +598,9 @@ body{
         <label>Starting Balance</label>
 
         <select id="balanceSelect">
-            <option value="100000">₹1,00,000</option>
-            <option value="50000">₹50,000</option>
-            <option value="500000">₹5,00,000</option>
+            <option value="10000">$10,000</option>
+            <option value="5000">$5,000</option>
+            <option value="50000">$50,000</option>
         </select>
     </div>
 
@@ -1308,25 +620,11 @@ body{
 
     <section class="chart-area">
 
-        
+        <div class="chart-toolbar">
 
-
-        <div class="chart-wrapper">
-
-
-
-
-<canvas id="chart"></canvas>
-            <div class="chart-status" id="chartStatus">BANKNIFTY • 5 MIN • REAL DATA • DRAG ENTRY / SL / TP</div>
-
-<div class="chart-toolbar">
-
-            <button class="tool-btn" onclick="resetReplay()">↻ Reset</button>
-            <button class="tool-btn chart-tool active" id="cursorTool" onclick="setChartMode('cursor')" title="Cursor">✦</button>
-            <button class="tool-btn chart-tool" id="panTool" onclick="setChartMode('pan')" title="Pan">✋</button>
-            <button class="tool-btn chart-tool" onclick="zoomChart(1)" title="Zoom In">＋</button>
-            <button class="tool-btn chart-tool" onclick="zoomChart(-1)" title="Zoom Out">−</button>
-            <button class="tool-btn chart-tool" onclick="resetChartView()" title="Reset Chart">⟳</button>
+            <button class="tool-btn" onclick="resetReplay()">
+                ↻ Reset
+            </button>
 
             <button class="tool-btn" onclick="previousCandle()">
                 ◀ Previous
@@ -1340,40 +638,16 @@ body{
                 +10 Candles
             </button>
 
-            <span class="chart-info">Scroll: Zoom • Pan: Move • Crosshair: Inspect</span>
+            <span style="color:#52657d;font-size:12px;margin-left:auto;">
+                Historical Market Replay
+            </span>
 
         </div>
 
-<div class="drawing-bar">
-    <button class="draw-btn active" id="drawCursor" onclick="setDrawTool('cursor')" title="Cursor">✦</button>
-    <button class="draw-btn" id="drawHLine" onclick="setDrawTool('hline')" title="Horizontal line">—</button>
-    <button class="draw-btn" id="drawVLine" onclick="setDrawTool('vline')" title="Vertical line">│</button>
-    <button class="draw-btn" id="drawTrend" onclick="setDrawTool('trend')" title="Trend line">╱</button>
-    <button class="draw-btn" id="drawRect" onclick="setDrawTool('rect')" title="Rectangle / Zone">□</button>
-    <button class="draw-btn" id="drawFib" onclick="setDrawTool('fib')" title="Fibonacci">F</button>
-    <span class="draw-sep"></span>
-    <button class="draw-btn" onclick="undoDrawing()" title="Undo drawing">↶</button>
-    <button class="draw-btn" onclick="clearDrawings()" title="Clear drawings">⌫</button>
-    <span class="drawing-help">Click/drag on chart to draw</span>
-</div>
 
-<div class="floating-position" id="floatingPosition">
-    <div class="fp-head">
-        <span id="fpTitle">● BUY BANKNIFTY</span>
-        <button class="fp-close" onclick="hideFloatingPosition()">×</button>
-    </div>
-    <div class="fp-grid">
-        <span>Entry</span><strong id="fpEntry">—</strong>
-        <span>Current</span><strong id="fpCurrent">—</strong>
-        <span>Stop Loss</span><strong id="fpSL">—</strong>
-        <span>Take Profit</span><strong id="fpTP">—</strong>
-    </div>
-    <div class="fp-pnl" id="fpPnl">Floating P&L ₹0<button class="fp-close-trade" onclick="closeActiveTrade()">Close Trade</button></div>
-    <div id="fpState" style="font-size:9px;color:#71839b;margin-top:5px;">LIVE SIMULATION</div>
-</div>
+        <div class="chart-wrapper">
 
-            <div class="crosshair-label" id="crosshairLabel"></div>
-<div class="trade-drag-toast" id="tradeDragToast">Drag SL / TP / Entry to adjust</div>
+            <canvas id="chart"></canvas>
 
             <div class="chart-price" id="priceLabel">
                 --
@@ -1435,7 +709,8 @@ body{
 
     <aside class="sidebar">
 
-<!-- ACCOUNT -->
+
+        <!-- ACCOUNT -->
 
         <div class="panel">
 
@@ -1444,95 +719,8 @@ body{
             </div>
 
             <div class="balance">
-                ₹<span id="balance">10000.00</span>
-                <small>INR</small>
-            </div>
-
-        </div>
-
-
-        <!-- PRO ORDER TICKET -->
-<div class="panel trade-ticket">
-    <div class="panel-title">Trade Ticket</div>
-
-    <div class="ticket-tabs">
-        <button class="ticket-tab active" id="marketTab">Market</button>
-        <button class="ticket-tab" id="pendingTab">Pending</button>
-    </div>
-
-    <div class="quote-box">
-        <button class="quote sell" onclick="selectDirection('SELL')">
-            <div class="quote-label">Sell</div>
-            <div class="quote-price" id="sellQuote">--</div>
-        </button>
-        <button class="quote buy" onclick="selectDirection('BUY')">
-            <div class="quote-label">Buy</div>
-            <div class="quote-price" id="buyQuote">--</div>
-        </button>
-    </div>
-
-    <div class="ticket-field">
-        <label><span>Quantity / Lots</span><span>Simulator</span></label>
-        <div class="stepper">
-            <button onclick="changeLots(-1)">−</button>
-            <input id="lots" type="number" min="1" step="1" value="1">
-            <button onclick="changeLots(1)">+</button>
-        </div>
-    </div>
-
-    <div class="ticket-field">
-        <label><span>Entry Price</span><span>Auto = current</span></label>
-        <input id="entry" type="number" step="0.05" placeholder="Auto">
-    </div>
-
-    <div class="ticket-field">
-        <label><span>Risk %</span><span id="riskMoneyLabel">₹1,000 risk</span></label>
-        <input id="risk" type="number" value="1" step="0.1" min="0.1">
-    </div>
-    <div class="risk-presets" aria-label="Risk presets">
-        <button type="button" onclick="setRiskPreset(0.25)">0.25%</button>
-        <button type="button" onclick="setRiskPreset(0.5)">0.5%</button>
-        <button type="button" class="active" onclick="setRiskPreset(1)">1%</button>
-        <button type="button" onclick="setRiskPreset(2)">2%</button>
-    </div>
-
-    <div class="ticket-field">
-        <label><span>Stop Loss</span><span>Price</span></label>
-        <input id="sl" type="number" step="0.05" placeholder="Enter SL">
-    </div>
-
-    <div class="ticket-field">
-        <label><span>Take Profit</span><span>Price</span></label>
-        <input id="tp" type="number" step="0.05" placeholder="Enter TP">
-    </div>
-
-    <div class="quick-stats">
-        <div class="quick-stat"><span>RISK</span><strong id="ticketRisk">₹0</strong></div>
-        <div class="quick-stat"><span>REWARD</span><strong id="ticketReward">₹0</strong></div>
-        <div class="quick-stat"><span>R:R</span><strong id="ticketRR">—</strong></div>
-        <div class="quick-stat"><span>POSITION</span><strong id="ticketPosition">1 Lot</strong></div>
-    </div>
-
-    <div class="big-order-buttons">
-        <button class="big-sell" onclick="openTrade('SELL')">SELL</button>
-        <button class="big-buy" onclick="openTrade('BUY')">BUY</button>
-    </div>
-</div>
-
-<!-- OPEN POSITION -->
-
-        <div class="panel">
-
-            <div class="panel-title">
-                Open Position
-            </div>
-
-            <div id="positionArea">
-
-                <div style="color:#64768e;font-size:12px;">
-                    No open position
-                </div>
-
+                $<span id="balance">10000.00</span>
+                <small>USD</small>
             </div>
 
         </div>
@@ -1560,12 +748,101 @@ body{
 
                 <div class="stat">
                     <div class="stat-label">Profit</div>
-                    <div class="stat-value profit" id="profit">₹0.00</div>
+                    <div class="stat-value profit" id="profit">$0.00</div>
                 </div>
 
                 <div class="stat">
                     <div class="stat-label">Loss</div>
-                    <div class="stat-value loss" id="loss">₹0.00</div>
+                    <div class="stat-value loss" id="loss">$0.00</div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ORDER -->
+
+        <div class="panel">
+
+            <div class="panel-title">
+                Order Panel
+            </div>
+
+
+            <div class="order-row">
+
+                <div class="field">
+                    <label>Entry Price</label>
+                    <input id="entry" type="number" step="0.01" placeholder="Auto">
+                </div>
+
+                <div class="field">
+                    <label>Risk %</label>
+                    <input id="risk" type="number" value="1" step="0.1">
+                </div>
+
+            </div>
+
+
+            <div class="order-row">
+
+                <div class="field">
+                    <label>Stop Loss</label>
+                    <input id="sl" type="number" step="0.01" placeholder="Price">
+                </div>
+
+                <div class="field">
+                    <label>Take Profit</label>
+                    <input id="tp" type="number" step="0.01" placeholder="Price">
+                </div>
+
+            </div>
+
+
+            <div class="trade-preview" id="tradePreview">
+                <div><span>Risk</span><strong id="previewRisk">$0.00</strong></div>
+                <div><span>Reward</span><strong id="previewReward">$0.00</strong></div>
+                <div><span>R:R</span><strong id="previewRR">—</strong></div>
+                <div><span>Position</span><strong id="previewSize">0.000</strong></div>
+            </div>
+
+            <div class="risk-presets">
+                <button type="button" onclick="setRisk(0.25)">0.25%</button>
+                <button type="button" onclick="setRisk(0.5)">0.5%</button>
+                <button type="button" class="active" onclick="setRisk(1)">1%</button>
+                <button type="button" onclick="setRisk(2)">2%</button>
+            </div>
+
+            <div class="trade-message" id="tradeMessage" aria-live="polite"></div>
+
+            <div class="order-buttons">
+
+                <button class="buy" onclick="openTrade('BUY')">
+                    BUY
+                </button>
+
+                <button class="sell" onclick="openTrade('SELL')">
+                    SELL
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- OPEN POSITION -->
+
+        <div class="panel">
+
+            <div class="panel-title">
+                Open Position
+            </div>
+
+            <div id="positionArea">
+
+                <div style="color:#64768e;font-size:12px;">
+                    No open position
                 </div>
 
             </div>
@@ -1595,531 +872,13 @@ body{
 
 </main>
 
-<!-- OPEN TRADE STRIP -->
-<section class="trade-strip" id="tradeStrip">
-    <div class="trade-strip-head">
-        <span class="active">Open <b id="openCount" style="margin-left:4px">0</b></span>
-        <span>Pending</span>
-        <span>Closed <b id="closedCount" style="margin-left:4px">0</b></span>
-    </div>
-    <div id="openTradeTable">
-        <div style="padding:13px 14px;color:#64768e;font-size:12px">
-            No open trades. Choose BUY or SELL from the trade ticket.
-        </div>
-    </div>
-</section>
-
-
-
-
-<!-- BACKTEST ANALYTICS -->
-<section class="analytics-panel" id="analyticsPanel">
-    <div class="analytics-head">
-        <div>
-            <div class="analytics-kicker">BFT ANALYTICS</div>
-            <h2>Backtest Results</h2>
-            <p>Understand your strategy performance after every closed trade.</p>
-        </div>
-        <div class="analytics-actions">
-            <button class="analytics-tab active" onclick="setAnalyticsTab('overview',this)">Overview</button>
-            <button class="analytics-tab" onclick="setAnalyticsTab('trades',this)">Trades</button>
-        </div>
-    </div>
-
-    <div id="analyticsOverview">
-        <div class="analytics-cards">
-            <div class="a-card"><span>Total Trades</span><strong id="aTrades">0</strong></div>
-            <div class="a-card"><span>Win Rate</span><strong id="aWinRate">0%</strong></div>
-            <div class="a-card"><span>Net P&amp;L</span><strong id="aNetPnl" class="neutral">₹0</strong></div>
-            <div class="a-card"><span>Profit Factor</span><strong id="aProfitFactor">—</strong></div>
-            <div class="a-card"><span>Average R</span><strong id="aAvgR">—</strong></div>
-            <div class="a-card"><span>Max Drawdown</span><strong id="aDrawdown" class="loss">₹0</strong></div>
-            <div class="a-card"><span>Best Streak</span><strong id="aBestStreak">0</strong></div>
-            <div class="a-card"><span>Worst Streak</span><strong id="aWorstStreak">0</strong></div>
-        </div>
-
-        <div class="analytics-grid">
-            <div class="analytics-box">
-                <div class="box-head">
-                    <strong>Equity Curve</strong>
-                    <span id="equitySummary">Starting ₹1,00,000</span>
-                </div>
-                <canvas id="equityChart"></canvas>
-            </div>
-
-            <div class="analytics-box">
-                <div class="box-head">
-                    <strong>Trade Breakdown</strong>
-                    <span>Closed trades</span>
-                </div>
-                <div class="breakdown">
-                    <div><span>Wins</span><strong id="aWins">0</strong></div>
-                    <div><span>Losses</span><strong id="aLosses">0</strong></div>
-                    <div><span>Gross Profit</span><strong id="aGrossProfit" class="profit">₹0</strong></div>
-                    <div><span>Gross Loss</span><strong id="aGrossLoss" class="loss">₹0</strong></div>
-                    <div><span>Average Win</span><strong id="aAvgWin">₹0</strong></div>
-                    <div><span>Average Loss</span><strong id="aAvgLoss">₹0</strong></div>
-                    <div><span>Long / BUY</span><strong id="aBuyCount">0</strong></div>
-                    <div><span>Short / SELL</span><strong id="aSellCount">0</strong></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="analyticsTrades" style="display:none">
-        <div class="analytics-box">
-            <div class="box-head">
-                <strong>Trade Analysis</strong>
-                <span>Latest first</span>
-            </div>
-            <div id="analyticsTradeTable" class="analytics-trades-empty">
-                No closed trades yet.
-            </div>
-        </div>
-    </div>
-</section>
-
-
-
-<!-- V9 TRADING JOURNAL -->
-<section class="journal-panel" id="journalPanel">
-  <div class="journal-head">
-    <div>
-      <div class="journal-kicker">BFT JOURNAL</div>
-      <h2>Trading Journal</h2>
-      <p>Record why you entered, how you felt, and what you learned.</p>
-    </div>
-    <button class="journal-add" onclick="openJournalForLatest()">＋ Add Journal</button>
-  </div>
-
-  <div class="journal-layout">
-    <div class="journal-form-box">
-      <div class="journal-form-title">
-        <strong id="journalFormTitle">Trade Journal</strong>
-        <button class="journal-x" onclick="closeJournalForm()">×</button>
-      </div>
-      <input type="hidden" id="journalTradeNumber">
-
-      <label>Setup
-        <select id="journalSetup">
-          <option value="">Select setup</option>
-          <option>Breakout</option><option>Retest</option><option>Trap</option>
-          <option>Support / Resistance</option><option>Trend Continuation</option>
-          <option>Reversal</option><option>Custom</option>
-        </select>
-      </label>
-      <label>Why did you enter?
-        <textarea id="journalReason" placeholder="What did you see on the chart?"></textarea>
-      </label>
-      <div class="journal-two">
-        <label>Market Condition
-          <select id="journalMarket"><option>Trending</option><option>Range</option><option>Volatile</option><option>Choppy</option></select>
-        </label>
-        <label>Emotion
-          <select id="journalEmotion"><option>Calm</option><option>Confident</option><option>FOMO</option><option>Fear</option><option>Revenge</option></select>
-        </label>
-      </div>
-      <label>Did you follow your rules?
-        <select id="journalRules"><option>Yes</option><option>No</option><option>Partly</option></select>
-      </label>
-      <label>Mistake
-        <textarea id="journalMistake" placeholder="What could you have done better?"></textarea>
-      </label>
-      <label>What did I learn?
-        <textarea id="journalLesson" placeholder="One clear lesson from this trade"></textarea>
-      </label>
-      <label>Setup Rating
-        <div class="rating" id="journalRating">
-          <button type="button" onclick="setJournalRating(1)">1</button>
-          <button type="button" onclick="setJournalRating(2)">2</button>
-          <button type="button" onclick="setJournalRating(3)">3</button>
-          <button type="button" onclick="setJournalRating(4)">4</button>
-          <button type="button" onclick="setJournalRating(5)">5</button>
-        </div>
-      </label>
-      <div class="journal-form-actions">
-        <button class="journal-cancel" onclick="closeJournalForm()">Cancel</button>
-        <button class="journal-save" onclick="saveJournalEntry()">Save Journal</button>
-      </div>
-    </div>
-
-    <div class="journal-list-box">
-      <div class="journal-list-head"><strong>Journal Entries</strong><span id="journalCount">0 entries</span></div>
-      <div id="journalList"><div class="journal-empty">No journal entries yet. Add notes after a closed trade.</div></div>
-    </div>
-  </div>
-</section>
 
 <script>
 
 /* ============================================================
    BFT TRADE LAB
-   BANKNIFTY BACKTEST ENGINE
+   DEMO BACKTEST ENGINE
    ============================================================ */
-
-
-
-
-/* ===== V9 JOURNAL + POSITION CONTROLS ===== */
-let journalEntries=[];
-let journalRating=0;
-
-function openJournalForLatest(){
-  const panel=document.getElementById("journalPanel");
-  if(panel) panel.classList.add("journal-open");
-
-  if(!trades.length){
-    document.getElementById("journalFormTitle").textContent="Trade Journal";
-    document.getElementById("journalList").innerHTML=
-      '<div class="journal-empty">Close a trade first. Then you can attach a journal to that trade.</div>';
-    panel?.scrollIntoView({behavior:"smooth",block:"start"});
-    return;
-  }
-
-  const t=trades[trades.length-1];
-  document.getElementById("journalTradeNumber").value=t.number||trades.length;
-  document.getElementById("journalFormTitle").textContent="Trade #"+(t.number||trades.length)+" Journal";
-  panel?.scrollIntoView({behavior:"smooth",block:"start"});
-}
-function closeJournalForm(){
-  ["journalTradeNumber","journalReason","journalMistake","journalLesson"].forEach(id=>{
-    const e=document.getElementById(id); if(e)e.value="";
-  });
-  document.getElementById("journalSetup").value="";
-  document.querySelectorAll("#journalRating button").forEach(b=>b.classList.remove("active"));
-  journalRating=0;
-  document.getElementById("journalPanel")?.classList.remove("journal-open");
-}
-function setJournalRating(n){
-  journalRating=n;
-  document.querySelectorAll("#journalRating button").forEach((b,i)=>b.classList.toggle("active",i<n));
-}
-function saveJournalEntry(){
-  const num=Number(document.getElementById("journalTradeNumber").value);
-  if(!num){ alert("Close a trade first, then add its journal."); return; }
-  journalEntries.unshift({
-    id:Date.now(),tradeNumber:num,
-    setup:document.getElementById("journalSetup").value||"Custom",
-    reason:document.getElementById("journalReason").value.trim(),
-    market:document.getElementById("journalMarket").value,
-    emotion:document.getElementById("journalEmotion").value,
-    rules:document.getElementById("journalRules").value,
-    mistake:document.getElementById("journalMistake").value.trim(),
-    lesson:document.getElementById("journalLesson").value.trim(),
-    rating:journalRating,created:new Date().toLocaleString("en-IN")
-  });
-  renderJournal();
-  const panel=document.getElementById("journalPanel");
-  if(panel) panel.classList.add("journal-open");
-  document.getElementById("journalReason").value="";
-  document.getElementById("journalMistake").value="";
-  document.getElementById("journalLesson").value="";
-  document.getElementById("journalTradeNumber").value="";
-}
-function deleteJournalEntry(id){journalEntries=journalEntries.filter(e=>e.id!==id);renderJournal()}
-function escJ(v){return String(v).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;")}
-function renderJournal(){
-  const list=document.getElementById("journalList"),count=document.getElementById("journalCount");
-  if(count)count.textContent=journalEntries.length+" entr"+(journalEntries.length===1?"y":"ies");
-  if(!journalEntries.length){list.innerHTML='<div class="journal-empty">No journal entries yet. Add notes after a closed trade.</div>';return}
-  list.innerHTML=journalEntries.map(e=>`
-    <div class="journal-entry">
-      <div class="je-top"><div><div class="je-title">Trade #${e.tradeNumber} • ${e.setup}</div><div class="je-meta">${e.created}</div></div><div class="je-title">${e.rating?"★".repeat(e.rating):"—"}</div></div>
-      <div class="je-tags"><span class="je-tag">${e.market}</span><span class="je-tag">${e.emotion}</span><span class="je-tag">Rules: ${e.rules}</span></div>
-      ${e.reason?`<div class="je-text"><b>Entry:</b> ${escJ(e.reason)}</div>`:""}
-      ${e.mistake?`<div class="je-text"><b>Mistake:</b> ${escJ(e.mistake)}</div>`:""}
-      ${e.lesson?`<div class="je-text"><b>Lesson:</b> ${escJ(e.lesson)}</div>`:""}
-      <div class="je-actions"><button class="je-delete" onclick="deleteJournalEntry(${e.id})">Delete</button></div>
-    </div>`).join("");
-}
-function hideFloatingPosition(){
-  const card=document.getElementById("floatingPosition");
-  if(card)card.classList.remove("show");
-}
-function closeActiveTrade(){
-  if(!openPosition)return;
-  const price=candles[currentIndex]?.close??openPosition.entry;
-  if(typeof closeTrade==="function"){
-    closeTrade("MANUAL CLOSE",price);
-  }
-}
-renderJournal();
-
-/* ============================================================
-   V8 BACKTEST ANALYTICS
-   ============================================================ */
-
-function formatMoney(value, decimals=0){
-    const n=Number(value)||0;
-    return "₹"+n.toLocaleString("en-IN",{
-        minimumFractionDigits:decimals,
-        maximumFractionDigits:decimals
-    });
-}
-
-function calculateAnalytics(){
-
-    const count=trades.length;
-    const net=balance-startingBalance;
-
-    const grossProfit=trades
-        .filter(t=>(Number(t.pnl)||0)>0)
-        .reduce((s,t)=>s+(Number(t.pnl)||0),0);
-
-    const grossLoss=trades
-        .filter(t=>(Number(t.pnl)||0)<0)
-        .reduce((s,t)=>s+Math.abs(Number(t.pnl)||0),0);
-
-    const profitFactor=grossLoss>0 ? grossProfit/grossLoss : null;
-
-    const rValues=trades
-        .map(t=>Number.isFinite(Number(t.rMultiple))
-            ? Number(t.rMultiple)
-            : (Number(t.riskMoney)>0 ? Number(t.pnl)/Number(t.riskMoney) : null))
-        .filter(v=>Number.isFinite(v));
-
-    const avgR=rValues.length
-        ? rValues.reduce((a,b)=>a+b,0)/rValues.length
-        : null;
-
-    let equity=startingBalance;
-    let peak=startingBalance;
-    let maxDD=0;
-    const curve=[startingBalance];
-
-    trades.forEach(t=>{
-        equity += Number(t.pnl)||0;
-        curve.push(equity);
-        peak=Math.max(peak,equity);
-        maxDD=Math.max(maxDD,peak-equity);
-    });
-
-    let currentWin=0,currentLoss=0,bestWin=0,worstLoss=0;
-
-    trades.forEach(t=>{
-        if((Number(t.pnl)||0)>=0){
-            currentWin++;
-            currentLoss=0;
-            bestWin=Math.max(bestWin,currentWin);
-        }else{
-            currentLoss++;
-            currentWin=0;
-            worstLoss=Math.max(worstLoss,currentLoss);
-        }
-    });
-
-    const winsList=trades.filter(t=>(Number(t.pnl)||0)>0);
-    const lossesList=trades.filter(t=>(Number(t.pnl)||0)<0);
-
-    const avgWin=winsList.length
-        ? winsList.reduce((s,t)=>s+Number(t.pnl),0)/winsList.length
-        : 0;
-
-    const avgLoss=lossesList.length
-        ? lossesList.reduce((s,t)=>s+Math.abs(Number(t.pnl)),0)/lossesList.length
-        : 0;
-
-    const buys=trades.filter(t=>t.direction==="BUY").length;
-    const sells=trades.filter(t=>t.direction==="SELL").length;
-
-    return {
-        count,net,grossProfit,grossLoss,profitFactor,avgR,maxDD,
-        bestWin,worstLoss,winRate:count?wins/count*100:0,
-        wins:wins,losses:losses,avgWin,avgLoss,buys,sells,curve
-    };
-}
-
-function updateAnalytics(){
-
-    const a=calculateAnalytics();
-
-    const set=(id,value)=>{
-        const el=document.getElementById(id);
-        if(el) el.textContent=value;
-    };
-
-    set("aTrades",a.count);
-    set("aWinRate",a.winRate.toFixed(1)+"%");
-    set("aNetPnl",(a.net>=0?"+":"-")+formatMoney(Math.abs(a.net)));
-
-    const pf=document.getElementById("aProfitFactor");
-    if(pf) pf.textContent=a.profitFactor===null
-        ? "—"
-        : a.profitFactor.toFixed(2);
-
-    const avgR=document.getElementById("aAvgR");
-    if(avgR) avgR.textContent=a.avgR===null
-        ? "—"
-        : (a.avgR>=0?"+":"")+a.avgR.toFixed(2)+"R";
-
-    set("aDrawdown","-"+formatMoney(a.maxDD));
-    set("aBestStreak",a.bestWin);
-    set("aWorstStreak",a.worstLoss);
-
-    set("aWins",a.wins);
-    set("aLosses",a.losses);
-    set("aGrossProfit",formatMoney(a.grossProfit));
-    set("aGrossLoss","-"+formatMoney(a.grossLoss));
-    set("aAvgWin",formatMoney(a.avgWin));
-    set("aAvgLoss","-"+formatMoney(a.avgLoss));
-    set("aBuyCount",a.buys);
-    set("aSellCount",a.sells);
-    set("equitySummary","Starting "+formatMoney(startingBalance)+" • Current "+formatMoney(balance));
-
-    const netEl=document.getElementById("aNetPnl");
-    if(netEl) netEl.className=a.net>=0?"profit":"loss";
-
-    const equityEl=document.getElementById("equityChart");
-    if(equityEl) drawEquityCurve(equityEl,a.curve);
-
-    updateAnalyticsTrades();
-}
-
-function drawEquityCurve(canvasEl,values){
-
-    const dpr=window.devicePixelRatio||1;
-    const width=Math.max(300,canvasEl.clientWidth);
-    const height=240;
-
-    canvasEl.width=width*dpr;
-    canvasEl.height=height*dpr;
-
-    const c=canvasEl.getContext("2d");
-    c.setTransform(dpr,0,0,dpr,0,0);
-
-    c.fillStyle="#091625";
-    c.fillRect(0,0,width,height);
-
-    if(values.length<2){
-        c.fillStyle="#526981";
-        c.font="11px Arial";
-        c.fillText("Close a trade to build the equity curve.",16,30);
-        return;
-    }
-
-    const pad={left:52,right:18,top:20,bottom:28};
-    const w=width-pad.left-pad.right;
-    const h=height-pad.top-pad.bottom;
-
-    let min=Math.min(...values);
-    let max=Math.max(...values);
-
-    if(min===max){
-        min-=100;
-        max+=100;
-    }
-
-    const extra=(max-min)*.12;
-    min-=extra;
-    max+=extra;
-
-    // Grid
-    c.strokeStyle="rgba(255,255,255,.06)";
-    c.lineWidth=1;
-
-    for(let i=0;i<=4;i++){
-        const y=pad.top+h*i/4;
-        c.beginPath();
-        c.moveTo(pad.left,y);
-        c.lineTo(width-pad.right,y);
-        c.stroke();
-
-        const value=max-(max-min)*i/4;
-        c.fillStyle="#647991";
-        c.font="9px Arial";
-        c.textAlign="right";
-        c.fillText(formatMoney(value),pad.left-7,y+3);
-    }
-
-    const xAt=i=>pad.left+(values.length===1?0:(i/(values.length-1))*w);
-    const yAt=v=>pad.top+(max-v)/(max-min)*h;
-
-    // Fill area
-    const baseline=yAt(values[0]);
-    c.beginPath();
-    values.forEach((v,i)=>{
-        const x=xAt(i),y=yAt(v);
-        if(i===0)c.moveTo(x,y);
-        else c.lineTo(x,y);
-    });
-    c.lineTo(xAt(values.length-1),baseline);
-    c.lineTo(xAt(0),baseline);
-    c.closePath();
-    c.fillStyle="rgba(67,227,123,.08)";
-    c.fill();
-
-    // Equity line
-    c.beginPath();
-    values.forEach((v,i)=>{
-        const x=xAt(i),y=yAt(v);
-        if(i===0)c.moveTo(x,y);
-        else c.lineTo(x,y);
-    });
-    c.strokeStyle="#43e37b";
-    c.lineWidth=2;
-    c.stroke();
-
-    c.fillStyle="#61758d";
-    c.font="9px Arial";
-    c.textAlign="left";
-    c.fillText("Trade 0",pad.left,height-8);
-    c.textAlign="right";
-    c.fillText("Trade "+(values.length-1),width-pad.right,height-8);
-
-    const last=values[values.length-1];
-    c.fillStyle="#eef4fc";
-    c.font="bold 10px Arial";
-    c.textAlign="right";
-    c.fillText(formatMoney(last),width-pad.right,yAt(last)-8);
-}
-
-function updateAnalyticsTrades(){
-
-    const box=document.getElementById("analyticsTradeTable");
-    if(!box)return;
-
-    if(!trades.length){
-        box.innerHTML='<div class="analytics-trades-empty">No closed trades yet.</div>';
-        return;
-    }
-
-    const rows=trades.slice().reverse().map((t,index)=>{
-        const pnl=Number(t.pnl)||0;
-        const r=Number.isFinite(Number(t.rMultiple))
-            ? Number(t.rMultiple)
-            : (Number(t.riskMoney)>0 ? pnl/Number(t.riskMoney) : 0);
-
-        return `
-            <div class="analytics-trade-row">
-                <span>#${t.number||trades.length-index}</span>
-                <strong>${t.direction}</strong>
-                <span class="muted">${formatDate(t.time)}</span>
-                <span class="${pnl>=0?"profit":"loss"}">${pnl>=0?"+":"-"}${formatMoney(Math.abs(pnl))}</span>
-                <span>${r>=0?"+":""}${r.toFixed(2)}R</span>
-                <span class="${pnl>=0?"profit":"loss"}">${t.result|| (pnl>=0?"WIN":"LOSS")}</span>
-            </div>
-        `;
-    }).join("");
-
-    box.innerHTML=`
-        <div class="analytics-trade-row analytics-table-head">
-            <span>#</span><span>Side</span><span>Time</span><span>P&amp;L</span><span>R</span><span>Result</span>
-        </div>
-        ${rows}
-    `;
-}
-
-function setAnalyticsTab(tab,button){
-
-    document.querySelectorAll(".analytics-tab").forEach(b=>b.classList.remove("active"));
-    if(button)button.classList.add("active");
-
-    document.getElementById("analyticsOverview").style.display=
-        tab==="overview"?"block":"none";
-
-    document.getElementById("analyticsTrades").style.display=
-        tab==="trades"?"block":"none";
-}
 
 
 /* ------------------------------
@@ -2139,9 +898,9 @@ let speed = 1;
 
 let playTimer = null;
 
-let balance = 100000;
+let balance = 10000;
 
-let startingBalance = 100000;
+let startingBalance = 10000;
 
 let openPosition = null;
 
@@ -2157,203 +916,50 @@ let losses = 0;
 
 
 /* ------------------------------
-   LOAD REAL BANKNIFTY CSV DATA
-   Keep bank-nifty-5m-data.csv in the
-   same GitHub Pages folder as this file.
+   GENERATE DEMO XAUUSD DATA
 ------------------------------ */
 
+function generateCandles() {
 
-function setRiskPreset(value){
-    const input=document.getElementById("risk");
-    if(!input) return;
-    input.value=value;
-    document.querySelectorAll(".risk-presets button").forEach(b=>{
-        b.classList.toggle("active", Number.parseFloat(b.textContent)===value);
-    });
-    if(typeof updateTicketMetrics==="function") updateTicketMetrics();
-}
+    candles = [];
 
-document.getElementById("marketSelect")?.addEventListener("change",function(){
-    if(this.value==="BANKNIFTY"){
-        document.getElementById("marketSubtitle").textContent="NSE Bank Nifty • 5 Minute • REAL DATA";
-    }
-});
+    let price = 3340;
 
-async function loadBankNiftyCSV() {
-    try {
-        const response = await fetch("bank-nifty-5m-data.csv", {
-            cache: "no-store"
+    let startTime = new Date("2025-03-15T09:00:00");
+
+    for (let i = 0; i < 600; i++) {
+
+        let open = price;
+
+        let movement =
+            (Math.random() - 0.48) * 8;
+
+        let close =
+            open + movement;
+
+        let high =
+            Math.max(open, close)
+            + Math.random() * 4;
+
+        let low =
+            Math.min(open, close)
+            - Math.random() * 4;
+
+        price = close;
+
+        let time =
+            new Date(startTime.getTime() + i * 5 * 60000);
+
+        candles.push({
+            time: time,
+            open: open,
+            high: high,
+            low: low,
+            close: close
         });
-
-        if (!response.ok) {
-            throw new Error(
-                "bank-nifty-5m-data.csv was not found."
-            );
-        }
-
-        const text = await response.text();
-
-        const lines = text
-            .split(/\r?\n/)
-            .map(line => line.trim())
-            .filter(Boolean);
-
-        if (lines.length < 2) {
-            throw new Error("CSV file is empty.");
-        }
-
-        const headers = lines[0]
-            .split(",")
-            .map(h => h.trim().toLowerCase());
-
-        const dateIndex = headers.indexOf("date");
-        const timeIndex = headers.indexOf("time");
-        const openIndex = headers.indexOf("open");
-        const highIndex = headers.indexOf("high");
-        const lowIndex = headers.indexOf("low");
-        const closeIndex = headers.indexOf("close");
-
-        if ([dateIndex, timeIndex, openIndex, highIndex, lowIndex, closeIndex]
-            .includes(-1)) {
-            throw new Error(
-                "CSV must contain Date, Time, Open, High, Low and Close."
-            );
-        }
-
-        candles = [];
-
-        for (let i = 1; i < lines.length; i++) {
-            const row = parseCSVLine(lines[i]);
-
-            if (row.length < headers.length) continue;
-
-            const time = parseBankNiftyDate(
-                row[dateIndex],
-                row[timeIndex]
-            );
-
-            const open = Number(row[openIndex]);
-            const high = Number(row[highIndex]);
-            const low = Number(row[lowIndex]);
-            const close = Number(row[closeIndex]);
-
-            if (
-                Number.isNaN(time.getTime()) ||
-                !Number.isFinite(open) ||
-                !Number.isFinite(high) ||
-                !Number.isFinite(low) ||
-                !Number.isFinite(close)
-            ) {
-                continue;
-            }
-
-            candles.push({
-                time,
-                open,
-                high,
-                low,
-                close
-            });
-        }
-
-        candles.sort((a, b) => a.time - b.time);
-
-        if (!candles.length) {
-            throw new Error("No valid candles found in CSV.");
-        }
-
-        currentIndex = Math.min(80, candles.length - 1);
-
-        document.querySelector(".market-status").textContent =
-            "● REAL HISTORICAL DATA";
-
-        drawChart();
-        updateStats();
-        updateHistory();
-        updatePosition();
-        updateQuotes();
-        updateOpenTradeStrip();
-    updateFloatingPosition();
-
-        console.log(
-            "BANKNIFTY candles loaded:",
-            candles.length
-        );
-
-    } catch (error) {
-        console.error(error);
-
-        alert(
-            "BANKNIFTY data load failed.\n\n" +
-            error.message +
-            "\n\nMake sure bank-nifty-5m-data.csv is uploaded " +
-            "in the same GitHub folder as backtest.html."
-        );
     }
 }
 
-function parseCSVLine(line) {
-    const result = [];
-    let current = "";
-    let quoted = false;
-
-    for (let i = 0; i < line.length; i++) {
-        const ch = line[i];
-
-        if (ch === '"') {
-            quoted = !quoted;
-        } else if (ch === "," && !quoted) {
-            result.push(
-                current.trim().replace(/^"|"₹/g, "")
-            );
-            current = "";
-        } else {
-            current += ch;
-        }
-    }
-
-    result.push(
-        current.trim().replace(/^"|"₹/g, "")
-    );
-
-    return result;
-}
-
-function parseBankNiftyDate(dateText, timeText) {
-    const parts = dateText.split(/[-\/]/);
-    let d;
-
-    if (parts.length === 3) {
-        if (parts[0].length === 4) {
-            d = new Date(
-                Number(parts[0]),
-                Number(parts[1]) - 1,
-                Number(parts[2])
-            );
-        } else {
-            d = new Date(
-                Number(parts[2]),
-                Number(parts[1]) - 1,
-                Number(parts[0])
-            );
-        }
-    } else {
-        d = new Date(dateText);
-    }
-
-    const t = timeText.split(":").map(Number);
-
-    if (!Number.isNaN(d.getTime()) && t.length >= 2) {
-        d.setHours(
-            Number(t[0]) || 0,
-            Number(t[1]) || 0,
-            Number(t[2]) || 0,
-            0
-        );
-    }
-
-    return d;
-}
 
 /* ------------------------------
    CANVAS RESIZE
@@ -2392,823 +998,394 @@ window.addEventListener(
    DRAW CHART
 ------------------------------ */
 
-
-
-
-/* ===== DRAGGABLE ENTRY / SL / TP ===== */
-
-let draggingTradeLevel = null;
-let dragOriginalRisk = 0;
-
-function screenPriceAtY(y){
-    const height=canvas.clientHeight;
-    const top=30,bottom=30;
-
-    const visibleCount=Math.max(25,Math.min(chartView.visibleCount,currentIndex+1));
-    const start=Math.max(0,currentIndex-visibleCount+1);
-    const visible=candles.slice(start,currentIndex+1);
-
-    if(!visible.length) return null;
-
-    let highest=Math.max(...visible.map(c=>c.high));
-    let lowest=Math.min(...visible.map(c=>c.low));
-
-    if(openPosition){
-        highest=Math.max(highest,openPosition.tp,openPosition.entry,openPosition.sl);
-        lowest=Math.min(lowest,openPosition.tp,openPosition.entry,openPosition.sl);
-    }
-
-    const pad=(highest-lowest||1)*0.08;
-    highest+=pad;
-    lowest-=pad;
-
-    return highest-(y-top)/(height-top-bottom)*(highest-lowest);
-}
-
-function findTradeLevelAtPoint(y){
-
-    if(!openPosition) return null;
-
-    const levels=[
-        {name:"entry",price:openPosition.entry},
-        {name:"sl",price:openPosition.sl},
-        {name:"tp",price:openPosition.tp}
-    ];
-
-    let closest=null;
-    let distance=Infinity;
-
-    levels.forEach(level=>{
-        const screenY=priceToScreen(level.price);
-        if(screenY===null) return;
-
-        const d=Math.abs(y-screenY);
-
-        if(d<distance){
-            distance=d;
-            closest=level.name;
-        }
-    });
-
-    return distance<=14 ? closest : null;
-}
-
-function showTradeDragToast(text){
-    const el=document.getElementById("tradeDragToast");
-    if(!el) return;
-    el.textContent=text;
-    el.classList.add("show");
-}
-
-function hideTradeDragToast(){
-    document.getElementById("tradeDragToast")?.classList.remove("show");
-}
-
-function clampTradeLevel(type,price){
-
-    const p=openPosition;
-    const gap=0.05;
-
-    if(type==="sl"){
-        if(p.direction==="BUY") return Math.min(price,p.entry-gap);
-        return Math.max(price,p.entry+gap);
-    }
-
-    if(type==="tp"){
-        if(p.direction==="BUY") return Math.max(price,p.entry+gap);
-        return Math.min(price,p.entry-gap);
-    }
-
-    // Entry can move, but must stay between SL and TP.
-    if(p.direction==="BUY"){
-        return Math.max(p.sl+gap,Math.min(p.tp-gap,price));
-    }
-
-    return Math.max(p.tp+gap,Math.min(p.sl-gap,price));
-}
-
-function syncDraggedTradeToTicket(){
-
-    if(!openPosition) return;
-
-    document.getElementById("entry").value=openPosition.entry.toFixed(2);
-    document.getElementById("sl").value=openPosition.sl.toFixed(2);
-    document.getElementById("tp").value=openPosition.tp.toFixed(2);
-
-    const riskPercent=balance>0
-        ? (openPosition.riskMoney/balance)*100
-        : 0;
-
-    document.getElementById("risk").value=riskPercent.toFixed(2);
-
-    updateTicketMetrics();
-    updatePosition();
-    updateOpenTradeStrip();
-    updateFloatingPosition();
-    drawChart();
-}
-
-function startTradeLevelDrag(e){
-
-    if(!openPosition || drawTool!=="cursor") return;
-
-    const pt=canvasPoint(e);
-    const level=findTradeLevelAtPoint(pt.y);
-
-    if(!level) return;
-
-    draggingTradeLevel=level;
-    dragOriginalRisk=openPosition.riskMoney;
-
-    canvas.classList.add("dragging-trade-level");
-    document.querySelector(".chart-wrapper")?.classList.add("trade-drag-ready");
-
-    showTradeDragToast("Dragging "+level.toUpperCase()+" • release to set");
-}
-
-function moveTradeLevelDrag(e){
-
-    if(!draggingTradeLevel || !openPosition) return;
-
-    const pt=canvasPoint(e);
-    let price=screenPriceAtY(pt.y);
-
-    if(price===null) return;
-
-    price=Math.round(price*100)/100;
-    price=clampTradeLevel(draggingTradeLevel,price);
-
-    if(draggingTradeLevel==="entry"){
-
-        openPosition.entry=price;
-
-        const distance=Math.abs(openPosition.entry-openPosition.sl);
-
-        if(distance>0){
-            // Preserve the original monetary risk while moving entry.
-            openPosition.positionSize=
-                dragOriginalRisk/distance;
-        }
-
-    }else if(draggingTradeLevel==="sl"){
-
-        openPosition.sl=price;
-
-        // Preserve position size; monetary risk changes with SL distance.
-        openPosition.riskMoney=
-            Math.abs(openPosition.entry-openPosition.sl)
-            *openPosition.positionSize;
-
-    }else if(draggingTradeLevel==="tp"){
-
-        openPosition.tp=price;
-    }
-
-    syncDraggedTradeToTicket();
-}
-
-function endTradeLevelDrag(){
-
-    if(!draggingTradeLevel) return;
-
-    draggingTradeLevel=null;
-    canvas.classList.remove("dragging-trade-level");
-    document.querySelector(".chart-wrapper")?.classList.remove("trade-drag-ready");
-
-    showTradeDragToast("Trade levels updated");
-    setTimeout(hideTradeDragToast,900);
-}
-
-canvas.addEventListener("mousedown",startTradeLevelDrag);
-window.addEventListener("mousemove",moveTradeLevelDrag);
-window.addEventListener("mouseup",endTradeLevelDrag);
-
-canvas.addEventListener("mousemove",function(e){
-
-    if(draggingTradeLevel || !openPosition || drawTool!=="cursor"){
-        return;
-    }
-
-    const pt=canvasPoint(e);
-    const level=findTradeLevelAtPoint(pt.y);
-
-    if(level){
-        canvas.style.cursor="ns-resize";
-        showTradeDragToast("↕ Drag "+level.toUpperCase());
-    }else{
-        canvas.style.cursor="";
-        hideTradeDragToast();
-    }
-});
-
-canvas.addEventListener("mouseleave",function(){
-    if(!draggingTradeLevel){
-        canvas.style.cursor="";
-        hideTradeDragToast();
-    }
-});
-
-
-/* ===== DRAWING TOOLS ===== */
-
-let drawTool = "cursor";
-let drawings = [];
-let drawingStart = null;
-
-function setDrawTool(tool){
-    drawTool = tool;
-    document.querySelectorAll(".draw-btn").forEach(b=>b.classList.remove("active"));
-    const ids={
-        cursor:"drawCursor",hline:"drawHLine",vline:"drawVLine",
-        trend:"drawTrend",rect:"drawRect",fib:"drawFib"
-    };
-    document.getElementById(ids[tool])?.classList.add("active");
-    if(tool!=="cursor") setChartMode("cursor");
-}
-
-function canvasPoint(e){
-    const rect=canvas.getBoundingClientRect();
-    return {
-        x:e.clientX-rect.left,
-        y:e.clientY-rect.top
-    };
-}
-
-function yToPrice(y){
-    const h=canvas.clientHeight,top=30,bottom=30;
-    const visibleCount=Math.max(25,Math.min(chartView.visibleCount,currentIndex+1));
-    const start=Math.max(0,currentIndex-visibleCount+1);
-    const visible=candles.slice(start,currentIndex+1);
-    if(!visible.length) return 0;
-    let hi=Math.max(...visible.map(c=>c.high));
-    let lo=Math.min(...visible.map(c=>c.low));
-    if(openPosition){
-        hi=Math.max(hi,openPosition.tp,openPosition.entry,openPosition.sl);
-        lo=Math.min(lo,openPosition.tp,openPosition.entry,openPosition.sl);
-    }
-    const pad=(hi-lo||1)*.08; hi+=pad; lo-=pad;
-    return hi-(y-top)/(h-top-bottom)*(hi-lo);
-}
-
-function xToIndex(x){
-    const width=canvas.clientWidth;
-    const visibleCount=Math.max(25,Math.min(chartView.visibleCount,currentIndex+1));
-    const start=Math.max(0,currentIndex-visibleCount+1);
-    const step=(width-42-68)/visibleCount;
-    const i=Math.max(0,Math.min(visibleCount-1,Math.floor((x-42)/step)));
-    return start+i;
-}
-
-canvas.addEventListener("mousedown",function(e){
-    if(drawTool==="cursor" || drawTool==="pan") return;
-    drawingStart=canvasPoint(e);
-});
-
-canvas.addEventListener("mouseup",function(e){
-    if(!drawingStart || drawTool==="cursor" || drawTool==="pan") return;
-
-    const end=canvasPoint(e);
-    const a=xToIndex(drawingStart.x);
-    const b=xToIndex(end.x);
-
-    drawings.push({
-        type:drawTool,
-        x1:drawingStart.x,y1:drawingStart.y,
-        x2:end.x,y2:end.y,
-        i1:a,i2:b,
-        p1:yToPrice(drawingStart.y),
-        p2:yToPrice(end.y)
-    });
-
-    drawingStart=null;
-    drawChart();
-});
-
-function drawUserDrawings(){
-    ctx.save();
-    ctx.lineWidth=1.5;
-
-    drawings.forEach(d=>{
-        if(d.type==="hline"){
-            ctx.strokeStyle="#d8b45b";
-            ctx.setLineDash([6,4]);
-            ctx.beginPath();ctx.moveTo(42,d.y1);ctx.lineTo(canvas.clientWidth-68,d.y1);ctx.stroke();
-        }
-
-        if(d.type==="vline"){
-            ctx.strokeStyle="#8aa4c0";
-            ctx.setLineDash([5,4]);
-            ctx.beginPath();ctx.moveTo(d.x1,30);ctx.lineTo(d.x1,canvas.clientHeight-30);ctx.stroke();
-        }
-
-        if(d.type==="trend"){
-            ctx.strokeStyle="#43b7ff";
-            ctx.setLineDash([]);
-            ctx.beginPath();ctx.moveTo(d.x1,d.y1);ctx.lineTo(d.x2,d.y2);ctx.stroke();
-        }
-
-        if(d.type==="rect"){
-            ctx.strokeStyle="#43e37b";
-            ctx.fillStyle="rgba(67,227,123,.06)";
-            const x=Math.min(d.x1,d.x2),y=Math.min(d.y1,d.y2);
-            const w=Math.abs(d.x2-d.x1),h=Math.abs(d.y2-d.y1);
-            ctx.fillRect(x,y,w,h);ctx.strokeRect(x,y,w,h);
-        }
-
-        if(d.type==="fib"){
-            const levels=[0,.236,.382,.5,.618,.786,1];
-            const diff=d.p2-d.p1;
-            ctx.setLineDash([4,3]);
-            levels.forEach(level=>{
-                const price=d.p1+diff*level;
-                const y=priceToScreen(price);
-                if(y===null)return;
-                ctx.strokeStyle="#a98fe8";
-                ctx.beginPath();ctx.moveTo(42,y);ctx.lineTo(canvas.clientWidth-68,y);ctx.stroke();
-                ctx.fillStyle="#bca8ed";
-                ctx.font="10px Arial";
-                ctx.fillText((level*100).toFixed(1)+"%",48,y-4);
-            });
-        }
-    });
-
-    ctx.restore();
-}
-
-function priceToScreen(price){
-    const h=canvas.clientHeight,top=30,bottom=30;
-    const visibleCount=Math.max(25,Math.min(chartView.visibleCount,currentIndex+1));
-    const start=Math.max(0,currentIndex-visibleCount+1);
-    const visible=candles.slice(start,currentIndex+1);
-    if(!visible.length)return null;
-    let hi=Math.max(...visible.map(c=>c.high)),lo=Math.min(...visible.map(c=>c.low));
-    if(openPosition){
-        hi=Math.max(hi,openPosition.tp,openPosition.entry,openPosition.sl);
-        lo=Math.min(lo,openPosition.tp,openPosition.entry,openPosition.sl);
-    }
-    const pad=(hi-lo||1)*.08;hi+=pad;lo-=pad;
-    return top+(hi-price)/(hi-lo)*(h-top-bottom);
-}
-
-function undoDrawing(){
-    drawings.pop();
-    drawChart();
-}
-
-function clearDrawings(){
-    drawings=[];
-    drawChart();
-}
-
-
-
-/* ===== HISTORICAL DATE/TIME REPLAY ===== */
-
-function initReplayPicker(){
-
-    if(!candles.length) return;
-
-    const dateInput=document.getElementById("replayDate");
-    const timeInput=document.getElementById("replayTime");
-
-    if(!dateInput || !timeInput) return;
-
-    dateInput.min=toDateInputValue(candles[0].time);
-    dateInput.max=toDateInputValue(candles[candles.length-1].time);
-
-    const current=candles[Math.min(currentIndex,candles.length-1)].time;
-
-    dateInput.value=toDateInputValue(current);
-    timeInput.value=toTimeInputValue(current);
-
-    updateReplayStatus(current);
-}
-
-function toDateInputValue(date){
-    const d=new Date(date);
-    return d.getFullYear()+"-"+
-        String(d.getMonth()+1).padStart(2,"0")+"-"+
-        String(d.getDate()).padStart(2,"0");
-}
-
-function toTimeInputValue(date){
-    const d=new Date(date);
-    return String(d.getHours()).padStart(2,"0")+":"+
-        String(d.getMinutes()).padStart(2,"0");
-}
-
-function parseLocalDateTime(dateString,timeString){
-
-    const parts=dateString.split("-").map(Number);
-    const tparts=timeString.split(":").map(Number);
-
-    if(parts.length!==3 || tparts.length<2) return null;
-
-    const d=new Date(
-        parts[0],
-        parts[1]-1,
-        parts[2],
-        tparts[0],
-        tparts[1],
-        0,
-        0
-    );
-
-    return Number.isNaN(d.getTime()) ? null : d;
-}
-
-function updateReplayStatus(date){
-
-    const status=document.getElementById("replayStatus");
-
-    if(status){
-        status.textContent="Replay: "+formatDate(date);
-    }
-}
-
-function jumpToReplayPoint(){
-
-    if(!candles.length) return;
-
-    const date=document.getElementById("replayDate").value;
-    const time=document.getElementById("replayTime").value;
-
-    if(!date || !time) return;
-
-    const target=parseLocalDateTime(date,time);
-
-    if(!target){
-        document.getElementById("replayStatus").textContent=
-            "Invalid date/time.";
-        return;
-    }
-
-    let bestIndex=0;
-    let bestDiff=Infinity;
-
-    for(let i=0;i<candles.length;i++){
-        const diff=Math.abs(candles[i].time-target);
-
-        if(diff<bestDiff){
-            bestDiff=diff;
-            bestIndex=i;
-        }
-    }
-
-    if(bestIndex<1){
-        document.getElementById("replayStatus").textContent=
-            "Choose a point after the first candle.";
-        return;
-    }
-
-    pauseReplay();
-
-    currentIndex=bestIndex;
-    openPosition=null;
-
-    trades=[];
-    balance=startingBalance;
-
-    updateStats();
-    updateHistory();
-    updatePosition();
-    updateQuotes();
-    updateOpenTradeStrip();
-    updateFloatingPosition();
-    drawChart();
-
-    const selected=candles[currentIndex];
-
-    document.getElementById("replayStatus").textContent=
-        "Replay: "+formatDate(selected.time);
-
-    document.getElementById("dateInfo").textContent=
-        formatDate(selected.time)+" | "+selected.close.toFixed(2);
-}
-
-function startReplayFromSelected(){
-
-    jumpToReplayPoint();
-
-    setTimeout(()=>{
-        if(!isPlaying) togglePlay();
-    },120);
-}
-
-
-/* ===== CHART VIEW / CROSSHAIR ===== */
-
-let chartView = {
-    visibleCount: 80,
-    mode: "cursor",
-    dragging: false,
-    dragStartX: 0,
-    startVisibleCount: 80
-};
-
-function setChartMode(mode){
-    chartView.mode = mode;
-
-    document.getElementById("cursorTool").classList.toggle("active",mode==="cursor");
-    document.getElementById("panTool").classList.toggle("active",mode==="pan");
-
-    document.querySelector(".chart-wrapper").classList.toggle("crosshair-on",mode==="cursor");
-    document.querySelector(".chart-wrapper").classList.toggle("pan-on",mode==="pan");
-}
-
-function zoomChart(direction){
-    const min=25,max=Math.min(180,Math.max(25,currentIndex+1));
-
-    if(direction>0){
-        chartView.visibleCount=Math.max(min,Math.round(chartView.visibleCount*.78));
-    }else{
-        chartView.visibleCount=Math.min(max,Math.round(chartView.visibleCount*1.28));
-    }
-
-    drawChart();
-}
-
-function resetChartView(){
-    chartView.visibleCount=Math.min(80,Math.max(25,currentIndex+1));
-    setChartMode("cursor");
-    drawChart();
-}
-
-canvas.addEventListener("wheel",function(e){
-    e.preventDefault();
-    zoomChart(e.deltaY<0 ? 1 : -1);
-},{passive:false});
-
-canvas.addEventListener("mousedown",function(e){
-    if(chartView.mode!=="pan") return;
-
-    chartView.dragging=true;
-    chartView.dragStartX=e.clientX;
-    chartView.startVisibleCount=chartView.visibleCount;
-});
-
-window.addEventListener("mouseup",function(){
-    chartView.dragging=false;
-});
-
-window.addEventListener("mousemove",function(e){
-    if(!chartView.dragging || chartView.mode!=="pan") return;
-
-    const dx=e.clientX-chartView.dragStartX;
-    const amount=Math.round(dx/12);
-
-    if(amount!==0){
-        currentIndex=Math.max(
-            Math.min(candles.length-1,currentIndex-amount),
-            Math.max(1,chartView.visibleCount)
-        );
-
-        chartView.dragStartX=e.clientX;
-
-        drawChart();
-        updatePosition();
-        updateQuotes();
-        updateOpenTradeStrip();
-    updateFloatingPosition();
-    }
-});
-
-canvas.addEventListener("mousemove",function(e){
-    if(chartView.mode!=="cursor") return;
-
-    const rect=canvas.getBoundingClientRect();
-    const x=e.clientX-rect.left;
-    const y=e.clientY-rect.top;
-
-    const label=document.getElementById("crosshairLabel");
-    label.style.display="block";
-    label.style.left=Math.min(rect.width-130,Math.max(4,x+10))+"px";
-    label.style.top=Math.min(rect.height-35,Math.max(4,y+10))+"px";
-
-    const visibleCount=Math.max(25,Math.min(chartView.visibleCount,currentIndex+1));
-    const start=Math.max(0,currentIndex-visibleCount+1);
-    const step=(rect.width-42-68)/visibleCount;
-    const i=Math.max(0,Math.min(visibleCount-1,Math.floor((x-42)/step)));
-    const candle=candles[start+i];
-
-    if(candle){
-        label.textContent =
-            formatDate(candle.time)+" • O "+candle.open.toFixed(2)+
-            " H "+candle.high.toFixed(2)+
-            " L "+candle.low.toFixed(2)+
-            " C "+candle.close.toFixed(2);
-    }
-});
-
-canvas.addEventListener("mouseleave",function(){
-    document.getElementById("crosshairLabel").style.display="none";
-});
-
 function drawChart() {
 
-    const width = canvas.clientWidth;
-    const height = canvas.clientHeight;
+    const width =
+        canvas.clientWidth;
 
-    ctx.clearRect(0,0,width,height);
+    const height =
+        canvas.clientHeight;
+
+    ctx.clearRect(
+        0,
+        0,
+        width,
+        height
+    );
+
+
+    /* Background */
 
     ctx.fillStyle = "#07111f";
-    ctx.fillRect(0,0,width,height);
 
-    if (!candles.length || currentIndex <= 0) {
+    ctx.fillRect(
+        0,
+        0,
+        width,
+        height
+    );
+
+
+    /* Grid */
+
+    ctx.strokeStyle =
+        "rgba(255,255,255,0.055)";
+
+    ctx.lineWidth = 1;
+
+
+    for (
+        let x = 0;
+        x < width;
+        x += 55
+    ) {
+
+        ctx.beginPath();
+
+        ctx.moveTo(x, 0);
+
+        ctx.lineTo(x, height);
+
+        ctx.stroke();
+    }
+
+
+    for (
+        let y = 0;
+        y < height;
+        y += 50
+    ) {
+
+        ctx.beginPath();
+
+        ctx.moveTo(0, y);
+
+        ctx.lineTo(width, y);
+
+        ctx.stroke();
+    }
+
+
+    if (currentIndex <= 0) {
         return;
     }
 
-    const visibleCount = Math.max(25, Math.min(chartView.visibleCount, currentIndex + 1));
-    const endIndex = Math.max(0, Math.min(currentIndex, candles.length - 1));
-    const start = Math.max(0, endIndex - visibleCount + 1);
 
-    const visible = candles.slice(start, endIndex + 1);
+    /* Visible candles */
 
-    let highest = Math.max(...visible.map(c => c.high));
-    let lowest = Math.min(...visible.map(c => c.low));
+    let visibleCount = 80;
 
-    if (openPosition) {
-        highest = Math.max(highest, openPosition.tp, openPosition.entry, openPosition.sl);
-        lowest = Math.min(lowest, openPosition.tp, openPosition.entry, openPosition.sl);
-    }
-
-    const pad = (highest - lowest || 1) * 0.08;
-    highest += pad;
-    lowest -= pad;
-
-    const range = highest - lowest || 1;
-
-    const top = 30;
-    const bottom = 30;
-    const left = 42;
-    const right = 68;
-    const chartHeight = height - top - bottom;
-    const chartWidth = width - left - right;
-
-    function priceToY(price) {
-        return top + (highest - price) / range * chartHeight;
-    }
-
-    // Grid
-    ctx.strokeStyle = "rgba(255,255,255,0.055)";
-    ctx.lineWidth = 1;
-
-    for(let i=0;i<=7;i++){
-        const y = top + (chartHeight/7)*i;
-        ctx.beginPath();
-        ctx.moveTo(left,y);
-        ctx.lineTo(width-right,y);
-        ctx.stroke();
-    }
-
-    const step = chartWidth / Math.max(1, visible.length);
-
-    for(let i=0;i<=8;i++){
-        const x = left + (chartWidth/8)*i;
-        ctx.beginPath();
-        ctx.moveTo(x,top);
-        ctx.lineTo(x,height-bottom);
-        ctx.stroke();
-    }
-
-    // Price scale
-    ctx.font = "11px Arial";
-    ctx.fillStyle = "#71839a";
-    ctx.textAlign = "left";
-
-    for(let i=0;i<=6;i++){
-        const p = highest - (range/6)*i;
-        ctx.fillText(p.toFixed(2), width-right+8, priceToY(p)+4);
-    }
-
-    // Candles
-    visible.forEach((candle,i)=>{
-        const x = left + i*step + step/2;
-        const openY = priceToY(candle.open);
-        const closeY = priceToY(candle.close);
-        const highY = priceToY(candle.high);
-        const lowY = priceToY(candle.low);
-        const bullish = candle.close >= candle.open;
-
-        ctx.strokeStyle = bullish ? "#43e37b" : "#ff6678";
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.moveTo(x,highY);
-        ctx.lineTo(x,lowY);
-        ctx.stroke();
-
-        ctx.fillStyle = bullish ? "#43e37b" : "#ff6678";
-        const bodyTop = Math.min(openY,closeY);
-        const bodyHeight = Math.max(2,Math.abs(openY-closeY));
-
-        ctx.fillRect(
-            x-Math.max(2,step*.32),
-            bodyTop,
-            Math.max(3,step*.64),
-            bodyHeight
+    let start =
+        Math.max(
+            0,
+            currentIndex - visibleCount + 1
         );
 
-        // Time labels every suitable interval
-        if(i % Math.max(1,Math.floor(visible.length/7)) === 0){
-            ctx.fillStyle = "#63758c";
-            ctx.font = "10px Arial";
-            ctx.textAlign = "center";
-            ctx.fillText(
-                formatShortTime(candle.time),
-                x,
-                height-8
+    let visible =
+        candles.slice(
+            start,
+            currentIndex + 1
+        );
+
+
+    let highest =
+        Math.max(
+            ...visible.map(c => c.high)
+        );
+
+    let lowest =
+        Math.min(
+            ...visible.map(c => c.low)
+        );
+
+
+    let range =
+        highest - lowest || 1;
+
+
+    const top = 30;
+
+    const bottom = 35;
+
+    const chartHeight =
+        height - top - bottom;
+
+
+    const candleWidth =
+        Math.max(
+            5,
+            (width - 70) / visible.length
+        );
+
+
+    function priceToY(price) {
+
+        return (
+            top +
+            (highest - price)
+            / range *
+            chartHeight
+        );
+    }
+
+
+    /* Price levels */
+
+    ctx.font =
+        "11px Arial";
+
+    ctx.fillStyle =
+        "#71839a";
+
+    for (
+        let i = 0;
+        i <= 5;
+        i++
+    ) {
+
+        let p =
+            highest -
+            (range / 5) * i;
+
+        let y =
+            priceToY(p);
+
+        ctx.fillText(
+            p.toFixed(2),
+            width - 58,
+            y + 4
+        );
+    }
+
+
+    /* Candles */
+
+    visible.forEach(
+        (candle, i) => {
+
+            const x =
+                35 +
+                i * candleWidth;
+
+            const openY =
+                priceToY(candle.open);
+
+            const closeY =
+                priceToY(candle.close);
+
+            const highY =
+                priceToY(candle.high);
+
+            const lowY =
+                priceToY(candle.low);
+
+
+            const bullish =
+                candle.close >= candle.open;
+
+
+            /* Wick */
+
+            ctx.strokeStyle =
+                bullish
+                ? "#43e37b"
+                : "#ff6678";
+
+            ctx.lineWidth = 1;
+
+            ctx.beginPath();
+
+            ctx.moveTo(
+                x + candleWidth / 2,
+                highY
             );
+
+            ctx.lineTo(
+                x + candleWidth / 2,
+                lowY
+            );
+
+            ctx.stroke();
+
+
+            /* Body */
+
+            ctx.fillStyle =
+                bullish
+                ? "#43e37b"
+                : "#ff6678";
+
+
+            const bodyTop =
+                Math.min(
+                    openY,
+                    closeY
+                );
+
+            const bodyHeight =
+                Math.max(
+                    2,
+                    Math.abs(
+                        openY - closeY
+                    )
+                );
+
+
+            ctx.fillRect(
+                x + 1,
+                bodyTop,
+                Math.max(
+                    3,
+                    candleWidth - 2
+                ),
+                bodyHeight
+            );
+
         }
-    });
+    );
 
-    // Current price
-    const last = candles[currentIndex];
-    if(last){
-        const y = priceToY(last.close);
 
-        ctx.strokeStyle = "rgba(255,255,255,.38)";
-        ctx.setLineDash([5,4]);
+    /* Draw current price */
+
+    const last =
+        candles[currentIndex];
+
+    if (last) {
+
+        const y =
+            priceToY(last.close);
+
+        ctx.strokeStyle =
+            "rgba(255,255,255,.35)";
+
+        ctx.setLineDash([4,4]);
+
         ctx.beginPath();
-        ctx.moveTo(left,y);
-        ctx.lineTo(width-right,y);
+
+        ctx.moveTo(0,y);
+
+        ctx.lineTo(width,y);
+
         ctx.stroke();
+
         ctx.setLineDash([]);
 
-        ctx.fillStyle = "#eaf2fc";
-        ctx.fillRect(width-right,y-9,right-3,18);
-        ctx.fillStyle = "#07111f";
-        ctx.font = "bold 10px Arial";
-        ctx.textAlign = "center";
-        ctx.fillText(last.close.toFixed(2),width-right+(right-3)/2,y+4);
+        document.getElementById(
+            "priceLabel"
+        ).textContent =
+            last.close.toFixed(2);
 
-        document.getElementById("priceLabel").textContent = last.close.toFixed(2);
-        document.getElementById("dateInfo").textContent =
-            formatDate(last.time) + " | " + last.close.toFixed(2);
+        document.getElementById(
+            "dateInfo"
+        ).textContent =
+            formatDate(last.time)
+            + "  |  "
+            + last.close.toFixed(2);
     }
 
-    if(openPosition){
-        drawPriceLine(openPosition.entry,"#4da6ff","ENTRY",highest,lowest);
-        drawPriceLine(openPosition.sl,"#ff6678","SL",highest,lowest);
-        drawPriceLine(openPosition.tp,"#43e37b","TP",highest,lowest);
+
+    /* Open position lines */
+
+    if (openPosition) {
+
+        drawPriceLine(
+            openPosition.entry,
+            "#4da6ff",
+            "ENTRY"
+        );
+
+        drawPriceLine(
+            openPosition.sl,
+            "#ff6678",
+            "SL"
+        );
+
+        drawPriceLine(
+            openPosition.tp,
+            "#43e37b",
+            "TP"
+        );
     }
 
-    drawUserDrawings();
 }
 
-function formatShortTime(date){
-    return date.toLocaleTimeString("en-IN",{hour:"2-digit",minute:"2-digit"});
-}
 
 /* ------------------------------
    PRICE LINE
 ------------------------------ */
 
-function drawPriceLine(price,color,label,highestOverride=null,lowestOverride=null){
+function drawPriceLine(
+    price,
+    color,
+    label
+) {
 
-    const width = canvas.clientWidth;
-    const height = canvas.clientHeight;
+    const width =
+        canvas.clientWidth;
 
-    const visibleCount = Math.max(25, Math.min(chartView.visibleCount,currentIndex+1));
-    const start = Math.max(0,currentIndex-visibleCount+1);
-    const visible = candles.slice(start,currentIndex+1);
+    const height =
+        canvas.clientHeight;
 
-    let highest = highestOverride ?? Math.max(...visible.map(c=>c.high));
-    let lowest = lowestOverride ?? Math.min(...visible.map(c=>c.low));
+    let visibleCount = 80;
 
-    if(highestOverride === null){
-        const pad=(highest-lowest||1)*0.08;
-        highest+=pad;
-        lowest-=pad;
-    }
+    let start =
+        Math.max(
+            0,
+            currentIndex - visibleCount + 1
+        );
 
-    const range=highest-lowest||1;
-    const top=30,bottom=30;
-    const y=top+(highest-price)/range*(height-top-bottom);
+    let visible =
+        candles.slice(
+            start,
+            currentIndex + 1
+        );
 
-    ctx.strokeStyle=color;
+    let highest =
+        Math.max(
+            ...visible.map(c => c.high)
+        );
+
+    let lowest =
+        Math.min(
+            ...visible.map(c => c.low)
+        );
+
+    let range =
+        highest - lowest || 1;
+
+    let y =
+        30 +
+        (highest - price)
+        / range *
+        (height - 65);
+
+
+    ctx.strokeStyle = color;
+
     ctx.setLineDash([6,4]);
-    ctx.lineWidth=1;
+
     ctx.beginPath();
-    ctx.moveTo(42,y);
-    ctx.lineTo(width-68,y);
+
+    ctx.moveTo(0,y);
+
+    ctx.lineTo(width,y);
+
     ctx.stroke();
+
     ctx.setLineDash([]);
 
-    // Draggable handle at the right side of the chart.
-    ctx.fillStyle=color;
-    ctx.beginPath();
-    ctx.arc(width-78,y,5,0,Math.PI*2);
-    ctx.fill();
 
-    ctx.fillStyle=color;
-    ctx.font="bold 10px Arial";
-    ctx.textAlign="left";
-    ctx.fillText(label+" "+price.toFixed(2),48,y-5);
+    ctx.fillStyle = color;
 
-    ctx.font="bold 9px Arial";
-    ctx.textAlign="center";
-    ctx.fillText("↕",width-78,y+3);
+    ctx.font = "11px Arial";
+
+    ctx.fillText(
+        label + " " + price.toFixed(2),
+        8,
+        y - 5
+    );
 }
+
 
 /* ------------------------------
    FORMAT DATE
@@ -3259,12 +1436,6 @@ function nextCandle() {
     updatePosition();
 
     updateStats();
-    updateQuotes();
-    updateOpenTradeStrip();
-    updateFloatingPosition();
-    updateQuotes();
-    updateOpenTradeStrip();
-    updateFloatingPosition();
 }
 
 
@@ -3314,9 +1485,6 @@ function nextFive() {
     updatePosition();
 
     updateStats();
-    updateQuotes();
-    updateOpenTradeStrip();
-    updateFloatingPosition();
 }
 
 
@@ -3348,9 +1516,6 @@ function nextTen() {
     updatePosition();
 
     updateStats();
-    updateQuotes();
-    updateOpenTradeStrip();
-    updateFloatingPosition();
 }
 
 
@@ -3449,6 +1614,68 @@ function setSpeed(
 
 
 /* ------------------------------
+   TRADE PREVIEW / VALIDATION
+------------------------------ */
+function setRisk(value) {
+    document.getElementById("risk").value = value;
+    document.querySelectorAll(".risk-presets button").forEach(b => b.classList.remove("active"));
+    const btn = [...document.querySelectorAll(".risk-presets button")].find(b => b.textContent.includes(value + "%"));
+    if (btn) btn.classList.add("active");
+    updateTradePreview();
+}
+
+function showTradeMessage(message, type="") {
+    const el = document.getElementById("tradeMessage");
+    el.textContent = message || "";
+    el.className = "trade-message" + (type ? " " + type : "");
+}
+
+function updateTradePreview() {
+    const candle = candles[currentIndex];
+    if (!candle) return;
+    const entry = parseFloat(document.getElementById("entry").value) || candle.close;
+    const sl = parseFloat(document.getElementById("sl").value);
+    const tp = parseFloat(document.getElementById("tp").value);
+    const riskPercent = parseFloat(document.getElementById("risk").value) || 0;
+    const riskMoney = balance * riskPercent / 100;
+    const distance = Math.abs(entry - sl);
+    const rewardDistance = Math.abs(tp - entry);
+    const size = distance > 0 ? riskMoney / distance : 0;
+    const reward = size * rewardDistance;
+    document.getElementById("previewRisk").textContent = "$" + (distance > 0 ? riskMoney.toFixed(2) : "0.00");
+    document.getElementById("previewReward").textContent = "$" + (distance > 0 ? reward.toFixed(2) : "0.00");
+    document.getElementById("previewRR").textContent = distance > 0 ? "1:" + (rewardDistance / distance).toFixed(2) : "—";
+    document.getElementById("previewSize").textContent = size > 0 ? size.toFixed(3) : "0.000";
+}
+
+function hidePositionCard() {
+    const area = document.getElementById("positionArea");
+    if (openPosition) {
+        area.dataset.hidden = "1";
+        area.innerHTML = `<div style="color:#64768e;font-size:12px;display:flex;justify-content:space-between;align-items:center;">Position hidden <button class="hide-position-btn" onclick="showPositionCard()">↗</button></div>`;
+    }
+}
+
+function showPositionCard() {
+    document.getElementById("positionArea").dataset.hidden = "";
+    updatePosition();
+}
+
+function manualCloseTrade() {
+    if (!openPosition) return;
+    const candle = candles[currentIndex];
+    if (!candle) return;
+    const exitPrice = candle.close;
+    const p = openPosition;
+    const pnl = p.direction === "BUY"
+        ? (exitPrice - p.entry) * p.positionSize
+        : (p.entry - exitPrice) * p.positionSize;
+    const result = pnl > 0 ? "WIN" : pnl < 0 ? "LOSS" : "BREAK EVEN";
+    closeTrade(result, exitPrice, pnl);
+    showTradeMessage("Trade closed manually at current price.", "success");
+}
+
+/* ------------------------------
    OPEN TRADE
 ------------------------------ */
 
@@ -3458,10 +1685,7 @@ function openTrade(
 
     if (openPosition) {
 
-        alert(
-            "You already have an open position."
-        );
-
+        showTradeMessage("You already have an open position. Close it before opening another.", "error");
         return;
     }
 
@@ -3517,10 +1741,7 @@ function openTrade(
         !tp
     ) {
 
-        alert(
-            "Please enter Stop Loss and Take Profit."
-        );
-
+        showTradeMessage("Please enter Stop Loss and Take Profit.", "error");
         return;
     }
 
@@ -3535,10 +1756,7 @@ function openTrade(
         )
     ) {
 
-        alert(
-            "For BUY: SL must be below Entry and TP above Entry."
-        );
-
+        showTradeMessage("For BUY: SL must be below Entry and TP above Entry.", "error");
         return;
     }
 
@@ -3553,10 +1771,7 @@ function openTrade(
         )
     ) {
 
-        alert(
-            "For SELL: SL must be above Entry and TP below Entry."
-        );
-
+        showTradeMessage("For SELL: SL must be above Entry and TP below Entry.", "error");
         return;
     }
 
@@ -3576,10 +1791,7 @@ function openTrade(
         riskDistance <= 0
     ) {
 
-        alert(
-            "Invalid risk distance."
-        );
-
+        showTradeMessage("Invalid risk distance.", "error");
         return;
     }
 
@@ -3588,9 +1800,6 @@ function openTrade(
         riskMoney /
         riskDistance;
 
-
-    const lots =
-        Math.max(1, parseInt(document.getElementById("lots").value) || 1);
 
     openPosition = {
 
@@ -3612,18 +1821,12 @@ function openTrade(
         positionSize:
             positionSize,
 
-        lots:
-            lots,
-
         openTime:
             candles[currentIndex].time
     };
 
 
     updatePosition();
-    updateQuotes();
-    updateOpenTradeStrip();
-    updateFloatingPosition();
 
     drawChart();
 
@@ -3735,7 +1938,8 @@ function checkOpenPosition() {
 
 function closeTrade(
     result,
-    exitPrice
+    exitPrice,
+    manualPnl = null
 ) {
 
     const p =
@@ -3762,9 +1966,9 @@ function closeTrade(
     }
 
 
-    let pnl =
-        priceDifference *
-        p.positionSize;
+    let pnl = manualPnl !== null
+        ? manualPnl
+        : priceDifference * p.positionSize;
 
 
     /*
@@ -3835,12 +2039,6 @@ function closeTrade(
         pnl:
             pnl,
 
-        riskMoney:
-            p.riskMoney,
-
-        rMultiple:
-            p.riskMoney > 0 ? pnl / p.riskMoney : 0,
-
         result:
             result,
 
@@ -3856,12 +2054,7 @@ function closeTrade(
 
     updateHistory();
 
-    updateAnalytics();
-
     updatePosition();
-    updateQuotes();
-    updateOpenTradeStrip();
-    updateFloatingPosition();
 
     drawChart();
 
@@ -3879,6 +2072,9 @@ function updatePosition() {
             "positionArea"
         );
 
+    if (area.dataset.hidden === "1" && openPosition) {
+        return;
+    }
 
     if (!openPosition) {
 
@@ -3938,7 +2134,7 @@ function updatePosition() {
             <div class="position-type ${openPosition.direction === "BUY" ? "profit" : "loss"}">
 
                 ${openPosition.direction}
-                BANKNIFTY
+                XAUUSD
 
             </div>
 
@@ -3977,10 +2173,15 @@ function updatePosition() {
                 <strong class="${floatingClass}">
 
                     ${floating >= 0 ? "+" : ""}
-                    ${floating.toFixed(2)}
+                    $${floating.toFixed(2)}
 
                 </strong>
 
+            </div>
+
+            <div class="position-actions">
+                <button class="close-trade-btn" onclick="manualCloseTrade()">Close Trade</button>
+                <button class="hide-position-btn" onclick="hidePositionCard()" title="Hide position card">×</button>
             </div>
 
         </div>
@@ -4028,7 +2229,7 @@ function updateStats() {
     document.getElementById(
         "profit"
     ).textContent =
-        "₹"
+        "$"
         +
         totalProfit.toFixed(2);
 
@@ -4036,7 +2237,7 @@ function updateStats() {
     document.getElementById(
         "loss"
     ).textContent =
-        "₹"
+        "$"
         +
         totalLoss.toFixed(2);
 }
@@ -4048,49 +2249,86 @@ function updateStats() {
 
 function updateHistory() {
 
-    const history = document.getElementById("history");
+    const history =
+        document.getElementById(
+            "history"
+        );
 
-    if (!trades.length) {
+
+    if (
+        trades.length === 0
+    ) {
+
         history.innerHTML = `
             <div style="color:#64768e;font-size:12px;">
                 No trades yet.
             </div>
         `;
+
         return;
     }
 
-    history.innerHTML = trades.slice().reverse().map((trade, index) => {
 
-        const pnl = Number(trade.pnl) || 0;
-        const directionClass = trade.direction === "BUY" ? "profit" : "loss";
-        const pnlClass = pnl >= 0 ? "profit" : "loss";
-        const sign = pnl >= 0 ? "+" : "-";
-        const number = trade.number ?? (trades.length - index);
-        const result = trade.result || (pnl >= 0 ? "WIN" : "LOSS");
+    history.innerHTML =
+        trades
+        .slice()
+        .reverse()
+        .map(
+            trade => `
 
-        return `
             <div class="trade">
+
                 <div class="trade-top">
+
                     <strong>
-                        #${number}
-                        <span class="${directionClass}">
+
+                        #${trade.number}
+
+                        <span class="${
+                            trade.direction === "BUY"
+                            ? "profit"
+                            : "loss"
+                        }">
+
                             ${trade.direction}
+
                         </span>
+
                     </strong>
 
-                    <strong class="${pnlClass}">
-                        ${sign}₹${Math.abs(pnl).toFixed(2)}
+                    <strong class="${
+                        trade.pnl >= 0
+                        ? "profit"
+                        : "loss"
+                    }">
+
+                        ${trade.pnl >= 0 ? "+" : ""}
+                        $${trade.pnl.toFixed(2)}
+
                     </strong>
+
                 </div>
 
                 <div class="trade-bottom">
-                    Entry: ${Number(trade.entry).toFixed(2)}
-                    → Exit: ${Number(trade.exit).toFixed(2)}
-                    · ${result}
+
+                    Entry:
+                    ${trade.entry.toFixed(2)}
+
+                    →
+                    Exit:
+                    ${trade.exit.toFixed(2)}
+
+                    ·
+
+                    ${trade.result}
+
                 </div>
+
             </div>
-        `;
-    }).join("");
+
+        `
+        )
+        .join("");
 }
 
 
@@ -4099,8 +2337,6 @@ function updateHistory() {
 ------------------------------ */
 
 function resetReplay() {
-    draggingTradeLevel=null;
-    hideTradeDragToast();
 
     pauseReplay();
 
@@ -4118,7 +2354,7 @@ function resetReplay() {
 
 
     currentIndex =
-        Math.min(80, candles.length - 1);
+        30;
 
 
     openPosition =
@@ -4143,7 +2379,6 @@ function resetReplay() {
     losses =
         0;
 
-    updateAnalytics();
 
     document.getElementById(
         "entry"
@@ -4160,13 +2395,12 @@ function resetReplay() {
     ).value = "";
 
 
+    showTradeMessage("");
+    document.getElementById("positionArea").dataset.hidden = "";
     updateStats();
-
     updateHistory();
-
     updatePosition();
-    resetChartView();
-
+    updateTradePreview();
     drawChart();
 }
 
@@ -4196,173 +2430,31 @@ document.getElementById(
                 startingBalance;
 
             updateStats();
-            updateAnalytics();
         }
 
     }
 );
 
 
-
-
-function updateFloatingPosition(){
-    const card=document.getElementById("floatingPosition");
-
-    if(!openPosition){
-        card.classList.remove("show");
-        return;
-    }
-
-    const current=getCurrentPrice();
-    const p=openPosition;
-    const pnl=p.direction==="BUY"
-        ? (current-p.entry)*p.positionSize
-        : (p.entry-current)*p.positionSize;
-
-    const title=document.getElementById("fpTitle");
-    title.textContent="● "+p.direction+" BANKNIFTY";
-    title.style.color=p.direction==="BUY"?"#43e37b":"#ff6678";
-
-    document.getElementById("fpEntry").textContent=p.entry.toFixed(2);
-    document.getElementById("fpCurrent").textContent=current.toFixed(2);
-    document.getElementById("fpSL").textContent=p.sl.toFixed(2);
-    document.getElementById("fpTP").textContent=p.tp.toFixed(2);
-
-    const pnlEl=document.getElementById("fpPnl");
-    pnlEl.textContent=(pnl>=0?"+":"-")+"₹"+Math.abs(pnl).toFixed(0)+" Floating P&L";
-    pnlEl.style.color=pnl>=0?"#43e37b":"#ff6678";
-
-    const state=document.getElementById("fpState");
-    state.textContent=pnl>=0?"PROFIT • LIVE SIMULATION":"LOSS • LIVE SIMULATION";
-    state.style.color=pnl>=0?"#43e37b":"#ff6678";
-
-    card.style.borderColor=pnl>=0?"#286c49":"#713442";
-    card.classList.add("show");
-}
-
-function hideFloatingPosition(){
-    document.getElementById("floatingPosition").classList.remove("show");
-}
-
-
-/* PRO TRADE TICKET */
-
-function getCurrentPrice(){
-    const c=candles[currentIndex];
-    return c ? c.close : 0;
-}
-
-function updateQuotes(){
-    const price=getCurrentPrice();
-    if(!price) return;
-    const spread=Math.max(0.05,price*0.00005);
-    document.getElementById("sellQuote").textContent=(price-spread).toFixed(2);
-    document.getElementById("buyQuote").textContent=(price+spread).toFixed(2);
-    const risk=parseFloat(document.getElementById("risk").value)||0;
-    document.getElementById("riskMoneyLabel").textContent="₹"+(balance*risk/100).toFixed(0)+" risk";
-    updateTicketMetrics();
-}
-
-function selectDirection(direction){
-    const price=getCurrentPrice();
-    if(!price) return;
-    document.getElementById("entry").value=price.toFixed(2);
-    const sl=document.getElementById("sl"),tp=document.getElementById("tp");
-    const distance=Math.max(20,price*0.001);
-    if(direction==="BUY"){
-        if(!sl.value) sl.value=(price-distance).toFixed(2);
-        if(!tp.value) tp.value=(price+distance*2).toFixed(2);
-    }else{
-        if(!sl.value) sl.value=(price+distance).toFixed(2);
-        if(!tp.value) tp.value=(price-distance*2).toFixed(2);
-    }
-    document.getElementById("entry").dataset.direction=direction;
-    updateTicketMetrics();
-}
-
-function changeLots(amount){
-    const input=document.getElementById("lots");
-    input.value=Math.max(1,(parseInt(input.value)||1)+amount);
-    updateTicketMetrics();
-}
-
-function updateTicketMetrics(){
-    const entry=parseFloat(document.getElementById("entry").value);
-    const sl=parseFloat(document.getElementById("sl").value);
-    const tp=parseFloat(document.getElementById("tp").value);
-    const risk=parseFloat(document.getElementById("risk").value)||0;
-    const riskMoney=balance*risk/100;
-    document.getElementById("ticketRisk").textContent="₹"+riskMoney.toFixed(0);
-    document.getElementById("ticketPosition").textContent=(parseInt(document.getElementById("lots").value)||1)+" Lot";
-    if(Number.isFinite(entry)&&Number.isFinite(sl)&&Number.isFinite(tp)){
-        const rd=Math.abs(entry-sl),wd=Math.abs(tp-entry);
-        const rr=rd>0?wd/rd:0;
-        document.getElementById("ticketReward").textContent="₹"+(riskMoney*rr).toFixed(0);
-        document.getElementById("ticketRR").textContent=rr>0?"1:"+rr.toFixed(2):"—";
-    }else{
-        document.getElementById("ticketReward").textContent="₹0";
-        document.getElementById("ticketRR").textContent="—";
-    }
-}
-
-function updateOpenTradeStrip(){
-    const box=document.getElementById("openTradeTable");
-    document.getElementById("openCount").textContent=openPosition?"1":"0";
-    document.getElementById("closedCount").textContent=trades.length;
-    if(!openPosition){
-        box.innerHTML='<div style="padding:13px 14px;color:#64768e;font-size:12px">No open trades. Choose BUY or SELL from the trade ticket.</div>';
-        return;
-    }
-    const p=openPosition,current=getCurrentPrice();
-    const floating=p.direction==="BUY"?(current-p.entry)*p.positionSize:(p.entry-current)*p.positionSize;
-    box.innerHTML=`
-      <div class="trade-table">
-        <strong>BANKNIFTY <span class="${p.direction==="BUY"?"profit":"loss"}">● ${p.direction}</span></strong>
-        <strong>${p.lots||1} Lot</strong>
-        <span>Entry<br><strong>${p.entry.toFixed(2)}</strong></span>
-        <span>Current<br><strong>${current.toFixed(2)}</strong></span>
-        <span>TP<br><strong class="profit">${p.tp.toFixed(2)}</strong></span>
-        <span>SL<br><strong class="loss">${p.sl.toFixed(2)}</strong></span>
-        <strong class="${floating>=0?"profit":"loss"}">${floating>=0?"+":""}${floating.toFixed(0)}</strong>
-      </div>`;
-}
-
-document.getElementById("risk").addEventListener("input",updateTicketMetrics);
-document.getElementById("entry").addEventListener("input",updateTicketMetrics);
-document.getElementById("sl").addEventListener("input",updateTicketMetrics);
-document.getElementById("tp").addEventListener("input",updateTicketMetrics);
-document.getElementById("lots").addEventListener("input",updateTicketMetrics);
-
-document.getElementById("marketTab").addEventListener("click",()=>{
-    document.getElementById("marketTab").classList.add("active");
-    document.getElementById("pendingTab").classList.remove("active");
+["entry","risk","sl","tp"].forEach(id => {
+    document.getElementById(id).addEventListener("input", updateTradePreview);
 });
-document.getElementById("pendingTab").addEventListener("click",()=>{
-    document.getElementById("pendingTab").classList.add("active");
-    document.getElementById("marketTab").classList.remove("active");
-    alert("Pending orders will be added in the next upgrade.");
-});
-
 
 /* ------------------------------
    INIT
 ------------------------------ */
 
+generateCandles();
+
 resizeCanvas();
-setChartMode('cursor');
-updateQuotes();
-updateOpenTradeStrip();
-    updateFloatingPosition();
 
 updateStats();
 
 updateHistory();
 
 updatePosition();
-
+updateTradePreview();
 drawChart();
-
-loadBankNiftyCSV();
 
 </script>
 
