@@ -3464,7 +3464,7 @@ setTimeout(()=>{try{if(candles&&candles.length>2){const d=v16DateInput(candles[M
 <section class="v17-wrap" id="v17Workspace">
   <div class="v17-head">
     <div class="v17-brand"><small>V17 · ACCOUNT & WORKSPACE</small><strong id="v17Welcome">Guest Workspace</strong><span>Backtests, forward tests, journal and reports — organized per account.</span></div>
-    <div class="v17-actions"><span class="v17-badge local" id="v17CloudBadge">LOCAL MODE</span><button class="v17-btn primary" id="v17AuthBtn" onclick="v17OpenAuth()">Sign In</button><button class="v17-btn" onclick="v17OpenCloud()">Cloud Setup</button></div>
+    <div class="v17-actions"><span class="v17-badge local" id="v17CloudBadge">LOCAL MODE</span><button class="v17-btn" id="v17AuthBtn" onclick="v17OpenAuth()">Sign In</button><button class="v17-btn primary" id="v17SignupBtn" onclick="v17OpenSignup()">Create Account</button><button class="v17-btn" onclick="v17OpenCloud()">Cloud Setup</button></div>
   </div>
   <div class="v17-body">
     <div class="v17-grid">
@@ -3512,6 +3512,8 @@ function v17Esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':
 function v17Key(){return 'bft_v17_workspace_'+(v17.user?.email||'guest');}
 function v17Load(){try{const x=JSON.parse(localStorage.getItem(v17Key())||'null');return x&&typeof x==='object'?x:{backtests:[],forwards:[],journal:[],snapshots:[]};}catch(e){return {backtests:[],forwards:[],journal:[],snapshots:[]};}}
 function v17Save(data){localStorage.setItem(v17Key(),JSON.stringify(data));}
+function v17OpenSignup(){v17.authMode='signup';v17OpenAuth();}
+
 function v17OpenAuth(){document.getElementById('v17AuthModal').classList.add('open');document.getElementById('v17AuthError').textContent='';document.getElementById('v17AuthTitle').textContent=v17.authMode==='signup'?'Create Account':'Sign In';document.getElementById('v17AuthEmail').textContent=v17.authMode==='signup'?'Create your BFT Trade Lab account.':'Sign in to your BFT Trade Lab cloud workspace.';document.getElementById('v17Email').focus();}
 function v17CloseAuth(){document.getElementById('v17AuthModal').classList.remove('open');}
 function v17ToggleAuth(){v17.authMode=v17.authMode==='signin'?'signup':'signin';document.getElementById('v17AuthTitle').textContent=v17.authMode==='signup'?'Create Account':'Sign In';document.getElementById('v17AuthEmail').textContent=v17.authMode==='signup'?'Create your BFT Trade Lab account.':'Sign in to your BFT Trade Lab cloud workspace.';document.getElementById('v17AuthSwitch').textContent=v17.authMode==='signup'?'Already have an account? Sign in':'New to BFT Trade Lab? Create account';document.getElementById('v17AuthError').textContent='';}
@@ -3610,7 +3612,7 @@ async function v17LoadCloudRows(){
 function v17Refresh(){
   const name=v17.user?(v17.user.email||'Cloud User'):'Guest Workspace';
   document.getElementById('v17Welcome').textContent=name;
-  const auth=document.getElementById('v17AuthBtn');auth.textContent=v17.user?'Sign Out':'Sign In';auth.onclick=v17.user?v17SignOut:v17OpenAuth;
+  const auth=document.getElementById('v17AuthBtn');const signup=document.getElementById('v17SignupBtn');auth.textContent=v17.user?'Sign Out':'Sign In';auth.onclick=v17.user?v17SignOut:v17OpenAuth;if(signup)signup.style.display=v17.user?'none':'inline-flex';
   const d=v17Load();
   const bt=Number(localStorage.getItem('bft_saved_sessions')?(()=>{try{return JSON.parse(localStorage.getItem('bft_saved_sessions')).length}catch(e){return 0}})():0);
   document.getElementById('v17Backtests').textContent=bt;
