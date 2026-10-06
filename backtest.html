@@ -654,7 +654,7 @@ select {
 .dm-foot{padding:9px 12px;color:#6f89a5;font-size:10px;border-top:1px solid #17304a}
 @media(max-width:800px){.dm-grid{grid-template-columns:repeat(2,1fr)} }
 
-/* ===== V10.2 DATA PIPELINE ===== */
+/* ===== V10.3 HISTORICAL REPLAY CONNECTION ===== */
 .data-pipeline{
   background:#07111f;
   border-top:1px solid #1b2d42;
@@ -1188,6 +1188,7 @@ select {
       <span>📂 Import CSV</span>
     </label>
     <button type="button" id="runPipelineBtn" class="pipeline-run" disabled>Run Pipeline</button>
+    <button type="button" id="loadReplayBtn" class="pipeline-run" disabled>▶ Load to Replay</button>
     <button type="button" id="exportCleanBtn" class="pipeline-export" disabled>Export Clean CSV</button>
   </div>
 
@@ -1198,7 +1199,7 @@ select {
 
 <script>
 
-/* ===== V10.2 DATA PIPELINE ===== */
+/* ===== V10.3 HISTORICAL REPLAY CONNECTION ===== */
 let pipelineRows = [];
 let cleanedRows = [];
 let pipelineFileName = "";
@@ -1293,6 +1294,7 @@ function runDataPipeline(){
       interval:"—",range:"—",message:"Missing required column(s): "+missing.join(", ")
     });
     document.getElementById("exportCleanBtn").disabled=true;
+    document.getElementById("loadReplayBtn").disabled=true;
     return;
   }
   setPipelineStep("pipeValidate","done");
@@ -1352,6 +1354,55 @@ function runDataPipeline(){
     message:quality?"Dataset passed the current checks.":"Dataset is usable, but review the warnings before replay."
   });
   document.getElementById("exportCleanBtn").disabled=unique.length===0;
+  document.getElementById("loadReplayBtn").disabled=unique.length===0;
+}
+
+function loadCleanedDataToReplay(){
+  if(!cleanedRows.length){
+    pipelineStatus("RUN PIPELINE FIRST","error");
+    return;
+  }
+
+  // Convert the normalized pipeline dataset into the replay engine format.
+  candles=cleanedRows.map(r=>({
+    time:new Date(r.time),
+    open:Number(r.o),
+    high:Number(r.h),
+    low:Number(r.l),
+    close:Number(r.c),
+    volume:Number.isFinite(Number(r.v))?Number(r.v):0
+  }));
+
+  if(candles.length<20){
+    showTradeMessage("Not enough cleaned candles for replay.","error");
+    return;
+  }
+
+  // A new dataset always starts a fresh practice session.
+  pauseReplay();
+  clearBacktestState();
+  currentIndex=Math.min(100,candles.length-1);
+  sessionStartIndex=currentIndex;
+  sessionEndIndex=candles.length-1;
+  sessionActive=false;
+  sessionStatus="READY";
+  chartZoom=1;
+  chartPan=0;
+
+  setReplayInputs(currentIndex);
+  updateDataSourceUI("HISTORICAL CSV");
+  updateDataInspector();
+  updateSessionUI();
+  updateDateInfo();
+  drawChart();
+  updateTerminal();
+
+  const first=candles[0].time, last=candles[candles.length-1].time;
+  pipelineStatus("LOADED TO REPLAY","ready");
+  document.getElementById("pipelineReport").insertAdjacentHTML("beforeend",
+    `<div class="pipeline-metric" style="grid-column:1/-1"><span>REPLAY DATASET</span><strong class="good">${candles.length.toLocaleString()} candles loaded • ${fmtShortDate(first)} → ${fmtShortDate(last)}</strong></div>`
+  );
+  showTradeMessage(`${candles.length.toLocaleString()} cleaned historical candles loaded into Replay. Choose a date/time and start the backtest.`,"success");
 }
 
 function renderPipelineReport(x){
@@ -1377,6 +1428,7 @@ document.getElementById("pipelineFile")?.addEventListener("change",function(){
     try{
       pipelineRows=parseCSV(String(reader.result||""));
       document.getElementById("runPipelineBtn").disabled=!pipelineRows.length;
+      document.getElementById("loadReplayBtn").disabled=true;
       pipelineStatus(pipelineRows.length?"DATA LOADED":"EMPTY FILE",pipelineRows.length?"active":"error");
       if(pipelineRows.length){
         ["pipeValidate","pipeNormalize","pipeClean","pipeGaps","pipeReady"].forEach(id=>setPipelineStep(id,""));
@@ -1386,6 +1438,7 @@ document.getElementById("pipelineFile")?.addEventListener("change",function(){
     }catch(e){
       pipelineRows=[];
       document.getElementById("runPipelineBtn").disabled=true;
+      document.getElementById("loadReplayBtn").disabled=true;
       pipelineStatus("CSV READ ERROR","error");
       document.getElementById("pipelineReport").innerHTML=`<div class="pipeline-empty">${e.message}</div>`;
     }
@@ -1394,6 +1447,7 @@ document.getElementById("pipelineFile")?.addEventListener("change",function(){
 });
 
 document.getElementById("runPipelineBtn")?.addEventListener("click",runDataPipeline);
+document.getElementById("loadReplayBtn")?.addEventListener("click",loadCleanedDataToReplay);
 
 document.getElementById("exportCleanBtn")?.addEventListener("click",()=>{
   if(!cleanedRows.length)return;
