@@ -2197,7 +2197,7 @@ function updateSessionUI(){
     const pct=Math.max(0,Math.min(100,((currentIndex-sessionStartIndex)/span)*100));
     progress.style.width=pct.toFixed(1)+"%";
     const st=candles[sessionStartIndex], en=candles[sessionEndIndex], cur=candles[currentIndex];
-    if(st&&en&&range){range.textContent=`${st.time.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}–${en.time.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}`;}
+    if(st&&en&&range){const sameDay=st.time.toDateString()===en.time.toDateString(); const fmt=d=>d.toLocaleString([], {day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}); range.textContent=sameDay?`${fmt(st.time).replace(/, /,' ')}–${en.time.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}`:`${fmt(st.time).replace(/, /,' ')} → ${fmt(en.time).replace(/, /,' ')}`;}
     if(meta){meta.textContent=sessionActive&&st&&cur?`Session: ${formatDate(st.time)} → ${formatDate(cur.time)} · ${Math.round(pct)}% complete`:"Session not started";}
     if(startBtn)startBtn.textContent=sessionActive?"↻ Restart Replay":"▶ Start Replay";
 }
@@ -2270,40 +2270,27 @@ function exportTradesCSV(){
 ------------------------------ */
 
 function nextCandle() {
-
-    if (
-        currentIndex >=
-        candles.length - 1
-    ) {
-
-        pauseReplay();
-
-        alert(
-            "Replay completed!"
-        );
-
+    const limit = sessionActive ? sessionEndIndex : candles.length - 1;
+    if (currentIndex >= limit) {
+        if(sessionActive){
+            pauseReplay();
+            sessionActive=false;
+            sessionStatus="COMPLETED";
+            updateSessionUI();
+            showTradeMessage("Replay session completed.","success");
+        } else {
+            pauseReplay();
+            showTradeMessage("You are at the end of the historical dataset.","error");
+        }
         return;
     }
-
-
     currentIndex++;
-
+    checkPendingOrder();
     checkOpenPosition();
-
     drawChart();
-
     updatePosition();
-
     updateStats();
     updateSessionUI();
-
-    if(sessionActive && currentIndex >= sessionEndIndex){
-        pauseReplay();
-        sessionActive=false;
-        sessionStatus="COMPLETED";
-        updateSessionUI();
-        showTradeMessage("Replay reached the end of available historical data.","success");
-    }
 }
 
 
@@ -2312,15 +2299,10 @@ function nextCandle() {
 ------------------------------ */
 
 function previousCandle() {
-
-    if (currentIndex <= 1) {
-        return;
-    }
-
+    const floor = sessionActive || sessionStatus === "PAUSED" ? sessionStartIndex : 0;
+    if (currentIndex <= floor) return;
     currentIndex--;
-
     drawChart();
-
     updatePosition();
     updateSessionUI();
 }
@@ -2331,30 +2313,10 @@ function previousCandle() {
 ------------------------------ */
 
 function nextFive() {
-
-    for (
-        let i = 0;
-        i < 5;
-        i++
-    ) {
-
-        if (
-            currentIndex <
-            candles.length - 1
-        ) {
-
-            currentIndex++;
-
-            checkOpenPosition();
-        }
-    }
-
-    drawChart();
-
-    updatePosition();
-
-    updateStats();
-    updateSessionUI();
+    const limit = sessionActive ? sessionEndIndex : candles.length - 1;
+    for(let i=0;i<5 && currentIndex<limit;i++){ currentIndex++; checkPendingOrder(); checkOpenPosition(); }
+    if(sessionActive && currentIndex>=sessionEndIndex){ sessionActive=false; sessionStatus="COMPLETED"; pauseReplay(); }
+    drawChart(); updatePosition(); updateStats(); updateSessionUI();
 }
 
 
@@ -2363,30 +2325,10 @@ function nextFive() {
 ------------------------------ */
 
 function nextTen() {
-
-    for (
-        let i = 0;
-        i < 10;
-        i++
-    ) {
-
-        if (
-            currentIndex <
-            candles.length - 1
-        ) {
-
-            currentIndex++;
-
-            checkOpenPosition();
-        }
-    }
-
-    drawChart();
-
-    updatePosition();
-
-    updateStats();
-    updateSessionUI();
+    const limit = sessionActive ? sessionEndIndex : candles.length - 1;
+    for(let i=0;i<10 && currentIndex<limit;i++){ currentIndex++; checkPendingOrder(); checkOpenPosition(); }
+    if(sessionActive && currentIndex>=sessionEndIndex){ sessionActive=false; sessionStatus="COMPLETED"; pauseReplay(); }
+    drawChart(); updatePosition(); updateStats(); updateSessionUI();
 }
 
 
@@ -2836,7 +2778,7 @@ function resetReplay() {
 
 
     currentIndex =
-        100;
+        Math.min(100, Math.max(0, candles.length - 1));
 
     sessionStartIndex=currentIndex;
     sessionEndIndex=candles.length-1;
