@@ -553,6 +553,157 @@ select {
         margin-left: 0;
     }
 }
+
+/* ============================================================
+   BFT V3 — COMPACT PROFESSIONAL WORKSPACE
+   ============================================================ */
+.header{
+    height:46px;
+    padding:0 16px;
+}
+.logo{font-size:17px}
+.header-right{font-size:11px;gap:8px}
+.market-status{padding:4px 8px;border-radius:14px}
+
+.topbar{
+    min-height:44px;
+    height:44px;
+    padding:4px 12px;
+    gap:12px;
+    flex-wrap:nowrap;
+}
+.symbol{font-size:14px;white-space:nowrap}
+.symbol small{font-size:9px}
+.control{gap:5px;white-space:nowrap}
+.control label{font-size:9px}
+select{padding:5px 7px;border-radius:5px;font-size:11px}
+.date-info{font-size:10px}
+
+.main{
+    grid-template-columns:minmax(0,1fr) 292px;
+    min-height:calc(100vh - 90px);
+}
+.chart-toolbar{
+    height:38px;
+    padding:0 10px;
+    gap:5px;
+}
+.tool-btn{
+    padding:5px 8px;
+    border-radius:5px;
+    font-size:10px;
+}
+.chart-wrapper{height:470px}
+.chart-price{font-size:10px;right:5px;top:10px}
+
+.replay-bar{
+    min-height:48px;
+    height:48px;
+    padding:5px 9px;
+    gap:5px;
+}
+.replay-btn,.play-btn{
+    padding:6px 9px;
+    border-radius:5px;
+    font-size:10px;
+}
+.speed-group{gap:3px;margin-left:3px}
+.speed{padding:5px 7px;border-radius:4px;font-size:9px}
+
+.panel{
+    padding:10px 12px;
+}
+.panel-title{
+    font-size:10px;
+    margin-bottom:8px;
+    letter-spacing:.5px;
+}
+.balance{font-size:20px}
+.balance small{font-size:10px}
+.stats{gap:6px}
+.stat{padding:7px;border-radius:6px}
+.stat-label{font-size:9px}
+.stat-value{margin-top:3px;font-size:12px}
+
+.order-row{gap:6px;margin-bottom:7px}
+.field label{font-size:9px;margin-bottom:3px}
+.field input{
+    padding:7px;
+    border-radius:5px;
+    font-size:11px;
+}
+.trade-preview{gap:5px;margin-top:5px}
+.risk-presets{gap:3px;margin-top:6px}
+.risk-presets button{
+    padding:4px 2px;
+    border-radius:4px;
+    font-size:8px;
+}
+.order-buttons{gap:6px;margin-top:8px}
+.buy,.sell{
+    padding:9px;
+    border-radius:6px;
+    font-size:11px;
+}
+.position-box{padding:8px;border-radius:6px}
+.position-type{font-size:10px;margin-bottom:5px}
+.position-line{font-size:10px;padding:2px 0}
+.history{max-height:150px}
+.trade{padding:7px 0;font-size:10px}
+
+/* Make the right side a trading workspace, not a giant dashboard. */
+.sidebar{
+    overflow-y:auto;
+}
+
+/* Bottom workspace */
+.bft-workspace{
+    background:#07111f;
+    border-top:1px solid #1b2b40;
+    padding:18px 20px 28px;
+}
+.bft-workspace-grid{
+    display:grid;
+    grid-template-columns:1.4fr 1fr 1fr;
+    gap:10px;
+}
+.bft-card{
+    background:#091a2b;
+    border:1px solid #1d344d;
+    border-radius:8px;
+    padding:12px;
+}
+.bft-card h3{
+    margin:0 0 5px;
+    font-size:12px;
+    color:#eef4ff;
+}
+.bft-card p{
+    margin:0;
+    color:#7890aa;
+    font-size:10px;
+    line-height:1.45;
+}
+.bft-metric-row{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:5px;
+    margin-top:8px;
+}
+.bft-mini{
+    background:#0d2033;
+    border:1px solid #1d344d;
+    border-radius:5px;
+    padding:6px;
+}
+.bft-mini span{display:block;color:#7188a1;font-size:8px}
+.bft-mini strong{display:block;margin-top:2px;font-size:11px}
+
+@media(max-width:900px){
+    .main{grid-template-columns:minmax(0,1fr) 270px}
+    .bft-workspace-grid{grid-template-columns:1fr}
+}
+
 </style>
 </head>
 
@@ -871,6 +1022,35 @@ select {
     </aside>
 
 </main>
+
+
+<!-- BFT LOWER WORKSPACE -->
+<section class="bft-workspace">
+    <div class="bft-workspace-grid">
+
+        <div class="bft-card">
+            <h3>Quick Analytics</h3>
+            <p>Live session summary — detailed analytics will update as trades close.</p>
+            <div class="bft-metric-row">
+                <div class="bft-mini"><span>TRADES</span><strong id="bottomTrades">0</strong></div>
+                <div class="bft-mini"><span>WIN RATE</span><strong id="bottomWinRate">0%</strong></div>
+                <div class="bft-mini"><span>NET P&L</span><strong id="bottomPnL">$0</strong></div>
+                <div class="bft-mini"><span>R:R</span><strong id="bottomRR">—</strong></div>
+            </div>
+        </div>
+
+        <div class="bft-card">
+            <h3>Trade Journal</h3>
+            <p>After a closed trade, record setup, reason, mistake and lesson here.</p>
+        </div>
+
+        <div class="bft-card">
+            <h3>Practice Tools</h3>
+            <p>Position sizing • Risk calculator • R:R calculator • Strategy notes</p>
+        </div>
+
+    </div>
+</section>
 
 
 <script>
@@ -2193,7 +2373,28 @@ function updatePosition() {
    UPDATE STATS
 ------------------------------ */
 
+
+function updateBottomWorkspace(){
+    const t=document.getElementById("bottomTrades");
+    const w=document.getElementById("bottomWinRate");
+    const p=document.getElementById("bottomPnL");
+    if(t) t.textContent=trades.length;
+    if(w) w.textContent=(trades.length ? (wins/trades.length*100).toFixed(1) : "0") + "%";
+    if(p) {
+        const net=totalProfit-totalLoss;
+        p.textContent=(net>=0?"+":"-")+"$"+Math.abs(net).toFixed(2);
+        p.className=net>=0 ? "profit" : "loss";
+    }
+    const rr=document.getElementById("bottomRR");
+    if(rr){
+        const last=trades.length ? trades[trades.length-1] : null;
+        rr.textContent=last && last.risk>0 ? (Math.abs(last.reward/last.risk)).toFixed(2)+"R" : "—";
+    }
+}
+
 function updateStats() {
+
+    updateBottomWorkspace();
 
     document.getElementById(
         "balance"
