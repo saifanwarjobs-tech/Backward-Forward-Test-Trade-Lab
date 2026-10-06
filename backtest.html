@@ -1056,6 +1056,33 @@ body{
     font-size:10px !important;
 }
 
+
+/* ===== V11 ACTION-FIRST SIDEBAR ===== */
+.sidebar{
+    background:#091525;
+    overflow-y:auto;
+}
+.sidebar .trade-ticket{
+    border-top:1px solid #1a2b40;
+}
+.sidebar .trade-ticket .panel-title{
+    color:#c9d7e8;
+    font-weight:800;
+}
+.sidebar .panel{
+    padding:13px 17px;
+}
+.sidebar .trade-ticket{
+    padding-top:14px;
+    padding-bottom:14px;
+}
+.sidebar .trade-ticket .quote-box{
+    margin-top:5px;
+}
+.sidebar .trade-ticket .big-order-buttons{
+    margin-top:10px;
+}
+
 </style>
 </head>
 
@@ -1272,8 +1299,7 @@ body{
 
     <aside class="sidebar">
 
-
-        <!-- ACCOUNT -->
+<!-- ACCOUNT -->
 
         <div class="panel">
 
@@ -1284,41 +1310,6 @@ body{
             <div class="balance">
                 ₹<span id="balance">10000.00</span>
                 <small>INR</small>
-            </div>
-
-        </div>
-
-
-        <!-- STATS -->
-
-        <div class="panel">
-
-            <div class="panel-title">
-                Performance
-            </div>
-
-            <div class="stats">
-
-                <div class="stat">
-                    <div class="stat-label">Trades</div>
-                    <div class="stat-value" id="totalTrades">0</div>
-                </div>
-
-                <div class="stat">
-                    <div class="stat-label">Win Rate</div>
-                    <div class="stat-value" id="winRate">0%</div>
-                </div>
-
-                <div class="stat">
-                    <div class="stat-label">Profit</div>
-                    <div class="stat-value profit" id="profit">₹0.00</div>
-                </div>
-
-                <div class="stat">
-                    <div class="stat-label">Loss</div>
-                    <div class="stat-value loss" id="loss">₹0.00</div>
-                </div>
-
             </div>
 
         </div>
@@ -1398,6 +1389,41 @@ body{
 
                 <div style="color:#64768e;font-size:12px;">
                     No open position
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- STATS -->
+
+        <div class="panel">
+
+            <div class="panel-title">
+                Performance
+            </div>
+
+            <div class="stats">
+
+                <div class="stat">
+                    <div class="stat-label">Trades</div>
+                    <div class="stat-value" id="totalTrades">0</div>
+                </div>
+
+                <div class="stat">
+                    <div class="stat-label">Win Rate</div>
+                    <div class="stat-value" id="winRate">0%</div>
+                </div>
+
+                <div class="stat">
+                    <div class="stat-label">Profit</div>
+                    <div class="stat-value profit" id="profit">₹0.00</div>
+                </div>
+
+                <div class="stat">
+                    <div class="stat-label">Loss</div>
+                    <div class="stat-value loss" id="loss">₹0.00</div>
                 </div>
 
             </div>
