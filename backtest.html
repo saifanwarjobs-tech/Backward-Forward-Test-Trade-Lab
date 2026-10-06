@@ -788,6 +788,7 @@ select {
 @media(max-width:600px){.v16-forward{margin:12px 8px 30px}.v16-grid{padding:8px}.v16-report-grid{grid-template-columns:repeat(2,1fr)}.v16-chart-wrap{height:260px}}
 </style>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 
@@ -3449,5 +3450,188 @@ setTimeout(()=>{try{if(candles&&candles.length>2){const d=v16DateInput(candles[M
 
 </script>
 
+
+
+<style id="v17-account-style">
+.v17-wrap{margin:14px 18px 0;border:1px solid #1c344d;border-radius:10px;background:#081625;color:#dce7f4;overflow:hidden}
+.v17-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 15px;border-bottom:1px solid #1c344d;background:#091a2b}
+.v17-brand small{display:block;color:#43e37b;font-size:9px;font-weight:800;letter-spacing:1.2px}.v17-brand strong{display:block;font-size:15px;margin-top:3px}.v17-brand span{display:block;color:#71869d;font-size:10px;margin-top:3px}
+.v17-actions{display:flex;gap:7px;flex-wrap:wrap}.v17-btn{background:#10243a;border:1px solid #29435e;color:#dce7f5;border-radius:7px;padding:7px 10px;font-size:11px;font-weight:700;cursor:pointer}.v17-btn:hover{background:#17334d}.v17-btn.primary{background:#123d28;border-color:#237347;color:#4be985}.v17-btn.danger{background:#351d25;border-color:#6e3542;color:#ff8290}
+.v17-body{padding:13px 15px}.v17-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:12px}.v17-card{background:#0a192a;border:1px solid #1c344d;border-radius:9px;padding:13px}.v17-card h3{font-size:12px;margin:0 0 10px}.v17-muted{color:#71869d;font-size:10px;line-height:1.5}.v17-user{display:grid;grid-template-columns:1fr 1fr;gap:8px}.v17-stat{background:#0d1e31;border:1px solid #203650;border-radius:7px;padding:9px}.v17-stat span{display:block;color:#71869d;font-size:9px}.v17-stat b{display:block;color:#eef5ff;font-size:13px;margin-top:4px}.v17-list{display:grid;gap:6px;max-height:190px;overflow:auto}.v17-row{display:flex;align-items:center;justify-content:space-between;gap:8px;background:#0d1e31;border:1px solid #1d344c;border-radius:7px;padding:8px}.v17-row strong{font-size:10px}.v17-row span{font-size:9px;color:#71869d}.v17-config{margin-top:10px;padding:10px;border:1px dashed #29435e;border-radius:7px}.v17-config label{display:block;color:#71869d;font-size:9px;margin-bottom:4px}.v17-config input{width:100%;background:#07111f;border:1px solid #263c55;color:#eaf2fb;border-radius:6px;padding:7px;font-size:10px;margin-bottom:7px}.v17-badge{font-size:9px;border:1px solid #29405a;border-radius:999px;padding:4px 7px;color:#8fa6be}.v17-badge.local{color:#f1c75b;border-color:#6c5825}.v17-badge.cloud{color:#43e37b;border-color:#286b48}.v17-modal{position:fixed;inset:0;background:rgba(2,8,18,.78);display:none;align-items:center;justify-content:center;z-index:10001;padding:20px}.v17-modal.open{display:flex}.v17-box{width:min(440px,95vw);background:#0b192b;border:1px solid #29405b;border-radius:12px;box-shadow:0 20px 70px rgba(0,0,0,.55);padding:17px}.v17-box h3{font-size:17px;margin:0 0 4px}.v17-box p{color:#71869d;font-size:10px;margin-bottom:13px}.v17-field{margin:8px 0}.v17-field label{display:block;color:#8496ad;font-size:10px;margin-bottom:5px}.v17-field input{width:100%;box-sizing:border-box;background:#07111f;border:1px solid #263c55;color:#eef5ff;border-radius:7px;padding:9px;font-size:12px}.v17-modal-actions{display:flex;justify-content:flex-end;gap:7px;margin-top:13px}.v17-error{min-height:15px;color:#ff6678;font-size:10px;margin-top:5px}.v17-empty{padding:15px;text-align:center;color:#647b94;font-size:10px;border:1px dashed #243d56;border-radius:7px}
+@media(max-width:900px){.v17-grid{grid-template-columns:1fr}.v17-head{align-items:flex-start;flex-direction:column}.v17-user{grid-template-columns:1fr 1fr}}
+</style>
+
+<section class="v17-wrap" id="v17Workspace">
+  <div class="v17-head">
+    <div class="v17-brand"><small>V17 · ACCOUNT & WORKSPACE</small><strong id="v17Welcome">Guest Workspace</strong><span>Backtests, forward tests, journal and reports — organized per account.</span></div>
+    <div class="v17-actions"><span class="v17-badge local" id="v17CloudBadge">LOCAL MODE</span><button class="v17-btn primary" id="v17AuthBtn" onclick="v17OpenAuth()">Sign In</button><button class="v17-btn" onclick="v17OpenCloud()">Cloud Setup</button></div>
+  </div>
+  <div class="v17-body">
+    <div class="v17-grid">
+      <div class="v17-card">
+        <h3>MY WORKSPACE</h3>
+        <div class="v17-user">
+          <div class="v17-stat"><span>Backtest Sessions</span><b id="v17Backtests">0</b></div>
+          <div class="v17-stat"><span>Forward Tests</span><b id="v17Forwards">0</b></div>
+          <div class="v17-stat"><span>Journal Entries</span><b id="v17Journal">0</b></div>
+          <div class="v17-stat"><span>Workspace Data</span><b id="v17DataSize">0 KB</b></div>
+        </div>
+        <div style="margin-top:10px" class="v17-actions"><button class="v17-btn" onclick="v17SaveSnapshot()">Save Current Workspace</button><button class="v17-btn" onclick="v17Refresh()">Refresh</button></div>
+      </div>
+      <div class="v17-card">
+        <h3>RECENT WORKSPACES</h3>
+        <div class="v17-list" id="v17List"><div class="v17-empty">Sign in or save a workspace to see your recent items.</div></div>
+      </div>
+    </div>
+    <div class="v17-config" id="v17CloudConfig" style="display:none">
+      <label>SUPABASE PROJECT URL</label><input id="v17SupabaseUrl" placeholder="https://your-project.supabase.co">
+      <label>SUPABASE ANON / PUBLISHABLE KEY</label><input id="v17SupabaseKey" type="password" placeholder="Your public client key">
+      <div class="v17-muted" style="margin-bottom:8px">Credentials are stored only in this browser for this prototype. A real production deployment should use environment/config management and Row Level Security.</div>
+      <button class="v17-btn primary" onclick="v17SaveCloudConfig()">Save Cloud Configuration</button>
+    </div>
+  </div>
+</section>
+
+<div class="v17-modal" id="v17AuthModal">
+ <div class="v17-box"><h3 id="v17AuthTitle">Sign In</h3><p id="v17AuthEmail">Sign in to your BFT Trade Lab cloud workspace.</p>
+  <div class="v17-field"><label>Email</label><input id="v17Email" type="email" placeholder="you@example.com"></div>
+  <div class="v17-field"><label>Password</label><input id="v17Password" type="password" placeholder="Minimum 6 characters"></div>
+  <div class="v17-error" id="v17AuthError"></div>
+  <button id="v17AuthSwitch" class="v17-btn" style="width:100%;margin-top:5px" onclick="v17ToggleAuth()">New to BFT Trade Lab? Create account</button>
+  <div class="v17-modal-actions"><button class="v17-btn" onclick="v17CloseAuth()">Cancel</button><button class="v17-btn primary" onclick="v17SubmitAuth()">Continue</button></div>
+ </div>
+</div>
+
+<script id="v17-account-script">
+/* V17.1 — REAL SUPABASE AUTH + CLOUD WORKSPACE SNAPSHOTS */
+const V17_SUPABASE_URL='https://tzunllbirsspygcjhsn.supabase.co';
+const V17_SUPABASE_KEY='sb_publishable_zT9Kh6stp4H2NLRE2i9yNw_mh5g34Vw';
+const v17={user:null,mode:'LOCAL',cloud:null,supabase:null,authMode:'signin',cloudRows:[]};
+
+function v17Esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+function v17Key(){return 'bft_v17_workspace_'+(v17.user?.email||'guest');}
+function v17Load(){try{const x=JSON.parse(localStorage.getItem(v17Key())||'null');return x&&typeof x==='object'?x:{backtests:[],forwards:[],journal:[],snapshots:[]};}catch(e){return {backtests:[],forwards:[],journal:[],snapshots:[]};}}
+function v17Save(data){localStorage.setItem(v17Key(),JSON.stringify(data));}
+function v17OpenAuth(){document.getElementById('v17AuthModal').classList.add('open');document.getElementById('v17AuthError').textContent='';document.getElementById('v17AuthTitle').textContent=v17.authMode==='signup'?'Create Account':'Sign In';document.getElementById('v17AuthEmail').textContent=v17.authMode==='signup'?'Create your BFT Trade Lab account.':'Sign in to your BFT Trade Lab cloud workspace.';document.getElementById('v17Email').focus();}
+function v17CloseAuth(){document.getElementById('v17AuthModal').classList.remove('open');}
+function v17ToggleAuth(){v17.authMode=v17.authMode==='signin'?'signup':'signin';document.getElementById('v17AuthTitle').textContent=v17.authMode==='signup'?'Create Account':'Sign In';document.getElementById('v17AuthEmail').textContent=v17.authMode==='signup'?'Create your BFT Trade Lab account.':'Sign in to your BFT Trade Lab cloud workspace.';document.getElementById('v17AuthSwitch').textContent=v17.authMode==='signup'?'Already have an account? Sign in':'New to BFT Trade Lab? Create account';document.getElementById('v17AuthError').textContent='';}
+
+function v17InitSupabase(){
+  try{
+    if(!window.supabase?.createClient) throw new Error('Supabase client library did not load.');
+    v17.supabase=window.supabase.createClient(V17_SUPABASE_URL,V17_SUPABASE_KEY,{auth:{autoRefreshToken:true,persistSession:true,detectSessionInUrl:true}});
+    v17.mode='CLOUD';
+    v17.supabase.auth.onAuthStateChange((_event,session)=>{
+      v17.user=session?.user||null;
+      v17Refresh();
+      if(v17.user) v17LoadCloudRows();
+    });
+    v17.supabase.auth.getSession().then(({data})=>{v17.user=data.session?.user||null;v17Refresh();if(v17.user)v17LoadCloudRows();});
+  }catch(e){v17.mode='LOCAL';v17Refresh();}
+}
+
+async function v17SubmitAuth(){
+  const email=document.getElementById('v17Email').value.trim().toLowerCase(),pw=document.getElementById('v17Password').value;
+  const err=document.getElementById('v17AuthError');err.textContent='';
+  if(!email||!email.includes('@')){err.textContent='Enter a valid email.';return;}
+  if(pw.length<6){err.textContent='Password must contain at least 6 characters.';return;}
+  if(!v17.supabase){err.textContent='Cloud client is not available. Check your internet connection and reload.';return;}
+  const btn=document.querySelector('#v17AuthModal .v17-modal-actions .primary');if(btn){btn.disabled=true;btn.textContent='Please wait…';}
+  try{
+    if(v17.authMode==='signup'){
+      const {data,error}=await v17.supabase.auth.signUp({email,password:pw});
+      if(error) throw error;
+      v17CloseAuth();
+      if(data.session){v17.user=data.user;v17Refresh();await v17LoadCloudRows();}
+      else alert('Account created. Check your email to confirm the account, then sign in.');
+    }else{
+      const {data,error}=await v17.supabase.auth.signInWithPassword({email,password:pw});
+      if(error) throw error;
+      v17.user=data.user;v17CloseAuth();v17Refresh();await v17LoadCloudRows();
+    }
+  }catch(e){err.textContent=e?.message||'Authentication failed.';}
+  finally{if(btn){btn.disabled=false;btn.textContent='Continue';}}
+}
+
+async function v17SignOut(){
+  if(v17.supabase){try{await v17.supabase.auth.signOut();}catch(e){console.warn(e);}}
+  v17.user=null;v17.cloudRows=[];v17Refresh();
+}
+
+function v17OpenCloud(){
+  const e=document.getElementById('v17CloudConfig');e.style.display=e.style.display==='none'?'block':'none';
+  if(e.style.display==='block'){
+    document.getElementById('v17SupabaseUrl').value=V17_SUPABASE_URL;
+    document.getElementById('v17SupabaseKey').value='Publishable key configured in this build';
+    document.getElementById('v17SupabaseKey').type='text';
+  }
+}
+
+function v17Snapshot(){
+  const bt=(()=>{try{return JSON.parse(localStorage.getItem('bft_saved_sessions')||'[]')}catch(e){return[]}})();
+  const f=window.v16||{};
+  const backtestTrades=typeof trades!=='undefined'?trades.length:0;
+  const forwardTrades=Array.isArray(f.trades)?f.trades.length:0;
+  return {
+    id:'ws_'+Date.now(),savedAt:new Date().toISOString(),
+    symbol:'XAUUSD',timeframe:document.getElementById('timeframe')?.value||'5',
+    backtestTrades,forwardTrades,
+    balance:Number(f.balance||document.getElementById('balance')?.textContent||0)||0,
+    replayIndex:Number(f.index??f.replayIndex??0)||0,
+    mode:forwardTrades>0?'FORWARD':backtestTrades>0?'BACKTEST':'MIXED'
+  };
+}
+
+async function v17SaveSnapshot(){
+  const snap=v17Snapshot();
+  const d=v17Load();d.snapshots.unshift(snap);d.snapshots=d.snapshots.slice(0,30);v17Save(d);
+  if(v17.user&&v17.supabase){
+    const row={user_id:v17.user.id,name:`XAUUSD ${snap.timeframe}M Workspace`,symbol:snap.symbol,timeframe:snap.timeframe,mode:snap.mode,payload:snap};
+    const {error}=await v17.supabase.from('bft_workspaces').insert(row);
+    if(error){alert('Local snapshot saved, but cloud save failed.\n\n'+error.message+'\n\nIf this is the first setup, run the V17 SQL setup file in Supabase SQL Editor.');}
+    else{await v17LoadCloudRows();alert('Workspace saved to Supabase cloud.');}
+  }else alert('Workspace saved locally. Sign in to save it to Supabase cloud.');
+  v17Refresh();
+}
+
+async function v17LoadCloudRows(){
+  if(!v17.user||!v17.supabase)return;
+  const {data,error}=await v17.supabase.from('bft_workspaces').select('id,name,symbol,timeframe,mode,payload,created_at,updated_at').order('updated_at',{ascending:false}).limit(20);
+  if(error){
+    v17.cloudRows=[];
+    const b=document.getElementById('v17CloudBadge');if(b){b.textContent='AUTH OK · DB SETUP NEEDED';b.className='v17-badge local';}
+    console.warn('BFT cloud workspace query:',error.message);return;
+  }
+  v17.cloudRows=data||[];
+  const b=document.getElementById('v17CloudBadge');if(b){b.textContent='CLOUD CONNECTED';b.className='v17-badge cloud';}
+  v17Refresh();
+}
+
+function v17Refresh(){
+  const name=v17.user?(v17.user.email||'Cloud User'):'Guest Workspace';
+  document.getElementById('v17Welcome').textContent=name;
+  const auth=document.getElementById('v17AuthBtn');auth.textContent=v17.user?'Sign Out':'Sign In';auth.onclick=v17.user?v17SignOut:v17OpenAuth;
+  const d=v17Load();
+  const bt=Number(localStorage.getItem('bft_saved_sessions')?(()=>{try{return JSON.parse(localStorage.getItem('bft_saved_sessions')).length}catch(e){return 0}})():0);
+  document.getElementById('v17Backtests').textContent=bt;
+  document.getElementById('v17Forwards').textContent=d.snapshots.filter(x=>x.forwardTrades>0).length;
+  document.getElementById('v17Journal').textContent=(typeof trades!=='undefined'?trades.filter(t=>t.journal).length:0)+(window.v16?.trades||[]).filter(t=>t.journal).length;
+  const raw=JSON.stringify(d);document.getElementById('v17DataSize').textContent=Math.max(1,Math.round(raw.length/1024))+' KB';
+  const list=document.getElementById('v17List');
+  const cloud=v17.cloudRows||[];
+  if(cloud.length){
+    list.innerHTML=cloud.slice(0,8).map(x=>`<div class="v17-row"><div><strong>${v17Esc(x.symbol)} · ${v17Esc(x.timeframe)}M</strong><br><span>CLOUD · ${new Date(x.updated_at).toLocaleString('en-IN')} · ${v17Esc(x.mode)}</span></div><span>${x.payload?.balance?('$'+Number(x.payload.balance).toFixed(2)):''}</span></div>`).join('');
+    return;
+  }
+  if(!d.snapshots.length){list.innerHTML='<div class="v17-empty">No workspace snapshots yet.</div>';return;}
+  list.innerHTML=d.snapshots.slice(0,8).map(x=>`<div class="v17-row"><div><strong>${v17Esc(x.symbol)} · ${v17Esc(x.timeframe)}M</strong><br><span>LOCAL · ${new Date(x.savedAt).toLocaleString('en-IN')} · BT ${x.backtestTrades} · FT ${x.forwardTrades}</span></div><span>${x.balance?('$'+Number(x.balance).toFixed(2)):''}</span></div>`).join('');
+}
+
+(function(){
+  try{v17.cloud={url:V17_SUPABASE_URL,key:'publishable'};}catch(e){}
+  v17Refresh();
+  v17InitSupabase();
+})();
+</script>
 </body>
 </html>
