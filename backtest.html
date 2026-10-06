@@ -542,6 +542,79 @@ select {
     .chart-info{display:none}
 }
 
+
+/* ===== BFT V3 TERMINAL POLISH ===== */
+.main-layout{min-height:0}
+.chart-area{min-height:0}
+.chart-wrapper{
+    height:calc(100vh - 330px);
+    min-height:430px;
+}
+.right-panel{
+    max-height:calc(100vh - 126px);
+    overflow-y:auto;
+    scrollbar-width:thin;
+}
+.bottom-panel{
+    max-height:135px;
+    overflow-y:auto;
+}
+.floating-position{
+    position:absolute;
+    right:82px;
+    top:54px;
+    z-index:8;
+    min-width:190px;
+    background:rgba(7,17,31,.96);
+    border:1px solid #29445f;
+    border-radius:10px;
+    box-shadow:0 12px 35px rgba(0,0,0,.35);
+    padding:11px 12px;
+    display:none;
+}
+.floating-position.show{display:block}
+.fp-head{
+    display:flex;justify-content:space-between;align-items:center;
+    margin-bottom:8px;font-size:12px;font-weight:800
+}
+.fp-close{
+    border:0;background:transparent;color:#70839a;cursor:pointer;
+}
+.fp-grid{
+    display:grid;grid-template-columns:1fr 1fr;gap:5px 12px;font-size:10px
+}
+.fp-grid span{color:#7488a0}.fp-grid strong{color:#eef4ff}
+.fp-pnl{
+    margin-top:8px;padding-top:8px;border-top:1px solid #1c3046;
+    font-size:14px;font-weight:900
+}
+.drawing-bar{
+    display:flex;align-items:center;gap:5px;padding:6px 8px;
+    border-bottom:1px solid #17283b;background:#091524;
+    overflow-x:auto
+}
+.draw-btn{
+    flex:0 0 auto;width:31px;height:29px;border:1px solid #263d56;
+    border-radius:6px;background:#0d1c2d;color:#9db0c8;cursor:pointer
+}
+.draw-btn:hover,.draw-btn.active{
+    background:#173d2a;color:#43e37b;border-color:#43e37b
+}
+.draw-sep{width:1px;height:20px;background:#23374d;margin:0 2px}
+.drawing-help{
+    margin-left:auto;color:#62758c;font-size:10px;white-space:nowrap
+}
+.chart-empty-note{
+    position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    color:#5e7189;font-size:12px;pointer-events:none
+}
+@media(max-width:900px){
+    .chart-wrapper{height:460px}
+    .right-panel{max-height:none}
+    .floating-position{right:15px}
+    .drawing-help{display:none}
+}
+
 </style>
 </head>
 
@@ -637,8 +710,36 @@ select {
 
         <div class="chart-wrapper">
 
-            <canvas id="chart"></canvas>
+            
+<div class="drawing-bar">
+    <button class="draw-btn active" id="drawCursor" onclick="setDrawTool('cursor')" title="Cursor">✦</button>
+    <button class="draw-btn" id="drawHLine" onclick="setDrawTool('hline')" title="Horizontal line">—</button>
+    <button class="draw-btn" id="drawVLine" onclick="setDrawTool('vline')" title="Vertical line">│</button>
+    <button class="draw-btn" id="drawTrend" onclick="setDrawTool('trend')" title="Trend line">╱</button>
+    <button class="draw-btn" id="drawRect" onclick="setDrawTool('rect')" title="Rectangle / Zone">□</button>
+    <button class="draw-btn" id="drawFib" onclick="setDrawTool('fib')" title="Fibonacci">F</button>
+    <span class="draw-sep"></span>
+    <button class="draw-btn" onclick="undoDrawing()" title="Undo drawing">↶</button>
+    <button class="draw-btn" onclick="clearDrawings()" title="Clear drawings">⌫</button>
+    <span class="drawing-help">Click/drag on chart to draw</span>
+</div>
+
+<canvas id="chart"></canvas>
             <div class="chart-status" id="chartStatus">BANKNIFTY • 5 MIN • REAL DATA</div>
+<div class="floating-position" id="floatingPosition">
+    <div class="fp-head">
+        <span id="fpTitle">● BUY BANKNIFTY</span>
+        <button class="fp-close" onclick="hideFloatingPosition()">×</button>
+    </div>
+    <div class="fp-grid">
+        <span>Entry</span><strong id="fpEntry">—</strong>
+        <span>Current</span><strong id="fpCurrent">—</strong>
+        <span>Stop Loss</span><strong id="fpSL">—</strong>
+        <span>Take Profit</span><strong id="fpTP">—</strong>
+    </div>
+    <div class="fp-pnl" id="fpPnl">Floating P&L ₹0</div>
+</div>
+
             <div class="crosshair-label" id="crosshairLabel"></div>
 
             <div class="chart-price" id="priceLabel">
@@ -711,8 +812,8 @@ select {
             </div>
 
             <div class="balance">
-                $<span id="balance">10000.00</span>
-                <small>USD</small>
+                ₹<span id="balance">10000.00</span>
+                <small>INR</small>
             </div>
 
         </div>
@@ -740,12 +841,12 @@ select {
 
                 <div class="stat">
                     <div class="stat-label">Profit</div>
-                    <div class="stat-value profit" id="profit">$0.00</div>
+                    <div class="stat-value profit" id="profit">₹0.00</div>
                 </div>
 
                 <div class="stat">
                     <div class="stat-label">Loss</div>
-                    <div class="stat-value loss" id="loss">$0.00</div>
+                    <div class="stat-value loss" id="loss">₹0.00</div>
                 </div>
 
             </div>
@@ -1014,6 +1115,7 @@ async function loadBankNiftyCSV() {
         updatePosition();
         updateQuotes();
         updateOpenTradeStrip();
+    updateFloatingPosition();
 
         console.log(
             "BANKNIFTY candles loaded:",
@@ -1044,7 +1146,7 @@ function parseCSVLine(line) {
             quoted = !quoted;
         } else if (ch === "," && !quoted) {
             result.push(
-                current.trim().replace(/^"|"$/g, "")
+                current.trim().replace(/^"|"₹/g, "")
             );
             current = "";
         } else {
@@ -1053,7 +1155,7 @@ function parseCSVLine(line) {
     }
 
     result.push(
-        current.trim().replace(/^"|"$/g, "")
+        current.trim().replace(/^"|"₹/g, "")
     );
 
     return result;
@@ -1133,6 +1235,159 @@ window.addEventListener(
 ------------------------------ */
 
 
+
+/* ===== DRAWING TOOLS ===== */
+
+let drawTool = "cursor";
+let drawings = [];
+let drawingStart = null;
+
+function setDrawTool(tool){
+    drawTool = tool;
+    document.querySelectorAll(".draw-btn").forEach(b=>b.classList.remove("active"));
+    const ids={
+        cursor:"drawCursor",hline:"drawHLine",vline:"drawVLine",
+        trend:"drawTrend",rect:"drawRect",fib:"drawFib"
+    };
+    document.getElementById(ids[tool])?.classList.add("active");
+    if(tool!=="cursor") setChartMode("cursor");
+}
+
+function canvasPoint(e){
+    const rect=canvas.getBoundingClientRect();
+    return {
+        x:e.clientX-rect.left,
+        y:e.clientY-rect.top
+    };
+}
+
+function yToPrice(y){
+    const h=canvas.clientHeight,top=30,bottom=30;
+    const visibleCount=Math.max(25,Math.min(chartView.visibleCount,currentIndex+1));
+    const start=Math.max(0,currentIndex-visibleCount+1);
+    const visible=candles.slice(start,currentIndex+1);
+    if(!visible.length) return 0;
+    let hi=Math.max(...visible.map(c=>c.high));
+    let lo=Math.min(...visible.map(c=>c.low));
+    if(openPosition){
+        hi=Math.max(hi,openPosition.tp,openPosition.entry,openPosition.sl);
+        lo=Math.min(lo,openPosition.tp,openPosition.entry,openPosition.sl);
+    }
+    const pad=(hi-lo||1)*.08; hi+=pad; lo-=pad;
+    return hi-(y-top)/(h-top-bottom)*(hi-lo);
+}
+
+function xToIndex(x){
+    const width=canvas.clientWidth;
+    const visibleCount=Math.max(25,Math.min(chartView.visibleCount,currentIndex+1));
+    const start=Math.max(0,currentIndex-visibleCount+1);
+    const step=(width-42-68)/visibleCount;
+    const i=Math.max(0,Math.min(visibleCount-1,Math.floor((x-42)/step)));
+    return start+i;
+}
+
+canvas.addEventListener("mousedown",function(e){
+    if(drawTool==="cursor" || drawTool==="pan") return;
+    drawingStart=canvasPoint(e);
+});
+
+canvas.addEventListener("mouseup",function(e){
+    if(!drawingStart || drawTool==="cursor" || drawTool==="pan") return;
+
+    const end=canvasPoint(e);
+    const a=xToIndex(drawingStart.x);
+    const b=xToIndex(end.x);
+
+    drawings.push({
+        type:drawTool,
+        x1:drawingStart.x,y1:drawingStart.y,
+        x2:end.x,y2:end.y,
+        i1:a,i2:b,
+        p1:yToPrice(drawingStart.y),
+        p2:yToPrice(end.y)
+    });
+
+    drawingStart=null;
+    drawChart();
+});
+
+function drawUserDrawings(){
+    ctx.save();
+    ctx.lineWidth=1.5;
+
+    drawings.forEach(d=>{
+        if(d.type==="hline"){
+            ctx.strokeStyle="#d8b45b";
+            ctx.setLineDash([6,4]);
+            ctx.beginPath();ctx.moveTo(42,d.y1);ctx.lineTo(canvas.clientWidth-68,d.y1);ctx.stroke();
+        }
+
+        if(d.type==="vline"){
+            ctx.strokeStyle="#8aa4c0";
+            ctx.setLineDash([5,4]);
+            ctx.beginPath();ctx.moveTo(d.x1,30);ctx.lineTo(d.x1,canvas.clientHeight-30);ctx.stroke();
+        }
+
+        if(d.type==="trend"){
+            ctx.strokeStyle="#43b7ff";
+            ctx.setLineDash([]);
+            ctx.beginPath();ctx.moveTo(d.x1,d.y1);ctx.lineTo(d.x2,d.y2);ctx.stroke();
+        }
+
+        if(d.type==="rect"){
+            ctx.strokeStyle="#43e37b";
+            ctx.fillStyle="rgba(67,227,123,.06)";
+            const x=Math.min(d.x1,d.x2),y=Math.min(d.y1,d.y2);
+            const w=Math.abs(d.x2-d.x1),h=Math.abs(d.y2-d.y1);
+            ctx.fillRect(x,y,w,h);ctx.strokeRect(x,y,w,h);
+        }
+
+        if(d.type==="fib"){
+            const levels=[0,.236,.382,.5,.618,.786,1];
+            const diff=d.p2-d.p1;
+            ctx.setLineDash([4,3]);
+            levels.forEach(level=>{
+                const price=d.p1+diff*level;
+                const y=priceToScreen(price);
+                if(y===null)return;
+                ctx.strokeStyle="#a98fe8";
+                ctx.beginPath();ctx.moveTo(42,y);ctx.lineTo(canvas.clientWidth-68,y);ctx.stroke();
+                ctx.fillStyle="#bca8ed";
+                ctx.font="10px Arial";
+                ctx.fillText((level*100).toFixed(1)+"%",48,y-4);
+            });
+        }
+    });
+
+    ctx.restore();
+}
+
+function priceToScreen(price){
+    const h=canvas.clientHeight,top=30,bottom=30;
+    const visibleCount=Math.max(25,Math.min(chartView.visibleCount,currentIndex+1));
+    const start=Math.max(0,currentIndex-visibleCount+1);
+    const visible=candles.slice(start,currentIndex+1);
+    if(!visible.length)return null;
+    let hi=Math.max(...visible.map(c=>c.high)),lo=Math.min(...visible.map(c=>c.low));
+    if(openPosition){
+        hi=Math.max(hi,openPosition.tp,openPosition.entry,openPosition.sl);
+        lo=Math.min(lo,openPosition.tp,openPosition.entry,openPosition.sl);
+    }
+    const pad=(hi-lo||1)*.08;hi+=pad;lo-=pad;
+    return top+(hi-price)/(hi-lo)*(h-top-bottom);
+}
+
+function undoDrawing(){
+    drawings.pop();
+    drawChart();
+}
+
+function clearDrawings(){
+    drawings=[];
+    drawChart();
+}
+
+
 /* ===== CHART VIEW / CROSSHAIR ===== */
 
 let chartView = {
@@ -1206,6 +1461,7 @@ window.addEventListener("mousemove",function(e){
         updatePosition();
         updateQuotes();
         updateOpenTradeStrip();
+    updateFloatingPosition();
     }
 });
 
@@ -1387,6 +1643,8 @@ function drawChart() {
         drawPriceLine(openPosition.sl,"#ff6678","SL",highest,lowest);
         drawPriceLine(openPosition.tp,"#43e37b","TP",highest,lowest);
     }
+
+    drawUserDrawings();
 }
 
 function formatShortTime(date){
@@ -1484,8 +1742,10 @@ function nextCandle() {
     updateStats();
     updateQuotes();
     updateOpenTradeStrip();
+    updateFloatingPosition();
     updateQuotes();
     updateOpenTradeStrip();
+    updateFloatingPosition();
 }
 
 
@@ -1537,6 +1797,7 @@ function nextFive() {
     updateStats();
     updateQuotes();
     updateOpenTradeStrip();
+    updateFloatingPosition();
 }
 
 
@@ -1570,6 +1831,7 @@ function nextTen() {
     updateStats();
     updateQuotes();
     updateOpenTradeStrip();
+    updateFloatingPosition();
 }
 
 
@@ -1842,6 +2104,7 @@ function openTrade(
     updatePosition();
     updateQuotes();
     updateOpenTradeStrip();
+    updateFloatingPosition();
 
     drawChart();
 
@@ -2071,6 +2334,7 @@ function closeTrade(
     updatePosition();
     updateQuotes();
     updateOpenTradeStrip();
+    updateFloatingPosition();
 
     drawChart();
 
@@ -2144,9 +2408,9 @@ function updatePosition() {
 
         <div class="position-box">
 
-            <div class="position-type ${openPosition.direction === "BUY" ? "profit" : "loss"}">
+            <div class="position-type ₹{openPosition.direction === "BUY" ? "profit" : "loss"}">
 
-                ${openPosition.direction}
+                ₹{openPosition.direction}
                 BANKNIFTY
 
             </div>
@@ -2154,28 +2418,28 @@ function updatePosition() {
             <div class="position-line">
                 <span>Entry</span>
                 <strong>
-                    ${openPosition.entry.toFixed(2)}
+                    ₹{openPosition.entry.toFixed(2)}
                 </strong>
             </div>
 
             <div class="position-line">
                 <span>Stop Loss</span>
                 <strong>
-                    ${openPosition.sl.toFixed(2)}
+                    ₹{openPosition.sl.toFixed(2)}
                 </strong>
             </div>
 
             <div class="position-line">
                 <span>Take Profit</span>
                 <strong>
-                    ${openPosition.tp.toFixed(2)}
+                    ₹{openPosition.tp.toFixed(2)}
                 </strong>
             </div>
 
             <div class="position-line">
                 <span>Size</span>
                 <strong>
-                    ${openPosition.positionSize.toFixed(3)}
+                    ₹{openPosition.positionSize.toFixed(3)}
                 </strong>
             </div>
 
@@ -2183,10 +2447,10 @@ function updatePosition() {
 
                 <span>Floating P&L</span>
 
-                <strong class="${floatingClass}">
+                <strong class="₹{floatingClass}">
 
-                    ${floating >= 0 ? "+" : ""}
-                    ₹${floating.toFixed(2)}
+                    ₹{floating >= 0 ? "+" : ""}
+                    ₹{floating.toFixed(2)}
 
                 </strong>
 
@@ -2290,28 +2554,28 @@ function updateHistory() {
 
                     <strong>
 
-                        #${trade.number}
+                        #₹{trade.number}
 
-                        <span class="${
+                        <span class="₹{
                             trade.direction === "BUY"
                             ? "profit"
                             : "loss"
                         }">
 
-                            ${trade.direction}
+                            ₹{trade.direction}
 
                         </span>
 
                     </strong>
 
-                    <strong class="${
+                    <strong class="₹{
                         trade.pnl >= 0
                         ? "profit"
                         : "loss"
                     }">
 
-                        ${trade.pnl >= 0 ? "+" : ""}
-                        ₹${trade.pnl.toFixed(2)}
+                        ₹{trade.pnl >= 0 ? "+" : ""}
+                        ₹{trade.pnl.toFixed(2)}
 
                     </strong>
 
@@ -2320,15 +2584,15 @@ function updateHistory() {
                 <div class="trade-bottom">
 
                     Entry:
-                    ${trade.entry.toFixed(2)}
+                    ₹{trade.entry.toFixed(2)}
 
                     →
                     Exit:
-                    ${trade.exit.toFixed(2)}
+                    ₹{trade.exit.toFixed(2)}
 
                     ·
 
-                    ${trade.result}
+                    ₹{trade.result}
 
                 </div>
 
@@ -2446,6 +2710,42 @@ document.getElementById(
 
 
 
+
+function updateFloatingPosition(){
+    const card=document.getElementById("floatingPosition");
+
+    if(!openPosition){
+        card.classList.remove("show");
+        return;
+    }
+
+    const current=getCurrentPrice();
+    const p=openPosition;
+    const pnl=p.direction==="BUY"
+        ? (current-p.entry)*p.positionSize
+        : (p.entry-current)*p.positionSize;
+
+    const title=document.getElementById("fpTitle");
+    title.textContent="● "+p.direction+" BANKNIFTY";
+    title.style.color=p.direction==="BUY"?"#43e37b":"#ff6678";
+
+    document.getElementById("fpEntry").textContent=p.entry.toFixed(2);
+    document.getElementById("fpCurrent").textContent=current.toFixed(2);
+    document.getElementById("fpSL").textContent=p.sl.toFixed(2);
+    document.getElementById("fpTP").textContent=p.tp.toFixed(2);
+
+    const pnlEl=document.getElementById("fpPnl");
+    pnlEl.textContent=(pnl>=0?"+":"-")+"₹"+Math.abs(pnl).toFixed(0)+" Floating P&L";
+    pnlEl.style.color=pnl>=0?"#43e37b":"#ff6678";
+
+    card.classList.add("show");
+}
+
+function hideFloatingPosition(){
+    document.getElementById("floatingPosition").classList.remove("show");
+}
+
+
 /* PRO TRADE TICKET */
 
 function getCurrentPrice(){
@@ -2518,13 +2818,13 @@ function updateOpenTradeStrip(){
     const floating=p.direction==="BUY"?(current-p.entry)*p.positionSize:(p.entry-current)*p.positionSize;
     box.innerHTML=`
       <div class="trade-table">
-        <strong>BANKNIFTY <span class="${p.direction==="BUY"?"profit":"loss"}">● ${p.direction}</span></strong>
-        <strong>${p.lots||1} Lot</strong>
-        <span>Entry<br><strong>${p.entry.toFixed(2)}</strong></span>
-        <span>Current<br><strong>${current.toFixed(2)}</strong></span>
-        <span>TP<br><strong class="profit">${p.tp.toFixed(2)}</strong></span>
-        <span>SL<br><strong class="loss">${p.sl.toFixed(2)}</strong></span>
-        <strong class="${floating>=0?"profit":"loss"}">${floating>=0?"+":""}₹${floating.toFixed(0)}</strong>
+        <strong>BANKNIFTY <span class="₹{p.direction==="BUY"?"profit":"loss"}">● ₹{p.direction}</span></strong>
+        <strong>₹{p.lots||1} Lot</strong>
+        <span>Entry<br><strong>₹{p.entry.toFixed(2)}</strong></span>
+        <span>Current<br><strong>₹{current.toFixed(2)}</strong></span>
+        <span>TP<br><strong class="profit">₹{p.tp.toFixed(2)}</strong></span>
+        <span>SL<br><strong class="loss">₹{p.sl.toFixed(2)}</strong></span>
+        <strong class="₹{floating>=0?"profit":"loss"}">₹{floating>=0?"+":""}₹{floating.toFixed(0)}</strong>
       </div>`;
 }
 
@@ -2553,6 +2853,7 @@ resizeCanvas();
 setChartMode('cursor');
 updateQuotes();
 updateOpenTradeStrip();
+    updateFloatingPosition();
 
 updateStats();
 
