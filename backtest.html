@@ -5,7 +5,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>BFT Trade Lab V10.1 - XAUUSD Backtesting Lab | BFT Trade Lab</title>
+<title>BFT Trade Lab V11 - XAUUSD Backtesting Lab | BFT Trade Lab</title>
 
 <meta name="description"
 content="Practice XAUUSD gold trading with historical market replay, candle-by-candle backtesting, stop loss, take profit and trading performance analytics.">
@@ -727,6 +727,30 @@ select {
   .pipeline-report{grid-template-columns:repeat(2,1fr)}
 }
 
+
+/* ===== V11 JOURNAL + REPORT ===== */
+.journal-modal{position:fixed;inset:0;background:rgba(2,8,18,.78);display:none;align-items:center;justify-content:center;z-index:9999;padding:20px}
+.journal-modal.show{display:flex}
+.journal-box{width:min(720px,96vw);max-height:90vh;overflow:auto;background:#0b192b;border:1px solid #29405b;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,.45)}
+.journal-head{display:flex;justify-content:space-between;align-items:center;padding:16px 18px;border-bottom:1px solid #1b3047;position:sticky;top:0;background:#0b192b;z-index:2}
+.journal-head h3{font-size:17px}.journal-head small{display:block;color:#7e91aa;margin-top:4px}
+.journal-close{border:1px solid #314760;background:#101f32;color:#dce7f5;border-radius:7px;width:32px;height:32px;cursor:pointer}
+.journal-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:18px}
+.journal-field{display:flex;flex-direction:column;gap:6px}.journal-field.full{grid-column:1/-1}
+.journal-field label{font-size:11px;color:#8496ad;text-transform:uppercase;letter-spacing:.04em}
+.journal-field input,.journal-field select,.journal-field textarea{width:100%;background:#0f2033;border:1px solid #2a4059;color:#eef4ff;border-radius:7px;padding:9px;font-size:13px}
+.journal-field textarea{min-height:72px;resize:vertical}.journal-actions{padding:0 18px 18px;display:flex;justify-content:flex-end;gap:8px}
+.journal-save{background:#123d28;border:1px solid #237347;color:#4be985;padding:9px 15px;border-radius:7px;cursor:pointer;font-weight:700}
+.journal-cancel{background:#101f32;border:1px solid #293c54;color:#dce7f5;padding:9px 15px;border-radius:7px;cursor:pointer}
+.journal-btn{background:#10243a;border:1px solid #2c4966;color:#8ec6ff;padding:5px 8px;border-radius:6px;cursor:pointer;font-size:11px}
+.journal-btn.done{color:#4be985;border-color:#237347;background:#102b20}
+.report-section{margin:18px;border:1px solid #1b3047;border-radius:10px;background:#091625;overflow:hidden}
+.report-head{display:flex;justify-content:space-between;gap:16px;align-items:center;padding:18px;border-bottom:1px solid #1b3047}
+.report-head h2{font-size:20px}.report-kicker{font-size:11px;color:#43e37b;letter-spacing:.12em;font-weight:800;margin-bottom:4px}.report-head p{font-size:12px;color:#7589a3;margin-top:5px}
+.report-actions{display:flex;gap:8px;flex-wrap:wrap}.report-btn{background:#10243a;border:1px solid #2c4966;color:#dce7f5;padding:8px 11px;border-radius:7px;cursor:pointer;font-size:12px}.report-btn.primary{background:#123d28;border-color:#237347;color:#4be985}
+.report-body{padding:18px}.report-meta{display:flex;gap:18px;flex-wrap:wrap;color:#91a3b9;font-size:12px;margin-bottom:14px}.report-metrics{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:9px}.report-metric{background:#0d1e31;border:1px solid #203650;border-radius:8px;padding:11px}.report-metric span{display:block;color:#7489a3;font-size:10px}.report-metric strong{display:block;margin-top:5px;font-size:16px}.report-journal{margin-top:16px}.report-journal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px}.report-journal-head span{color:#71869f;font-size:11px}.report-table-wrap{overflow:auto;border:1px solid #1b3047;border-radius:8px}.report-table{width:100%;border-collapse:collapse;min-width:760px}.report-table th,.report-table td{padding:9px 10px;border-bottom:1px solid #172b41;text-align:left;font-size:11px}.report-table th{color:#7890aa;background:#0d1d30}.report-table td{color:#dce7f5}.report-empty{padding:20px;text-align:center;color:#657b95;font-size:12px}
+@media(max-width:900px){.report-metrics{grid-template-columns:repeat(3,1fr)}.journal-grid{grid-template-columns:1fr}.journal-field.full{grid-column:auto}.report-head{align-items:flex-start;flex-direction:column}}
+
 </style>
 </head>
 
@@ -1160,10 +1184,52 @@ select {
 </section>
 
 
+
+<!-- V11 BACKTEST REPORT -->
+<section class="report-section" id="backtestReport">
+  <div class="report-head">
+    <div><div class="report-kicker">V11 • BACKTEST REPORT</div><h2>Professional Backtest Report</h2><p>Session summary + trade journal + strategy review.</p></div>
+    <div class="report-actions"><button class="report-btn" onclick="scrollToJournal()">✎ Trade Journal</button><button class="report-btn primary" onclick="exportBacktestReport()">Export Report</button></div>
+  </div>
+  <div class="report-body">
+    <div class="report-meta" id="reportMeta">Session not started · No closed trades</div>
+    <div class="report-metrics">
+      <div class="report-metric"><span>TOTAL TRADES</span><strong id="rTotal">0</strong></div>
+      <div class="report-metric"><span>WIN RATE</span><strong id="rWinRate">0%</strong></div>
+      <div class="report-metric"><span>NET P&amp;L</span><strong id="rNet" class="profit">$0.00</strong></div>
+      <div class="report-metric"><span>PROFIT FACTOR</span><strong id="rPF">—</strong></div>
+      <div class="report-metric"><span>AVG R</span><strong id="rAvgR">—</strong></div>
+      <div class="report-metric"><span>MAX DRAWDOWN</span><strong id="rDD" class="loss">$0.00</strong></div>
+    </div>
+    <div class="report-journal">
+      <div class="report-journal-head"><strong>Trade Journal</strong><span id="journalCompletion">0 / 0 reviewed</span></div>
+      <div class="report-table-wrap"><div id="reportJournalTable" class="report-empty">No closed trades yet.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- V11 JOURNAL MODAL -->
+<div class="journal-modal" id="journalModal" aria-hidden="true">
+  <div class="journal-box">
+    <div class="journal-head"><div><h3 id="journalTitle">Trade Journal</h3><small id="journalTradeMeta">Trade #—</small></div><button class="journal-close" onclick="closeJournal()">×</button></div>
+    <div class="journal-grid">
+      <div class="journal-field"><label>Setup</label><input id="jSetup" placeholder="e.g. Resistance rejection"></div>
+      <div class="journal-field"><label>Setup Rating</label><select id="jRating"><option value="">Not rated</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option></select></div>
+      <div class="journal-field full"><label>Why did you enter?</label><textarea id="jReason" placeholder="What was the exact reason for taking this trade?"></textarea></div>
+      <div class="journal-field"><label>Market Condition</label><select id="jCondition"><option value="">Select</option><option>Trending</option><option>Ranging</option><option>Breakout</option><option>Retest</option><option>High volatility</option><option>Low volatility</option></select></div>
+      <div class="journal-field"><label>Emotion</label><select id="jEmotion"><option value="">Select</option><option>Calm</option><option>Confident</option><option>Fear</option><option>Greed</option><option>FOMO</option><option>Revenge</option><option>Uncertain</option></select></div>
+      <div class="journal-field"><label>Followed Rules?</label><select id="jRules"><option value="">Select</option><option>Yes</option><option>Partially</option><option>No</option></select></div>
+      <div class="journal-field full"><label>Mistake</label><textarea id="jMistake" placeholder="What could have been done better?"></textarea></div>
+      <div class="journal-field full"><label>What did I learn?</label><textarea id="jLesson" placeholder="One useful lesson from this trade"></textarea></div>
+    </div>
+    <div class="journal-actions"><button class="journal-cancel" onclick="closeJournal()">Cancel</button><button class="journal-save" onclick="saveJournal()">Save Journal</button></div>
+  </div>
+</div>
+
 <section class="data-pipeline" id="dataPipeline">
   <div class="pipeline-head">
     <div>
-      <div class="pipeline-kicker">V10.2 • DATA PIPELINE</div>
+      <div class="pipeline-kicker">V11 • DATA PIPELINE</div>
       <h2>Historical Data Pipeline</h2>
       <p>Validate → Normalize → Clean → Detect Gaps → Ready for Replay</p>
     </div>
@@ -1520,6 +1586,7 @@ let totalLoss = 0;
 let wins = 0;
 
 let losses = 0;
+let journalTradeId = null;
 
 /* Backtest session state */
 let sessionActive = false;
@@ -2227,7 +2294,7 @@ function jumpToReplay(){
 }
 function clearBacktestState(){
     openPositions=[];selectedPositionId=null;nextPositionId=1;pendingOrder=null;
-    trades=[];totalProfit=0;totalLoss=0;wins=0;losses=0;
+    trades=[];totalProfit=0;totalLoss=0;wins=0;losses=0;journalTradeId=null;
     balance=startingBalance;
     const e=document.getElementById("entry"),sl=document.getElementById("sl"),tp=document.getElementById("tp");
     if(e)e.value="";if(sl)sl.value="";if(tp)tp.value="";
@@ -2515,7 +2582,7 @@ function checkOpenPosition(){
     checkPendingOrder(); if(!openPositions.length)return; const candle=candles[currentIndex];if(!candle)return;
     [...openPositions].forEach(p=>{let result=null,exitPrice=null;if(p.direction==="BUY"){if(candle.low<=p.sl){result="LOSS";exitPrice=p.sl;}else if(candle.high>=p.tp){result="WIN";exitPrice=p.tp;}}else{if(candle.high>=p.sl){result="LOSS";exitPrice=p.sl;}else if(candle.low<=p.tp){result="WIN";exitPrice=p.tp;}}if(result)closeTrade(p,result,exitPrice);});
 }
-function closeTrade(p,result,exitPrice,manualPnl=null){if(!p)return;const priceDifference=p.direction==="BUY"?exitPrice-p.entry:p.entry-exitPrice;let pnl=manualPnl!==null?manualPnl:priceDifference*p.positionSize;if(result==="LOSS")pnl=-p.riskMoney;if(result==="WIN")pnl=Math.abs(p.tp-p.entry)*p.positionSize;balance+=pnl;if(pnl>=0){wins++;totalProfit+=pnl;}else{losses++;totalLoss+=Math.abs(pnl);}trades.push({number:trades.length+1,positionId:p.id,direction:p.direction,entry:p.entry,exit:exitPrice,sl:p.sl,tp:p.tp,pnl,result,riskMoney:p.riskMoney,time:candles[currentIndex].time});openPositions=openPositions.filter(x=>x.id!==p.id);if(selectedPositionId===p.id)selectedPositionId=openPositions.length?openPositions[openPositions.length-1].id:null;updateStats();updateAnalytics();updateHistory();updatePosition();updateTerminal();drawChart();}
+function closeTrade(p,result,exitPrice,manualPnl=null){if(!p)return;const priceDifference=p.direction==="BUY"?exitPrice-p.entry:p.entry-exitPrice;let pnl=manualPnl!==null?manualPnl:priceDifference*p.positionSize;if(result==="LOSS")pnl=-p.riskMoney;if(result==="WIN")pnl=Math.abs(p.tp-p.entry)*p.positionSize;balance+=pnl;if(pnl>=0){wins++;totalProfit+=pnl;}else{losses++;totalLoss+=Math.abs(pnl);}trades.push({number:trades.length+1,positionId:p.id,direction:p.direction,entry:p.entry,exit:exitPrice,sl:p.sl,tp:p.tp,pnl,result,riskMoney:p.riskMoney,time:candles[currentIndex].time,journal:{}});openPositions=openPositions.filter(x=>x.id!==p.id);if(selectedPositionId===p.id)selectedPositionId=openPositions.length?openPositions[openPositions.length-1].id:null;updateStats();updateAnalytics();updateHistory();updatePosition();updateTerminal();drawChart();}
 
 /* ------------------------------
    UPDATE POSITION
@@ -2569,9 +2636,9 @@ function updateTerminal(){
     if(!trades.length){
         closedPane.innerHTML='<div class="terminal-empty">No closed trades yet.</div>';
     }else{
-        const rows=trades.slice().reverse().map(t=>{const cls=t.result==='WIN'?'win':t.result==='LOSS'?'loss':'be';return `<tr><td>#${t.number}</td><td><strong class="${t.direction==='BUY'?'profit':'loss'}">${t.direction}</strong></td><td>${t.entry.toFixed(2)}</td><td>${t.exit.toFixed(2)}</td><td>${t.sl.toFixed(2)}</td><td>${t.tp.toFixed(2)}</td><td class="terminal-result ${cls}">${t.pnl>=0?'+':''}$${t.pnl.toFixed(2)}</td><td class="terminal-result ${cls}">${t.result}</td><td class="terminal-side">${formatDate(t.time)}</td></tr>`;}).join('');
+        const rows=trades.slice().reverse().map(t=>{const cls=t.result==='WIN'?'win':t.result==='LOSS'?'loss':'be';return `<tr><td>#${t.number}</td><td><strong class="${t.direction==='BUY'?'profit':'loss'}">${t.direction}</strong></td><td>${t.entry.toFixed(2)}</td><td>${t.exit.toFixed(2)}</td><td>${t.sl.toFixed(2)}</td><td>${t.tp.toFixed(2)}</td><td class="terminal-result ${cls}">${t.pnl>=0?'+':''}$${t.pnl.toFixed(2)}</td><td class="terminal-result ${cls}">${t.result}</td><td class="terminal-side">${formatDate(t.time)}</td><td><button class="journal-btn ${hasJournal(t)?'done':''}" onclick="openJournal(${t.number})">${hasJournal(t)?'✓ Journal':'Journal'}</button></td></tr>`;}).join('');
         const net=trades.reduce((a,t)=>a+t.pnl,0);
-        closedPane.innerHTML=`<div style="overflow-x:auto"><table class="terminal-table"><thead><tr><th>Trade</th><th>Side</th><th>Entry</th><th>Exit</th><th>SL</th><th>TP</th><th>P&L</th><th>Result</th><th>Time</th></tr></thead><tbody>${rows}</tbody></table></div><div class="terminal-summary"><span>Closed: <strong>${trades.length}</strong></span><span>Wins: <strong class="profit">${wins}</strong></span><span>Losses: <strong class="loss">${losses}</strong></span><span>Net P&L: <strong class="${net>=0?'profit':'loss'}">${net>=0?'+':''}$${net.toFixed(2)}</strong></span></div>`;
+        closedPane.innerHTML=`<div style="overflow-x:auto"><table class="terminal-table"><thead><tr><th>Trade</th><th>Side</th><th>Entry</th><th>Exit</th><th>SL</th><th>TP</th><th>P&L</th><th>Result</th><th>Time</th><th>Journal</th></tr></thead><tbody>${rows}</tbody></table></div><div class="terminal-summary"><span>Closed: <strong>${trades.length}</strong></span><span>Wins: <strong class="profit">${wins}</strong></span><span>Losses: <strong class="loss">${losses}</strong></span><span>Net P&L: <strong class="${net>=0?'profit':'loss'}">${net>=0?'+':''}$${net.toFixed(2)}</strong></span></div>`;
     }
 }
 
@@ -2719,6 +2786,59 @@ function updateHistory() {
 
 
 
+
+/* ------------------------------
+   V11 TRADE JOURNAL + REPORT
+------------------------------ */
+function hasJournal(t){
+  const j=t&&t.journal||{};
+  return !!(j.setup||j.reason||j.condition||j.emotion||j.rules||j.mistake||j.lesson||j.rating);
+}
+function openJournal(number){
+  const t=trades.find(x=>x.number===Number(number)); if(!t)return;
+  journalTradeId=t.number;
+  const j=t.journal||{};
+  document.getElementById('journalTitle').textContent=`Trade Journal #${t.number}`;
+  document.getElementById('journalTradeMeta').textContent=`${t.direction} · Entry ${t.entry.toFixed(2)} → Exit ${t.exit.toFixed(2)} · ${t.result} · ${money(t.pnl)}`;
+  document.getElementById('jSetup').value=j.setup||''; document.getElementById('jRating').value=j.rating||'';
+  document.getElementById('jReason').value=j.reason||''; document.getElementById('jCondition').value=j.condition||'';
+  document.getElementById('jEmotion').value=j.emotion||''; document.getElementById('jRules').value=j.rules||'';
+  document.getElementById('jMistake').value=j.mistake||''; document.getElementById('jLesson').value=j.lesson||'';
+  const modal=document.getElementById('journalModal'); modal.classList.add('show'); modal.setAttribute('aria-hidden','false');
+}
+function closeJournal(){const m=document.getElementById('journalModal');m.classList.remove('show');m.setAttribute('aria-hidden','true');journalTradeId=null;}
+function saveJournal(){
+  const t=trades.find(x=>x.number===Number(journalTradeId)); if(!t)return;
+  t.journal={setup:document.getElementById('jSetup').value.trim(),rating:document.getElementById('jRating').value,reason:document.getElementById('jReason').value.trim(),condition:document.getElementById('jCondition').value,emotion:document.getElementById('jEmotion').value,rules:document.getElementById('jRules').value,mistake:document.getElementById('jMistake').value.trim(),lesson:document.getElementById('jLesson').value.trim()};
+  closeJournal(); updateAnalytics(); updateTerminal(); showTradeMessage(`Journal saved for Trade #${t.number}.`,'success');
+}
+function scrollToJournal(){document.getElementById('backtestReport')?.scrollIntoView({behavior:'smooth',block:'start'});}
+function reportStats(){
+  const total=trades.length,grossProfit=trades.filter(t=>t.pnl>0).reduce((a,t)=>a+t.pnl,0),grossLoss=Math.abs(trades.filter(t=>t.pnl<0).reduce((a,t)=>a+t.pnl,0));
+  const net=trades.reduce((a,t)=>a+t.pnl,0),pf=grossLoss?grossProfit/grossLoss:null,avgR=total?trades.reduce((a,t)=>a+(t.riskMoney?t.pnl/t.riskMoney:0),0)/total:null;
+  let eq=startingBalance,peak=eq,dd=0; trades.forEach(t=>{eq+=t.pnl;peak=Math.max(peak,eq);dd=Math.max(dd,peak-eq)});
+  return {total,winRate:total?wins/total*100:0,net,pf,avgR,dd,eq,journaled:trades.filter(hasJournal).length};
+}
+function updateBacktestReport(){
+  const r=reportStats(); const set=(id,v)=>{const e=document.getElementById(id);if(e)e.textContent=v};
+  set('rTotal',r.total);set('rWinRate',r.winRate.toFixed(1)+'%');set('rNet',(r.net>=0?'+':'')+money(r.net));set('rPF',r.pf===null?'—':r.pf.toFixed(2));set('rAvgR',r.avgR===null?'—':(r.avgR>=0?'+':'')+r.avgR.toFixed(2)+'R');set('rDD',money(-r.dd));set('journalCompletion',`${r.journaled} / ${r.total} reviewed`);
+  const meta=document.getElementById('reportMeta');
+  const start=candles[sessionStartIndex]?.time,end=candles[sessionEndIndex]?.time;
+  if(meta)meta.textContent=sessionStatus==='READY'?'Session not started':`${sessionStatus} · ${start?formatDate(start):'—'} → ${end?formatDate(end):'—'} · Starting ${money(startingBalance)} · Current ${money(r.eq)}`;
+  const box=document.getElementById('reportJournalTable'); if(!box)return;
+  if(!trades.length){box.className='report-empty';box.textContent='No closed trades yet.';return;}
+  box.className='';
+  const rows=trades.slice().reverse().map(t=>{const j=t.journal||{};return `<tr><td>#${t.number}</td><td>${t.direction}</td><td>${money(t.pnl)}</td><td>${t.result}</td><td>${j.setup||'—'}</td><td>${j.condition||'—'}</td><td>${j.emotion||'—'}</td><td>${j.rules||'—'}</td><td>${j.rating||'—'}</td><td><button class="journal-btn ${hasJournal(t)?'done':''}" onclick="openJournal(${t.number})">${hasJournal(t)?'Edit':'Add Journal'}</button></td></tr>`}).join('');
+  box.innerHTML=`<table class="report-table"><thead><tr><th>Trade</th><th>Side</th><th>P&L</th><th>Result</th><th>Setup</th><th>Condition</th><th>Emotion</th><th>Rules</th><th>Rating</th><th>Action</th></tr></thead><tbody>${rows}</tbody></table>`;
+}
+function exportBacktestReport(){
+  const r=reportStats(), start=candles[sessionStartIndex]?.time,end=candles[sessionEndIndex]?.time;
+  const esc=v=>String(v??'').replace(/[&<>\"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\\':'&#92;'}[m]));
+  const rows=trades.map(t=>{const j=t.journal||{};return `<tr><td>#${t.number}</td><td>${t.direction}</td><td>${t.entry.toFixed(2)}</td><td>${t.exit.toFixed(2)}</td><td>${t.sl.toFixed(2)}</td><td>${t.tp.toFixed(2)}</td><td>${money(t.pnl)}</td><td>${t.result}</td><td>${esc(j.setup||'')}</td><td>${esc(j.reason||'')}</td><td>${esc(j.condition||'')}</td><td>${esc(j.emotion||'')}</td><td>${esc(j.rules||'')}</td><td>${esc(j.mistake||'')}</td><td>${esc(j.lesson||'')}</td><td>${esc(j.rating||'')}</td></tr>`}).join('');
+  const html=`<!doctype html><html><head><meta charset="utf-8"><title>BFT Trade Lab Backtest Report</title><style>body{font-family:Arial,sans-serif;background:#f5f7fa;color:#172033;padding:28px}h1{margin-bottom:4px}.meta{color:#5d6b7e;margin-bottom:20px}.grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:24px}.card{background:white;border:1px solid #dbe2ea;border-radius:8px;padding:12px}.card span{display:block;font-size:11px;color:#68778a}.card b{display:block;margin-top:5px;font-size:18px}table{border-collapse:collapse;width:100%;background:white;font-size:11px}th,td{border:1px solid #dbe2ea;padding:7px;text-align:left;vertical-align:top}th{background:#edf2f7}.note{margin-top:18px;color:#68778a;font-size:12px}@media(max-width:900px){.grid{grid-template-columns:repeat(3,1fr)}} </style></head><body><h1>BFT Trade Lab — Backtest Report</h1><div class="meta">XAUUSD · 5 MIN · ${esc(start?formatDate(start):'—')} → ${esc(end?formatDate(end):'—')} · Status: ${sessionStatus}</div><div class="grid"><div class="card"><span>Total Trades</span><b>${r.total}</b></div><div class="card"><span>Win Rate</span><b>${r.winRate.toFixed(1)}%</b></div><div class="card"><span>Net P&L</span><b>${money(r.net)}</b></div><div class="card"><span>Profit Factor</span><b>${r.pf===null?'—':r.pf.toFixed(2)}</b></div><div class="card"><span>Average R</span><b>${r.avgR===null?'—':r.avgR.toFixed(2)+'R'}</b></div><div class="card"><span>Max Drawdown</span><b>${money(-r.dd)}</b></div></div><table><thead><tr><th>Trade</th><th>Side</th><th>Entry</th><th>Exit</th><th>SL</th><th>TP</th><th>P&L</th><th>Result</th><th>Setup</th><th>Entry Reason</th><th>Condition</th><th>Emotion</th><th>Rules</th><th>Mistake</th><th>Lesson</th><th>Rating</th></tr></thead><tbody>${rows||'<tr><td colspan="16">No closed trades.</td></tr>'}</tbody></table><div class="note">Generated by BFT Trade Lab V11.</div></body></html>`;
+  const blob=new Blob([html],{type:'text/html;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`BFT-Backtest-Report-${new Date().toISOString().slice(0,10)}.html`;a.click();URL.revokeObjectURL(a.href);
+}
+
 /* ------------------------------
    ANALYTICS
 ------------------------------ */
@@ -2733,8 +2853,8 @@ function showAnalyticsTab(tab,btn){
 function renderAnalyticsTrades(){
   const el=document.getElementById('analyticsTrades'); if(!el)return;
   if(!trades.length){el.innerHTML='<div class="terminal-empty">No closed trades yet.</div>';return;}
-  const rows=trades.slice().reverse().map(t=>`<tr><td>#${t.number}</td><td>${t.direction}</td><td>${t.entry.toFixed(2)}</td><td>${t.exit.toFixed(2)}</td><td>${money(t.pnl)}</td><td class="${t.result==='WIN'?'win':'loss'}">${t.result}</td><td>${formatDate(t.time)}</td></tr>`).join('');
-  el.innerHTML=`<table><thead><tr><th>Trade</th><th>Side</th><th>Entry</th><th>Exit</th><th>P&L</th><th>Result</th><th>Time</th></tr></thead><tbody>${rows}</tbody></table>`;
+  const rows=trades.slice().reverse().map(t=>`<tr><td>#${t.number}</td><td>${t.direction}</td><td>${t.entry.toFixed(2)}</td><td>${t.exit.toFixed(2)}</td><td>${money(t.pnl)}</td><td class="${t.result==='WIN'?'win':'loss'}">${t.result}</td><td>${formatDate(t.time)}</td><td><button class="journal-btn ${hasJournal(t)?'done':''}" onclick="openJournal(${t.number})">${hasJournal(t)?'✓':'Journal'}</button></td></tr>`).join('');
+  el.innerHTML=`<table><thead><tr><th>Trade</th><th>Side</th><th>Entry</th><th>Exit</th><th>P&L</th><th>Result</th><th>Time</th><th>Journal</th></tr></thead><tbody>${rows}</tbody></table>`;
 }
 function updateAnalytics(){
   const total=trades.length, grossProfit=trades.filter(t=>t.pnl>0).reduce((a,t)=>a+t.pnl,0), grossLoss=Math.abs(trades.filter(t=>t.pnl<0).reduce((a,t)=>a+t.pnl,0));
@@ -2754,6 +2874,7 @@ function updateAnalytics(){
   const area=path+' L '+coords[coords.length-1][0].toFixed(1)+' '+(H-pad)+' L '+coords[0][0].toFixed(1)+' '+(H-pad)+' Z';
   svg.innerHTML=`<line class="equity-grid" x1="0" y1="${H/2}" x2="${W}" y2="${H/2}"/><path class="equity-area" d="${area}"/><path class="equity-line" d="${path}"/>${coords.length?`<circle class="equity-dot" cx="${coords.at(-1)[0]}" cy="${coords.at(-1)[1]}" r="5"/>`:''}`;
   renderAnalyticsTrades();
+  updateBacktestReport();
 }
 
 /* ------------------------------
@@ -2812,6 +2933,8 @@ function resetReplay() {
 
     losses =
         0;
+
+    journalTradeId = null;
 
 
     document.getElementById(
@@ -2900,6 +3023,9 @@ updateTradePreview();
 updateSessionUI();
 drawChart();
 
+
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeJournal();});
+document.getElementById('journalModal')?.addEventListener('click',e=>{if(e.target.id==='journalModal')closeJournal();});
 </script>
 
 </body>
