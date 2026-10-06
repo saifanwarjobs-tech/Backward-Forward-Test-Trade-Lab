@@ -3685,5 +3685,131 @@ function v17Refresh(){
   v17InitSupabase();
 })();
 </script>
+<style id="v18-large-data-css">
+.v18-engine{margin:14px 14px 24px;background:#07111d;border:1px solid #1b3047;border-radius:10px;overflow:hidden;box-shadow:0 8px 24px rgba(0,0,0,.18)}
+.v18-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:14px 16px;border-bottom:1px solid #162b40;background:#091725}.v18-kicker{font-size:9px;letter-spacing:.16em;color:#5ca9ff;font-weight:800}.v18-head h2{font-size:16px;margin:4px 0;color:#e5eef8}.v18-head p{font-size:11px;color:#71869d;margin:0}.v18-badge{font-size:9px;padding:5px 8px;border:1px solid #25425e;border-radius:5px;color:#8ba5be;white-space:nowrap}.v18-badge.ready{color:#43e37b;border-color:#245b3c}.v18-badge.warn{color:#ffbf5c;border-color:#5c4725}.v18-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;padding:12px 16px}.v18-stat{background:#0a1928;border:1px solid #172d43;border-radius:7px;padding:9px}.v18-stat span{display:block;font-size:9px;color:#6f859d;text-transform:uppercase}.v18-stat b{display:block;margin-top:4px;font-size:13px;color:#e7f0fc}.v18-body{padding:0 16px 15px}.v18-actions{display:flex;flex-wrap:wrap;gap:7px;align-items:center}.v18-btn{border:1px solid #27445f;background:#0b1b2b;color:#cfe1f3;border-radius:6px;padding:7px 10px;font-size:10px;cursor:pointer}.v18-btn:hover{border-color:#4d81ad}.v18-btn.primary{background:#103153;border-color:#2f6597;color:#e8f4ff}.v18-btn.danger{border-color:#613044;color:#ff9aab}.v18-file{display:none}.v18-input{width:90px;background:#081522;border:1px solid #274057;color:#dceafa;border-radius:5px;padding:7px 8px;font-size:10px}.v18-progress{height:6px;background:#0d2032;border-radius:10px;overflow:hidden;margin-top:11px}.v18-progress i{display:block;height:100%;width:0;background:#43e37b;transition:width .15s}.v18-status{margin-top:7px;font-size:10px;color:#7189a2;min-height:14px}.v18-list{margin-top:12px;border-top:1px solid #162b40}.v18-row{display:grid;grid-template-columns:1.5fr 1fr 1fr auto;gap:10px;align-items:center;padding:9px 2px;border-bottom:1px solid #102338;font-size:10px}.v18-row strong{color:#dceafa}.v18-row span{color:#7189a2}.v18-empty{padding:14px 2px;color:#657b93;font-size:10px}.v18-mini{font-size:9px;color:#60778f}.v18-note{margin-top:10px;padding:8px 9px;border-left:2px solid #2f6597;background:#081827;color:#7189a2;font-size:9px;line-height:1.45}
+@media(max-width:900px){.v18-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.v18-row{grid-template-columns:1fr 1fr}.v18-row .v18-row-actions{grid-column:1/-1}}
+</style>
+
+<section class="v18-engine" id="v18LargeDataEngine">
+  <div class="v18-head">
+    <div><div class="v18-kicker">V18 • LARGE HISTORICAL DATA ENGINE</div><h2>Historical Dataset Library</h2><p>IndexedDB storage • chunked CSV ingestion • dataset metadata • replay loading</p></div>
+    <span class="v18-badge" id="v18DbBadge">INITIALIZING…</span>
+  </div>
+  <div class="v18-grid">
+    <div class="v18-stat"><span>Datasets</span><b id="v18DatasetCount">0</b></div>
+    <div class="v18-stat"><span>Active Dataset</span><b id="v18Active">None</b></div>
+    <div class="v18-stat"><span>Rows</span><b id="v18Rows">0</b></div>
+    <div class="v18-stat"><span>Date Range</span><b id="v18Range">—</b></div>
+    <div class="v18-stat"><span>Engine</span><b>IndexedDB</b></div>
+  </div>
+  <div class="v18-body">
+    <div class="v18-actions">
+      <input class="v18-file" type="file" id="v18LargeCsv" accept=".csv,text/csv">
+      <button class="v18-btn primary" onclick="document.getElementById('v18LargeCsv').click()">Import Large CSV</button>
+      <button class="v18-btn" onclick="v18RefreshDatasets()">Refresh Library</button>
+      <label class="v18-mini">Replay load limit</label><input class="v18-input" id="v18LoadLimit" type="number" min="100" max="200000" value="50000">
+      <button class="v18-btn" onclick="v18LoadActiveToReplay()">Load Active → Replay</button>
+    </div>
+    <div class="v18-progress"><i id="v18Progress"></i></div>
+    <div class="v18-status" id="v18Status">Opening local historical data engine…</div>
+    <div class="v18-list" id="v18DatasetList"><div class="v18-empty">No large datasets stored yet.</div></div>
+    <div class="v18-note">V18 stores raw normalized OHLC bars in the browser's IndexedDB instead of keeping the entire historical library in page memory. Replay still loads a controlled window so very large datasets do not automatically flood the chart engine.</div>
+  </div>
+</section>
+
+<script id="v18-large-data-script">
+/* ===== V18 LARGE HISTORICAL DATA ENGINE ===== */
+const V18_DB='BFT_TRADE_LAB_V18';
+const V18_VER=2;
+let v18db=null;
+let v18ActiveId=null;
+let v18Busy=false;
+
+function v18OpenDB(){
+  return new Promise((resolve,reject)=>{
+    const req=indexedDB.open(V18_DB,V18_VER);
+    req.onupgradeneeded=e=>{
+      const db=e.target.result;
+      if(!db.objectStoreNames.contains('datasets')){
+        const s=db.createObjectStore('datasets',{keyPath:'id'});
+        s.createIndex('createdAt','createdAt');
+      }
+      if(!db.objectStoreNames.contains('bars')){
+        const s=db.createObjectStore('bars',{keyPath:'id'});
+        s.createIndex('datasetId','datasetId');
+        s.createIndex('datasetTime','datasetTime',{unique:true});
+        s.createIndex('datasetSeq',['datasetId','seq']);
+      }
+    };
+    req.onsuccess=()=>{v18db=req.result;resolve(v18db)};
+    req.onerror=()=>reject(req.error);
+  });
+}
+function v18Tx(store,mode='readonly'){return v18db.transaction(store,mode).objectStore(store)}
+function v18Put(store,value){return new Promise((res,rej)=>{const r=v18Tx(store,'readwrite').put(value);r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
+function v18Get(store,key){return new Promise((res,rej)=>{const r=v18Tx(store).get(key);r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
+function v18All(store){return new Promise((res,rej)=>{const r=v18Tx(store).getAll();r.onsuccess=()=>res(r.result||[]);r.onerror=()=>rej(r.error)})}
+function v18Delete(store,key){return new Promise((res,rej)=>{const r=v18Tx(store,'readwrite').delete(key);r.onsuccess=()=>res();r.onerror=()=>rej(r.error)})}
+function v18SetStatus(t){const e=document.getElementById('v18Status');if(e)e.textContent=t}
+function v18SetProgress(n){const e=document.getElementById('v18Progress');if(e)e.style.width=Math.max(0,Math.min(100,n))+'%'}
+function v18Date(d){return d?new Date(d).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}):'—'}
+function v18Num(v){return Number(String(v??'').replace(/,/g,'').trim())}
+function v18DateValue(v){const d=new Date(v);return Number.isFinite(d.getTime())?d:null}
+function v18Detect(headers,candidates){const norm=headers.map(h=>String(h).trim().toLowerCase().replace(/[^a-z0-9]/g,''));for(const c of candidates){const i=norm.indexOf(c);if(i>=0)return headers[i]}return null}
+function v18ParseLine(line,delim){const out=[];let cur='',q=false;for(let i=0;i<line.length;i++){const ch=line[i];if(ch==='"'){if(q&&line[i+1]==='"'){cur+='"';i++}else q=!q}else if(ch===delim&&!q){out.push(cur.trim());cur=''}else cur+=ch}out.push(cur.trim());return out}
+function v18LineObjects(text,state){
+  const lines=text.split(/\r?\n/);const out=[];let start=0;
+  if(!state.headers){
+    while(start<lines.length&&!lines[start].trim())start++;
+    if(start<lines.length){const first=lines[start];const delim=(first.match(/;/g)||[]).length>(first.match(/,/g)||[]).length?';':',';state.delim=delim;state.headers=v18ParseLine(first.replace(/^\uFEFF/,''),delim);start++}
+  }
+  if(!state.headers)return out;
+  for(let i=start;i<lines.length;i++){const line=lines[i];if(!line.trim())continue;const vals=v18ParseLine(line,state.delim);const o={};state.headers.forEach((h,j)=>o[h]=(vals[j]??'').trim());out.push(o)}
+  return out;
+}
+async function v18ImportFile(file){
+  if(v18Busy)return;v18Busy=true;v18SetProgress(0);v18SetStatus('Preparing '+file.name+'…');
+  try{
+    await v18OpenDB();
+    const id='ds_'+Date.now()+'_'+Math.random().toString(36).slice(2,7);
+    const state={headers:null,delim:',',carry:'',rows:0,invalid:0,duplicates:0,first:null,last:null,prevTime:null,intervals:{},batch:[]};
+    const meta={id,name:file.name,createdAt:new Date().toISOString(),status:'IMPORTING',rows:0,invalid:0,duplicates:0,first:null,last:null,interval:null};
+    await v18Put('datasets',meta);
+    const total=file.size||1;let bytes=0;let seq=0;let txRows=[];
+    const commit=async()=>{
+      if(!txRows.length)return;
+      const rows=txRows;txRows=[];
+      await new Promise((res,rej)=>{const tx=v18db.transaction('bars','readwrite');const st=tx.objectStore('bars');for(const b of rows)st.put(b);tx.oncomplete=()=>res();tx.onerror=()=>rej(tx.error)});
+    };
+    const reader=file.stream().getReader(),decoder=new TextDecoder('utf-8');
+    while(true){const {value,done}=await reader.read();if(done)break;bytes+=value.byteLength;let text=state.carry+decoder.decode(value,{stream:true});const parts=text.split(/\r?\n/);state.carry=parts.pop()||'';const objs=v18LineObjects(parts.join('\n'),state);
+      const headers=state.headers||[];const tk=v18Detect(headers,['datetime','timestamp','date','time']),ok=v18Detect(headers,['open','o']),hk=v18Detect(headers,['high','h']),lk=v18Detect(headers,['low','l']),ck=v18Detect(headers,['close','c']),vk=v18Detect(headers,['volume','vol','v']);
+      if(state.rows===0&&(!tk||!ok||!hk||!lk||!ck))throw new Error('Missing required OHLC columns. Need Time/DateTime, Open, High, Low and Close.');
+      for(const r of objs){state.rows++;const time=v18DateValue(r[tk]);const o=v18Num(r[ok]),h=v18Num(r[hk]),l=v18Num(r[lk]),c=v18Num(r[ck]),v=vk?v18Num(r[vk]):0;const bad=!time||![o,h,l,c].every(Number.isFinite)||h<Math.max(o,c)||l>Math.min(o,c)||h<l;if(bad){state.invalid++;continue}const ms=time.getTime();if(state.prevTime!==null){const diff=(ms-state.prevTime)/60000;if(diff>0)state.intervals[diff]=(state.intervals[diff]||0)+1;if(ms===state.prevTime){state.duplicates++;continue}}
+        state.prevTime=ms;if(!state.first)state.first=time.toISOString();state.last=time.toISOString();const bar={id:id+'_'+seq,datasetId:id,seq,time:time.toISOString(),o,h,l,c,v:Number.isFinite(v)?v:0,datasetTime:id+'|'+ms};txRows.push(bar);seq++;if(txRows.length>=1000)await commit();
+      }
+      v18SetProgress(bytes/total*100);v18SetStatus('Importing… '+Math.round(bytes/total*100)+'% • '+seq.toLocaleString()+' valid bars');
+    }
+    const tail=state.carry+decoder.decode();if(tail.trim()){const objs=v18LineObjects(tail,state);const headers=state.headers||[];const tk=v18Detect(headers,['datetime','timestamp','date','time']),ok=v18Detect(headers,['open','o']),hk=v18Detect(headers,['high','h']),lk=v18Detect(headers,['low','l']),ck=v18Detect(headers,['close','c']),vk=v18Detect(headers,['volume','vol','v']);for(const r of objs){state.rows++;const time=v18DateValue(r[tk]),o=v18Num(r[ok]),h=v18Num(r[hk]),l=v18Num(r[lk]),c=v18Num(r[ck]),v=vk?v18Num(r[vk]):0;const bad=!time||![o,h,l,c].every(Number.isFinite)||h<Math.max(o,c)||l>Math.min(o,c)||h<l;if(bad){state.invalid++;continue}const ms=time.getTime();if(state.prevTime===ms){state.duplicates++;continue}if(state.prevTime!==null){const diff=(ms-state.prevTime)/60000;if(diff>0)state.intervals[diff]=(state.intervals[diff]||0)+1}state.prevTime=ms;if(!state.first)state.first=time.toISOString();state.last=time.toISOString();txRows.push({id:id+'_'+seq,datasetId:id,seq,time:time.toISOString(),o,h,l,c,v:Number.isFinite(v)?v:0,datasetTime:id+'|'+ms});seq++;if(txRows.length>=1000)await commit()}}
+    await commit();
+    const intKeys=Object.keys(state.intervals).sort((a,b)=>state.intervals[b]-state.intervals[a]||Number(a)-Number(b));
+    meta.status='READY';meta.rows=seq;meta.invalid=state.invalid;meta.duplicates=state.duplicates;meta.first=state.first;meta.last=state.last;meta.interval=intKeys.length?Number(intKeys[0]):null;meta.fileSize=file.size;await v18Put('datasets',meta);v18ActiveId=id;v18SetProgress(100);v18SetStatus('Import complete • '+seq.toLocaleString()+' bars stored in IndexedDB.');await v18RefreshDatasets();
+  }catch(e){v18SetStatus('Import failed: '+(e?.message||e));v18SetProgress(0);console.error('V18 import',e)}finally{v18Busy=false}
+}
+function v18BarsForDataset(id,limit){
+  return new Promise((res,rej)=>{const out=[];const idx=v18Tx('bars').index('datasetSeq');const req=idx.openCursor(IDBKeyRange.bound([id,0],[id,Number.MAX_SAFE_INTEGER]),'prev');req.onsuccess=e=>{const c=e.target.result;if(!c||out.length>=limit){out.sort((a,b)=>a.seq-b.seq);res(out);return}out.push(c.value);c.continue()};req.onerror=()=>rej(req.error)})
+}
+async function v18LoadActiveToReplay(){
+  if(!v18ActiveId){v18SetStatus('Select a dataset first.');return}const meta=await v18Get('datasets',v18ActiveId);if(!meta){v18SetStatus('Dataset metadata not found.');return}const limit=Math.max(100,Math.min(200000,Number(document.getElementById('v18LoadLimit')?.value||50000)));v18SetStatus('Loading last '+limit.toLocaleString()+' bars into Replay…');const bars=await v18BarsForDataset(v18ActiveId,limit);if(bars.length<20){v18SetStatus('Not enough bars for replay.');return}const mapped=bars.map(b=>({time:new Date(b.time),open:b.o,high:b.h,low:b.l,close:b.c,volume:b.v}));
+  candles=mapped;try{pauseReplay();clearBacktestState();currentIndex=Math.min(100,candles.length-1);sessionStartIndex=currentIndex;sessionEndIndex=candles.length-1;sessionActive=false;sessionStatus='READY';chartZoom=1;chartPan=0;setReplayInputs(currentIndex);updateDataSourceUI('V18 LARGE DATA');updateDataInspector();updateSessionUI();updateDateInfo();drawChart();updateTerminal();}catch(e){console.warn('Replay refresh',e)}
+  v18SetStatus('Loaded '+bars.length.toLocaleString()+' bars into Replay • '+v18Date(bars[0].time)+' → '+v18Date(bars[bars.length-1].time));
+}
+async function v18DeleteDataset(id){if(!confirm('Delete this historical dataset from local storage?'))return;const bars=await v18BarsForDataset(id,Number.MAX_SAFE_INTEGER);await new Promise((res,rej)=>{const tx=v18db.transaction('bars','readwrite'),st=tx.objectStore('bars');for(const b of bars)st.delete(b.id);tx.oncomplete=()=>res();tx.onerror=()=>rej(tx.error)});await v18Delete('datasets',id);if(v18ActiveId===id)v18ActiveId=null;await v18RefreshDatasets();v18SetStatus('Dataset deleted.');}
+async function v18RefreshDatasets(){await v18OpenDB();const list=await v18All('datasets');list.sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));document.getElementById('v18DatasetCount').textContent=list.length;const active=list.find(x=>x.id===v18ActiveId)||list[0];if(active)v18ActiveId=active.id;document.getElementById('v18Active').textContent=active?active.name:'None';document.getElementById('v18Rows').textContent=active?(active.rows||0).toLocaleString():'0';document.getElementById('v18Range').textContent=active?(v18Date(active.first)+' → '+v18Date(active.last)):'—';const badge=document.getElementById('v18DbBadge');badge.textContent='LOCAL DB READY';badge.className='v18-badge ready';const el=document.getElementById('v18DatasetList');if(!list.length){el.innerHTML='<div class="v18-empty">No large datasets stored yet.</div>';return}el.innerHTML=list.map(x=>`<div class="v18-row"><div><strong>${String(x.name).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}</strong><br><span>${(x.rows||0).toLocaleString()} bars • ${v18Date(x.first)} → ${v18Date(x.last)}</span></div><div><span>Interval ${x.interval||'—'} min</span></div><div><span>Invalid ${x.invalid||0} • Dup ${x.duplicates||0}</span></div><div class="v18-row-actions"><button class="v18-btn" onclick="v18SelectDataset('${x.id}')">${x.id===v18ActiveId?'Active':'Select'}</button> <button class="v18-btn danger" onclick="v18DeleteDataset('${x.id}')">Delete</button></div></div>`).join('');}
+async function v18SelectDataset(id){v18ActiveId=id;await v18RefreshDatasets();v18SetStatus('Active dataset selected. Click Load Active → Replay when ready.')}
+document.getElementById('v18LargeCsv')?.addEventListener('change',e=>{const f=e.target.files?.[0];if(f)v18ImportFile(f);e.target.value=''})
+(async()=>{try{await v18OpenDB();await v18RefreshDatasets()}catch(e){const b=document.getElementById('v18DbBadge');if(b){b.textContent='DB UNAVAILABLE';b.className='v18-badge warn'}v18SetStatus('IndexedDB unavailable in this browser/session.')}})();
+</script>
 </body>
 </html>
