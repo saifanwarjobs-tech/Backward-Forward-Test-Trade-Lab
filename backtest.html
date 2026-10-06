@@ -5,7 +5,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>BFT Trade Lab V17 - Account & Workspace | BFT Trade Lab</title>
+<title>BFT Trade Lab V12 - XAUUSD Backtesting Lab | BFT Trade Lab</title>
 
 <meta name="description"
 content="Practice XAUUSD gold trading with historical market replay, candle-by-candle backtesting, stop loss, take profit and trading performance analytics.">
@@ -769,6 +769,23 @@ select {
 .v14-mtf{margin:14px 0 0;background:#0a1524;border:1px solid #1d3048;border-radius:10px;padding:14px;color:#dce7f4}
 .v14-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:11px}.v14-kicker{font-size:10px;font-weight:800;letter-spacing:1.2px;color:#39df82}.v14-head h2{font-size:18px;margin:3px 0}.v14-head p{font-size:11px;color:#71859c}.v14-controls{display:flex;align-items:center;gap:7px;flex-wrap:wrap}.v14-controls label{font-size:10px;color:#71859c}.v14-select{background:#0e1d30;border:1px solid #29415d;color:#e8f1fa;border-radius:7px;padding:7px 9px;font-size:11px}.v14-sync{font-size:10px;color:#86a0ba;padding:7px 9px;border:1px solid #1c334c;border-radius:7px;background:#0d1b2c}.v14-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}.v14-card{background:#0d1c2e;border:1px solid #1d344d;border-radius:8px;padding:10px;min-width:0}.v14-card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px}.v14-card-head strong{font-size:12px}.v14-card-head span{font-size:9px;color:#71859c}.v14-chart{display:block;width:100%;height:118px;background:#081321;border:1px solid #182d43;border-radius:6px}.v14-stats{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:7px}.v14-stat{background:#091626;border:1px solid #172c43;border-radius:5px;padding:6px}.v14-stat span{display:block;font-size:8px;color:#70859d;text-transform:uppercase}.v14-stat b{display:block;font-size:10px;margin-top:2px}.v14-bull{color:#39df82}.v14-bear{color:#ff6675}.v14-range{color:#f1c75b}.v14-muted{color:#71859c}.v14-foot{font-size:9px;color:#637a93;margin-top:9px}.v14-note{padding:8px 10px;border:1px dashed #29425c;border-radius:7px;background:#091625;color:#7890aa;font-size:10px;margin-top:9px}
 @media(max-width:1050px){.v14-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:650px){.v14-grid{grid-template-columns:1fr}}
+</style>
+
+
+<style id="v16-forward-style">
+.v16-forward{margin:14px 18px 40px;border:1px solid #1c344d;border-radius:11px;background:#071522;color:#dce7f4;overflow:hidden}
+.v16-head{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:15px 16px;border-bottom:1px solid #1c344d;background:#091827}
+.v16-kicker{font-size:10px;font-weight:900;letter-spacing:1.4px;color:#4be985}.v16-head h2{font-size:19px;margin:4px 0}.v16-head p{font-size:11px;color:#71869e}
+.v16-badge{font-size:10px;font-weight:800;color:#ffd36a;background:#2b2512;border:1px solid #715d27;border-radius:999px;padding:6px 9px;white-space:nowrap}
+.v16-grid{display:grid;grid-template-columns:minmax(0,1.6fr) 330px;gap:12px;padding:12px}
+.v16-card{background:#091827;border:1px solid #1c344d;border-radius:9px;overflow:hidden}.v16-card-head{min-height:42px;padding:0 12px;border-bottom:1px solid #1c344d;display:flex;align-items:center;justify-content:space-between;gap:8px}.v16-card-head strong{font-size:12px}.v16-card-head span{font-size:9px;color:#71869e}
+.v16-chart-wrap{height:330px;position:relative;background:#06111d}.v16-chart{width:100%;height:100%;display:block}.v16-price{position:absolute;right:7px;top:8px;color:#9cafc4;font-size:10px;pointer-events:none}
+.v16-controls{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px}.v16-field label{display:block;font-size:9px;text-transform:uppercase;color:#71869e;margin-bottom:4px}.v16-field input,.v16-field select{width:100%;background:#0d1d2f;border:1px solid #29415c;color:#eaf2fb;border-radius:6px;padding:7px;font-size:11px;outline:none}.v16-field input:focus,.v16-field select:focus{border-color:#39df82}.v16-wide{grid-column:1/-1}
+.v16-actions{display:flex;gap:6px;flex-wrap:wrap;padding:0 10px 10px}.v16-btn{border:1px solid #29415c;background:#102238;color:#dce7f4;border-radius:6px;padding:7px 10px;font-size:10px;font-weight:700;cursor:pointer}.v16-btn:hover{background:#17324c}.v16-btn.primary{background:#123d28;border-color:#237347;color:#4be985}.v16-btn.warn{background:#3d3015;border-color:#6d5720;color:#f2c75c}.v16-btn.danger{background:#3d1d25;border-color:#713441;color:#ff8794}
+.v16-status{padding:0 10px 10px;color:#71869e;font-size:10px;line-height:1.4}.v16-status strong{color:#dce7f4}.v16-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;padding:10px}.v16-metric{background:#0d1d2e;border:1px solid #1c344d;border-radius:7px;padding:8px}.v16-metric span{display:block;color:#71869e;font-size:8px}.v16-metric b{display:block;margin-top:4px;font-size:12px}.v16-profit{color:#43e37b}.v16-loss{color:#ff6678}.v16-terminal{padding:0 10px 10px}.v16-table-wrap{overflow:auto;border:1px solid #1c344d;border-radius:7px}.v16-table{width:100%;border-collapse:collapse;font-size:10px;min-width:650px}.v16-table th,.v16-table td{padding:8px;border-bottom:1px solid #172d43;text-align:left;white-space:nowrap}.v16-table th{color:#71869e;background:#0b1b2c}.v16-table td{color:#dce7f4}.v16-empty{padding:18px;text-align:center;color:#637991;font-size:10px}
+.v16-order{padding:10px}.v16-order-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}.v16-order-grid .full{grid-column:1/-1}.v16-order label{display:block;font-size:9px;color:#71869e;margin-bottom:4px}.v16-order input,.v16-order select{width:100%;background:#0d1d2f;border:1px solid #29415c;color:#eaf2fb;border-radius:6px;padding:7px;font-size:11px}.v16-order-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px}.v16-buy{background:#164a2d;border:1px solid #2b8a50;color:#57ef89;border-radius:7px;padding:9px;font-weight:800;cursor:pointer}.v16-sell{background:#4a2029;border:1px solid #8b3a48;color:#ff7d8b;border-radius:7px;padding:9px;font-weight:800;cursor:pointer}.v16-open{padding:10px;border-top:1px solid #1c344d}.v16-open-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px}.v16-open-head strong{font-size:11px}.v16-open-card{background:#0d1d2e;border:1px solid #1c344d;border-radius:7px;padding:8px;margin-bottom:6px;font-size:10px}.v16-open-card .row{display:flex;justify-content:space-between;padding:2px 0;color:#71869e}.v16-open-card .row b{color:#dce7f4}.v16-report{margin:0 12px 12px;border-top:1px solid #1c344d;padding-top:12px}.v16-report-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:7px}.v16-report-card{background:#091827;border:1px solid #1c344d;border-radius:7px;padding:8px}.v16-report-card span{display:block;color:#71869e;font-size:8px}.v16-report-card b{display:block;margin-top:4px;font-size:12px}.v16-equity{height:130px;margin-top:8px;border:1px solid #1c344d;border-radius:7px;background:#06111d}.v16-equity canvas{width:100%;height:100%;display:block}
+@media(max-width:950px){.v16-grid{grid-template-columns:1fr}.v16-report-grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:600px){.v16-forward{margin:12px 8px 30px}.v16-grid{padding:8px}.v16-report-grid{grid-template-columns:repeat(2,1fr)}.v16-chart-wrap{height:260px}}
 </style>
 
 </head>
@@ -2945,122 +2962,48 @@ function exportBacktestReport(){
   </div>
 </div>
 
-
-<!-- V17 ACCOUNT & WORKSPACE -->
-<section class="v17-account" id="accountWorkspace">
-  <div class="v17-head">
-    <div>
-      <div class="v17-kicker">V17 • ACCOUNT & WORKSPACE</div>
-      <h2>My BFT Workspace</h2>
-      <p>Keep your profile, preferences and backup data together. Cloud sync is intentionally shown as a separate connection state.</p>
-    </div>
-    <div class="v17-status" id="v17CloudStatus"><span>●</span> LOCAL MODE</div>
+<section class="v16-forward" id="v16ForwardTest">
+  <div class="v16-head">
+    <div><div class="v16-kicker">V16 • FORWARD TESTING</div><h2>Forward Test Lab</h2><p>Paper trading only • Locked future candles • Separate from Backtest trades</p></div>
+    <span class="v16-badge" id="v16ModeBadge">FORWARD TEST • READY</span>
   </div>
-
-  <div class="v17-grid">
-    <div class="v17-card v17-profile-card">
-      <div class="v17-card-title">Account</div>
-      <div class="v17-profile-row">
-        <div class="v17-avatar" id="v17Avatar">SA</div>
-        <div>
-          <strong id="v17Name">Guest Trader</strong>
-          <small id="v17Email">Not signed in</small>
+  <div class="v16-grid">
+    <div class="v16-card">
+      <div class="v16-card-head"><strong id="v16ChartTitle">XAUUSD • Forward Market</strong><span id="v16CandleMeta">No forward session</span></div>
+      <div class="v16-chart-wrap"><canvas id="v16Chart" class="v16-chart"></canvas><span id="v16Price" class="v16-price">—</span></div>
+      <div class="v16-controls">
+        <div class="v16-field"><label>Forward Start Date</label><input id="v16StartDate" type="date"></div>
+        <div class="v16-field"><label>Forward Start Time</label><input id="v16StartTime" type="time" step="300"></div>
+        <div class="v16-field"><label>Starting Balance</label><input id="v16Balance" type="number" value="10000" min="1" step="100"></div>
+        <div class="v16-field"><label>Replay Speed</label><select id="v16Speed"><option value="1">1×</option><option value="2">2×</option><option value="5">5×</option><option value="10">10×</option></select></div>
+        <div class="v16-field v16-wide"><label>Forward Window</label><div id="v16Window" style="font-size:10px;color:#9cafc4;padding:8px;background:#0d1d2f;border:1px solid #29415c;border-radius:6px">Choose a start point. Only candles after the locked start will be revealed.</div></div>
+      </div>
+      <div class="v16-actions"><button class="v16-btn primary" onclick="v16Start()">▶ Start Forward Test</button><button class="v16-btn" onclick="v16Step()">NEXT CANDLE ▶</button><button class="v16-btn" onclick="v16TogglePlay()" id="v16PlayBtn">PLAY</button><button class="v16-btn warn" onclick="v16Finish()">Finish Test</button><button class="v16-btn danger" onclick="v16Reset()">Reset</button></div>
+      <div class="v16-status" id="v16Status"><strong>Ready.</strong> Select a historical cutoff, then start the paper test. Future candles remain hidden until revealed by the forward clock.</div>
+      <div class="v16-metrics">
+        <div class="v16-metric"><span>BALANCE</span><b id="v16BalanceOut">$10,000.00</b></div><div class="v16-metric"><span>TRADES</span><b id="v16TradesOut">0</b></div><div class="v16-metric"><span>WIN RATE</span><b id="v16WinOut">0%</b></div><div class="v16-metric"><span>NET P&L</span><b id="v16PnlOut">$0.00</b></div><div class="v16-metric"><span>PF</span><b id="v16PfOut">—</b></div><div class="v16-metric"><span>MODE</span><b style="color:#f2c75c">PAPER</b></div>
+      </div>
+      <div class="v16-terminal"><div class="v16-card-head" style="margin-bottom:8px"><strong>Forward Trade History</strong><span>Mode = FORWARD</span></div><div class="v16-table-wrap"><table class="v16-table"><thead><tr><th>#</th><th>Side</th><th>Entry</th><th>Exit</th><th>SL</th><th>TP</th><th>P&L</th><th>Result</th><th>Reason</th></tr></thead><tbody id="v16TradeBody"><tr><td colspan="9" class="v16-empty">No forward trades yet.</td></tr></tbody></table></div></div>
+    </div>
+    <div class="v16-card">
+      <div class="v16-card-head"><strong>Forward Trade Ticket</strong><span>SIMULATION ONLY</span></div>
+      <div class="v16-order">
+        <div class="v16-order-grid">
+          <div><label>Entry</label><input id="v16Entry" type="number" step="0.01" placeholder="Current close"></div><div><label>Risk %</label><input id="v16Risk" type="number" value="1" step="0.1" min="0.01"></div>
+          <div><label>Stop Loss</label><input id="v16SL" type="number" step="0.01" placeholder="Required"></div><div><label>Take Profit</label><input id="v16TP" type="number" step="0.01" placeholder="Required"></div>
+          <div><label>Order Type</label><select id="v16OrderType"><option value="MARKET">Market</option><option value="BUY LIMIT">Buy Limit</option><option value="SELL LIMIT">Sell Limit</option><option value="BUY STOP">Buy Stop</option><option value="SELL STOP">Sell Stop</option></select></div><div><label>Spread</label><input id="v16Spread" type="number" value="0.20" step="0.01" min="0"></div>
+          <div><label>Slippage</label><input id="v16Slippage" type="number" value="0.05" step="0.01" min="0"></div><div><label>Commission / lot</label><input id="v16Commission" type="number" value="7" step="0.01" min="0"></div>
         </div>
+        <div class="v16-order-actions"><button class="v16-buy" onclick="v16Place('BUY')">BUY</button><button class="v16-sell" onclick="v16Place('SELL')">SELL</button></div>
+        <div id="v16OrderMsg" style="min-height:18px;margin-top:7px;color:#71869e;font-size:9px"></div>
       </div>
-      <div class="v17-form">
-        <label>Display Name<input id="v17NameInput" placeholder="Your name"></label>
-        <label>Email<input id="v17EmailInput" type="email" placeholder="you@example.com"></label>
-        <label>Trading Style
-          <select id="v17Style">
-            <option>Price Action</option>
-            <option>Trap Trading</option>
-            <option>Breakout</option>
-            <option>Trend Following</option>
-            <option>Scalping</option>
-            <option>Custom</option>
-          </select>
-        </label>
-      </div>
-      <div class="v17-actions">
-        <button class="v17-primary" onclick="v17SaveProfile()">Save Profile</button>
-        <button onclick="v17SignOut()">Sign Out</button>
-      </div>
-    </div>
-
-    <div class="v17-card">
-      <div class="v17-card-title">Workspace</div>
-      <div class="v17-stat-grid">
-        <div><span>Default Market</span><b>XAUUSD</b></div>
-        <div><span>Default Timeframe</span><b id="v17TfStat">5 MIN</b></div>
-        <div><span>Saved Local Items</span><b id="v17LocalCount">0</b></div>
-        <div><span>Account State</span><b id="v17AccountState">Guest</b></div>
-      </div>
-      <div class="v17-note">
-        <strong>Cloud connection</strong>
-        <p>Cloud database is not connected in this standalone HTML build. Your local workspace remains on this browser. The next cloud build can connect the same workspace to Supabase without changing the trading engine.</p>
-      </div>
-      <button onclick="v17ShowCloudInfo()">Cloud Connection Info</button>
-    </div>
-
-    <div class="v17-card">
-      <div class="v17-card-title">Backup & Restore</div>
-      <p class="v17-muted">Create a portable JSON backup of your BFT workspace settings and profile.</p>
-      <div class="v17-actions stack">
-        <button class="v17-primary" onclick="v17ExportBackup()">Export Workspace Backup</button>
-        <label class="v17-file-btn">Import Workspace Backup<input id="v17ImportInput" type="file" accept="application/json" hidden onchange="v17ImportBackup(event)"></label>
-        <button class="danger-outline" onclick="v17ResetWorkspace()">Reset Local Profile</button>
-      </div>
-      <div class="v17-backup-status" id="v17BackupStatus">No backup action yet.</div>
+      <div class="v16-open" style="border-top:1px solid #1c344d"><div class="v16-open-head"><strong>Pending Forward Orders</strong><span style="font-size:9px;color:#71869e">Waiting for trigger</span></div><div id="v16PendingArea"><div class="v16-empty">No pending orders.</div></div></div>
+      <div class="v16-open"><div class="v16-open-head"><strong>Open Forward Positions</strong><button class="v16-btn danger" onclick="v16CloseAll()">Close All</button></div><div id="v16OpenArea"><div class="v16-empty">No open positions.</div></div></div>
+      <div class="v16-open" style="border-top:1px solid #1c344d"><div class="v16-open-head"><strong>Forward Equity</strong><span style="font-size:9px;color:#71869e">Live paper curve</span></div><div class="v16-equity"><canvas id="v16Equity"></canvas></div></div>
     </div>
   </div>
+  <div class="v16-report"><div class="v16-card-head" style="margin-bottom:8px"><strong>Forward Test Report</strong><span>Compare this later with Backtest Report</span></div><div class="v16-report-grid"><div class="v16-report-card"><span>TOTAL TRADES</span><b id="v16RptTrades">0</b></div><div class="v16-report-card"><span>WIN RATE</span><b id="v16RptWin">0%</b></div><div class="v16-report-card"><span>NET P&L</span><b id="v16RptPnl">$0.00</b></div><div class="v16-report-card"><span>PROFIT FACTOR</span><b id="v16RptPF">—</b></div><div class="v16-report-card"><span>AVG R</span><b id="v16RptR">—</b></div><div class="v16-report-card"><span>MAX DD</span><b id="v16RptDD">$0.00</b></div></div></div>
 </section>
-
-<style>
-.v17-account{margin:22px 18px 40px;padding:22px;background:#081525;border:1px solid #1b3048;border-radius:14px}
-.v17-head{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;margin-bottom:18px}
-.v17-kicker{font-size:11px;letter-spacing:1.5px;color:#43e37b;font-weight:800;margin-bottom:6px}
-.v17-head h2{font-size:23px;margin-bottom:5px}.v17-head p{color:#7f9ab8;font-size:12px}
-.v17-status{font-size:11px;color:#8ea6c2;border:1px solid #27405a;padding:8px 12px;border-radius:999px;white-space:nowrap}.v17-status span{color:#43e37b}
-.v17-grid{display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:14px}.v17-card{border:1px solid #1d344d;background:#0a1a2b;border-radius:12px;padding:16px}.v17-card-title{font-size:13px;font-weight:800;color:#dce8f7;margin-bottom:15px}
-.v17-profile-row{display:flex;align-items:center;gap:12px;margin-bottom:15px}.v17-avatar{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:#123c31;color:#43e37b;font-weight:900}.v17-profile-row strong{display:block;font-size:14px}.v17-profile-row small{display:block;color:#7993b1;margin-top:3px}
-.v17-form{display:grid;gap:9px}.v17-form label{font-size:10px;color:#7892ae;text-transform:uppercase;letter-spacing:.5px}.v17-form input,.v17-form select{width:100%;margin-top:5px;background:#081726;color:#eaf3ff;border:1px solid #29425d;border-radius:7px;padding:9px;font-size:12px;outline:none}.v17-form input:focus,.v17-form select:focus{border-color:#43e37b}
-.v17-actions{display:flex;gap:8px;margin-top:13px;flex-wrap:wrap}.v17-actions.stack{display:grid}.v17-actions button,.v17-file-btn,.v17-card>button{background:#0d2135;color:#d9e8f8;border:1px solid #2a4662;padding:9px 11px;border-radius:7px;font-size:11px;cursor:pointer;text-align:center}.v17-actions button:hover,.v17-file-btn:hover,.v17-card>button:hover{border-color:#43e37b}.v17-actions .v17-primary{background:#123b2a;border-color:#27724a;color:#5af08b;font-weight:800}.danger-outline{border-color:#703044!important;color:#ff7180!important}
-.v17-stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.v17-stat-grid div{padding:11px;background:#081726;border:1px solid #1e344b;border-radius:8px}.v17-stat-grid span{display:block;font-size:9px;color:#718aa7;text-transform:uppercase}.v17-stat-grid b{display:block;font-size:13px;margin-top:5px;color:#e7f0fc}.v17-note{margin-top:12px;padding:11px;background:#091b2d;border-left:3px solid #4b8fd6;border-radius:7px}.v17-note strong{font-size:11px}.v17-note p,.v17-muted{font-size:11px;color:#7e97b4;line-height:1.5;margin-top:5px}.v17-file-btn{display:block}.v17-backup-status{font-size:10px;color:#7d96b2;margin-top:10px}
-@media(max-width:950px){.v17-grid{grid-template-columns:1fr}.v17-head{flex-direction:column}}
-</style>
-
-<script>
-(function(){
-  const KEY='bft_v17_workspace';
-  function get(){try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){return {}}}
-  function initials(name){return (name||'Guest Trader').trim().split(/\s+/).slice(0,2).map(x=>x[0]).join('').toUpperCase()||'GT'}
-  function render(){
-    const d=get(), name=d.name||'Guest Trader', email=d.email||'Not signed in';
-    const $=id=>document.getElementById(id); if(!$('v17Name'))return;
-    $('v17Name').textContent=name; $('v17Email').textContent=email;
-    $('v17Avatar').textContent=initials(name);
-    $('v17NameInput').value=d.name||''; $('v17EmailInput').value=d.email||''; $('v17Style').value=d.style||'Price Action';
-    $('v17AccountState').textContent=d.email?'Signed in':'Guest';
-    $('v17LocalCount').textContent=Object.keys(localStorage).filter(k=>k.startsWith('bft_')).length;
-    const tf=document.getElementById('timeframe'); $('v17TfStat').textContent=tf?.selectedOptions?.[0]?.textContent||'5 MIN';
-    $('v17CloudStatus').innerHTML='<span>●</span> '+(d.cloudConnected?'CLOUD READY':'LOCAL MODE');
-  }
-  window.v17SaveProfile=function(){
-    const d=get(); d.name=document.getElementById('v17NameInput').value.trim()||'Guest Trader'; d.email=document.getElementById('v17EmailInput').value.trim(); d.style=document.getElementById('v17Style').value; d.updatedAt=new Date().toISOString(); localStorage.setItem(KEY,JSON.stringify(d)); render(); v17Toast('Profile saved locally.');
-  };
-  window.v17SignOut=function(){const d=get(); d.email=''; d.signedOutAt=new Date().toISOString(); localStorage.setItem(KEY,JSON.stringify(d)); render(); v17Toast('Signed out of local profile.');};
-  window.v17ExportBackup=function(){
-    const payload={version:'V17',exportedAt:new Date().toISOString(),workspace:get(),localStorage:{}};
-    for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith('bft_'))payload.localStorage[k]=localStorage.getItem(k)}
-    const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}); const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='BFT-Trade-Lab-Workspace-Backup.json';a.click();URL.revokeObjectURL(a.href);document.getElementById('v17BackupStatus').textContent='Backup exported successfully.';
-  };
-  window.v17ImportBackup=function(ev){const f=ev.target.files?.[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const p=JSON.parse(r.result);if(p.workspace)localStorage.setItem(KEY,JSON.stringify(p.workspace));if(p.localStorage)Object.entries(p.localStorage).forEach(([k,v])=>localStorage.setItem(k,v));document.getElementById('v17BackupStatus').textContent='Backup restored. Reload if another module needs refreshed state.';render();}catch(e){document.getElementById('v17BackupStatus').textContent='Invalid backup file.'}};r.readAsText(f)};
-  window.v17ResetWorkspace=function(){if(!confirm('Reset the local BFT profile? Saved trading sessions are not intentionally deleted by this action.'))return;localStorage.removeItem(KEY);render();v17Toast('Local profile reset.');};
-  window.v17ShowCloudInfo=function(){v17Toast('Cloud sync is not connected in this standalone build. Next cloud version will use authenticated database storage.');};
-  function v17Toast(msg){let x=document.getElementById('v17Toast');if(!x){x=document.createElement('div');x.id='v17Toast';x.style='position:fixed;right:18px;bottom:18px;z-index:9999;background:#0b1e31;border:1px solid #2b4965;color:#dcecff;padding:11px 14px;border-radius:8px;font-size:11px;box-shadow:0 10px 30px #0008';document.body.appendChild(x)}x.textContent=msg;x.style.display='block';clearTimeout(window.__v17t);window.__v17t=setTimeout(()=>x.style.display='none',2600)}
-  window.addEventListener('load',()=>{render();document.getElementById('timeframe')?.addEventListener('change',render)});
-})();
-</script>
 
 </body></html>`;
   const blob=new Blob([html],{type:'text/html;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`BFT-Backtest-Report-${new Date().toISOString().slice(0,10)}.html`;a.click();URL.revokeObjectURL(a.href);
@@ -3426,226 +3369,84 @@ if(typeof v14OriginalResetReplay==='function'){
 }
 setTimeout(()=>{try{updateV14MTF()}catch(e){}},350);
 
-</script>
 
-<!-- V16: FORWARD TESTING LAB -->
-<section id="forwardTesting" class="v16-section">
-  <div class="v16-head">
-    <div>
-      <div class="eyebrow">V16 • FORWARD TESTING</div>
-      <h2>Forward Testing Lab</h2>
-      <p>Turn a completed backtest into a locked walk-forward paper test. Future historical candles stay hidden until they are released one by one.</p>
-    </div>
-    <div class="v16-status" id="v16Status">READY</div>
-  </div>
-  <div class="v16-grid">
-    <div class="v16-card v16-controls">
-      <div class="v16-card-title"><strong>1. Set Backtest Checkpoint</strong><span>Use the current replay candle as the split.</span></div>
-      <div class="v16-row">
-        <div class="v16-field"><label>Checkpoint</label><div class="v16-value" id="v16Checkpoint">Not set</div></div>
-        <button class="v16-btn" onclick="v16SetCheckpoint()">Set Current Candle</button>
-      </div>
-      <div class="v16-note" id="v16CheckpointNote">Complete your historical backtest first, then set the checkpoint where forward testing should begin.</div>
-      <div class="v16-actions">
-        <button class="v16-btn primary" onclick="v16StartForward()">▶ Start Forward Test</button>
-        <button class="v16-btn" onclick="v16PauseForward()">Ⅱ Pause</button>
-        <button class="v16-btn danger" onclick="v16StopForward()">■ Stop</button>
-      </div>
-    </div>
-    <div class="v16-card">
-      <div class="v16-card-title"><strong>2. Forward Progress</strong><span id="v16ProgressText">No forward session</span></div>
-      <div class="v16-progress"><div id="v16ProgressBar"></div></div>
-      <div class="v16-metrics">
-        <div><small>Split</small><b id="v16SplitTime">—</b></div>
-        <div><small>Current</small><b id="v16CurrentTime">—</b></div>
-        <div><small>Released</small><b id="v16Released">0</b></div>
-        <div><small>Remaining</small><b id="v16Remaining">0</b></div>
-      </div>
-      <div class="v16-actions compact">
-        <button class="v16-btn" onclick="v16Next(1)">Next Candle ▶</button>
-        <button class="v16-btn" onclick="v16Next(5)">+5 Candles</button>
-        <button class="v16-btn" onclick="v16Next(10)">+10 Candles</button>
-        <button class="v16-btn" onclick="v16Play()" id="v16PlayBtn">▶ Play</button>
-      </div>
-    </div>
-    <div class="v16-card">
-      <div class="v16-card-title"><strong>3. Backtest vs Forward</strong><span>Comparison</span></div>
-      <div class="v16-compare">
-        <div class="v16-compare-head"><span>Metric</span><b>Backtest</b><b>Forward</b></div>
-        <div><span>Trades</span><b id="v16BtTrades">0</b><b id="v16FwTrades">0</b></div>
-        <div><span>Win Rate</span><b id="v16BtWin">—</b><b id="v16FwWin">—</b></div>
-        <div><span>Net P&amp;L</span><b id="v16BtPnl">$0.00</b><b id="v16FwPnl">$0.00</b></div>
-        <div><span>Profit Factor</span><b id="v16BtPf">—</b><b id="v16FwPf">—</b></div>
-        <div><span>Avg R</span><b id="v16BtR">—</b><b id="v16FwR">—</b></div>
-      </div>
-    </div>
-  </div>
-  <div class="v16-guard"><strong>Forward-test rule:</strong> the split candle is the last known candle. The forward phase only exposes subsequent candles as you advance. This is a historical walk-forward/paper simulation, not live market data.</div>
-</section>
-
-<style>
-.v16-section{margin:28px 18px 34px;padding:22px;border:1px solid #17314b;border-radius:14px;background:#061321;color:#dbe8f6}.v16-head{display:flex;justify-content:space-between;gap:20px;align-items:flex-start}.v16-section h2{margin:4px 0 5px;font-size:24px;color:#f4f8fc}.v16-section p{margin:0;color:#7892ad;font-size:13px}.v16-section .eyebrow{color:#39df82;font-weight:800;letter-spacing:1.5px;font-size:11px}.v16-status{border:1px solid #23415e;border-radius:999px;padding:8px 14px;font-size:11px;font-weight:800;color:#91a9c1;background:#091a2b}.v16-status.running{color:#39df82;border-color:#1f7048;background:#09251a}.v16-status.paused{color:#f6c85f;border-color:#725a20}.v16-status.done{color:#8cb5d9}.v16-grid{display:grid;grid-template-columns:1.15fr 1fr 1fr;gap:12px;margin-top:18px}.v16-card{border:1px solid #19354f;border-radius:11px;background:#081a2b;padding:16px}.v16-card-title{display:flex;justify-content:space-between;gap:12px;margin-bottom:14px}.v16-card-title strong{font-size:13px}.v16-card-title span{font-size:10px;color:#637e98}.v16-row{display:flex;gap:10px;align-items:end}.v16-field{flex:1}.v16-field label,.v16-metrics small{display:block;font-size:10px;color:#718ba4;text-transform:uppercase;letter-spacing:.5px}.v16-value{margin-top:5px;padding:10px;border:1px solid #1e3953;border-radius:7px;color:#b8d0e7;font-size:12px;background:#071626}.v16-btn{border:1px solid #284966;background:#0b2035;color:#d8e8f6;border-radius:7px;padding:10px 12px;font-weight:700;font-size:11px;cursor:pointer}.v16-btn:hover{border-color:#3a668a}.v16-btn.primary{background:#0d5a36;border-color:#16814c;color:#fff}.v16-btn.danger{background:#351822;border-color:#793345;color:#ff9cac}.v16-note,.v16-guard{font-size:10px;color:#6f8aa4;line-height:1.5}.v16-note{margin:10px 0}.v16-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}.v16-actions.compact{margin-top:15px}.v16-progress{height:7px;border-radius:99px;background:#0d2135;overflow:hidden;margin:9px 0 14px}.v16-progress div{height:100%;width:0;background:#39df82;transition:width .2s}.v16-metrics{display:grid;grid-template-columns:1fr 1fr;gap:10px}.v16-metrics b{display:block;margin-top:4px;font-size:11px;color:#dceaf7}.v16-compare{font-size:11px}.v16-compare>div{display:grid;grid-template-columns:1.2fr .8fr .8fr;padding:9px 0;border-bottom:1px solid #173047}.v16-compare-head{color:#718ba4;font-size:9px;text-transform:uppercase}.v16-compare b{color:#dbe9f6}.v16-compare b:last-child{color:#39df82}.v16-guard{margin-top:12px;padding:12px;border:1px dashed #244661;border-radius:8px}.v16-guard strong{color:#a9c3da}@media(max-width:1000px){.v16-grid{grid-template-columns:1fr}.v16-head{flex-direction:column}}
-</style>
-
-<script>
-/* ------------------------------
-   V16 FORWARD TESTING LAB
------------------------------- */
-const v16={checkpoint:null,active:false,playing:false,baseline:[],splitTime:null};
-function v16Fmt(t){return t?new Date(t).toLocaleString([],{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}):'—';}
-function v16Stats(list){const n=list.length,w=list.filter(t=>Number(t.pnl)>0).length,l=list.filter(t=>Number(t.pnl)<0),g=list.filter(t=>Number(t.pnl)>0),gp=g.reduce((a,t)=>a+Number(t.pnl),0),gl=Math.abs(l.reduce((a,t)=>a+Number(t.pnl),0)),net=list.reduce((a,t)=>a+Number(t.pnl||0),0),avgR=n?list.reduce((a,t)=>a+(typeof v12R==='function'?v12R(t):((Number(t.pnl)||0)/(Number(t.riskMoney)||1)),0)/n:0);return {n,win:n?w/n*100:0,net,gp,gl,pf:gl?gp/gl:null,avgR};}
-function v16SetText(id,v){const e=document.getElementById(id);if(e)e.textContent=v;}
-function v16Render(){
- const total=Math.max(0,(sessionEndIndex||candles.length-1)-(v16.checkpoint||0));
- const released=Math.max(0,currentIndex-(v16.checkpoint||0));
- const pct=total?Math.min(100,released/total*100):0;
- v16SetText('v16Checkpoint',v16.splitTime?v16Fmt(v16.splitTime):'Not set');
- v16SetText('v16SplitTime',v16.splitTime?v16Fmt(v16.splitTime):'—');
- v16SetText('v16CurrentTime',candles[currentIndex]?v16Fmt(candles[currentIndex].time):'—');
- v16SetText('v16Released',released);
- v16SetText('v16Remaining',Math.max(0,total-released));
- v16SetText('v16ProgressText',v16.active?`${Math.round(pct)}% released`:'No forward session');
- const bar=document.getElementById('v16ProgressBar');if(bar)bar.style.width=pct+'%';
- const st=document.getElementById('v16Status');if(st){st.textContent=v16.active?(v16.playing?'RUNNING':'PAUSED'):(v16.splitTime?'READY':'READY');st.className='v16-status '+(v16.active?(v16.playing?'running':'paused'):'');}
- const b=v16Stats(v16.baseline), f=v16Stats(trades);
- v16SetText('v16BtTrades',b.n);v16SetText('v16FwTrades',f.n);v16SetText('v16BtWin',b.n?b.win.toFixed(1)+'%':'—');v16SetText('v16FwWin',f.n?f.win.toFixed(1)+'%':'—');
- v16SetText('v16BtPnl',(b.net>=0?'+':'')+'$'+b.net.toFixed(2));v16SetText('v16FwPnl',(f.net>=0?'+':'')+'$'+f.net.toFixed(2));
- v16SetText('v16BtPf',b.pf===null?'—':b.pf.toFixed(2));v16SetText('v16FwPf',f.pf===null?'—':f.pf.toFixed(2));
- v16SetText('v16BtR',b.n?(b.avgR>=0?'+':'')+b.avgR.toFixed(2)+'R':'—');v16SetText('v16FwR',f.n?(f.avgR>=0?'+':'')+f.avgR.toFixed(2)+'R':'—');
+/* =========================================================
+   V16 — FORWARD TESTING (PAPER / SIMULATION ONLY)
+   Separate state: never mixed with backtest trades.
+========================================================= */
+let v16={active:false,playing:false,status:'READY',startIndex:null,currentIndex:null,balance:10000,startingBalance:10000,trades:[],positions:[],pending:[],equity:[],timer:null,nextId:1,spread:.20,slippage:.05,commission:7};
+function v16Fmt(n){return Number(n||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function v16Money(n){return (n>=0?'+':'-')+'$'+v16Fmt(Math.abs(n));}
+function v16DateInput(d){const x=new Date(d);return {date:x.toISOString().slice(0,10),time:x.toTimeString().slice(0,5)};}
+function v16SetStatus(msg){const e=document.getElementById('v16Status');if(e)e.innerHTML=msg;}
+function v16Start(){
+  if(!candles||candles.length<3){v16SetStatus('<strong>Need market data.</strong> Load a valid historical dataset first.');return;}
+  v16StopPlay();
+  const ds=document.getElementById('v16StartDate').value,ts=document.getElementById('v16StartTime').value;
+  let target=null;if(ds){target=new Date(`${ds}T${ts||'00:00'}:00`).getTime();}
+  let idx=target?candles.findIndex(c=>new Date(c.time).getTime()>=target):Math.min(100,candles.length-2);
+  if(idx<1)idx=1;if(idx>=candles.length-1){v16SetStatus('<strong>Invalid cutoff.</strong> Choose a start before the end of the loaded dataset.');return;}
+  v16.active=true;v16.playing=false;v16.status='RUNNING';v16.startIndex=idx;v16.currentIndex=idx;v16.startingBalance=Math.max(1,Number(document.getElementById('v16Balance').value)||10000);v16.balance=v16.startingBalance;v16.trades=[];v16.positions=[];v16.pending=[];v16.equity=[v16.balance];v16.nextId=1;
+  v16.spread=Math.max(0,Number(document.getElementById('v16Spread').value)||0);v16.slippage=Math.max(0,Number(document.getElementById('v16Slippage').value)||0);v16.commission=Math.max(0,Number(document.getElementById('v16Commission').value)||0);
+  const inp=v16DateInput(candles[idx].time);document.getElementById('v16StartDate').value=inp.date;document.getElementById('v16StartTime').value=inp.time;
+  v16SetStatus(`<strong>Forward test active.</strong> Cutoff locked at ${formatDate(candles[idx].time)}. Candle ${idx+1} is the last known candle; the next candle is revealed only when you advance.`);
+  v16Render();
 }
-function v16SetCheckpoint(){if(!candles.length)return;v16.checkpoint=currentIndex;v16.splitTime=candles[currentIndex].time;v16.baseline=trades.map(t=>({...t}));v16SetText('v16CheckpointNote',`Backtest checkpoint saved with ${v16.baseline.length} closed trade${v16.baseline.length===1?'':'s'}. Forward results will be measured separately.`);v16Render();showTradeMessage('Forward-test checkpoint saved.','success');}
-function v16ResetForwardState(){if(typeof pauseReplay==='function')pauseReplay();openPositions=[];pendingOrder=null;selectedPositionId=null;nextPositionId=1;trades=[];totalProfit=0;totalLoss=0;wins=0;losses=0;journalTradeId=null;balance=startingBalance;updatePendingArea();updateStats();updateHistory();updatePosition();updateTradePreview();updateAnalytics();}
-function v16StartForward(){
- if(!candles.length){showTradeMessage('Load historical data before starting a forward test.','error');return;}
- if(v16.checkpoint===null)v16SetCheckpoint();
- const split=v16.checkpoint;
- if(split>=candles.length-1){showTradeMessage('There are no candles after this checkpoint. Choose an earlier checkpoint.','error');return;}
- v16ResetForwardState();currentIndex=split;sessionStartIndex=split;sessionEndIndex=candles.length-1;sessionActive=true;sessionStatus='RUNNING';v16.active=true;v16.playing=false;setReplayInputs(currentIndex);updateSessionUI();drawChart();updateTerminal();v16Render();showTradeMessage('Forward test started. Future candles are locked until released.','success');}
-function v16PauseForward(){if(!v16.active)return;pauseReplay();v16.playing=false;v16Render();}
-function v16StopForward(){if(!v16.active)return;pauseReplay();if(openPositions.length)closeAllTrades();v16.active=false;v16.playing=false;sessionActive=false;sessionStatus='COMPLETED';updateSessionUI();updateAnalytics();updateTerminal();v16Render();showTradeMessage('Forward test stopped. Results remain available for comparison.','success');}
-function v16Step(){if(!v16.active)return;const limit=sessionEndIndex;if(currentIndex>=limit){v16StopForward();return;}currentIndex++;checkPendingOrder();checkOpenPosition();setReplayInputs(currentIndex);drawChart();updatePosition();updateStats();updateAnalytics();updateSessionUI();v16Render();if(currentIndex>=limit){v16.active=false;v16.playing=false;sessionActive=false;sessionStatus='COMPLETED';pauseReplay();updateSessionUI();v16Render();showTradeMessage('Forward test completed.','success');}}
-function v16Next(n){if(!v16.active){showTradeMessage('Start the forward test first.','error');return;}for(let i=0;i<n;i++){if(!v16.active)break;v16Step();}}
-function v16Play(){if(!v16.active){v16StartForward();return;}if(v16.playing){v16.playing=false;clearInterval(v16.timer);v16.timer=null;v16Render();return;}v16.playing=true;v16Render();v16.timer=setInterval(()=>{if(!v16.active){clearInterval(v16.timer);v16.timer=null;return;}v16Step();},700);}
-window.addEventListener('beforeunload',()=>{if(v16.timer)clearInterval(v16.timer)});
-setTimeout(v16Render,50);
-</script>
-
-
-
-<!-- V17 ACCOUNT & WORKSPACE -->
-<section class="v17-account" id="accountWorkspace">
-  <div class="v17-head">
-    <div>
-      <div class="v17-kicker">V17 • ACCOUNT & WORKSPACE</div>
-      <h2>My BFT Workspace</h2>
-      <p>Keep your profile, preferences and backup data together. Cloud sync is intentionally shown as a separate connection state.</p>
-    </div>
-    <div class="v17-status" id="v17CloudStatus"><span>●</span> LOCAL MODE</div>
-  </div>
-
-  <div class="v17-grid">
-    <div class="v17-card v17-profile-card">
-      <div class="v17-card-title">Account</div>
-      <div class="v17-profile-row">
-        <div class="v17-avatar" id="v17Avatar">SA</div>
-        <div>
-          <strong id="v17Name">Guest Trader</strong>
-          <small id="v17Email">Not signed in</small>
-        </div>
-      </div>
-      <div class="v17-form">
-        <label>Display Name<input id="v17NameInput" placeholder="Your name"></label>
-        <label>Email<input id="v17EmailInput" type="email" placeholder="you@example.com"></label>
-        <label>Trading Style
-          <select id="v17Style">
-            <option>Price Action</option>
-            <option>Trap Trading</option>
-            <option>Breakout</option>
-            <option>Trend Following</option>
-            <option>Scalping</option>
-            <option>Custom</option>
-          </select>
-        </label>
-      </div>
-      <div class="v17-actions">
-        <button class="v17-primary" onclick="v17SaveProfile()">Save Profile</button>
-        <button onclick="v17SignOut()">Sign Out</button>
-      </div>
-    </div>
-
-    <div class="v17-card">
-      <div class="v17-card-title">Workspace</div>
-      <div class="v17-stat-grid">
-        <div><span>Default Market</span><b>XAUUSD</b></div>
-        <div><span>Default Timeframe</span><b id="v17TfStat">5 MIN</b></div>
-        <div><span>Saved Local Items</span><b id="v17LocalCount">0</b></div>
-        <div><span>Account State</span><b id="v17AccountState">Guest</b></div>
-      </div>
-      <div class="v17-note">
-        <strong>Cloud connection</strong>
-        <p>Cloud database is not connected in this standalone HTML build. Your local workspace remains on this browser. The next cloud build can connect the same workspace to Supabase without changing the trading engine.</p>
-      </div>
-      <button onclick="v17ShowCloudInfo()">Cloud Connection Info</button>
-    </div>
-
-    <div class="v17-card">
-      <div class="v17-card-title">Backup & Restore</div>
-      <p class="v17-muted">Create a portable JSON backup of your BFT workspace settings and profile.</p>
-      <div class="v17-actions stack">
-        <button class="v17-primary" onclick="v17ExportBackup()">Export Workspace Backup</button>
-        <label class="v17-file-btn">Import Workspace Backup<input id="v17ImportInput" type="file" accept="application/json" hidden onchange="v17ImportBackup(event)"></label>
-        <button class="danger-outline" onclick="v17ResetWorkspace()">Reset Local Profile</button>
-      </div>
-      <div class="v17-backup-status" id="v17BackupStatus">No backup action yet.</div>
-    </div>
-  </div>
-</section>
-
-<style>
-.v17-account{margin:22px 18px 40px;padding:22px;background:#081525;border:1px solid #1b3048;border-radius:14px}
-.v17-head{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;margin-bottom:18px}
-.v17-kicker{font-size:11px;letter-spacing:1.5px;color:#43e37b;font-weight:800;margin-bottom:6px}
-.v17-head h2{font-size:23px;margin-bottom:5px}.v17-head p{color:#7f9ab8;font-size:12px}
-.v17-status{font-size:11px;color:#8ea6c2;border:1px solid #27405a;padding:8px 12px;border-radius:999px;white-space:nowrap}.v17-status span{color:#43e37b}
-.v17-grid{display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:14px}.v17-card{border:1px solid #1d344d;background:#0a1a2b;border-radius:12px;padding:16px}.v17-card-title{font-size:13px;font-weight:800;color:#dce8f7;margin-bottom:15px}
-.v17-profile-row{display:flex;align-items:center;gap:12px;margin-bottom:15px}.v17-avatar{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:#123c31;color:#43e37b;font-weight:900}.v17-profile-row strong{display:block;font-size:14px}.v17-profile-row small{display:block;color:#7993b1;margin-top:3px}
-.v17-form{display:grid;gap:9px}.v17-form label{font-size:10px;color:#7892ae;text-transform:uppercase;letter-spacing:.5px}.v17-form input,.v17-form select{width:100%;margin-top:5px;background:#081726;color:#eaf3ff;border:1px solid #29425d;border-radius:7px;padding:9px;font-size:12px;outline:none}.v17-form input:focus,.v17-form select:focus{border-color:#43e37b}
-.v17-actions{display:flex;gap:8px;margin-top:13px;flex-wrap:wrap}.v17-actions.stack{display:grid}.v17-actions button,.v17-file-btn,.v17-card>button{background:#0d2135;color:#d9e8f8;border:1px solid #2a4662;padding:9px 11px;border-radius:7px;font-size:11px;cursor:pointer;text-align:center}.v17-actions button:hover,.v17-file-btn:hover,.v17-card>button:hover{border-color:#43e37b}.v17-actions .v17-primary{background:#123b2a;border-color:#27724a;color:#5af08b;font-weight:800}.danger-outline{border-color:#703044!important;color:#ff7180!important}
-.v17-stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.v17-stat-grid div{padding:11px;background:#081726;border:1px solid #1e344b;border-radius:8px}.v17-stat-grid span{display:block;font-size:9px;color:#718aa7;text-transform:uppercase}.v17-stat-grid b{display:block;font-size:13px;margin-top:5px;color:#e7f0fc}.v17-note{margin-top:12px;padding:11px;background:#091b2d;border-left:3px solid #4b8fd6;border-radius:7px}.v17-note strong{font-size:11px}.v17-note p,.v17-muted{font-size:11px;color:#7e97b4;line-height:1.5;margin-top:5px}.v17-file-btn{display:block}.v17-backup-status{font-size:10px;color:#7d96b2;margin-top:10px}
-@media(max-width:950px){.v17-grid{grid-template-columns:1fr}.v17-head{flex-direction:column}}
-</style>
-
-<script>
-(function(){
-  const KEY='bft_v17_workspace';
-  function get(){try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){return {}}}
-  function initials(name){return (name||'Guest Trader').trim().split(/\s+/).slice(0,2).map(x=>x[0]).join('').toUpperCase()||'GT'}
-  function render(){
-    const d=get(), name=d.name||'Guest Trader', email=d.email||'Not signed in';
-    const $=id=>document.getElementById(id); if(!$('v17Name'))return;
-    $('v17Name').textContent=name; $('v17Email').textContent=email;
-    $('v17Avatar').textContent=initials(name);
-    $('v17NameInput').value=d.name||''; $('v17EmailInput').value=d.email||''; $('v17Style').value=d.style||'Price Action';
-    $('v17AccountState').textContent=d.email?'Signed in':'Guest';
-    $('v17LocalCount').textContent=Object.keys(localStorage).filter(k=>k.startsWith('bft_')).length;
-    const tf=document.getElementById('timeframe'); $('v17TfStat').textContent=tf?.selectedOptions?.[0]?.textContent||'5 MIN';
-    $('v17CloudStatus').innerHTML='<span>●</span> '+(d.cloudConnected?'CLOUD READY':'LOCAL MODE');
+function v16StopPlay(){v16.playing=false;if(v16.timer)clearTimeout(v16.timer);v16.timer=null;const b=document.getElementById('v16PlayBtn');if(b)b.textContent='PLAY';}
+function v16TogglePlay(){if(!v16.active){v16Start();return;}if(v16.playing)v16StopPlay();else{v16.playing=true;document.getElementById('v16PlayBtn').textContent='PAUSE';v16Run();}}
+function v16Run(){if(!v16.playing)return;if(v16.currentIndex>=candles.length-1){v16StopPlay();v16Finish();return;}v16Step();const speed=Math.max(1,Number(document.getElementById('v16Speed').value)||1);v16.timer=setTimeout(v16Run,1000/speed);}
+function v16Step(){if(!v16.active){v16SetStatus('<strong>Start a forward test first.</strong>');return;}if(v16.currentIndex>=candles.length-1){v16Finish();return;}v16.currentIndex++;v16ProcessCandle();v16.equity.push(v16.balance);v16Render();if(v16.currentIndex>=candles.length-1){v16.status='COMPLETED';v16StopPlay();v16SetStatus('<strong>Forward dataset reached its end.</strong> The paper test is complete.');}}
+function v16Entry(price,side){return side==='BUY'?price+v16.spread/2+v16.slippage:price-v16.spread/2-v16.slippage;}
+function v16Exit(price,side){return side==='BUY'?price-v16.spread/2-v16.slippage:price+v16.spread/2+v16.slippage;}
+function v16Place(side){
+  if(!v16.active){v16Msg('Start the Forward Test before placing a trade.','error');return;}
+  const c=candles[v16.currentIndex];if(!c)return;const sl=Number(document.getElementById('v16SL').value),tp=Number(document.getElementById('v16TP').value),risk=Number(document.getElementById('v16Risk').value)||1,requested=Number(document.getElementById('v16Entry').value)||c.close,type=document.getElementById('v16OrderType').value;
+  if(!Number.isFinite(sl)||!Number.isFinite(tp)){v16Msg('SL and TP are required.','error');return;}
+  const market=type==='MARKET';
+  if(market){
+    const entry=v16Entry(requested,side);if(side==='BUY'&&(sl>=entry||tp<=entry)){v16Msg('BUY: SL below entry and TP above entry required.','error');return;}if(side==='SELL'&&(sl<=entry||tp>=entry)){v16Msg('SELL: SL above entry and TP below entry required.','error');return;}
+    v16OpenPosition(side,entry,sl,tp,risk,c.time,requested);v16Msg(`${side} forward position #${v16.positions[v16.positions.length-1].id} opened at ${entry.toFixed(2)}.`,'success');
+  }else{
+    const valid=(type==='BUY LIMIT'&&requested<c.close)||(type==='SELL LIMIT'&&requested>c.close)||(type==='BUY STOP'&&requested>c.close)||(type==='SELL STOP'&&requested<c.close);
+    if(!valid){v16Msg(`${type}: entry must be on the correct side of current market price. Current ${c.close.toFixed(2)}.`,'error');return;}
+    const entry=v16Entry(requested,side);if(side==='BUY'&&(sl>=entry||tp<=entry)){v16Msg('BUY pending: SL below entry and TP above entry required.','error');return;}if(side==='SELL'&&(sl<=entry||tp>=entry)){v16Msg('SELL pending: SL above entry and TP below entry required.','error');return;}
+    v16.pending.push({id:v16.nextId++,side,type,entry,sl,tp,risk,requestedEntry:requested,createdIndex:v16.currentIndex,createdTime:c.time});v16Msg(`${type} #${v16.pending[v16.pending.length-1].id} placed at ${requested.toFixed(2)}.`,'success');
   }
-  window.v17SaveProfile=function(){
-    const d=get(); d.name=document.getElementById('v17NameInput').value.trim()||'Guest Trader'; d.email=document.getElementById('v17EmailInput').value.trim(); d.style=document.getElementById('v17Style').value; d.updatedAt=new Date().toISOString(); localStorage.setItem(KEY,JSON.stringify(d)); render(); v17Toast('Profile saved locally.');
-  };
-  window.v17SignOut=function(){const d=get(); d.email=''; d.signedOutAt=new Date().toISOString(); localStorage.setItem(KEY,JSON.stringify(d)); render(); v17Toast('Signed out of local profile.');};
-  window.v17ExportBackup=function(){
-    const payload={version:'V17',exportedAt:new Date().toISOString(),workspace:get(),localStorage:{}};
-    for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith('bft_'))payload.localStorage[k]=localStorage.getItem(k)}
-    const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}); const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='BFT-Trade-Lab-Workspace-Backup.json';a.click();URL.revokeObjectURL(a.href);document.getElementById('v17BackupStatus').textContent='Backup exported successfully.';
-  };
-  window.v17ImportBackup=function(ev){const f=ev.target.files?.[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const p=JSON.parse(r.result);if(p.workspace)localStorage.setItem(KEY,JSON.stringify(p.workspace));if(p.localStorage)Object.entries(p.localStorage).forEach(([k,v])=>localStorage.setItem(k,v));document.getElementById('v17BackupStatus').textContent='Backup restored. Reload if another module needs refreshed state.';render();}catch(e){document.getElementById('v17BackupStatus').textContent='Invalid backup file.'}};r.readAsText(f)};
-  window.v17ResetWorkspace=function(){if(!confirm('Reset the local BFT profile? Saved trading sessions are not intentionally deleted by this action.'))return;localStorage.removeItem(KEY);render();v17Toast('Local profile reset.');};
-  window.v17ShowCloudInfo=function(){v17Toast('Cloud sync is not connected in this standalone build. Next cloud version will use authenticated database storage.');};
-  function v17Toast(msg){let x=document.getElementById('v17Toast');if(!x){x=document.createElement('div');x.id='v17Toast';x.style='position:fixed;right:18px;bottom:18px;z-index:9999;background:#0b1e31;border:1px solid #2b4965;color:#dcecff;padding:11px 14px;border-radius:8px;font-size:11px;box-shadow:0 10px 30px #0008';document.body.appendChild(x)}x.textContent=msg;x.style.display='block';clearTimeout(window.__v17t);window.__v17t=setTimeout(()=>x.style.display='none',2600)}
-  window.addEventListener('load',()=>{render();document.getElementById('timeframe')?.addEventListener('change',render)});
-})();
+  v16Render();
+}
+function v16OpenPosition(side,entry,sl,tp,risk,openTime,requestedEntry){const riskMoney=v16.balance*risk/100,dist=Math.abs(entry-sl);if(dist<=0)return;v16.positions.push({id:v16.nextId++,side,entry,requestedEntry,sl,tp,size:riskMoney/dist,riskMoney,openIndex:v16.currentIndex,openTime});}
+function v16CancelPending(id){v16.pending=v16.pending.filter(o=>o.id!==id);v16Render();}
+function v16ProcessPending(c){
+  [...v16.pending].forEach(o=>{let trigger=false;if(o.type==='BUY LIMIT')trigger=c.low<=o.requestedEntry;else if(o.type==='SELL LIMIT')trigger=c.high>=o.requestedEntry;else if(o.type==='BUY STOP')trigger=c.high>=o.requestedEntry;else if(o.type==='SELL STOP')trigger=c.low<=o.requestedEntry;if(trigger){v16.pending=v16.pending.filter(x=>x.id!==o.id);v16OpenPosition(o.side,v16Entry(o.requestedEntry,o.side),o.sl,o.tp,o.risk,c.time,o.requestedEntry);}});
+}
+function v16Msg(msg,kind){const e=document.getElementById('v16OrderMsg');if(e){e.textContent=msg;e.style.color=kind==='error'?'#ff6678':kind==='success'?'#43e37b':'#71869e';}}
+function v16ProcessCandle(){
+  const c=candles[v16.currentIndex];if(!c)return;
+  v16ProcessPending(c);
+  [...v16.positions].forEach(p=>{let result=null,exit=null;if(p.side==='BUY'){if(c.low<=p.sl){result='LOSS';exit=p.sl}else if(c.high>=p.tp){result='WIN';exit=p.tp}}else{if(c.high>=p.sl){result='LOSS';exit=p.sl}else if(c.low<=p.tp){result='WIN';exit=p.tp}}if(result)v16Close(p,result,exit);});
+}
+function v16Close(p,reason,quote){const c=candles[v16.currentIndex],exit=v16Exit(quote,p.side),gross=(p.side==='BUY'?(exit-p.entry):(p.entry-exit))*p.size,commission=v16.commission*p.size/100,grossNet=gross-commission,pnl=grossNet;v16.balance+=pnl;v16.trades.push({number:v16.trades.length+1,mode:'FORWARD',side:p.side,entry:p.entry,exit,sl:p.sl,tp:p.tp,pnl,result:pnl>0?'WIN':pnl<0?'LOSS':'BE',reason,riskMoney:p.riskMoney,openTime:p.openTime,closeTime:c.time,journal:''});v16.positions=v16.positions.filter(x=>x.id!==p.id);}
+function v16ManualClose(id){const p=v16.positions.find(x=>x.id===id);if(!p)return;const c=candles[v16.currentIndex];v16Close(p,'MANUAL',c.close);v16Render();}
+function v16Journal(number){const t=v16.trades.find(x=>x.number===Number(number));if(!t)return;const note=prompt('Forward Trade Journal — note for this trade:',t.journal||'');if(note===null)return;t.journal=note.trim();v16Render();}
+function v16CloseAll(){if(!v16.active)return;[...v16.positions].forEach(p=>v16ManualClose(p.id));v16Render();}
+function v16Finish(){if(!v16.active){v16SetStatus('<strong>No active forward test.</strong>');return;}v16StopPlay();v16.positions.slice().forEach(p=>v16ManualClose(p.id));v16.status='COMPLETED';v16.active=false;v16Render();v16SetStatus('<strong>Forward test finished.</strong> Open positions were closed at the last revealed candle. Backtest trades remain separate.');}
+function v16Reset(){v16StopPlay();v16={active:false,playing:false,status:'READY',startIndex:null,currentIndex:null,balance:10000,startingBalance:10000,trades:[],positions:[],pending:[],equity:[],timer:null,nextId:1,spread:.20,slippage:.05,commission:7};v16Render();v16SetStatus('<strong>Ready.</strong> Start a new forward test.');}
+function v16Stats(){const n=v16.trades.length,w=v16.trades.filter(t=>t.pnl>0),l=v16.trades.filter(t=>t.pnl<0),gp=w.reduce((a,t)=>a+t.pnl,0),gl=Math.abs(l.reduce((a,t)=>a+t.pnl,0)),net=v16.balance-v16.startingBalance,pf=gl?gp/gl:null,avgR=n?v16.trades.reduce((a,t)=>a+(t.riskMoney?t.pnl/t.riskMoney:0),0)/n:null;let eq=v16.startingBalance,peak=eq,dd=0;v16.trades.forEach(t=>{eq+=t.pnl;peak=Math.max(peak,eq);dd=Math.max(dd,peak-eq)});return{n,w:w.length,net,pf,avgR,dd,wr:n?w.length/n*100:0};}
+function v16Render(){
+  const has=v16.active&&v16.currentIndex!==null,c=has?candles[v16.currentIndex]:null,s=v16Stats();
+  document.getElementById('v16ModeBadge').textContent=`FORWARD TEST • ${v16.status}`;document.getElementById('v16BalanceOut').textContent='$'+v16Fmt(v16.balance);document.getElementById('v16TradesOut').textContent=s.n;document.getElementById('v16WinOut').textContent=s.wr.toFixed(1)+'%';const pnl=document.getElementById('v16PnlOut');pnl.textContent=v16Money(s.net);pnl.className=s.net>=0?'v16-profit':'v16-loss';document.getElementById('v16PfOut').textContent=s.pf===null?'—':s.pf.toFixed(2);
+  document.getElementById('v16RptTrades').textContent=s.n;document.getElementById('v16RptWin').textContent=s.wr.toFixed(1)+'%';const rp=document.getElementById('v16RptPnl');rp.textContent=v16Money(s.net);rp.className=s.net>=0?'v16-profit':'v16-loss';document.getElementById('v16RptPF').textContent=s.pf===null?'—':s.pf.toFixed(2);document.getElementById('v16RptR').textContent=s.avgR===null?'—':s.avgR.toFixed(2)+'R';document.getElementById('v16RptDD').textContent='$'+v16Fmt(s.dd);
+  if(c){document.getElementById('v16CandleMeta').textContent=`REVEALED ${v16.currentIndex-v16.startIndex} • ${formatDate(c.time)}`;document.getElementById('v16Price').textContent=Number(c.close).toFixed(2);document.getElementById('v16Window').textContent=`Locked start: ${formatDate(candles[v16.startIndex].time)} • Current revealed: ${formatDate(c.time)} • ${Math.max(0,candles.length-1-v16.currentIndex)} candles remain hidden`;}else{document.getElementById('v16CandleMeta').textContent='No forward session';document.getElementById('v16Price').textContent='—';}
+  document.getElementById('v16TradeBody').innerHTML=v16.trades.length?v16.trades.slice().reverse().map(t=>`<tr><td>#${t.number}</td><td class="${t.side==='BUY'?'v16-profit':'v16-loss'}">${t.side}</td><td>${t.entry.toFixed(2)}</td><td>${t.exit.toFixed(2)}</td><td>${t.sl.toFixed(2)}</td><td>${t.tp.toFixed(2)}</td><td class="${t.pnl>=0?'v16-profit':'v16-loss'}">${v16Money(t.pnl)}</td><td>${t.result}</td><td>${t.reason} <button class="v16-btn" style="padding:3px 5px;margin-left:3px" onclick="v16Journal(${t.number})">Journal</button></td></tr>`).join(''):'<tr><td colspan="9" class="v16-empty">No forward trades yet.</td></tr>';
+  document.getElementById('v16PendingArea').innerHTML=v16.pending.length?v16.pending.map(o=>`<div class="v16-open-card"><div class="row"><b>${o.type} #${o.id}</b><button class="v16-btn danger" style="padding:3px 6px" onclick="v16CancelPending(${o.id})">Cancel</button></div><div class="row"><span>Entry</span><b>${o.requestedEntry.toFixed(2)}</b></div><div class="row"><span>SL / TP</span><b>${o.sl.toFixed(2)} / ${o.tp.toFixed(2)}</b></div></div>`).join(''):'<div class="v16-empty">No pending orders.</div>';
+  document.getElementById('v16OpenArea').innerHTML=v16.positions.length?v16.positions.map(p=>{const fl=p.side==='BUY'?(c.close-p.entry)*p.size:(p.entry-c.close)*p.size;return `<div class="v16-open-card"><div class="row"><b class="${p.side==='BUY'?'v16-profit':'v16-loss'}">${p.side} #${p.id}</b><b class="${fl>=0?'v16-profit':'v16-loss'}">${v16Money(fl)}</b></div><div class="row"><span>Entry</span><b>${p.entry.toFixed(2)}</b></div><div class="row"><span>SL / TP</span><b>${p.sl.toFixed(2)} / ${p.tp.toFixed(2)}</b></div><div class="row"><span>Size</span><b>${p.size.toFixed(3)}</b></div><button class="v16-btn danger" style="width:100%;margin-top:6px" onclick="v16ManualClose(${p.id})">Close Position</button></div>`}).join(''):'<div class="v16-empty">No open positions.</div>';
+  v16DrawChart();v16DrawEquity();
+}
+function v16DrawChart(){const cv=document.getElementById('v16Chart');if(!cv)return;const box=cv.parentElement,ratio=window.devicePixelRatio||1,w=box.clientWidth,h=box.clientHeight;cv.width=w*ratio;cv.height=h*ratio;const x=cv.getContext('2d');x.setTransform(ratio,0,0,ratio,0,0);x.clearRect(0,0,w,h);x.fillStyle='#06111d';x.fillRect(0,0,w,h);if(!v16.active||v16.currentIndex===null)return;const from=Math.max(v16.startIndex, v16.currentIndex-55),arr=candles.slice(from,v16.currentIndex+1);if(!arr.length)return;let lo=Math.min(...arr.map(c=>c.low)),hi=Math.max(...arr.map(c=>c.high)),pad=(hi-lo)*.08||1;lo-=pad;hi+=pad;const py=p=>h-(p-lo)/(hi-lo)*h,step=w/Math.max(1,arr.length),cw=Math.max(2,step*.58);arr.forEach((c,i)=>{const xx=i*step+step/2,yo=py(c.open),yc=py(c.close),yh=py(c.high),yl=py(c.low),up=c.close>=c.open;x.strokeStyle=up?'#43e37b':'#ff6678';x.fillStyle=up?'#43e37b':'#ff6678';x.lineWidth=1;x.beginPath();x.moveTo(xx,yh);x.lineTo(xx,yl);x.stroke();const top=Math.min(yo,yc),bh=Math.max(1,Math.abs(yc-yo));x.fillRect(xx-cw/2,top,cw,bh);});const cc=arr[arr.length-1];x.strokeStyle='#5ca9ff';x.setLineDash([4,4]);x.beginPath();x.moveTo(0,py(cc.close));x.lineTo(w,py(cc.close));x.stroke();x.setLineDash([]);}
+function v16DrawEquity(){const cv=document.getElementById('v16Equity');if(!cv)return;const box=cv.parentElement,ratio=window.devicePixelRatio||1,w=box.clientWidth,h=box.clientHeight;cv.width=w*ratio;cv.height=h*ratio;const x=cv.getContext('2d');x.setTransform(ratio,0,0,ratio,0,0);x.clearRect(0,0,w,h);x.fillStyle='#06111d';x.fillRect(0,0,w,h);const a=v16.equity.length?v16.equity:[v16.startingBalance];let lo=Math.min(...a),hi=Math.max(...a),pad=(hi-lo)*.15||10;lo-=pad;hi+=pad;x.strokeStyle='rgba(255,255,255,.06)';for(let i=1;i<4;i++){const yy=i*h/4;x.beginPath();x.moveTo(0,yy);x.lineTo(w,yy);x.stroke();}x.strokeStyle='#43e37b';x.lineWidth=2;x.beginPath();a.forEach((v,i)=>{const xx=a.length===1?w:w*i/(a.length-1),yy=h-(v-lo)/(hi-lo)*h;i?x.lineTo(xx,yy):x.moveTo(xx,yy)});x.stroke();}
+window.addEventListener('resize',()=>{try{v16Render()}catch(e){}});
+setTimeout(()=>{try{if(candles&&candles.length>2){const d=v16DateInput(candles[Math.min(100,candles.length-2)].time);document.getElementById('v16StartDate').value=d.date;document.getElementById('v16StartTime').value=d.time;}v16Render()}catch(e){}},500);
+
 </script>
 
 </body>
