@@ -312,6 +312,46 @@
       font-size: 14px;
     }
 
+
+    .lab-cta {
+      margin-top: 22px;
+      padding: 18px 20px;
+      border: 1px solid rgba(74,222,128,.22);
+      background: linear-gradient(135deg, #0d1e2f, #0b1928);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      text-align: left;
+    }
+
+    .lab-cta h3 {
+      font-size: 18px;
+      margin-bottom: 4px;
+    }
+
+    .lab-cta p {
+      color: #8fa0b7;
+      font-size: 13px;
+      margin: 0;
+    }
+
+    .lab-cta .btn {
+      white-space: nowrap;
+    }
+
+    @media (max-width: 650px) {
+      .lab-cta {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .lab-cta .btn {
+        text-align: center;
+      }
+    }
+
     @media (max-width: 800px) {
       .grid {
         grid-template-columns: 1fr;
@@ -372,8 +412,8 @@
       </p>
 
       <div class="buttons">
-        <a class="btn primary" href="#backtesting">
-          Start Backtesting
+        <a class="btn primary" href="backtest.html">
+          🚀 Open Backtesting Lab
         </a>
 
         <a class="btn secondary" href="#forward-testing">
@@ -424,6 +464,17 @@
         </article>
 
       </div>
+
+      <div class="lab-cta">
+        <div>
+          <h3>🚀 BANKNIFTY Backtesting Lab</h3>
+          <p>Open the live replay workspace and practice BANKNIFTY 5-minute historical candles.</p>
+        </div>
+        <a class="btn primary" href="backtest.html">
+          Open Backtesting Lab →
+        </a>
+      </div>
+
     </div>
   </section>
 
@@ -440,9 +491,9 @@
         </p>
       </div>
 
-      <div class="chart-demo">
-        XAUUSD Historical Replay — Coming Soon
-      </div>
+      <a href="backtest.html" class="chart-demo">
+        BANKNIFTY 5-Minute Historical Replay — Open Backtesting Lab →
+      </a>
 
     </div>
   </section>
@@ -575,10 +626,10 @@
         </p>
 
 
-        <h2>XAUUSD and Gold Trading Backtesting</h2>
+        <h2>BANKNIFTY and Gold Trading Backtesting</h2>
 
         <p>
-          Gold traders can use historical XAUUSD price action to study
+          Traders can use historical BANKNIFTY or XAUUSD price action to study
           setups such as breakouts, fake breakouts, support and resistance,
           retests, trend continuation and liquidity-based trading concepts.
         </p>
