@@ -1,561 +1,101 @@
-<!DOCTYPE html>
-<html lang="hi">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#1c1917" id="themeColor">
-<link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="icon" type="image/png" href="icon-192.png">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Accurate Fitness">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
-<title>Accurate Fitness Gym</title>
-<style>
-:root{--bg:#f1f5f9;--card:#fff;--text:#0f172a;--muted:#64748b;--line:#e2e8f0;--brand:#0f172a;--brandtxt:#fff;--hdr:linear-gradient(135deg,#0f172a,#1e293b);--green:#16a34a;--red:#dc2626;--amber:#d97706;--accent:#c9a227;--shadow:0 1px 2px rgba(15,23,42,.06),0 10px 24px -14px rgba(15,23,42,.28)}
-:root[data-theme=dark]{--bg:#0b1120;--card:#151c2e;--text:#f1f5f9;--muted:#94a3b8;--line:#263148;--brand:#f1f5f9;--brandtxt:#0f172a;--hdr:linear-gradient(135deg,#111827,#1e293b);--shadow:none}
-:root[data-theme=blue]{--bg:#eff6ff;--card:#fff;--text:#0f172a;--muted:#475569;--line:#dbeafe;--brand:#1d4ed8;--brandtxt:#fff;--hdr:linear-gradient(135deg,#1d4ed8,#1e3a8a)}
-:root[data-theme=green]{--bg:#f0fdf4;--card:#fff;--text:#052e16;--muted:#4d7c5a;--line:#dcfce7;--brand:#15803d;--brandtxt:#fff;--hdr:linear-gradient(135deg,#15803d,#14532d)}
-:root[data-theme=gold]{--bg:#0c0a09;--card:#1c1917;--text:#fafaf9;--muted:#a8a29e;--line:#292524;--brand:#eab308;--brandtxt:#1c1917;--hdr:linear-gradient(135deg,#1c1917,#292524);--accent:#eab308;--shadow:0 10px 24px -14px rgba(0,0,0,.7)}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);font-feature-settings:'tnum';-webkit-font-smoothing:antialiased}
-header{background:var(--hdr);color:#fff;padding:12px 16px;border-bottom:3px solid var(--accent)}
-.hin{max-width:760px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:10px}
-.logo{display:flex;align-items:center;gap:10px;min-width:0}
-.lg{width:44px;height:44px;border-radius:10px;object-fit:cover;flex:none;border:1px solid rgba(255,255,255,.25)}
-.logo b{font-size:19px;letter-spacing:-.01em;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.logo small{opacity:.7;font-size:12px}
-.menubtn{background:rgba(255,255,255,.15);color:#fff;border:0;width:42px;height:42px;border-radius:12px;font-size:20px;cursor:pointer;flex:none}
-.sbar{position:sticky;top:0;z-index:20;background:var(--bg);padding:12px 14px 10px;border-bottom:1px solid var(--line)}
-.sin{max-width:760px;margin:0 auto;position:relative}
-.sin input{padding:14px 40px 14px 44px;border-radius:16px;box-shadow:var(--shadow);background:var(--card)}
-.sin .ic{position:absolute;left:15px;top:50%;transform:translateY(-50%);font-size:18px;opacity:.6}
-.sin .x{position:absolute;right:8px;top:50%;transform:translateY(-50%);width:32px;height:32px;border-radius:99px;background:var(--bg);color:var(--muted);display:none;padding:0}
-.sinfo{max-width:760px;margin:6px auto 0;font-size:13px;color:var(--muted);display:flex;justify-content:space-between;align-items:center;min-height:0}
-.sinfo:empty{display:none}
-.fbar{max-width:760px;margin:10px auto 0;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:2px 0}
-.fbar::-webkit-scrollbar{display:none}
-.fb{flex:1 0 auto;justify-content:center;display:inline-flex;align-items:center;gap:6px;padding:9px 9px;border-radius:99px;background:var(--card);color:var(--text);border:1px solid var(--line);font-size:14px;font-weight:600}
-.fb b{font-size:13px;min-width:22px;text-align:center;padding:1px 7px;border-radius:99px;background:var(--bg);color:var(--muted)}
-.fb.on{background:var(--brand);color:var(--brandtxt);border-color:var(--brand)}
-.fb.on b{background:rgba(128,128,128,.35);color:inherit}
-.fb.red b{background:var(--red);color:#fff}
-.fb.red{border-color:rgba(220,38,38,.45);color:var(--red)}
-.fb.red.on{background:var(--red);border-color:var(--red);color:#fff}
-.fb.red.on b{background:rgba(255,255,255,.28)}
-.fb.amb b{background:var(--amber);color:#fff}
-.chip{display:inline-flex;gap:6px;align-items:center;background:var(--brand);color:var(--brandtxt);padding:5px 6px 5px 12px;border-radius:99px;font-size:13px;font-weight:600}
-.chip button{background:rgba(128,128,128,.35);color:inherit;border-radius:99px;width:22px;height:22px;padding:0;font-size:12px}
-.wrap{max-width:760px;margin:0 auto;padding:14px 14px 110px}
-.card{position:relative;overflow:hidden;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px 16px 14px 22px;margin-bottom:12px;box-shadow:var(--shadow)}
-.card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;background:var(--rail,var(--line))}
-.card.isdue{background:linear-gradient(0deg,rgba(220,38,38,.09),rgba(220,38,38,.09)),var(--card);border-color:rgba(220,38,38,.5)}
-.add{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.full{grid-column:1/-1}
-.lbl{font-size:12px;color:var(--muted);font-weight:600;margin-bottom:4px}
-input{width:100%;padding:13px;border:1px solid var(--line);border-radius:12px;font-size:16px;background:var(--bg);color:var(--text);outline:none;font-family:inherit}
-input:focus{border-color:var(--muted)}
-button{font-family:inherit;border:0;border-radius:12px;cursor:pointer;font-weight:600;font-size:15px}
-.primary{background:var(--brand);color:var(--brandtxt);padding:15px;width:100%;font-size:16px}
-.seg{display:flex;gap:6px}
-.seg button{flex:1;padding:12px;background:var(--bg);color:var(--text);border:1px solid var(--line)}
-.seg button.on{background:var(--brand);color:var(--brandtxt);border-color:var(--brand)}
-.seg.pay button.on[data-p="1"],.seg.pay button.on[data-v="1"]{background:var(--green);border-color:var(--green);color:#fff}
-.seg.pay button.on[data-p="0"],.seg.pay button.on[data-v="0"]{background:var(--red);border-color:var(--red);color:#fff}
-.banner{background:#fef3c7;color:#78350f;border:1px solid #fde68a;border-radius:14px;padding:12px;margin-bottom:12px;display:flex;gap:10px;align-items:center;justify-content:space-between;font-size:14px}
-.banner button{background:#78350f;color:#fff;padding:9px 12px;font-size:13px;white-space:nowrap}
-.todo{background:var(--brand);color:var(--brandtxt);width:100%;padding:14px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
-.todo span{background:var(--red);color:#fff;border-radius:99px;padding:2px 10px;font-size:13px}
-.row{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
-.name{font-weight:700;font-size:18px;letter-spacing:-.01em}.sub{color:var(--muted);font-size:13px;margin-top:3px}
-.badge{font-size:12px;font-weight:800;letter-spacing:.04em;padding:6px 12px;border-radius:99px;color:#fff;white-space:nowrap}
-.paid{background:var(--green)}.due{background:var(--red)}
-.bar{height:5px;background:var(--line);border-radius:99px;overflow:hidden;margin:14px 0 9px}
-.fill{height:100%;border-radius:99px;transition:width .5s}
-.meta{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:13px;color:var(--muted)}.meta .d{font-weight:800;font-size:15px}
-.actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
-.actions button{flex:1;padding:12px 8px;font-size:14px;background:var(--bg);color:var(--text);border:1px solid var(--line);min-width:84px}
-.actions .wa{background:#25D366;color:#fff;border-color:#25D366}
-.actions .ghost{flex:0 0 48px;min-width:48px;font-size:20px;line-height:1;padding:10px 0;letter-spacing:0}
-.actions .pd{background:var(--brand);color:var(--brandtxt);border-color:var(--brand)}
-.exp{border-color:var(--red)}
-.fab{position:fixed;right:16px;bottom:calc(18px + env(safe-area-inset-bottom));z-index:30;display:flex;align-items:center;gap:8px;padding:0 22px 0 16px;height:58px;border-radius:99px;background:var(--brand);color:var(--brandtxt);font-size:16px;box-shadow:0 0 0 3px var(--accent),0 14px 28px -8px rgba(0,0,0,.45)}
-.fab i{font-style:normal;font-size:28px;line-height:1;margin-top:-3px}
-.fab:active{transform:scale(.97)}
-:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
-.empty{text-align:center;color:var(--muted);padding:36px 10px}
-.more{background:var(--card);color:var(--text);border:1px solid var(--line);width:100%;padding:12px;margin-bottom:12px}
-mark{background:#fde047;color:#111;border-radius:3px;padding:0 1px}
-.ov{position:fixed;inset:0;background:rgba(2,6,23,.6);z-index:50;display:none;align-items:flex-end;justify-content:center}
-.ov.show{display:flex}
-.sheet{background:var(--card);width:100%;max-width:560px;border-radius:20px 20px 0 0;padding:18px;max-height:90vh;overflow:auto}
-@media(min-width:600px){.ov{align-items:center}.sheet{border-radius:20px}}
-.sheet h3{margin:0 0 4px;font-size:18px}.sheet p{margin:0 0 14px;color:var(--muted);font-size:14px;line-height:1.45}
-.sec{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:16px 0 8px}
-.mi{display:flex;gap:12px;align-items:center;width:100%;text-align:left;padding:13px;background:var(--bg);color:var(--text);margin-bottom:8px;border:1px solid var(--line)}
-.mi i{font-style:normal;font-size:20px;flex:none}.mi small{display:block;color:var(--muted);font-weight:400;font-size:12px}
-.mi .sw{margin-left:auto;flex:none;width:44px;height:26px;border-radius:99px;background:var(--line);position:relative}
-.mi .sw::after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:99px;background:#fff;transition:.2s}
-.mi .sw.on{background:var(--green)}.mi .sw.on::after{left:21px}
-.fchips{display:flex;gap:6px;flex-wrap:wrap}
-.fchips button{background:var(--bg);color:var(--text);border:1px solid var(--line);padding:10px 14px;font-size:14px}
-.fchips button.on{background:var(--brand);color:var(--brandtxt);border-color:var(--brand)}
-.themes{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.themes button{padding:12px 6px;border:2px solid var(--line);background:var(--bg);color:var(--text);font-size:13px}
-.themes button.on{border-color:var(--green)}
-.themes i{display:block;width:100%;height:22px;border-radius:8px;margin-bottom:6px;border:1px solid rgba(128,128,128,.3)}
-.btns{display:flex;gap:8px;margin-top:6px;flex-wrap:wrap}
-.btns button{flex:1;padding:13px;background:var(--bg);color:var(--text);border:1px solid var(--line);min-width:110px}
-.btns .p{background:var(--brand);color:var(--brandtxt);border-color:var(--brand)}
-.btns .g{background:#25D366;color:#fff;border-color:#25D366}
-.btns .r{background:var(--red);color:#fff;border-color:var(--red)}
-.q{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid var(--line)}
-.q:last-child{border:0}
-.q button{background:#25D366;color:#fff;padding:9px 12px;font-size:13px;white-space:nowrap}
-.q button.done{background:var(--bg);color:var(--green);border:1px solid var(--line)}
-.q button.alt{background:var(--brand);color:var(--brandtxt)}
-.toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%) translateY(220px);opacity:0;pointer-events:none;background:#0f172a;color:#fff;padding:12px 16px;border-radius:12px;font-size:14px;z-index:90;transition:.3s;max-width:92%;display:flex;gap:12px;align-items:center}
-.toast.show{transform:translateX(-50%) translateY(0);opacity:1;pointer-events:auto}
-.toast button{background:rgba(255,255,255,.2);color:#fff;padding:6px 12px;font-size:13px}
-#lock{position:fixed;inset:0;background:var(--hdr);background-color:#0f172a;z-index:100;display:none;align-items:center;justify-content:center;flex-direction:column;color:#fff;padding:20px;text-align:center}
-#lock.show{display:flex}
-#lock input{max-width:220px;text-align:center;font-size:28px;letter-spacing:.4em;margin:14px 0}
-#lock .err{color:#fca5a5;height:20px;font-size:14px}
-</style>
-</head>
-<body>
-
-<div id="lock"><img src="logo-96.png" alt="" style="width:96px;height:96px;border-radius:20px" onerror="this.style.display='none'"><h2 style="margin:6px 0 0" id="lockName">Gym</h2><p style="opacity:.7;margin:4px 0">PIN daalo</p>
-<input id="lockIn" type="password" inputmode="numeric" maxlength="6" autocomplete="off"><div class="err" id="lockErr"></div></div>
-
-<header><div class="hin">
-  <div class="logo"><img class="lg" src="logo-96.png" alt="" onerror="this.style.display='none'"><div><b id="gymTitle">My Gym</b><small id="subTitle">Membership Manager</small></div></div>
-  <button class="menubtn" id="menuBtn" aria-label="Menu">☰</button>
-</div></header>
-
-<div class="sbar"><div class="sin">
-  <span class="ic">🔍</span>
-  <input id="search" placeholder="Naam ya number dhundo" autocomplete="off">
-  <button class="x" id="sx">✕</button>
-</div><div class="sinfo" id="sinfo"></div><div class="fbar" id="fbar"></div></div>
-
-<div class="wrap">
-  <div id="bannerBox"></div>
-
-  <div id="smartBox" style="display:none">
-    <button class="todo" id="todoBtn"><div>📲 Aaj ke WhatsApp messages</div><span id="todoCount">0</span></button>
-  </div>
-
-  <div id="list"></div>
-  <button class="more" id="moreBtn" style="display:none"></button>
-</div>
-
-<button class="fab" id="fab" aria-label="Naya member add karo"><i>+</i>Member add</button>
-
-<div class="ov" id="ov"><div class="sheet" id="sheet"></div></div>
-<div class="toast" id="toast"></div>
-<input type="file" id="file" accept=".json,.csv,text/csv,application/json" style="display:none">
-
-<script>
-/* ================= CLOUD (optional) =================
-   Firebase config yahan paste karo (null = cloud off). Steps: FIREBASE-SETUP-GYM.txt */
-const CLOUD_CONFIG = {
-  apiKey: "AIzaSyD1SZwUoBvLqUnl7M2hjStqwAy1JbKyTzQ",
-  authDomain: "accurate-fitness-gym.firebaseapp.com",
-  projectId: "accurate-fitness-gym",
-  storageBucket: "accurate-fitness-gym.firebasestorage.app",
-  messagingSenderId: "836384337327",
-  appId: "1:836384337327:web:8e1c301b3eb36a1ce5535a"
-};
-/* e.g. { apiKey:"...", authDomain:"...", projectId:"...", appId:"..." } */
-
-/* ================= DATA ================= */
-const LS='gym_pro_v2', OLD='gym_members_v1', OLDN='gym_name_v1', DAY=86400000;
-let S={v:3,gym:'Accurate Fitness Gym',members:[],lastBackup:0,savedAt:0,prefs:{theme:'gold',smart:false,pin:''}};
-let filter='all',plan=1,paid=1,limit=50,q='';
-
-const idb={
-  open(){return new Promise((res,rej)=>{try{const r=indexedDB.open('gymdb',1);r.onupgradeneeded=()=>r.result.createObjectStore('kv');r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)}catch(e){rej(e)}})},
-  async get(k){try{const d=await this.open();return await new Promise(res=>{const t=d.transaction('kv').objectStore('kv').get(k);t.onsuccess=()=>res(t.result);t.onerror=()=>res(null)})}catch(e){return null}},
-  async set(k,v){try{const d=await this.open();d.transaction('kv','readwrite').objectStore('kv').put(v,k)}catch(e){}}
-};
-const $=id=>document.getElementById(id);
-const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-function today(){const d=new Date();d.setHours(0,0,0,0);return d.getTime()}
-function ymd(t){const d=new Date(t);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
-function fmt(t){return new Date(t).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'})}
-function fmtS(t){return new Date(t).toLocaleDateString('en-IN',{day:'2-digit',month:'short'})}
-function fmtT(t){return new Date(t).toLocaleString('en-IN',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'})}
-function endOf(m){const d=new Date(m.start);d.setMonth(d.getMonth()+m.months);return d.getTime()}
-function waNum(p){p=String(p).replace(/\D/g,'');if(p.length===10)p='91'+p;return p}
-function nm(m){return m.name||'Member'}
-function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
-function info(m){const end=endOf(m),tot=end-m.start,ratio=Math.min(1,Math.max(0,(today()-m.start)/tot)),left=Math.round((end-today())/DAY);return{end,ratio,left,expired:left<=0}}
-function color(r){return `hsl(${Math.round(120*(1-r))},75%,42%)`}
-function toast(t,label,fn){const e=$('toast');e.innerHTML=`<span>${esc(t)}</span>`+(label?`<button id="tAct">${esc(label)}</button>`:'');e.classList.add('show');if(label)$('tAct').onclick=()=>{e.classList.remove('show');fn()};clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('show'),label?6000:2600)}
-
-/* save: localStorage + IndexedDB + daily restore point + cloud */
-function save(skipCloud){
-  S.savedAt=Date.now();
-  if(!S.created)S.created=Date.now();
-  const dk=ymd(Date.now());
-  if(S.lastSnapDay!==dk){S.lastSnapDay=dk;snap('Roz ka auto backup')}
-  const j=JSON.stringify(S);
-  try{localStorage.setItem(LS,j)}catch(e){}
-  idb.set('data',JSON.parse(j));
-  if(!skipCloud)cloudPushSoon();
-}
-async function snap(label){
-  let a=(await idb.get('snaps'))||[];
-  a.unshift({t:Date.now(),label,gym:S.gym,members:JSON.parse(JSON.stringify(S.members))});
-  idb.set('snaps',a.slice(0,10));
-}
-async function load(){
-  let a=null,b=null;
-  try{a=JSON.parse(localStorage.getItem(LS))}catch(e){}
-  b=await idb.get('data');
-  let best=[a,b].filter(x=>x&&Array.isArray(x.members)).sort((x,y)=>(y.savedAt||0)-(x.savedAt||0))[0];
-  if(!best){try{const o=JSON.parse(localStorage.getItem(OLD));if(Array.isArray(o)&&o.length)best={members:o,gym:localStorage.getItem(OLDN)||'My Gym',lastBackup:0}}catch(e){}}
-  if(best){const p=Object.assign({},S.prefs,best.prefs||{});S=Object.assign(S,best);S.prefs=p}
-  try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persist()}catch(e){}
-  applyTheme();render();
-}
-
-/* ================= THEME ================= */
-const THEMES={auto:['Auto','linear-gradient(90deg,#fff 50%,#111 50%)'],light:['Light','#f1f5f9'],dark:['Dark','#0b1120'],blue:['Blue','#1d4ed8'],green:['Green','#15803d'],gold:['Black Gold','linear-gradient(90deg,#1c1917 60%,#eab308 60%)']};
-function applyTheme(){
-  let t=S.prefs.theme||'auto';
-  if(t==='auto')t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
-  document.documentElement.setAttribute('data-theme',t);
-  const c={light:'#0f172a',dark:'#111827',blue:'#1d4ed8',green:'#15803d',gold:'#1c1917'}[t];
-  $('themeColor').setAttribute('content',c);
-}
-try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',applyTheme)}catch(e){}
-
-/* ================= MESSAGES ================= */
-const G=()=>S.gym||'Gym';
-const msgStart=m=>`Namaste ${nm(m)} 🙏\n${G()} me aapne ${m.months} mahine ka plan subscribe kiya hai.\n\n📅 Start: ${fmt(m.start)}\n📅 Khatam: ${fmt(endOf(m))}\n`+(m.paid?'💰 Payment: Paid ✅':'💰 Payment: Due ❌ (kripya jaldi clear karein)')+`\n\nDhanyavaad! 💪`;
-const msgEnd=m=>`Namaste ${nm(m)} 🙏\nAapka ${G()} ka plan ${fmt(endOf(m))} ko khatam ho gaya hai.\nKripya plan renew karein taaki aapki fitness journey na ruke. 💪`;
-const msgSoon=(m,l)=>`Namaste ${nm(m)} 🙏\nAapka ${G()} ka plan ${l} din me (${fmt(endOf(m))}) khatam ho raha hai. Renew karne ke liye humse sampark karein. 💪`;
-const msgDue=m=>`Namaste ${nm(m)} 🙏\n${G()} ki membership fees abhi pending hai. Kripya jaldi payment kar dein. Dhanyavaad!`;
-function send(m,t){window.open('https://wa.me/'+waNum(m.phone)+'?text='+encodeURIComponent(t),'_blank')}
-
-/* ================= MODAL ================= */
-function modal(h){$('sheet').innerHTML=h;$('ov').classList.add('show')}
-function closeModal(){$('ov').classList.remove('show')}
-$('ov').addEventListener('click',e=>{if(e.target.id==='ov')closeModal()});
-function ask(title,text,btns){window.__b=btns;modal(`<h3>${title}</h3><p>${text}</p><div class="btns">${btns.map((b,i)=>`<button class="${b.cls||''}" onclick="closeModal();__b[${i}].fn&&__b[${i}].fn()">${b.t}</button>`).join('')}</div>`)}
-
-/* ================= FILTERS / SEARCH ================= */
-const FNAMES={all:'Sab members',active:'Active members',paid:'Paid members',due:'Due members',exp:'Plan khatam',soon:'Jaldi khatam (5 din)'};
-const FTEST={all:()=>true,active:x=>!x.i.expired,paid:x=>!!x.m.paid,due:x=>!x.m.paid,exp:x=>x.i.expired,soon:x=>!x.i.expired&&x.i.left<=5};
-function hl(text,qq){
-  const s=esc(text);if(!qq)return s;
-  const i=text.toLowerCase().indexOf(qq.toLowerCase());if(i<0)return s;
-  return esc(text.slice(0,i))+'<mark>'+esc(text.slice(i,i+qq.length))+'</mark>'+esc(text.slice(i+qq.length));
-}
-function matches(m){
-  const s=q.toLowerCase(),dq=q.replace(/\D/g,'');
-  return (m.name||'').toLowerCase().includes(s)||(dq&&/\d/.test(q)&&m.phone.includes(dq));
-}
-
-/* ================= RENDER ================= */
-function render(){
-  $('gymTitle').textContent=S.gym||'Accurate Fitness Gym';
-  $('lockName').textContent=S.gym||'Gym';
-  const all=S.members.map(m=>({m,i:info(m)}));
-  const smart=!!S.prefs.smart;
-  $('smartBox').style.display=smart?'block':'none';
-  if(smart){
-    $('todoCount').textContent=todoList().filter(t=>!t.done).length;
-    $('todoBtn').style.display=all.length?'flex':'none';
-  }
-  const cnt=k=>all.filter(FTEST[k]).length;
-  $('fbar').innerHTML=[['all','Sab',''],['due','Due',cnt('due')?'red':''],['soon','Jaldi',cnt('soon')?'amb':''],['exp','Khatam',cnt('exp')?'red':'']]
-    .map(([k,t,c])=>`<button class="fb ${c} ${filter===k&&!q?'on':''}" onclick="setFilter('${k}')">${t}<b>${cnt(k)}</b></button>`).join('');
-  const days=Math.floor((Date.now()-(S.lastBackup||S.created||Date.now()))/DAY);
-  $('bannerBox').innerHTML=(S.members.length&&days>=7)?`<div class="banner"><div>⚠️ ${days} din se backup nahi liya. Data safe rakhne ke liye ek backup bhej do.</div><button onclick="shareBackup()">Backup bhejo</button></div>`:'';
-
-  let v=all;
-  if(q)v=v.filter(x=>matches(x.m));          // global search: filter ignore
-  else v=v.filter(FTEST[filter]);
-  v.sort((a,b)=>(a.m.paid?1:0)-(b.m.paid?1:0)||a.i.left-b.i.left);   // due upar
-  const total=v.length;v=v.slice(0,limit);
-
-  $('sx').style.display=q?'block':'none';
-  $('sinfo').innerHTML=q?`<span>${total?total+' mile':'Koi nahi mila'}</span>`:'';
-
-  $('list').innerHTML=v.length?v.map(({m,i})=>card(m,i)).join(''):`<div class="empty">${S.members.length?(q?'Is naam/number ka koi member nahi':'Is list me koi member nahi'):'Abhi koi member nahi.<br>Neeche <b>+ Member add</b> dabao aur pehla member jodo.'}</div>`;
-  $('moreBtn').style.display=total>limit?'block':'none';
-  $('moreBtn').textContent=`Aur dikhao (${total-limit} baaki)`;
-  const cs=cloud.user?`☁️ Cloud synced${cloud.last?' · '+fmtT(cloud.last):''}`:'Membership Manager';
-  $('subTitle').textContent=cs;
-}
-function card(m,i){
-  const pct=Math.round(i.ratio*100);
-  const lt=i.expired?`${i.left<0?`${-i.left} din pehle khatam`:'Aaj khatam'}`:`${i.left} din bache`;
-  const ltc=i.expired?'color:var(--red)':(i.left<=5?'color:var(--amber)':'color:var(--text)');
-  const rail=!m.paid?'var(--red)':(i.expired?'#9f1239':(i.left<=5?'var(--amber)':'var(--green)'));
-  const title=m.name?hl(m.name,q):hl(m.phone,q.replace(/\D/g,'')||'');
-  const sub=(m.name?hl(m.phone,q.replace(/\D/g,'')||'')+' · ':'')+`${m.months} mahina`;
-  const id=m.id;
-  const btns=[];
-  if(!m.paid){btns.push(`<button class="wa" onclick="act('${id}','due')">📲 Due msg</button>`,`<button class="pd" onclick="act('${id}','paid')">✓ Paid karo</button>`)}
-  else{
-    if(i.expired)btns.push(`<button class="wa" onclick="act('${id}','end')">📲 Khatam msg</button>`);
-    btns.push(`<button onclick="act('${id}','renew')">🔄 Renew</button>`);
-  }
-  return `<div class="card ${!m.paid?'isdue':''} ${i.expired?'exp':''}" style="--rail:${rail}">
-    <div class="row"><div><div class="name">${title}</div><div class="sub">${sub}</div></div>
-    <span class="badge ${m.paid?'paid':'due'}">${m.paid?'PAID':'DUE'}</span></div>
-    <div class="bar"><div class="fill" style="width:${Math.max(pct,3)}%;background:${rail}"></div></div>
-    <div class="meta"><span>${fmtS(m.start)} → ${fmtS(i.end)}</span><span class="d" style="${ltc}">${lt}</span></div>
-    <div class="actions">${btns.join('')}<button class="ghost" aria-label="Aur options" onclick="act('${id}','more')">⋮</button></div></div>`;
-}
-function setFilter(f){filter=f;q='';$('search').value='';limit=50;render()}
-$('fbar').addEventListener('click',()=>window.scrollTo({top:0}));
-
-/* ================= ACTIONS ================= */
-function find(id){return S.members.find(x=>x.id===id)}
-function act(id,a){
-  const m=find(id);if(!m)return;
-  if(a==='more')modal(`<h3>${esc(nm(m))}</h3><p>${esc(m.phone)}</p><button class="mi" onclick="closeModal();act('${id}','renew')"><i>🔄</i><div>Renew<small>Naya plan aaj se shuru</small></div></button>${info(m).expired?`<button class="mi" onclick="closeModal();act('${id}','end')"><i>📲</i><div>Khatam msg bhejo<small>WhatsApp par</small></div></button>`:''}<button class="mi" onclick="closeModal();act('${id}','edit')"><i>✏️</i><div>Naam / number badlo</div></button><button class="mi" onclick="closeModal();act('${id}','del')" style="color:var(--red)"><i>🗑</i><div>Delete karo</div></button><div class="btns" style="margin-top:6px"><button onclick="closeModal()">Band karo</button></div>`);
-  if(a==='paid'){m.paid=1;save();render();toast('Paid mark ho gaya ✅')}
-  if(a==='end')send(m,msgEnd(m));
-  if(a==='due')send(m,msgDue(m));
-  if(a==='del')ask('Delete karein?',`${esc(nm(m))} (${esc(m.phone)}) hat jayega.`,[{t:'Nahi'},{t:'Haan, delete',cls:'r',fn:()=>{
-    const copy=JSON.parse(JSON.stringify(m)),idx=S.members.indexOf(m);
-    S.members=S.members.filter(x=>x.id!==id);save();render();
-    toast('Delete ho gaya','↩ Wapas laao',()=>{S.members.splice(Math.min(idx,S.members.length),0,copy);save();render();toast('Wapas aa gaya ✅')});
-  }}]);
-  if(a==='edit')modal(`<h3>Member edit</h3><p>&nbsp;</p><div class="lbl">Naam</div><input id="eN" value="${esc(m.name||'')}"><div style="height:10px"></div><div class="lbl">Mobile</div><input id="eP" type="tel" value="${esc(m.phone)}"><div class="btns" style="margin-top:14px"><button onclick="closeModal()">Cancel</button><button class="p" onclick="saveEdit('${id}')">Save</button></div>`);
-  if(a==='renew'){
-    let mo=m.months,pd=1;
-    window.__rn=(k,v)=>{if(k==='m')mo=v;else pd=v;document.querySelectorAll('#rM button').forEach(b=>b.classList.toggle('on',+b.dataset.v===mo));document.querySelectorAll('#rP button').forEach(b=>b.classList.toggle('on',+b.dataset.v===pd))};
-    window.__rnGo=()=>{m.months=mo;m.start=today();m.paid=pd;m.sent={};save();render();closeModal();ask('Renew ho gaya ✅','WhatsApp par confirmation message bhejein?',[{t:'Baad me'},{t:'📲 Bhejo',cls:'g',fn:()=>send(m,msgStart(m))}])};
-    modal(`<h3>Renew: ${esc(nm(m))}</h3><p>Naya plan aaj se shuru hoga.</p><div class="lbl">Plan</div><div class="seg" id="rM"><button data-v="1" class="${mo==1?'on':''}" onclick="__rn('m',1)">1 Mahina</button><button data-v="3" class="${mo==3?'on':''}" onclick="__rn('m',3)">3 Mahine</button></div><div style="height:10px"></div><div class="lbl">Payment</div><div class="seg pay" id="rP"><button data-v="1" class="on" onclick="__rn('p',1)">✅ Paid</button><button data-v="0" onclick="__rn('p',0)">❌ Due</button></div><div class="btns" style="margin-top:14px"><button onclick="closeModal()">Cancel</button><button class="p" onclick="__rnGo()">Renew karo</button></div>`);
-  }
-}
-function saveEdit(id){const m=find(id),p=$('eP').value.replace(/\D/g,'');if(p.length<10){toast('Sahi mobile number daalo');return}m.name=$('eN').value.trim();m.phone=p;save();render();closeModal();toast('Save ho gaya ✅')}
-
-function openAdd(){
-  plan=1;paid=1;
-  modal(`<h3>Naya member</h3><p>Number daalo, plan chuno, bas.</p>
-  <div class="add">
-    <div class="full"><div class="lbl">Mobile number *</div><input id="phone" type="tel" inputmode="numeric" placeholder="98765 43210" maxlength="14"></div>
-    <div class="full"><div class="lbl">Naam (optional)</div><input id="name" placeholder="Member ka naam"></div>
-    <div class="full"><div class="lbl">Plan</div><div class="seg" id="planSeg"><button data-m="1" class="on">1 Mahina</button><button data-m="3">3 Mahine</button></div></div>
-    <div class="full"><div class="lbl">Payment</div><div class="seg pay" id="paySeg"><button data-p="1" class="on">✅ Paid</button><button data-p="0">❌ Due</button></div></div>
-    <button class="primary full" id="addBtn">+ Member add karo</button>
-  </div>`);
-  seg('planSeg','m',v=>plan=v);seg('paySeg','p',v=>paid=v);
-  $('addBtn').onclick=addMember;
-  setTimeout(()=>$('phone')&&$('phone').focus(),80);
-}
-function addMember(){
-  const p=$('phone').value.replace(/\D/g,'');
-  if(p.length<10){toast('Sahi mobile number daalo');$('phone').focus();return}
-  const nameV=$('name').value.trim();
-  const dup=S.members.find(x=>waNum(x.phone)===waNum(p)&&!info(x).expired);
-  const doAdd=()=>{
-    const m={id:uid(),phone:p,name:nameV,months:plan,paid:paid,start:today()};
-    S.members.push(m);save();q='';$('search').value='';filter='all';render();window.scrollTo({top:0});
-    ask('Member add ho gaya ✅',`${esc(nm(m))} ko WhatsApp par confirmation message bhejein?`,[{t:'Baad me'},{t:'📲 Bhejo',cls:'g',fn:()=>send(m,msgStart(m))}]);
-  };
-  if(dup)ask('Ye number pehle se hai','Is number ka plan abhi chal raha hai. Phir bhi naya add karein?',[{t:'Nahi'},{t:'Haan add karo',cls:'p',fn:doAdd}]);else doAdd();
-}
-function seg(id,key,cb){document.querySelectorAll('#'+id+' button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#'+id+' button').forEach(x=>x.classList.remove('on'));b.classList.add('on');cb(+b.dataset[key])})}
-$('fab').onclick=openAdd;
-$('search').oninput=e=>{q=e.target.value.trim();limit=50;render()};
-$('sx').onclick=()=>{q='';$('search').value='';render();$('search').focus()};
-$('moreBtn').onclick=()=>{limit+=50;render()};
-
-/* ================= TODAY'S MESSAGES (smart) ================= */
-function todoList(){
-  const out=[];
-  S.members.forEach(m=>{
-    const i=info(m);let kind=null,txt=null,tag=null;
-    if(i.expired&&i.left>-10){kind='end';tag='Plan khatam';txt=msgEnd(m)}
-    else if(!i.expired&&i.left<=3){kind='soon';tag=`${i.left} din bache`;txt=msgSoon(m,i.left)}
-    else if(!m.paid&&!i.expired){kind='due';tag='Payment due';txt=msgDue(m)}
-    if(kind)out.push({m,kind,tag,txt,done:(m.sent||{})[kind]===ymd(Date.now())});
-  });
-  return out;
-}
-function openTodo(){
-  const L=todoList();
-  if(!L.length){modal(`<h3>Aaj ke messages</h3><p>Aaj koi message bhejne ki zaroorat nahi 🎉</p><div class="btns"><button onclick="closeModal()">Theek hai</button></div>`);return}
-  window.__t=L;
-  modal(`<h3>Aaj ke WhatsApp messages</h3><p>Har naam ke saamne button dabao, WhatsApp khulega, bas Send dabana hai.</p>`+
-    L.map((t,i)=>`<div class="q"><div><div class="name" style="font-size:15px">${esc(nm(t.m))}</div><div class="sub">${esc(t.m.phone)} · ${t.tag}</div></div><button id="tq${i}" class="${t.done?'done':''}" onclick="sendTodo(${i})">${t.done?'✓ Bheja':'📲 Bhejo'}</button></div>`).join('')+
-    `<div class="btns" style="margin-top:12px"><button onclick="closeModal()">Band karo</button></div>`);
-}
-function sendTodo(i){const t=__t[i];send(t.m,t.txt);t.m.sent=t.m.sent||{};t.m.sent[t.kind]=ymd(Date.now());save();const b=$('tq'+i);b.textContent='✓ Bheja';b.className='done';render()}
-$('todoBtn').onclick=openTodo;
-
-/* ================= MENU ================= */
-$('menuBtn').onclick=openMenu;
-function openMenu(){
-  const days=S.lastBackup?Math.floor((Date.now()-S.lastBackup)/DAY):null;
-  modal(`<h3>Menu</h3><p>${S.members.length} members saved${days!==null?' · last backup: '+(days===0?'aaj':days+' din pehle'):' · backup abhi tak nahi liya'}</p>
-
-  <div class="sec">Members dekho</div>
-  <div class="fchips">${['all','active','paid','due','exp'].map(f=>`<button class="${filter===f&&!q?'on':''}" onclick="closeModal();setFilter('${f}')">${{all:'Sab',active:'Active',paid:'Paid',due:'Due',exp:'Khatam'}[f]}</button>`).join('')}</div>
-
-  <div class="sec">Data safety</div>
-  <button class="mi" onclick="closeModal();shareBackup()"><i>📤</i><div>Backup bhejo (WhatsApp / Drive)<small>Poora data ek file me, apne aap ko ya Drive par bhej do</small></div></button>
-  <button class="mi" onclick="openCloud()"><i>☁️</i><div>Cloud backup<small>${CLOUD_CONFIG?(cloud.user?'Chalu hai ✅':'Google se login karke chalu karo'):'Abhi setup baaki hai'}</small></div></button>
-  <button class="mi" onclick="openSnaps()"><i>🕘</i><div>Restore points<small>Galti se delete hua? Pichle din ka data wapas lao</small></div></button>
-  <button class="mi" onclick="closeModal();$('file').click()"><i>📥</i><div>Import / Restore<small>Backup file (.json) ya Excel (.csv) se data lao</small></div></button>
-  <button class="mi" onclick="closeModal();exportCSV()"><i>📊</i><div>Excel me download<small>Sabki list CSV file me</small></div></button>
-  <button class="mi" onclick="closeModal();exportJSON()"><i>💾</i><div>Backup download<small>File phone/laptop me save</small></div></button>
-
-  <div class="sec">Customize</div>
-  <button class="mi" onclick="openTheme()"><i>🎨</i><div>Theme<small>${THEMES[S.prefs.theme||'auto'][0]}</small></div></button>
-  <button class="mi" onclick="renameGym()"><i>✏️</i><div>Gym ka naam<small>Messages me yahi naam jayega</small></div></button>
-  <button class="mi" onclick="toggleSmart()"><i>✨</i><div>Smart features<small>Aaj ke WhatsApp messages aur Due / Khatam counters</small></div><span class="sw ${S.prefs.smart?'on':''}"></span></button>
-  <button class="mi" onclick="openPin()"><i>🔒</i><div>PIN lock<small>${S.prefs.pin?'Chalu hai':'App kholne par PIN poochega'}</small></div></button>
-  <div class="btns" style="margin-top:12px"><button onclick="closeModal()">Band karo</button></div>`);
-}
-function toggleSmart(){S.prefs.smart=!S.prefs.smart;save();render();openMenu()}
-function openTheme(){
-  modal(`<h3>Theme</h3><p>App ka rang chuno.</p><div class="themes">${Object.keys(THEMES).map(k=>`<button class="${(S.prefs.theme||'auto')===k?'on':''}" onclick="setTheme('${k}')"><i style="background:${THEMES[k][1]}"></i>${THEMES[k][0]}</button>`).join('')}</div><div class="btns" style="margin-top:14px"><button onclick="openMenu()">← Menu</button></div>`);
-}
-function setTheme(k){S.prefs.theme=k;save();applyTheme();openTheme()}
-function renameGym(){modal(`<h3>Gym ka naam</h3><p>Ye naam WhatsApp messages me jayega.</p><input id="gN" value="${esc(S.gym)}"><div class="btns" style="margin-top:14px"><button onclick="openMenu()">Cancel</button><button class="p" onclick="S.gym=$('gN').value.trim()||'Accurate Fitness Gym';save();render();closeModal();toast('Save ho gaya ✅')">Save</button></div>`);setTimeout(()=>$('gN')&&$('gN').focus(),50)}
-
-/* ================= BACKUP / RESTORE ================= */
-function backupText(){return JSON.stringify({app:'gym-manager',v:3,gym:S.gym,exportedAt:Date.now(),members:S.members},null,1)}
-function dl(name,text,type){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500)}
-function stamp(){return ymd(Date.now())}
-function exportJSON(){S.lastBackup=Date.now();save();render();dl(`gym-backup-${stamp()}.json`,backupText(),'application/json');toast('Backup file download ho gayi ✅')}
-async function shareBackup(){
-  const name=`gym-backup-${stamp()}.json`;
-  try{
-    const f=new File([backupText()],name,{type:'application/json'});
-    if(navigator.canShare&&navigator.canShare({files:[f]})){
-      await navigator.share({files:[f],title:`${G()} backup`,text:`${G()} members backup (${S.members.length})`});
-      S.lastBackup=Date.now();save();render();toast('Backup bhej diya ✅');return;
+ font-size: 14px;
     }
-  }catch(e){if(e&&e.name==='AbortError')return}
-  exportJSON();
-}
-function exportCSV(){
-  const rows=[['Mobile','Naam','Plan (mahine)','Start','End','Payment','Status']];
-  S.members.forEach(m=>{const i=info(m);rows.push([m.phone,m.name||'',m.months,ymd(m.start),ymd(i.end),m.paid?'Paid':'Due',i.expired?'Khatam':i.left+' din bache'])});
-  dl(`gym-members-${stamp()}.csv`,'\ufeff'+rows.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(',')).join('\r\n'),'text/csv');
-  toast('Excel file download ho gayi ✅');
-}
-async function openSnaps(){
-  const a=(await idb.get('snaps'))||[];window.__snaps=a;
-  modal(`<h3>Restore points</h3><p>Ye data aapke phone me apne aap bante hain (roz ka, aur delete ya import se pehle ka). Wapas lene par abhi ka data bhi ek restore point me save ho jata hai.</p>`+
-    (a.length?a.map((s,i)=>`<div class="q"><div><div class="name" style="font-size:15px">${fmtT(s.t)}</div><div class="sub">${esc(s.label)} · ${s.members.length} members</div></div><button class="alt" onclick="restoreSnap(${i})">Wapas lao</button></div>`).join(''):'<div class="empty">Abhi koi restore point nahi</div>')+
-    `<div class="btns" style="margin-top:12px"><button onclick="openMenu()">← Menu</button></div>`);
-}
-async function restoreSnap(i){
-  const s=__snaps[i];
-  ask('Ye data wapas lao?',`${fmtT(s.t)} wala data (${s.members.length} members) laya jayega. Abhi ka data bhi restore point me save rahega.`,[{t:'Nahi'},{t:'Haan, wapas lao',cls:'p',fn:async()=>{await snap('Restore se pehle');S.members=JSON.parse(JSON.stringify(s.members));save();render();toast('Data wapas aa gaya ✅')}}]);
-}
 
-/* ================= IMPORT ================= */
-function parseDate(s){s=String(s||'').trim();if(!s)return today();let m=s.match(/^(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})/);if(m)return new Date(+m[1],+m[2]-1,+m[3]).getTime();m=s.match(/^(\d{1,2})[-\/.](\d{1,2})[-\/.](\d{2,4})/);if(m){let y=+m[3];if(y<100)y+=2000;return new Date(y,+m[2]-1,+m[1]).getTime()}return today()}
-function parseCSV(t){t=t.replace(/^\ufeff/,'');const rows=[];let r=[],c='',qt=false;for(let i=0;i<t.length;i++){const ch=t[i];if(qt){if(ch==='"'){if(t[i+1]==='"'){c+='"';i++}else qt=false}else c+=ch}else if(ch==='"')qt=true;else if(ch===','||ch===';'||ch==='\t'){r.push(c);c=''}else if(ch==='\n'||ch==='\r'){if(ch==='\r'&&t[i+1]==='\n')i++;r.push(c);c='';if(r.some(x=>x.trim()))rows.push(r);r=[]}else c+=ch}r.push(c);if(r.some(x=>x.trim()))rows.push(r);return rows}
-$('file').onchange=e=>{
-  const f=e.target.files[0];e.target.value='';if(!f)return;
-  const rd=new FileReader();
-  rd.onload=()=>{try{
-    let list=[],gym=null;const tx=rd.result.trim();
-    if(/\.json$/i.test(f.name)||tx[0]==='{'||tx[0]==='['){
-      const d=JSON.parse(tx);const arr=Array.isArray(d)?d:d.members;gym=d.gym||null;if(!Array.isArray(arr))throw 0;
-      list=arr.filter(x=>x&&x.phone).map(x=>({id:x.id||uid(),phone:String(x.phone).replace(/\D/g,''),name:x.name||'',months:+x.months===3?3:1,paid:x.paid?1:0,start:+x.start||today(),sent:x.sent||{}}));
-    }else{
-      const rows=parseCSV(rd.result),head=rows[0].map(x=>x.toLowerCase());
-      const hasHead=head.some(h=>/mobile|phone|number|naam|name/.test(h)),data=hasHead?rows.slice(1):rows;
-      const ix=k=>head.findIndex(h=>k.test(h));
-      const col=hasHead?{p:ix(/mobile|phone|number/),n:ix(/naam|name/),m:ix(/plan|month|mahin/),pd:ix(/pay|paid/),s:ix(/start|date/)}:{p:0,n:1,m:2,pd:3,s:4};
-      list=data.map(r=>{const p=String(r[col.p]||'').replace(/\D/g,'');if(p.length<10)return null;const mo=String(r[col.m]||'1'),pdv=String(r[col.pd]||'paid').toLowerCase();
-        return{id:uid(),phone:p.length>10?p.slice(-10):p,name:(r[col.n]||'').trim(),months:/3/.test(mo)?3:1,paid:/due|no|unpaid|0|nahi/.test(pdv)?0:1,start:parseDate(r[col.s])}}).filter(Boolean);
+
+    .lab-cta {
+      margin-top: 22px;
+      padding: 18px 20px;
+      border: 1px solid rgba(74,222,128,.22);
+      background: linear-gradient(135deg, #0d1e2f, #0b1928);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      text-align: left;
     }
-    if(!list.length){toast('File me koi valid member nahi mila');return}
-    ask('Import',`${list.length} members mile. Kaise import karein? (Abhi ka data pehle restore point me save ho jayega)`,[
-      {t:'Cancel'},
-      {t:'Jod do (Merge)',cls:'p',fn:async()=>{await snap('Import se pehle');let add=0,upd=0;
-        list.forEach(n=>{const ex=S.members.find(x=>x.id===n.id||(waNum(x.phone)===waNum(n.phone)&&x.start===n.start));if(ex){Object.assign(ex,n);upd++}else{S.members.push(n);add++}});
-        if(gym&&S.gym==='Accurate Fitness Gym')S.gym=gym;save();render();toast(`${add} naye, ${upd} update ✅`)}},
-      {t:'Sab badlo (Replace)',cls:'r',fn:async()=>{await snap('Import se pehle');S.members=list;if(gym)S.gym=gym;save();render();toast(`${list.length} members import ho gaye ✅`)}}]);
-  }catch(err){toast('File sahi nahi hai')}};
-  rd.readAsText(f);
-};
 
-/* ================= PIN LOCK ================= */
-async function hashPin(p){
-  try{if(crypto&&crypto.subtle){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode('gym:'+p));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}}catch(e){}
-  let h=5381;for(const c of 'gym:'+p)h=((h<<5)+h+c.charCodeAt(0))|0;return 'x'+h;
-}
-function openPin(){
-  if(S.prefs.pin){modal(`<h3>PIN lock</h3><p>PIN chalu hai. Band karne ke liye abhi ka PIN daalo.</p><input id="pn" type="password" inputmode="numeric" maxlength="6" placeholder="Abhi ka PIN"><div class="btns" style="margin-top:14px"><button onclick="openMenu()">Cancel</button><button class="r" onclick="pinOff()">PIN band karo</button></div>`)}
-  else{modal(`<h3>PIN lock lagao</h3><p>4 se 6 number ka PIN chuno. App kholte hi ye poochega. Ye sirf screen lock hai (data encrypt nahi hota). PIN bhoole to Backup se data wapas aa sakta hai, par PIN reset karne ke liye app ka data clear karna padega, isliye PIN yaad rakhna.</p><input id="pn" type="password" inputmode="numeric" maxlength="6" placeholder="Naya PIN"><div class="btns" style="margin-top:14px"><button onclick="openMenu()">Cancel</button><button class="p" onclick="pinOn()">PIN lagao</button></div>`)}
-}
-async function pinOn(){const p=$('pn').value.trim();if(!/^\d{4,6}$/.test(p)){toast('4 se 6 number ka PIN daalo');return}S.prefs.pin=await hashPin(p);save();closeModal();toast('PIN lag gaya 🔒')}
-async function pinOff(){const p=$('pn').value.trim();if(await hashPin(p)!==S.prefs.pin){toast('PIN galat hai');return}S.prefs.pin='';save();closeModal();toast('PIN band ho gaya')}
-$('lockIn').oninput=async e=>{
-  const v=e.target.value;if(v.length<4)return;
-  if(await hashPin(v)===S.prefs.pin){$('lock').classList.remove('show');e.target.value='';$('lockErr').textContent=''}
-  else if(v.length>=6||v.length>=(S.prefs.pinLen||6)){$('lockErr').textContent='PIN galat hai';e.target.value=''}
-};
+    .lab-cta h3 {
+      font-size: 18px;
+      margin-bottom: 4px;
+    }
 
-/* ================= CLOUD SYNC (Firebase, optional) ================= */
-const cloud={user:null,db:null,auth:null,last:0,ready:false,t:null};
-function loadScript(src){return new Promise((res,rej)=>{const s=document.createElement('script');s.src=src;s.onload=res;s.onerror=rej;document.head.appendChild(s)})}
-async function cloudInit(){
-  if(!CLOUD_CONFIG||!navigator.onLine&&false)return;
-  try{
-    const b='https://www.gstatic.com/firebasejs/10.12.2/';
-    await loadScript(b+'firebase-app-compat.js');await loadScript(b+'firebase-auth-compat.js');await loadScript(b+'firebase-firestore-compat.js');
-    firebase.initializeApp(CLOUD_CONFIG);cloud.auth=firebase.auth();cloud.db=firebase.firestore();cloud.ready=true;
-    cloud.auth.getRedirectResult().catch(()=>{});
-    cloud.auth.onAuthStateChanged(u=>{cloud.user=u;render();if(u)cloudPull()});
-  }catch(e){cloud.ready=false}
-}
-function cloudDoc(){return cloud.db.collection('gyms').doc(cloud.user.uid)}
-function cloudPushSoon(){if(!cloud.user)return;clearTimeout(cloud.t);cloud.t=setTimeout(cloudPush,1500)}
-async function cloudPush(){
-  if(!cloud.user)return;
-  try{await cloudDoc().set({v:3,gym:S.gym,members:S.members,prefs:{theme:S.prefs.theme,smart:S.prefs.smart},savedAt:S.savedAt,updatedAt:Date.now()});cloud.last=Date.now();render()}
-  catch(e){toast('Cloud save nahi hua (internet check karo). Data phone me safe hai.')}
-}
-async function cloudPull(){
-  try{
-    const d=await cloudDoc().get();
-    if(!d.exists){await cloudPush();return}
-    const c=d.data();
-    if((c.savedAt||0)>(S.savedAt||0)+1000&&Array.isArray(c.members)){
-      ask('Cloud me naya data mila',`Cloud me ${c.members.length} members hain (${fmtT(c.savedAt)}). Phone me ${S.members.length} hain. Kaunsa rakhein?`,[
-        {t:'Phone wala rakho',fn:()=>cloudPush()},
-        {t:'Cloud wala lao',cls:'p',fn:async()=>{await snap('Cloud se lene se pehle');S.members=c.members;S.gym=c.gym||S.gym;if(c.prefs)Object.assign(S.prefs,c.prefs);save(true);cloud.last=Date.now();render();applyTheme();toast('Cloud se data aa gaya ✅')}}]);
-    }else{await cloudPush()}
-  }catch(e){}
-}
-function openCloud(){
-  if(!CLOUD_CONFIG){modal(`<h3>☁️ Cloud backup</h3><p>Isse data phone ke saath saath cloud me bhi save hota hai. Phone kho jaye ya badal jaye to login karte hi sab wapas. Ye abhi setup nahi hua, isse <b>setup karne wala</b> chalu karega.</p><div class="btns"><button onclick="openMenu()">← Menu</button></div>`);return}
-  if(!cloud.ready){modal(`<h3>☁️ Cloud backup</h3><p>Abhi cloud se connect nahi ho paya. Internet check karke dobara koshish karo.</p><div class="btns"><button onclick="openMenu()">← Menu</button></div>`);return}
-  if(!cloud.user){modal(`<h3>☁️ Cloud backup</h3><p>Google account se login karo. Isi account se kisi bhi phone par data wapas aa jayega.</p><div class="btns"><button onclick="openMenu()">← Menu</button><button class="p" onclick="cloudLogin()">Google se login</button></div>`);return}
-  modal(`<h3>☁️ Cloud backup chalu hai</h3><p>${esc(cloud.user.email||'')}<br>Last sync: ${cloud.last?fmtT(cloud.last):'—'}</p><div class="btns"><button onclick="openMenu()">← Menu</button><button class="p" onclick="cloudPush().then(()=>toast('Sync ho gaya ✅'));closeModal()">Abhi sync karo</button><button class="r" onclick="cloud.auth.signOut();closeModal()">Logout</button></div>`);
-}
-async function cloudLogin(){
-  const p=new firebase.auth.GoogleAuthProvider();
-  try{await cloud.auth.signInWithPopup(p);closeModal()}
-  catch(e){try{await cloud.auth.signInWithRedirect(p)}catch(x){toast('Login nahi ho paya')}}
-}
+    .lab-cta p {
+      color: #8fa0b7;
+      font-size: 13px;
+      margin: 0;
+    }
 
-/* ================= START ================= */
-(async()=>{
-  await load();
-  if(S.prefs.pin){$('lock').classList.add('show');setTimeout(()=>$('lockIn').focus(),100)}
-  cloudInit();
-  if('serviceWorker' in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('sw.js').catch(()=>{});
-})();
-</script>
-</body>
-</html>
+    .lab-cta .btn {
+      white-space: nowrap;
+    }
+
+    @media (max-width: 650px) {
+      .lab-cta {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .lab-cta .btn {
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 800px) {
+      .grid {
+        grid-template-columns: 1fr;
+@@ -372,8 +412,8 @@ <h1>
+      </p>
+
+      <div class="buttons">
+        <a class="btn primary" href="#backtesting">
+          Start Backtesting
+        <a class="btn primary" href="backtest.html">
+          🚀 Open Backtesting Lab
+        </a>
+
+        <a class="btn secondary" href="#forward-testing">
+@@ -424,6 +464,17 @@ <h3>Trade Performance Analytics</h3>
+        </article>
+
+      </div>
+
+      <div class="lab-cta">
+        <div>
+          <h3>🚀 BANKNIFTY Backtesting Lab</h3>
+          <p>Open the live replay workspace and practice BANKNIFTY 5-minute historical candles.</p>
+        </div>
+        <a class="btn primary" href="backtest.html">
+          Open Backtesting Lab →
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+@@ -440,9 +491,9 @@ <h2>Market Replay Trading Simulator</h2>
+        </p>
+      </div>
+
+      <div class="chart-demo">
+        XAUUSD Historical Replay — Coming Soon
+      </div>
+      <a href="backtest.html" class="chart-demo">
+        BANKNIFTY 5-Minute Historical Replay — Open Backtesting Lab →
+      </a>
+
+    </div>
+  </section>
+@@ -575,10 +626,10 @@ <h2>Why Use a Trading Backtesting Platform?</h2>
+        </p>
+
+
+        <h2>XAUUSD and Gold Trading Backtesting</h2>
+        <h2>BANKNIFTY and Gold Trading Backtesting</h2>
+
+        <p>
+          Gold traders can use historical XAUUSD price action to study
+          Traders can use historical BANKNIFTY or XAUUSD price action to study
+          setups such as breakouts, fake breakouts, support and resistance,
+          retests, trend continuation and liquidity-based trading concepts.
+        </p>
