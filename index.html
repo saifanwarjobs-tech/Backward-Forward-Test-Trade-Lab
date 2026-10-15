@@ -1,101 +1,46 @@
- font-size: 14px;
-    }
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BFT Trade Lab – Backtest & Forward Test BANKNIFTY</title>
+<meta name="description" content="Practise your strategy on real BANKNIFTY history with demo money. Backtest, then forward-test on unseen data before risking real money.">
+<style>
+:root{--bg:#0b1220;--pn:#111a2e;--ln:#1f2b45;--tx:#e6edf7;--mu:#8a98b3;--ac:#3b82f6;--up:#16c784;--dn:#ea3943}
+@media(prefers-color-scheme:light){:root{--bg:#f4f7fb;--pn:#fff;--ln:#dbe3ee;--tx:#0f172a;--mu:#5b6b85}}
+*{box-sizing:border-box;margin:0}html{scroll-behavior:smooth}body{background:var(--bg);color:var(--tx);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+a{color:inherit;text-decoration:none}.w{max-width:1040px;margin:0 auto;padding:0 20px}
+nav{display:flex;align-items:center;gap:18px;padding:16px 0}nav b{font-size:18px}nav b i{font-style:normal;color:var(--ac)}nav a.l{color:var(--mu);font-size:14px}nav .sp{flex:1}
+.btn{display:inline-block;background:var(--ac);color:#fff;font-weight:700;border-radius:10px;padding:12px 22px}.btn.o{background:none;border:1px solid var(--ln);color:var(--tx)}
+.hero{padding:56px 0 40px;text-align:center}.hero h1{font-size:clamp(30px,6vw,52px);line-height:1.12;letter-spacing:-.02em;max-width:800px;margin:0 auto}.hero h1 span{color:var(--ac)}
+.hero p{color:var(--mu);max-width:620px;margin:18px auto 26px;font-size:18px}.hero .bt{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:22px}.chips span{font-size:12px;border:1px solid var(--ln);background:var(--pn);border-radius:99px;padding:5px 12px;color:var(--mu)}
+.g3,.g2{display:grid;gap:14px}.g3{grid-template-columns:repeat(3,1fr)}.g2{grid-template-columns:1fr 1fr}
+.c{background:var(--pn);border:1px solid var(--ln);border-radius:16px;padding:22px}.c h3{font-size:18px;margin-bottom:6px}.c p,.c li{color:var(--mu);font-size:14.5px}.c ul{padding-left:18px;margin:10px 0 16px}
+.sec{padding:34px 0}.sec>h2{font-size:26px;margin-bottom:6px}.sec>.s{color:var(--mu);margin-bottom:20px}
+.ic{font-size:26px;margin-bottom:8px}.tag{display:inline-block;font-size:11px;font-weight:800;padding:3px 8px;border-radius:6px;background:var(--ac);color:#fff;margin-bottom:10px}.tag.g{background:var(--ln);color:var(--mu)}
+.warn{border:1px solid var(--ln);border-radius:12px;padding:14px 16px;color:var(--mu);font-size:13px;margin:10px 0 30px}
+footer{border-top:1px solid var(--ln);padding:22px 0 34px;color:var(--mu);font-size:13px;text-align:center}
+@media(max-width:800px){.g3,.g2{grid-template-columns:1fr}nav a.l{display:none}}
+</style></head><body><div class="w">
+<nav><b>BFT <i>Trade Lab</i></b><a class="l" href="#why">Why</a><a class="l" href="#tools">Tools</a><a class="l" href="#how">How it works</a><span class="sp"></span><a class="btn" href="trade-lab-pro.html">Open Pro Lab</a></nav>
+<header class="hero"><h1>Test your strategy on <span>real market history</span> before you risk real money</h1>
+<p>Replay BANKNIFTY candle by candle with demo money, real-style costs and no hindsight. Then prove it on data you have never seen.</p>
+<div class="bt"><a class="btn" href="trade-lab-pro.html">🚀 Start practising free</a><a class="btn o" href="#how">See how it works</a></div>
+<div class="chips"><span>₹10,00,000 demo money</span><span>BANKNIFTY 5-min data</span><span>Zones &amp; drawing tools</span><span>5 themes</span><span>Works on mobile</span></div></header>
 
+<section class="sec" id="why"><h2>Why most strategies fail in real life</h2><p class="s">A backtest that looks great is easy to build. One that survives live trading is not.</p>
+<div class="g3"><div class="c"><div class="ic">🙈</div><h3>Hindsight bias</h3><p>You already know what happened next. Blind mode hides the date so you trade the chart, not your memory.</p></div>
+<div class="c"><div class="ic">💸</div><h3>Costs and spread ignored</h3><p>Brokerage, charges and spread quietly turn paper profits into losses. Every trade here includes them.</p></div>
+<div class="c"><div class="ic">🔒</div><h3>Over-fitted rules</h3><p>Lock your rules, then test on reserved data you never saw. Honest proof, not wishful thinking.</p></div></div></section>
 
-    .lab-cta {
-      margin-top: 22px;
-      padding: 18px 20px;
-      border: 1px solid rgba(74,222,128,.22);
-      background: linear-gradient(135deg, #0d1e2f, #0b1928);
-      border-radius: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 18px;
-      text-align: left;
-    }
+<section class="sec" id="tools"><h2>Choose your lab</h2><p class="s">Both use the same BANKNIFTY 5-minute history.</p>
+<div class="g2"><div class="c" id="backtesting"><span class="tag">NEW · PRO</span><h3>Trade Lab Pro</h3><p>A broker-style demo terminal.</p>
+<ul><li>BUY / SELL with lots, SL and TP, live P/L, margin and equity</li><li><b>Backtest</b> and locked <b>Forward Test</b> in one place</li><li>Supply / demand zones with touch count, trendlines</li><li>Equity line after every trade and Backtest vs Forward verdict</li><li>Custom themes and candle colours</li></ul><a class="btn" href="trade-lab-pro.html">Open Pro Lab →</a></div>
+<div class="c" id="forward-testing"><span class="tag g">CLASSIC</span><h3>Backtesting Lab</h3><p>The original replay workspace.</p>
+<ul><li>Market, limit and stop orders</li><li>Trade journal with setup, emotion and rules</li><li>Strategy analytics, multi-timeframe context</li><li>Save sessions and cloud sync</li></ul><a class="btn o" href="backtest.html">Open Classic Lab →</a></div></div>
+<div class="g2" style="margin-top:14px"><div class="c"><span class="tag g">COMING SOON</span><h3>Gold (XAUUSD) replay</h3><p>Historical replay for gold is on the way.</p></div><div class="c"><span class="tag g">COMING SOON</span><h3>Pencil Path &amp; Premium Journal</h3><p>Draw a price path and practise scenarios, plus a smart trading journal.</p></div></div></section>
 
-    .lab-cta h3 {
-      font-size: 18px;
-      margin-bottom: 4px;
-    }
+<section class="sec" id="how"><h2>How it works</h2><p class="s">Three steps, about five minutes to your first honest result.</p>
+<div class="g3"><div class="c"><div class="ic">1️⃣</div><h3>Practise</h3><p>Pick any past day. Press Next to reveal candles and trade with demo money. Mark zones as you go.</p></div>
+<div class="c"><div class="ic">2️⃣</div><h3>Lock your rules</h3><p>Write your exact rules and lock them. No edits, no rewinding, no peeking.</p></div>
+<div class="c"><div class="ic">3️⃣</div><h3>Forward test</h3><p>Trade the reserved unseen period. The lab compares Backtest and Forward and tells you if your edge held up.</p></div></div></section>
 
-    .lab-cta p {
-      color: #8fa0b7;
-      font-size: 13px;
-      margin: 0;
-    }
-
-    .lab-cta .btn {
-      white-space: nowrap;
-    }
-
-    @media (max-width: 650px) {
-      .lab-cta {
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      .lab-cta .btn {
-        text-align: center;
-      }
-    }
-
-    @media (max-width: 800px) {
-      .grid {
-        grid-template-columns: 1fr;
-@@ -372,8 +412,8 @@ <h1>
-      </p>
-
-      <div class="buttons">
-        <a class="btn primary" href="#backtesting">
-          Start Backtesting
-        <a class="btn primary" href="backtest.html">
-          🚀 Open Backtesting Lab
-        </a>
-
-        <a class="btn secondary" href="#forward-testing">
-@@ -424,6 +464,17 @@ <h3>Trade Performance Analytics</h3>
-        </article>
-
-      </div>
-
-      <div class="lab-cta">
-        <div>
-          <h3>🚀 BANKNIFTY Backtesting Lab</h3>
-          <p>Open the live replay workspace and practice BANKNIFTY 5-minute historical candles.</p>
-        </div>
-        <a class="btn primary" href="backtest.html">
-          Open Backtesting Lab →
-        </a>
-      </div>
-
-    </div>
-  </section>
-
-@@ -440,9 +491,9 @@ <h2>Market Replay Trading Simulator</h2>
-        </p>
-      </div>
-
-      <div class="chart-demo">
-        XAUUSD Historical Replay — Coming Soon
-      </div>
-      <a href="backtest.html" class="chart-demo">
-        BANKNIFTY 5-Minute Historical Replay — Open Backtesting Lab →
-      </a>
-
-    </div>
-  </section>
-@@ -575,10 +626,10 @@ <h2>Why Use a Trading Backtesting Platform?</h2>
-        </p>
-
-
-        <h2>XAUUSD and Gold Trading Backtesting</h2>
-        <h2>BANKNIFTY and Gold Trading Backtesting</h2>
-
-        <p>
-          Gold traders can use historical XAUUSD price action to study
-          Traders can use historical BANKNIFTY or XAUUSD price action to study
-          setups such as breakouts, fake breakouts, support and resistance,
-          retests, trend continuation and liquidity-based trading concepts.
-        </p>
+<div class="warn"><b>Important:</b> BFT Trade Lab is an educational simulation using demo money and historical data. It gives no tips, signals or investment advice and does not promise profits. Past performance does not guarantee future results. Charges shown are approximate.</div>
+<footer>© BFT Trade Lab · <a href="trade-lab-pro.html" style="text-decoration:underline">Pro Lab</a> · <a href="backtest.html" style="text-decoration:underline">Classic Lab</a></footer></div></body></html>
