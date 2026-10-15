@@ -45,7 +45,7 @@ button,input,select,textarea{font:inherit;color:var(--tx)}button{cursor:pointer}
 <div class="hd"><span class="lg">BFT <i>Trade Lab</i> Pro</span><span class="demo">DEMO</span>
 <button class="mt on" data-m="bt">Backtest</button><button class="mt" data-m="fw">Forward Test</button>
 <div class="ch"><div>Balance<b id="cB">-</b></div><div>Equity<b id="cE">-</b></div><div>Margin<b id="cM">-</b></div><div>Free margin<b id="cF">-</b></div><div>Floating P/L<b id="cP">-</b></div></div>
-<a class="ib" href="classroom.html" style="text-decoration:none">🎓 Classroom</a><button class="ib" id="tgT">▾ Terminal</button><button class="ib" id="tgR">▸ Panel</button><button class="ib" id="fsb" title="Full screen chart">⛶</button><button class="ib" id="datb">📂 Data</button><input type="file" id="fin2" accept=".csv,.txt" hidden><button class="ib" id="setb">🎨 Settings</button></div>
+<a class="ib" href="classroom.html" style="text-decoration:none">🎓 Classroom</a><button class="ib" id="tgT">▾ Terminal</button><button class="ib" id="tgR">▸ Panel</button><button class="ib" id="fsb" title="Full screen chart">⛶</button><button class="ib" id="datb">📂 Data</button><input type="file" id="fin2" accept=".csv,.json,.txt" hidden><button class="ib" id="setb">🎨 Settings</button></div>
 <div class="app"><div class="lf">
 <div class="bx cb"><div class="tl"><button data-tl="c" class="on" title="Pan / zoom">✥</button><button data-tl="h" title="Horizontal line">─</button><button data-tl="z" title="Zone (drag)">▭</button><button data-tl="t" title="Trend line (drag)">╱</button><button data-tl="f" title="Fibonacci (drag)">📐</button><button data-tl="p" title="Pencil path scenario">✏️</button><button data-tl="x" title="Eraser">⌫</button><select id="zt" title="Zone type: green demand, red supply, blue custom"><option value="d">🟩</option><option value="s">🟥</option><option value="c">🟦</option></select></div><div class="cw"><canvas id="cv"></canvas><div class="mini"><button id="mS">SELL</button><button id="mB">BUY</button></div><div class="pbar" id="pbar"><select id="pv"><option value="0">Calm</option><option value="1" selected>Normal</option><option value="2">Wild</option></select><button id="prun">▶ Run scenario</button><button id="pclr">✕</button></div><div class="pbar" id="scb" style="background:#b45309"><b>✏️ SCENARIO · synthetic candles</b><button id="sx">Exit scenario</button></div></div></div>
 <div class="bx rc"><button class="p" id="nx">Next ▶</button><button id="play">▶ Play</button><select id="spd"><option value="0">1x</option><option value="1">2x</option><option value="2" selected>5x</option><option value="3">10x</option><option value="4">20x</option></select><button id="dy">+ Day</button><select id="tf"><option value="5">M5</option><option value="15">M15</option><option value="30">M30</option><option value="60">H1</option></select><span class="dd"><button id="ix">ƒx Indicators</button><div class="ddm" id="ixm"><label><input type="checkbox" data-ix="e20"> EMA 20</label><label><input type="checkbox" data-ix="e50"> EMA 50</label><label><input type="checkbox" data-ix="bb"> Bollinger</label><label><input type="checkbox" data-ix="pd"> Prev day H/L</label></div></span><label><input type="checkbox" id="ap" checked> pause on SL/TP</label><span id="btc"><input type="date" id="jd"><button id="go">Go</button><button id="rnd">🎲</button><label><input type="checkbox" id="bl"> blind</label></span><span class="dt" id="dt"></span></div>
@@ -55,22 +55,29 @@ button,input,select,textarea{font:inherit;color:var(--tx)}button{cursor:pointer}
 <div class="bx tk" id="fwb" style="display:none"><h4>🔒 Strategy lock</h4><textarea id="rules" placeholder="Write your exact rules (entry, SL, target, risk). Lock them BEFORE the forward test."></textarea><button class="pri" id="lk">Lock rules &amp; start</button><div class="m" id="lki" style="margin-top:6px;font-size:11px"></div></div>
 <div class="bx tk"><h4>Equity after every trade</h4><canvas id="eq"></canvas><div class="sg" style="margin-top:8px" id="sg"></div></div>
 <div class="m" style="font-size:10px;padding:0 4px">Educational simulation with demo money. Not investment advice. Charges are approximate.</div></div></div>
-<div class="ov on" id="ld"><div class="md"><b>Loading market data…</b><p class="m" style="margin-top:8px">If this does not finish, open the site via GitHub Pages / a local server, or choose the CSV file:</p><input type="file" id="fin" accept=".csv" style="margin-top:10px"></div></div>
+<div class="ov on" id="ld"><div class="md"><b>Loading market data…</b><p class="m" style="margin-top:8px">If this does not finish, open the site via GitHub Pages / a local server, or choose the CSV / JSON file:</p><input type="file" id="fin" accept=".csv,.json,.txt" style="margin-top:10px"></div></div>
 <div class="ov" id="so"><div class="md"><b>🎨 Settings</b><div class="th" id="ths" style="margin-top:10px"></div>
-<div class="st"><div><label>Bull candle</label><input type="color" id="cu"></div><div><label>Bear candle</label><input type="color" id="cd"></div><div><label>Lot size (qty)</label><input id="ls" type="number" min="1"></div><div><label>Spread (pts)</label><input id="sp" type="number" min="0" step="0.5"></div><div><label>Grid</label><select id="gd"><option value="1">On</option><option value="0">Off</option></select></div><div><label>Demo balance (₹)</label><input id="db" type="number" min="10000"></div></div>
+<div class="st"><div><label>Bull candle</label><input type="color" id="cu"></div><div><label>Bear candle</label><input type="color" id="cd"></div><div><label>Lot size (qty)</label><input id="ls" type="number" min="0.0001" step="any"></div><div><label>Spread (pts)</label><input id="sp" type="number" min="0" step="0.5"></div><div><label>Grid</label><select id="gd"><option value="1">On</option><option value="0">Off</option></select></div><div><label>Demo balance</label><input id="db" type="number" min="100"></div></div>
 <button class="pri" id="rs" style="margin-top:12px">Save &amp; reset demo account</button><button class="pri" id="sc" style="margin-top:6px;background:var(--bg);color:var(--tx);border:1px solid var(--ln)">Close</button></div></div>
 <div id="toast"></div>
 <script>
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const K={bt:'bftp_bt',fw:'bftp_fw',pf:'bftp_pf'},ld=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))||d}catch(e){return d}};
-let PF=Object.assign({theme:'dark',up:'#16c784',dn:'#ea3943',grid:1,lot:15,spread:2,start:1000000,ix:{}},ld(K.pf,{}));
+let PF=Object.assign({theme:'dark',up:'#16c784',dn:'#ea3943',grid:1,lot:15,spread:2,start:1000000,ix:{},fee:20,pct:.0003,cur:'₹',prof:'NSE'},ld(K.pf,{}));
 let D,S,mode='bt',tool='c',tf=5,zoom=90,off=0,mx=-1,my=-1,drag=null,timer=null,tab='pos',C=[],T={},ds=[],FWS=0,PATH=null,PP=null,PAD=6,SC=null,BM=5,SO=555,INS='BANKNIFTY';
-const R=n=>(n<0?'-':'')+'₹'+Math.abs(Math.round(n)).toLocaleString('en-IN'),sum=a=>a.reduce((x,y)=>x+y,0);
+const R=n=>(n<0?'-':'')+(PF.cur||'₹')+Math.abs(Math.round(n)).toLocaleString('en-IN'),sum=a=>a.reduce((x,y)=>x+y,0);
 const css=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
 function toast(t){const e=$('#toast');e.textContent=t;e.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(()=>e.style.display='none',2400)}
 function applyPF(){document.documentElement.dataset.t=PF.theme;document.documentElement.style.setProperty('--up',PF.up);document.documentElement.style.setProperty('--dn',PF.dn);localStorage.setItem(K.pf,JSON.stringify(PF))}
 /* ---------- data ---------- */
-function boot(txt,name){const L=txt.split(/\r?\n/),sep=L[0].includes('\t')?'\t':L[0].includes(';')?';':',',H=L[0].toLowerCase().split(sep).map(x=>x.replace(/["']/g,'').trim()),f=re=>H.findIndex(h=>re.test(h));
+function json2csv(txt){let j=JSON.parse(txt);if(!Array.isArray(j)){const k=Object.keys(j).find(k=>Array.isArray(j[k]));j=k?j[k]:[]}
+ const T=v=>typeof v==='number'||/^\d{9,13}$/.test(v)?new Date((+v<1e11?+v*1000:+v)).toISOString().slice(0,16).replace('T',' '):String(v);
+ const out=['Date,Open,High,Low,Close'];j.forEach(r=>{let a;if(Array.isArray(r))a=r.slice(0,5);else{const gk=re=>{const k=Object.keys(r).find(k=>re.test(k.toLowerCase()));return k==null?undefined:r[k]};a=[gk(/^(time|date|datetime|timestamp|t)$/),gk(/^(open|o)$/),gk(/^(high|h)$/),gk(/^(low|l)$/),gk(/^(close|c)$/)]}
+  if(a.every(x=>x!==undefined&&x!==null))out.push([T(a[0]),a[1],a[2],a[3],a[4]].join(','))});
+ if(out.length<500)throw 0;return out.join('\n')}
+function boot(txt,name){if(/^\s*[\[{]/.test(txt)){try{txt=json2csv(txt)}catch(e){toast('Could not read this JSON file');return}}
+ const L=txt.split(/\r?\n/);if(/^\d/.test(L[0])){const sp0=L[0].includes('\t')?'\t':L[0].includes(';')?';':',',q=L[0].split(/[,;\t]/);L.unshift((q[1]&&q[1].includes(':')?['Date','Time','Open','High','Low','Close','Volume']:['Date','Open','High','Low','Close','Volume']).join(sp0))}
+ const sep=L[0].includes('\t')?'\t':L[0].includes(';')?';':',',H=L[0].toLowerCase().split(sep).map(x=>x.replace(/["']/g,'').trim()),f=re=>H.findIndex(h=>re.test(h));
  let ci={o:f(/^(open|o)$/),h:f(/^(high|h)$/),l:f(/^(low|l)$/),c:f(/^(close|c)$/)},dc=f(/date/);if(dc<0)dc=f(/time|stamp/);let tc=H.findIndex((h,i)=>/^time$/.test(h)&&i!==dc);
  if(ci.o<0||ci.h<0||ci.l<0||ci.c<0||dc<0){if(H.length>=7){ci={o:3,h:4,l:5,c:6};dc=1;tc=2}else{toast('CSV needs Date, Open, High, Low, Close columns');return}}
  const n=L.length,t=new Float64Array(n),o=new Float32Array(n),h=new Float32Array(n),l=new Float32Array(n),c=new Float32Array(n),dk=new Int32Array(n),mm=new Uint16Array(n);let k=0;
@@ -80,7 +87,7 @@ function boot(txt,name){const L=txt.split(/\r?\n/),sep=L[0].includes('\t')?'\t':
  if(k<500){toast('Could not read enough rows. Check the CSV format');return}
  let b2=1e9;for(let i=1;i<Math.min(k,400);i++){const df=(t[i]-t[i-1])/6e4;if(df>0&&df<b2)b2=df}BM=Math.round(b2)||5;
  D={n:k,t,o,h,l,c,dk,mm};ds=[];for(let i=0;i<k;i++)if(i===0||dk[i]!==dk[i-1])ds.push(i);SO=mm[ds[ds.length>>1]];FWS=ds.find(x=>x>=Math.floor(k*.75));
- INS=name||'DATA';const sl=INS.replace(/\W+/g,'').toLowerCase()||'data';K.bt='bftp_bt_'+sl;K.fw='bftp_fw_'+sl;$('#ins').textContent=INS;
+ INS=name||'DATA';const PR=/BTC|ETH|XBT/i.test(INS)?{prof:'CRYPTO',lot:.01,spread:10,start:10000,cur:'$',fee:0,pct:.0005}:/NIFTY|BANK/i.test(INS)?{prof:'NSE',lot:15,spread:2,start:1000000,cur:'₹',fee:20,pct:.0003}:null;if(PR&&PF.prof!==PR.prof){Object.assign(PF,PR);applyPF()}const sl=INS.replace(/\W+/g,'').toLowerCase()||'data';K.bt='bftp_bt_'+sl;K.fw='bftp_fw_'+sl;$('#ins').textContent=INS;
  const op=[1,3,5,10,15,30,60].filter(x=>x>=BM&&x%BM===0);tf=op.includes(5)?5:op[0];$('#tf').innerHTML=op.map(x=>`<option value="${x}">${x===60?'H1':'M'+x}</option>`).join('');$('#tf').value=tf;
  SC=null;PATH=null;S=null;mode='bt';$('#scb').style.display='none';$('#ld').classList.remove('on');setMode('bt')}
 function fresh(m){const pool=ds.filter(x=>x<FWS-3000),i=m==='fw'?FWS+12:pool[Math.floor(pool.length*(.05+Math.random()*.9))]+12;
@@ -145,7 +152,7 @@ function openP(side){if(!canStep())return;const ot=$('#ot').value;if(ot)return p
  if(eqt()-um()<mg){toast('Not enough free margin');return}const tr=+$('#tr').value||0,sl=+$('#sl').value||tr,tp=+$('#tp').value||0;
  S.pos.push({id:S.nid++,tr,side,lots,qty,entry:en,mg,sl:sl?(side==='B'?en-sl:en+sl):0,tp:tp?(side==='B'?en+tp:en-tp):0,i0:S.idx});save();refresh()}
 function closeP(id,px,why,q){const p=S.pos.find(x=>x.id===id);if(!p)return;const c=D.c[S.idx];if(px==null)px=p.side==='B'?c-PF.spread/2:c+PF.spread/2;
- const pts=p.side==='B'?px-p.entry:p.entry-px,net=pts*p.qty-(40+.0003*(p.entry+px)*p.qty);S.bal+=net;
+ const pts=p.side==='B'?px-p.entry:p.entry-px,net=pts*p.qty-(2*PF.fee+PF.pct*(p.entry+px)*p.qty);S.bal+=net;
  S.hist.push({n:S.hist.length+1,side:p.side,lots:p.lots,entry:p.entry,exit:px,pts,net,why:why||'Manual',t0:D.t[p.i0],t1:D.t[S.idx]});S.pos=S.pos.filter(x=>x!==p);save();if(!q)refresh()}
 const closeAll=w=>{S.pos.slice().forEach(p=>closeP(p.id,null,w||'Manual',1));S.ord=[];save();refresh()};
 function canStep(){if(mode==='fw'&&!S.locked){toast('🔒 Lock your strategy rules first');return false}return true}
@@ -217,7 +224,7 @@ function sUI(){$('#ths').innerHTML=[['dark','Dark'],['light','Light'],['gold','B
  $('#cu').value=PF.up;$('#cd').value=PF.dn;$('#ls').value=PF.lot;$('#sp').value=PF.spread;$('#gd').value=PF.grid;$('#db').value=PF.start}
 $('#setb').onclick=()=>{sUI();$('#so').classList.add('on')};$('#sc').onclick=()=>$('#so').classList.remove('on');
 $('#cu').oninput=e=>{PF.up=e.target.value;applyPF();draw()};$('#cd').oninput=e=>{PF.dn=e.target.value;applyPF();draw()};$('#gd').onchange=e=>{PF.grid=+e.target.value;applyPF();draw()};
-$('#rs').onclick=()=>{PF.lot=Math.max(1,+$('#ls').value||15);PF.spread=Math.max(0,+$('#sp').value||0);PF.start=Math.max(10000,+$('#db').value||1000000);applyPF();localStorage.removeItem(K[mode]);S=null;$('#so').classList.remove('on');setMode(mode);toast('Demo account reset')};
+$('#rs').onclick=()=>{PF.lot=Math.max(1e-6,+$('#ls').value||15);PF.spread=Math.max(0,+$('#sp').value||0);PF.start=Math.max(100,+$('#db').value||1000000);applyPF();localStorage.removeItem(K[mode]);S=null;$('#so').classList.remove('on');setMode(mode);toast('Demo account reset')};
 window.addEventListener('resize',()=>{draw();eqDraw()});
 const ldf=e=>{const f=e.target.files[0];if(f)f.text().then(t=>boot(t,f.name.replace(/\.\w+$/,'').toUpperCase()))};$('#fin').onchange=ldf;$('#fin2').onchange=ldf;
 applyPF();fetch('bank-nifty-5m-data.csv').then(r=>{if(!r.ok)throw 0;return r.text()}).then(t=>boot(t,'BANKNIFTY')).catch(()=>{});
