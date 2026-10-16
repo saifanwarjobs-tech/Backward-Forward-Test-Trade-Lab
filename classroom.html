@@ -3,53 +3,153 @@
 :root{--pn:#111a2e;--ln:#26324d;--tx:#e6edf7;--ac:#3b82f6}
 *{box-sizing:border-box;margin:0}html,body{height:100%;background:#05080d;color:var(--tx);font:13px system-ui,-apple-system,Segoe UI,sans-serif;overflow:hidden}
 button,select,input,a{font:inherit;color:var(--tx)}
-.bar{position:fixed;top:0;left:0;right:0;z-index:5;background:#111a2eee;border-bottom:1px solid var(--ln);padding:6px 8px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}.bar.h{display:none}
+.bar{position:fixed;top:0;left:0;right:0;z-index:5;background:#111a2eee;border-bottom:1px solid var(--ln);padding:6px 8px;display:flex;flex-direction:column;gap:6px}.bar.h{display:none}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .g{display:flex;gap:4px;align-items:center;padding-right:8px;border-right:1px solid var(--ln)}.g:last-child{border:0}.g label{font-size:11px;color:#8a98b3;display:flex;align-items:center;gap:4px}
-.b{background:#0b1220;border:1px solid var(--ln);border-radius:8px;padding:6px 10px;cursor:pointer;white-space:nowrap;text-decoration:none}.b.on{background:var(--ac);border-color:var(--ac);color:#fff}
+.b{background:#0b1220;border:1px solid var(--ln);border-radius:8px;padding:6px 10px;cursor:pointer;white-space:nowrap;text-decoration:none}.b:hover{border-color:#4a5d86}.b.on{background:var(--ac);border-color:var(--ac);color:#fff}
 .b.ok{background:#14532d;border-color:#166534}.b.wr{background:#7f1d1d;border-color:#991b1b}.b.rec{background:#dc2626;border-color:#dc2626;color:#fff;font-weight:700}
+.b.hero{border-color:#f59e0b;font-weight:700;box-shadow:0 0 0 1px #f59e0b55}.b.hero.on{background:#d97706;border-color:#f59e0b}
+.b.menu{background:linear-gradient(135deg,#2563eb,#7c3aed);border-color:#818cf8;font-weight:700;color:#fff;padding:8px 14px;font-size:14px}
+.b.reset{background:#b91c1c;border-color:#f87171;color:#fff;font-weight:700;font-size:15px;padding:9px 18px;min-height:40px}.b.reset:hover{background:#dc2626}
 .sw{width:22px;height:22px;border-radius:50%;border:2px solid #0000;cursor:pointer;padding:0}.sw.on{border-color:#fff;box-shadow:0 0 0 1px #000}
 select{background:#0b1220;border:1px solid var(--ln);border-radius:8px;padding:5px}input[type=range]{width:70px}
 .stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
 #cv{max-width:100%;max-height:100%;aspect-ratio:16/9;touch-action:none;cursor:crosshair;box-shadow:0 0 0 1px var(--ln)}
 #mn{position:fixed;right:10px;top:10px;z-index:6;display:none}
-.ov{position:fixed;inset:0;background:#000b;z-index:20;display:none;align-items:center;justify-content:center;padding:16px}.ov.on{display:flex}.card{background:#111a2e;border:1px solid var(--ln);border-radius:16px;padding:22px;max-width:480px;line-height:1.55}.card h2{margin-bottom:8px}.card ol{padding-left:20px;margin:10px 0}.card li{margin-bottom:8px}.m{color:#8a98b3}
-#toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:#000d;color:#fff;padding:9px 16px;border-radius:10px;display:none;z-index:9}
+.ov{position:fixed;inset:0;background:#000b;z-index:40;display:none;align-items:center;justify-content:center;padding:16px}.ov.on{display:flex}.card{background:#111a2e;border:1px solid var(--ln);border-radius:16px;padding:22px;max-width:480px;line-height:1.55}.card h2{margin-bottom:8px}.card ol{padding-left:20px;margin:10px 0}.card li{margin-bottom:8px}.m{color:#8a98b3}
+.btns{display:flex;gap:10px;margin-top:16px}.btns .b{flex:1;padding:11px;font-size:14px}
+#toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:#000d;color:#fff;padding:9px 16px;border-radius:10px;display:none;z-index:50}
+.pop{position:fixed;z-index:30;display:none;flex-direction:column;background:#0f1729;border:1px solid #33456b;border-radius:14px;box-shadow:0 18px 50px #000a;width:min(680px,calc(100vw - 16px));overflow:hidden}.pop.on{display:flex}
+.pop .ph{padding:10px 10px 6px}.pop #q{width:100%;background:#0b1220;border:1px solid #33456b;border-radius:10px;padding:10px 12px;font-size:15px;outline:none}.pop #q:focus{border-color:var(--ac)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;padding:4px 10px}.chip{background:#0b1220;border:1px solid var(--ln);border-radius:99px;padding:4px 11px;cursor:pointer;font-size:12px}.chip.on{background:var(--ac);border-color:var(--ac);color:#fff}
+.pl{overflow:auto;padding:4px 10px 12px;flex:1}.hd{position:sticky;top:0;background:#0f1729;padding:8px 2px 4px;font-weight:700;color:#9fb0d0;font-size:12px;z-index:1}.hd i{font-style:normal;color:#64748b;font-weight:400;margin-left:4px}
+.gr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}@media(max-width:520px){.gr{grid-template-columns:1fr}}
+.li{min-width:0;display:flex;gap:10px;align-items:center;text-align:left;background:#0b1220;border:1px solid var(--ln);border-radius:10px;padding:6px 8px;cursor:pointer}.li:hover,.li:focus{border-color:var(--ac);background:#13203a;outline:none}.li svg{flex:none;width:64px;height:36px;background:#070b12;border-radius:6px}.li span{display:flex;flex-direction:column;min-width:0}.li b{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.li small{color:#7d8ba8;font-size:11px}
+.none{padding:30px 10px;text-align:center;color:#8a98b3}.foot{padding:6px 12px;border-top:1px solid var(--ln);color:#6b7a99;font-size:11px}
 </style></head><body>
 <div class="bar" id="bar">
+<div class="row">
 <div class="g"><a class="b" href="index.html" title="Home">⌂</a><button class="b" id="hpb" title="How to use">? Help</button><button class="b" id="hide" title="Hide toolbar (video me toolbar record nahi hota)">☰</button></div>
-<div class="g" id="tools"><button class="b on" data-t="p" title="Pen">✏️ Pen</button><button class="b" data-t="h" title="Highlighter">🖍 Highlight</button><button class="b" data-t="k" title="Draw a path: candles will follow it">🕯 Candle Path</button><button class="b" data-t="a" title="Arrow">➚ Arrow</button><button class="b" data-t="z" title="Zone box">▭ Zone</button><button class="b" data-t="x" title="Text">T Text</button><button class="b" data-t="l" title="Laser pointer">🔴 Laser</button><button class="b" data-t="e" title="Eraser: click or drag over a drawing">⌫ Eraser</button></div>
+<div class="g" id="tools"><button class="b hero on" data-t="k" title="Draw a path: candles will follow it">🕯 Candle Path</button><button class="b" data-t="p" title="Pen">✏️ Pen</button><button class="b" data-t="h" title="Highlighter">🖍 Highlight</button><button class="b" data-t="a" title="Arrow">➚ Arrow</button><button class="b" data-t="z" title="Zone box">▭ Zone</button><button class="b" data-t="x" title="Text">T Text</button><button class="b" data-t="l" title="Laser pointer">🔴 Laser</button><button class="b" data-t="e" title="Eraser: click or drag over a drawing">⌫ Eraser</button></div>
+<div class="g"><button class="b menu" id="lsb" title="Search and pick a ready-made lesson (shortcut: / or Ctrl+K)">📚 Lessons <span id="lsn"></span> ▾</button></div>
 <div class="g" id="cols"></div><div class="g"><label>Size<input type="range" id="lw" min="2" max="14" value="4"></label></div>
-<div class="g"><button class="b ok" data-c="out">📈 Breakout</button><button class="b wr" data-c="fail">⚠️ Breakout Failure</button><button class="b wr" data-c="down">📉 Breakdown</button></div>
+</div>
+<div class="row">
 <div class="g"><button class="b" id="pl">▶ Play</button><button class="b" id="st" title="Next candle">⏭ Step</button><button class="b" id="rp" title="Replay from start">⟲ Replay</button><label>Speed<input type="range" id="spd" min="1" max="12" value="4"></label><label>Candle<input type="range" id="cw" min="8" max="36" value="18"></label><select id="vol"><option value="0">Calm</option><option value="1" selected>Normal</option><option value="2">Wild</option></select><label><input type="checkbox" id="sp" checked> path</label></div>
-<div class="g"><select id="th"><option value="black">Black board</option><option value="white">White board</option><option value="chalk">Chalkboard</option></select><label><input type="checkbox" id="gr" checked> grid</label><label><input type="checkbox" id="wm" checked> logo</label><button class="b" id="un" title="Undo last item (Ctrl+Z)">↶ Undo</button><button class="b wr" id="cl" title="Erase everything and start fresh">🗑 Reset board</button></div>
-<div class="g"><button class="b rec" id="rec">● Record</button><label><input type="checkbox" id="mic" checked> 🎤 voice</label><span id="tm"></span></div></div>
+<div class="g"><select id="th"><option value="black">Black board</option><option value="white">White board</option><option value="chalk">Chalkboard</option></select><label><input type="checkbox" id="gr" checked> grid</label><label><input type="checkbox" id="wm" checked> logo</label><button class="b" id="un" title="Undo last item (Ctrl+Z)">↶ Undo</button></div>
+<div class="g"><button class="b reset" id="cl" title="Erase everything and start fresh">🗑 Reset</button></div>
+<div class="g"><button class="b rec" id="rec">● Record</button><label><input type="checkbox" id="mic" checked> 🎤 voice</label><span id="tm"></span></div>
+</div></div>
+<div class="pop" id="pop"><div class="ph"><input id="q" type="search" placeholder="Search lessons… e.g. flag, hammer, trap, sell, double top" autocomplete="off"></div><div class="chips" id="chips"></div><div class="chips" id="dirs"></div><div class="pl" id="plist"></div><div class="foot">Enter = open first result · ↑ ↓ to move · Esc to close · press <b>/</b> anytime to open</div></div>
 <button class="b" id="mn">☰ Toolbar</button>
-<div class="stage"><canvas id="cv"></canvas></div><div class="ov" id="hov"><div class="card"><h2>🎓 Welcome to the Classroom</h2><p class="m">A blank board for teaching price action. Three steps:</p>
-<ol><li><b>Pick a lesson</b>: tap 📈 Breakout or ⚠️ Breakout Failure. Or draw your own price path with 🕯 <b>Candle Path</b>: the candles follow it.</li><li><b>Explain</b>: press <b>Space</b> to pause, ⏭ to step one candle, 🔴 Laser to point, ✏️ Pen to write.</li><li><b>Record</b>: hide the toolbar with ☰, press ● <b>Record</b>, talk, then <b>Stop &amp; Download</b>.</li></ol>
-<p class="m">Made a mistake? ↶ Undo, ⌫ Eraser, or 🗑 <b>Reset board</b> to start fresh.</p><button class="b on" id="hgo" style="width:100%;margin-top:14px;padding:10px">Start teaching →</button></div></div><div id="toast"></div>
+<div class="stage"><canvas id="cv"></canvas></div>
+<div class="ov" id="hov"><div class="card"><h2>🎓 Welcome to the Classroom</h2><p class="m">A blank board for teaching price action. Three steps:</p>
+<ol><li><b>Start</b>: draw your own price path with 🕯 <b>Candle Path</b> (candles follow it), or open 📚 <b>Lessons</b>, search and pick from 100+ ready lessons (breakouts, traps, patterns, candlesticks).</li><li><b>Explain</b>: press <b>Space</b> to pause, ⏭ to step one candle, 🔴 Laser to point, ✏️ Pen to write.</li><li><b>Record</b>: hide the toolbar with ☰, press ● <b>Record</b>, talk, then <b>Stop &amp; Download</b>.</li></ol>
+<p class="m">Made a mistake? ↶ Undo, ⌫ Eraser, or 🗑 <b>Reset</b> to start fresh.</p><button class="b on" id="hgo" style="width:100%;margin-top:14px;padding:10px">Start teaching →</button></div></div>
+<div class="ov" id="cov"><div class="card"><h2>🗑 Reset the board?</h2><p class="m">Every drawing, candle and lesson will be erased. You can still press Undo right after to bring it back.</p><div class="btns"><button class="b" id="cno">Cancel</button><button class="b reset" id="cyes">Yes, reset</button></div></div></div>
+<div id="toast"></div>
 <script>
 const $=s=>document.querySelector(s),W=1280,H=720,cv=$('#cv'),g=cv.getContext('2d');cv.width=W;cv.height=H;
 const TH={black:{bg:'#0b0f14',gr:'#18222f',ink:'#ffffff'},white:{bg:'#ffffff',gr:'#e5e7eb',ink:'#111827'},chalk:{bg:'#1f3d2b',gr:'#2c553c',ink:'#f1f5f9'}};
-let th='black',tool='p',col='#facc15',I=[],cur=null,rev=0,play=false,laser=[],mr=null,chunks=[],mic=null,rt=0,rti=null,sd=Date.now()>>>0;
+let th='black',tool='k',col='#facc15',I=[],cur=null,rev=0,play=false,laser=[],mr=null,chunks=[],mic=null,rt=0,rti=null,sd=Date.now()>>>0;
 const C=c=>c==='ink'?TH[th].ink:c,tot=()=>I.reduce((n,i)=>n+(i.cs?i.cs.length:0),0),rnd=()=>{sd=(sd+0x6D2B79F5)>>>0;let z=sd;z=Math.imul(z^z>>>15,z|1);z^=z+Math.imul(z^z>>>7,z|61);return((z^z>>>14)>>>0)/4294967296};
 function toast(t){const e=$('#toast');e.textContent=t;e.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(()=>e.style.display='none',2600)}
 /* ---------- candles from a drawn path ---------- */
-function mkCandles(pts){pts=pts.slice().sort((a,b)=>a[0]-b[0]);const x0=pts[0][0],x1=pts[pts.length-1][0],n=Math.max(3,Math.round((x1-x0)/+$('#cw').value)),sp=(x1-x0)/n,v=[5,10,18][$('#vol').value]*(+$('#cw').value)/18;
+function mkCandles(pts,cwv){const cw=cwv||+$('#cw').value;pts=pts.slice().sort((a,b)=>a[0]-b[0]);const x0=pts[0][0],x1=pts[pts.length-1][0],n=Math.max(3,Math.round((x1-x0)/cw)),sp=(x1-x0)/n,v=[5,10,18][$('#vol').value]*cw/18;
  const val=x=>{for(let i=1;i<pts.length;i++)if(x<=pts[i][0]){const a=pts[i-1],b=pts[i];return a[1]+(b[1]-a[1])*(x-a[0])/((b[0]-a[0])||1)}return pts[pts.length-1][1]};
  const pk=[...I].reverse().find(i=>i.cs);let pv=pk?pk.cs[pk.cs.length-1].c:val(x0);const cs=[];
  for(let i=0;i<n;i++){const x=x0+(i+.5)*sp,c=val(x)+(rnd()-.5)*v*.8,o=pv;cs.push({x,o,c,h:Math.min(o,c)-rnd()*v,l:Math.max(o,c)+rnd()*v,w:sp*.7});pv=c}
  const before=tot();I.push({t:'k',cs});rev=Math.min(rev,before);play=true}
-/* ---------- concept lessons ---------- */
-const R0=[[.08,.50],[.13,.40],[.17,.51],[.22,.37],[.27,.50],[.32,.38],[.37,.49],[.42,.37],[.46,.36]];
-const TP={
- out:{p:R0.concat([[.50,.30],[.55,.20],[.60,.26],[.64,.35],[.68,.30],[.74,.18],[.80,.14],[.86,.09],[.92,.07]]),l:[[.07,.30,'Resistance','#ef4444'],[.46,.20,'Breakout ✔','#22c55e'],[.60,.45,'Retest → support','#38bdf8'],[.84,.03,'Target','#facc15']]},
- fail:{p:R0.concat([[.50,.31],[.52,.30],[.55,.34],[.58,.40],[.62,.46],[.66,.52],[.70,.50],[.75,.58],[.82,.64],[.90,.70]]),l:[[.07,.30,'Resistance','#ef4444'],[.46,.21,'Fake breakout','#f59e0b'],[.58,.30,'Buyers trapped!','#ef4444'],[.74,.45,'Failure → move down','#22c55e']]}};
-function lesson(k){const mir=k==='down',T=TP[k==='down'?'out':k],my=y=>mir?1-y:y;I=[];rev=0;
- I.push({t:'z',a:[.06*W,my(.335)*H],b:[.96*W,my(.385)*H],c:'#ef4444',w:2});
- const pts=T.p.map(q=>[q[0]*W,my(q[1])*H]);I.push({t:'g',c:'#f59e0b',w:3,pts,thin:1});mkCandles(pts);const n=tot(),p0=T.p[0][0],p1=T.p[T.p.length-1][0];
- T.l.forEach(l=>{let s=l[2];if(mir)s=s.replace('Resistance','Support').replace('Breakout','Breakdown').replace('support','resistance');
-  I.push({t:'x',s,x:l[0]*W,y:my(l[1])*H,c:l[3],fs:26,bg:1,at:Math.max(0,Math.round((l[0]-p0)/(p1-p0)*n))})});
- I[0].c=mir?'#22c55e':'#ef4444';toast({out:'Breakout lesson: press Space to pause and explain',fail:'Breakout failure (fake-out) lesson',down:'Breakdown lesson'}[k])}
+/* ---------- lesson library (price space: 0..1, higher = up). Each lesson auto-gets a mirrored twin ---------- */
+const cR='#ef4444',cG='#22c55e',cB='#38bdf8',cY='#facc15',cO='#f59e0b',DEF=[];
+const D=(n,n2,cat,d,tags,o)=>DEF.push({n,n2,cat,d,tags,o});
+const RS=(x,p)=>[x,p,'Resistance',cR,null,cG],UT=(x,p)=>[x,p,'Uptrend',cG,null,cR],DT=(x,p)=>[x,p,'Downtrend',cR,null,cG];
+const RA=[[.08,.50],[.13,.60],[.17,.49],[.22,.63],[.27,.50],[.32,.62],[.37,.51],[.42,.63],[.46,.64]],RZ=[.615,.665,.06,.96,cR];
+const K={x:.46,s:.06,w:.036};
+/* ===== Breakouts ===== */
+D('Breakout','Breakdown','Breakouts','bull','resistance support level break target retest',{p:RA.concat([[.50,.70],[.55,.80],[.60,.74],[.64,.65],[.68,.70],[.74,.82],[.80,.86],[.86,.91],[.92,.93]]),z:[RZ],l:[RS(.07,.72),[.46,.84,'Breakout ✔',cG],[.60,.55,'Retest → support',cB],[.82,.95,'Target',cY]]});
+D('Breakout & Retest','Breakdown & Retest','Breakouts','bull','pullback throwback entry old resistance',{p:RA.concat([[.50,.69],[.55,.78],[.60,.72],[.64,.66],[.68,.64],[.72,.67],[.77,.75],[.83,.82],[.92,.90]]),z:[RZ],l:[RS(.07,.72),[.50,.86,'Breakout ✔',cG],[.62,.52,'Retest: old resistance',cB]]});
+D('Range Breakout','Range Breakdown','Breakouts','bull','box consolidation sideways',{p:[[.08,.50],[.12,.58],[.16,.51],[.20,.59],[.24,.50],[.28,.58],[.32,.51],[.36,.58],[.40,.52],[.44,.59],[.48,.62],[.52,.72],[.58,.80],[.64,.78],[.72,.86],[.82,.90],[.92,.94]],z:[[.49,.61,.07,.50,cB]],l:[[.08,.38,'Range: buyers = sellers',cY],[.52,.60,'Breakout ✔',cG]]});
+D('Squeeze Breakout','Squeeze Breakdown','Breakouts','bull','volatility contraction vcp narrow range',{p:[[.08,.50],[.13,.68],[.18,.38],[.23,.64],[.28,.42],[.33,.60],[.38,.45],[.42,.57],[.46,.49],[.50,.55],[.53,.52],[.56,.54],[.60,.62],[.65,.74],[.72,.82],[.80,.88],[.92,.94]],ln:[[.13,.68,.56,.56,cY],[.18,.38,.56,.50,cY]],l:[[.10,.82,'Squeeze: swings get smaller',cY],[.58,.44,'Breakout!',cG]]});
+D('Opening Range Breakout (ORB)','Opening Range Breakdown (ORB)','Breakouts','bull','orb intraday bank nifty first 15 minutes',{p:[[.06,.50],[.09,.58],[.12,.53],[.15,.60],[.18,.52],[.21,.58],[.24,.56],[.28,.64],[.33,.72],[.38,.70],[.43,.78],[.50,.82],[.58,.80],[.66,.88],[.76,.90],[.86,.94]],z:[[.50,.62,.06,.26,cB]],ln:[[.26,.62,.92,.62,cY]],l:[[.06,.38,'Opening range (first 15 min)',cB],[.14,.78,'ORB breakout',cG],[.52,.56,'ORB high = support',cG]]});
+D('Downtrend Line Break','Uptrend Line Break','Breakouts','bull','trendline break diagonal',{p:[[.06,.82],[.12,.66],[.17,.74],[.23,.56],[.28,.64],[.34,.48],[.40,.56],[.46,.40],[.52,.48],[.56,.42],[.60,.54],[.66,.64],[.72,.58],[.78,.70],[.86,.78],[.92,.84]],ln:[[.06,.82,.70,.33,cR]],l:[[.07,.93,'Downtrend line',cR,null,cG],[.50,.28,'Line broken ✔',cG],[.68,.46,'Retest holds ✔',cB]]});
+/* ===== Traps ===== */
+D('Breakout Failure','Breakdown Failure','Traps','bear','fake breakout fakeout false break bull trap bear trap',{p:RA.concat([[.50,.69],[.52,.70],[.55,.66],[.58,.60],[.62,.54],[.66,.48],[.70,.50],[.75,.42],[.82,.36],[.90,.30]]),z:[RZ],l:[RS(.07,.72),[.46,.79,'Fake breakout',cO],[.58,.70,'Buyers trapped!',cR],[.74,.55,'Failure → move down',cG]]});
+D('Breakout Retest Fails','Breakdown Retest Fails','Traps','bear','failed retest throwback back inside range',{p:RA.concat([[.50,.70],[.55,.78],[.60,.72],[.64,.66],[.67,.64],[.70,.60],[.74,.54],[.80,.48],[.86,.42],[.92,.36]]),z:[RZ],l:[RS(.07,.72),[.50,.86,'Breakout',cG],[.66,.78,'Retest fails ✖',cR],[.76,.34,'Back inside the range',cO]]});
+D('ORB Breakout Failure','ORB Breakdown Failure','Traps','bear','orb fake intraday trap',{p:[[.06,.50],[.09,.58],[.12,.53],[.15,.60],[.18,.52],[.21,.58],[.24,.56],[.28,.66],[.32,.70],[.36,.64],[.40,.58],[.44,.50],[.48,.44],[.54,.40],[.62,.34],[.72,.30],[.84,.26]],z:[[.50,.62,.06,.26,cB]],ln:[[.26,.62,.92,.62,cY]],l:[[.14,.80,'Fake ORB breakout',cO],[.46,.72,'Back inside = trap',cR],[.60,.46,'Failure → move down',cG]]});
+D('Stop Hunt Below Lows','Stop Hunt Above Highs','Traps','bull','liquidity sweep stop loss grab spring wyckoff',{p:[[.08,.55],[.13,.62],[.18,.48],[.23,.60],[.28,.47],[.33,.58],[.38,.46],[.43,.57],[.48,.50],[.52,.36],[.55,.33],[.58,.44],[.63,.56],[.70,.66],[.78,.74],[.86,.80],[.92,.84]],z:[[.44,.49,.14,.50,cG]],l:[[.08,.34,'Stops rest below lows',cO],[.42,.24,'Stop hunt!',cR],[.62,.46,'Snap back = entry ✔',cG]]});
+D('Dead Cat Bounce','Shallow Dip, Strong Rally','Traps','bear','weak bounce relief rally continuation',{p:[[.06,.88],[.12,.86],[.18,.88],[.24,.84],[.30,.72],[.34,.58],[.38,.46],[.42,.40],[.46,.46],[.50,.52],[.54,.56],[.58,.52],[.62,.46],[.68,.40],[.74,.32],[.82,.26],[.92,.20]],l:[[.20,.60,'Sharp drop',cR],[.44,.66,'Weak bounce',cY,'Weak dip'],[.60,.64,'Bounce fails ✖',cR,'Dip holds ✔',cG]]});
+D('Choppy Market (Stay Out)',null,'Traps','neu','sideways range whipsaw no trade false break chop',{p:[[.08,.52],[.13,.60],[.18,.44],[.23,.58],[.27,.67],[.31,.54],[.35,.43],[.39,.36],[.44,.52],[.49,.60],[.54,.69],[.58,.55],[.62,.44],[.66,.35],[.71,.50],[.78,.58],[.86,.52],[.92,.56]],z:[[.42,.62,.08,.92,cB]],l:[[.18,.76,'False break',cO],[.33,.28,'False break',cO],[.48,.78,'False break',cO],[.60,.18,'Chop = stay out',cR]]});
+/* ===== Reversals ===== */
+D('Double Bottom','Double Top','Reversals','bull','w pattern m pattern neckline',{p:[[.08,.80],[.14,.66],[.20,.54],[.26,.44],[.31,.36],[.36,.46],[.41,.58],[.46,.50],[.51,.40],[.56,.34],[.62,.46],[.67,.58],[.72,.68],[.78,.76],[.86,.84],[.92,.88]],z:[[.32,.38,.26,.62,cG]],ln:[[.28,.58,.80,.58,cY]],l:[[.20,.24,'Low 1',cG],[.50,.24,'Low 2 holds',cG],[.30,.66,'Neckline',cY],[.68,.46,'Neckline breakout ✔',cG]]});
+D('Triple Bottom','Triple Top','Reversals','bull','three touches neckline',{p:[[.06,.74],[.11,.60],[.15,.44],[.18,.34],[.22,.46],[.26,.56],[.30,.46],[.34,.35],[.38,.46],[.42,.56],[.46,.46],[.50,.34],[.54,.48],[.58,.60],[.64,.70],[.72,.78],[.82,.86],[.92,.90]],z:[[.30,.37,.12,.54,cG]],ln:[[.20,.57,.70,.57,cY]],l:[[.12,.22,'Low 1',cG],[.30,.22,'Low 2',cG],[.46,.22,'Low 3',cG],[.58,.46,'Neckline breakout ✔',cG]]});
+D('Inverse Head & Shoulders','Head & Shoulders','Reversals','bull','h&s hns head and shoulders neckline',{p:[[.06,.74],[.11,.60],[.16,.48],[.20,.40],[.24,.52],[.28,.58],[.33,.44],[.37,.32],[.41,.24],[.45,.34],[.50,.46],[.54,.56],[.58,.46],[.62,.40],[.66,.46],[.70,.58],[.76,.70],[.84,.80],[.92,.86]],ln:[[.18,.58,.78,.56,cY]],l:[[.12,.28,'Left shoulder',cB],[.33,.14,'Head',cB],[.56,.28,'Right shoulder',cB],[.50,.78,'Neckline breakout ✔',cG]]});
+D('Rounding Bottom','Rounding Top','Reversals','bull','saucer cup base curve',{p:[[.08,.82],[.14,.70],[.20,.58],[.26,.48],[.32,.40],[.38,.36],[.44,.35],[.50,.37],[.56,.43],[.62,.52],[.68,.62],[.74,.72],[.80,.80],[.86,.86],[.92,.90]],l:[[.10,.34,'Selling fades',cO,'Buying fades'],[.34,.24,'Base forms',cY],[.58,.30,'Buyers take over',cG]]});
+D('V-Bottom Reversal','Inverted V Reversal','Reversals','bull','sharp v shaped panic',{p:[[.08,.88],[.14,.78],[.20,.64],[.26,.48],[.32,.32],[.36,.24],[.40,.34],[.44,.50],[.49,.64],[.54,.74],[.60,.80],[.68,.86],[.80,.90],[.92,.93]],l:[[.10,.40,'Panic selling',cR,'Panic buying'],[.46,.28,'Sharp reversal',cG],[.28,.12,'V-bottom',cY,'Inverted V']]});
+D('Falling Wedge','Rising Wedge','Reversals','bull','wedge converging',{p:[[.10,.86],[.15,.64],[.20,.72],[.25,.54],[.30,.62],[.35,.47],[.40,.55],[.45,.43],[.50,.50],[.54,.41],[.60,.52],[.66,.62],[.72,.70],[.80,.78],[.92,.86]],ln:[[.10,.86,.50,.50,cY],[.15,.64,.54,.41,cY]],l:[[.10,.30,'Falling wedge',cY,'Rising wedge'],[.58,.36,'Breakout ✔',cG]]});
+D('Capitulation Bottom','Blow-off Top','Reversals','bull','climax exhaustion panic parabolic',{p:[[.08,.80],[.16,.76],[.24,.70],[.32,.62],[.40,.52],[.46,.40],[.50,.28],[.53,.20],[.56,.30],[.60,.44],[.66,.54],[.74,.62],[.84,.70],[.92,.76]],l:[[.12,.58,'Fear builds',cO,'Greed builds'],[.40,.12,'Capitulation',cR,'Blow-off'],[.64,.34,'Relief rally',cG]]});
+D('Bullish 1-2-3 Reversal','Bearish 1-2-3 Reversal','Reversals','bull','123 higher low trend change',{p:[[.06,.80],[.12,.66],[.18,.52],[.24,.40],[.28,.28],[.34,.42],[.40,.54],[.45,.46],[.50,.38],[.55,.48],[.60,.58],[.66,.66],[.74,.72],[.82,.80],[.92,.86]],ln:[[.40,.54,.72,.54,cY]],l:[[.27,.18,'1: new low',cR],[.40,.64,'2',cY],[.50,.28,'3: higher low',cG],[.56,.84,'Break above 2 ✔',cG]]});
+D('Rejection at Resistance','Bounce from Support','Reversals','bear','pin bar rejection touch level sell',{p:[[.06,.30],[.12,.42],[.18,.52],[.24,.60],[.30,.66],[.34,.72],[.38,.66],[.43,.58],[.48,.64],[.53,.71],[.57,.74],[.62,.66],[.68,.56],[.74,.46],[.82,.38],[.92,.30]],z:[[.70,.76,.06,.94,cR]],l:[RS(.08,.86),[.30,.84,'Rejected ✖',cR,'Bounced ✔',cG],[.52,.86,'Rejected again ✖',cR,'Bounced again ✔',cG],[.40,.38,'Sellers in control ↓',cY]]});
+D('Overbought Snap-Back','Oversold Snap-Back','Reversals','bear','mean reversion stretched average',{p:[[.06,.50],[.12,.54],[.18,.48],[.24,.56],[.30,.62],[.36,.72],[.42,.82],[.46,.90],[.50,.80],[.55,.68],[.60,.56],[.66,.50],[.72,.46],[.78,.52],[.84,.58],[.92,.54]],ln:[[.06,.52,.94,.52,cB]],l:[[.06,.40,'Average price',cB],[.20,.88,'Stretched too far',cR],[.56,.80,'Snap back ↓',cG]]});
+/* ===== Continuation ===== */
+D('Bull Flag','Bear Flag','Continuation','bull','pole flag channel continuation',{p:[[.08,.30],[.12,.34],[.16,.44],[.20,.56],[.24,.66],[.28,.76],[.32,.72],[.36,.74],[.40,.68],[.44,.71],[.48,.65],[.52,.68],[.56,.62],[.62,.74],[.68,.84],[.76,.90],[.86,.94]],ln:[[.28,.765,.54,.675,cY],[.32,.72,.58,.615,cY]],l:[[.06,.58,'Flag pole',cY],[.30,.50,'Flag: tight pullback',cY],[.58,.50,'Breakout ✔',cG]]});
+D('Bullish Pennant','Bearish Pennant','Continuation','bull','pole triangle continuation',{p:[[.08,.30],[.12,.38],[.16,.50],[.20,.62],[.24,.74],[.28,.80],[.31,.68],[.35,.76],[.39,.70],[.43,.75],[.47,.72],[.50,.74],[.56,.82],[.63,.88],[.72,.92],[.84,.95]],ln:[[.28,.80,.52,.74,cY],[.31,.68,.52,.73,cY]],l:[[.06,.56,'Pole',cY],[.30,.54,'Pennant: coiling',cY],[.54,.62,'Breakout ✔',cG]]});
+D('Ascending Triangle','Descending Triangle','Continuation','bull','flat resistance higher lows triangle',{p:[[.08,.40],[.12,.66],[.17,.46],[.22,.67],[.27,.54],[.32,.66],[.37,.58],[.42,.67],[.46,.62],[.50,.68],[.56,.78],[.62,.84],[.70,.88],[.80,.92],[.92,.95]],z:[[.655,.69,.10,.52,cR]],ln:[[.08,.40,.50,.63,cG]],l:[[.10,.80,'Flat resistance',cR,null,cG],[.14,.28,'Higher lows = buyers',cG],[.52,.56,'Breakout ✔',cG]]});
+D('Symmetrical Triangle Breakout','Symmetrical Triangle Breakdown','Continuation','bull','triangle squeeze coil',{p:[[.08,.34],[.12,.70],[.18,.40],[.24,.64],[.30,.44],[.36,.60],[.42,.48],[.48,.56],[.52,.51],[.56,.54],[.62,.64],[.68,.74],[.76,.80],[.84,.88],[.92,.92]],ln:[[.12,.70,.58,.53,cY],[.08,.34,.54,.51,cY]],l:[[.10,.84,'Squeeze: pressure builds',cY],[.58,.44,'Breakout ✔',cG]]});
+D('Rectangle Continuation','Rectangle Continuation (Down)','Continuation','bull','box pause trend',{p:[[.06,.30],[.11,.40],[.16,.50],[.20,.58],[.24,.64],[.28,.56],[.32,.64],[.36,.55],[.40,.65],[.44,.56],[.48,.65],[.54,.76],[.60,.82],[.68,.80],[.76,.88],[.92,.94]],z:[[.55,.66,.22,.52,cB]],l:[UT(.06,.62),[.26,.44,'Pause (box)',cY],[.52,.60,'Breakout ✔',cG]]});
+D('Cup & Handle','Inverted Cup & Handle','Continuation','bull','cup handle rim breakout',{p:[[.06,.76],[.10,.74],[.15,.64],[.21,.52],[.27,.45],[.33,.43],[.39,.45],[.45,.53],[.51,.64],[.56,.74],[.60,.72],[.64,.68],[.68,.66],[.72,.70],[.76,.78],[.82,.85],[.92,.92]],z:[[.73,.78,.06,.80,cR]],l:[[.26,.30,'Cup',cB],[.56,.52,'Handle: small pullback',cY],[.66,.92,'Breakout ✔',cG]]});
+D('Uptrend Channel','Downtrend Channel','Continuation','bull','channel parallel trend buy the dip',{p:[[.08,.26],[.13,.455],[.18,.33],[.23,.525],[.28,.40],[.33,.595],[.38,.47],[.43,.665],[.48,.54],[.53,.735],[.58,.61],[.63,.805],[.68,.68],[.73,.875],[.78,.75],[.83,.92]],ln:[[.10,.434,.86,.966,cY],[.08,.26,.86,.806,cY]],l:[[.10,.12,'Buy the dip near the lower line',cG,'Sell the rally near the upper line',cR],[.16,.76,'Higher highs, higher lows',cY]]});
+(()=>{const pk=[[.12,.44],[.22,.54],[.33,.62],[.44,.70],[.55,.78],[.67,.86],[.80,.92]],tr=[[.16,.38],[.27,.46],[.38,.54],[.49,.62],[.60,.70],[.72,.78]];
+D('Uptrend Structure (HH-HL)','Downtrend Structure (LH-LL)','Continuation','bull','higher high higher low staircase trend structure',{p:[[.06,.30],[.12,.44],[.16,.38],[.22,.54],[.27,.46],[.33,.62],[.38,.54],[.44,.70],[.49,.62],[.55,.78],[.60,.70],[.67,.86],[.72,.78],[.80,.92],[.86,.86],[.92,.94]],l:pk.slice(1,6).map(q=>[q[0]-.012,q[1]+.07,'HH',cG]).concat(tr.map(q=>[q[0]-.012,q[1]-.07,'HL',cB]))})})();
+D('Pullback to Moving Average','Rally to Moving Average','Continuation','bull','ma ema dip trend following',{p:[[.06,.30],[.12,.42],[.17,.52],[.22,.46],[.27,.42],[.32,.52],[.38,.64],[.44,.72],[.50,.66],[.55,.62],[.60,.58],[.64,.64],[.70,.74],[.76,.82],[.82,.78],[.88,.86],[.92,.90]],pl:[[[.06,.26],[.16,.37],[.26,.43],[.36,.51],[.46,.60],[.56,.60],[.66,.63],[.76,.70],[.86,.78],[.94,.84]],cB],l:[[.06,.64,'Trend average',cB],[.46,.44,'Dip to average = buy',cG,'Rally to average = sell',cR]]});
+D('Fibonacci 61.8% Pullback','Fibonacci 61.8% Bounce (Downtrend)','Continuation','bull','fib retracement golden pocket',{p:[[.06,.20],[.12,.30],[.18,.40],[.24,.52],[.30,.64],[.36,.74],[.40,.80],[.46,.68],[.52,.56],[.57,.46],[.60,.43],[.64,.50],[.70,.62],[.76,.74],[.82,.84],[.92,.92]],z:[[.41,.455,.40,.90,cY]],ln:[[.40,.50,.90,.50,cB]],l:[[.14,.50,'Rally',cG],[.50,.32,'Pullback to 61.8% zone',cY,'Rally to 61.8% zone'],[.72,.52,'Bounce ✔',cG,'Rejected ✔']]});
+D('Trendline Bounce','Trendline Rejection','Continuation','bull','trend line three touches support diagonal',{p:[[.06,.32],[.12,.50],[.18,.60],[.24,.54],[.30,.46],[.34,.47],[.40,.62],[.46,.72],[.52,.66],[.58,.62],[.62,.64],[.68,.78],[.76,.86],[.84,.80],[.92,.90]],ln:[[.06,.30,.70,.684,cG]],l:[[.07,.20,'Touch 1',cG],[.30,.34,'Touch 2',cG],[.56,.50,'Touch 3 = buy',cG]]});
+/* ===== Structure ===== */
+D('Resistance Becomes Support','Support Becomes Resistance','Structure','bull','role reversal flip sr polarity',{p:[[.08,.40],[.14,.52],[.20,.60],[.24,.54],[.30,.46],[.36,.56],[.42,.61],[.46,.55],[.52,.62],[.58,.72],[.64,.78],[.70,.66],[.74,.61],[.80,.70],[.86,.80],[.92,.86]],ln:[[.06,.605,.94,.605,cY]],l:[[.18,.70,'Rejected ✖',cR,'Held ✔',cG],[.38,.72,'Rejected ✖',cR,'Held ✔',cG],[.50,.86,'Broken ✔',cG],[.66,.50,'Now support ✔',cG]]});
+D('Bullish BOS (Break of Structure)','Bearish BOS (Break of Structure)','Structure','bull','bos smart money market structure',{p:[[.08,.30],[.14,.46],[.20,.56],[.26,.46],[.32,.40],[.38,.52],[.44,.62],[.48,.68],[.54,.58],[.60,.50],[.66,.60],[.72,.72],[.78,.82],[.84,.90],[.90,.94]],ln:[[.20,.56,.46,.56,cY]],l:[[.12,.68,'Swing high',cY],[.28,.78,'BOS ✔ trend continues',cG],[.52,.38,'Higher low',cB]]});
+D('Bearish CHoCH (Change of Character)','Bullish CHoCH (Change of Character)','Structure','bear','choch smart money reversal market structure',{p:[[.06,.26],[.12,.42],[.17,.34],[.23,.52],[.28,.44],[.34,.62],[.39,.54],[.45,.72],[.50,.64],[.55,.50],[.60,.40],[.66,.46],[.72,.36],[.80,.30],[.90,.22]],ln:[[.39,.54,.62,.54,cR]],l:[UT(.06,.12),[.28,.32,'Last higher low',cB],[.46,.22,'CHoCH ✔: low broken',cR]]});
+D('Demand Zone Bounce','Supply Zone Rejection','Structure','bull','order block demand supply zone smart money',{p:[[.06,.60],[.10,.48],[.14,.40],[.18,.42],[.22,.40],[.26,.43],[.30,.58],[.36,.74],[.42,.84],[.48,.78],[.54,.64],[.60,.50],[.64,.44],[.68,.42],[.72,.54],[.78,.68],[.86,.80],[.92,.86]],z:[[.37,.46,.12,.76,cG]],l:[[.10,.28,'Demand zone',cG],[.10,.72,'Impulse up',cY],[.56,.28,'Revisit zone → bounce',cG,'Revisit zone → rejection']]});
+D('Bullish Fair Value Gap (FVG)','Bearish Fair Value Gap (FVG)','Structure','bull','fvg imbalance gap fill smart money',{p:[[.06,.52],[.12,.50],[.18,.53],[.24,.50],[.30,.52],[.38,.51]],k:{x:.44,s:.06,w:.036,c:[[.51,.55,.57,.49],[.55,.74,.76,.54],[.74,.78,.82,.72]]},a:[[.63,.80],[.67,.72],[.71,.62],[.75,.58],[.79,.66],[.84,.76],[.90,.84]],z:[[.57,.72,.43,.84,cY]],l:[[.10,.78,'Fast move leaves a gap',cY],[.60,.44,'FVG',cB],[.72,.46,'Gap holds ✔',cG]]});
+/* ===== Candlesticks ===== */
+const LD=(a,b,c,d,e,f=.40)=>[[.06,a],[.14,b],[.22,c],[.30,d],[f,e]];
+D('Hammer','Shooting Star','Candlesticks','bull','candle reversal pin bar long wick',{p:LD(.82,.76,.68,.60,.54),k:{...K,c:[[.52,.55,.56,.38]]},a:[[.53,.60],[.60,.66],[.68,.72],[.78,.78],[.90,.84]],l:[DT(.06,.66),[.36,.26,'Hammer: long lower wick',cG,'Shooting star: long upper wick',cR],[.52,.42,'Next green = confirm',cB,'Next red = confirm']]});
+D('Bullish Engulfing','Bearish Engulfing','Candlesticks','bull','candle reversal engulf',{p:LD(.86,.80,.72,.64,.56),k:{...K,c:[[.56,.50,.57,.49],[.48,.62,.64,.47]]},a:[[.59,.64],[.66,.70],[.74,.76],[.84,.82],[.92,.86]],l:[DT(.06,.70),[.38,.34,'Small red',cR,'Small green',cG],[.50,.84,'Big green engulfs it',cG,'Big red engulfs it',cR]]});
+D('Morning Star','Evening Star','Candlesticks','bull','candle reversal three candle star',{p:LD(.92,.86,.80,.74,.66),k:{...K,c:[[.66,.52,.67,.51],[.47,.45,.49,.43],[.48,.66,.68,.47]]},a:[[.65,.68],[.72,.74],[.80,.80],[.90,.86]],l:[DT(.06,.74),[.38,.40,'Big red',cR,'Big green',cG],[.47,.31,'Star: sellers tire',cY],[.62,.48,'Big green ✔',cG,'Big red ✔',cR]]});
+D('Three White Soldiers','Three Black Crows','Candlesticks','bull','candle momentum three green candles',{p:LD(.86,.78,.68,.58,.48),k:{...K,c:[[.48,.56,.57,.47],[.54,.64,.65,.53],[.62,.72,.73,.61]]},a:[[.65,.74],[.72,.78],[.80,.84],[.90,.90]],l:[DT(.06,.66),[.40,.32,'Three green candles in a row',cG,'Three red candles in a row',cR],[.46,.22,'Buyers in full control',cB]]});
+D('Piercing Line','Dark Cloud Cover','Candlesticks','bull','candle reversal two candle',{p:LD(.92,.86,.80,.74,.68),k:{...K,c:[[.68,.54,.69,.53],[.50,.62,.63,.49]]},a:[[.59,.66],[.66,.72],[.74,.78],[.84,.84],[.92,.88]],l:[DT(.06,.76),[.40,.36,'Green closes past 50% of red',cG,'Red closes past 50% of green',cR]]});
+D('Bullish Harami','Bearish Harami','Candlesticks','bull','candle reversal inside body pause',{p:LD(.94,.88,.82,.76,.68),k:{...K,c:[[.68,.50,.69,.49],[.54,.60,.62,.53]]},a:[[.59,.66],[.66,.72],[.74,.78],[.84,.84],[.92,.88]],l:[DT(.06,.78),[.40,.36,'Small candle inside the big one',cY]]});
+D('Tweezer Bottom','Tweezer Top','Candlesticks','bull','candle reversal same low double',{p:LD(.92,.86,.78,.70,.62),k:{...K,c:[[.62,.48,.63,.40],[.48,.60,.62,.40]]},ln:[[.43,.40,.58,.40,cY]],a:[[.59,.64],[.66,.70],[.74,.76],[.84,.82],[.92,.86]],l:[DT(.06,.76),[.34,.30,'Same low twice = support',cY]]});
+D('Doji After Downtrend','Doji After Uptrend','Candlesticks','neu','candle indecision open equals close',{p:LD(.88,.80,.72,.64,.56),k:{...K,c:[[.56,.56,.65,.46]]},a:[[.53,.60],[.60,.66],[.68,.72],[.78,.78],[.90,.84]],l:[DT(.06,.70),[.40,.34,'Doji: open = close → indecision',cY],[.50,.92,'Wait for the next candle',cB]]});
+D('Bullish Marubozu','Bearish Marubozu','Candlesticks','bull','candle momentum no wick strong',{p:LD(.52,.50,.54,.50,.52),k:{...K,c:[[.52,.68,.68,.52]]},a:[[.53,.72],[.60,.76],[.68,.80],[.78,.84],[.90,.90]],l:[[.06,.64,'Quiet market',cY],[.40,.36,'Marubozu: no wicks = strong buyers',cG]]});
+D('Inverted Hammer','Hanging Man','Candlesticks','bull','candle reversal long upper wick',{p:LD(.86,.78,.70,.60,.50),k:{...K,c:[[.46,.49,.64,.45]]},a:[[.53,.54],[.60,.62],[.68,.70],[.78,.78],[.90,.86]],l:[DT(.06,.68),[.36,.28,'Inverted hammer: long upper wick',cG,'Hanging man: long lower wick',cR],[.55,.38,'Needs a green candle to confirm',cB,'Needs a red candle to confirm']]});
+D('Dragonfly Doji','Gravestone Doji','Candlesticks','bull','candle reversal long lower wick',{p:LD(.84,.76,.68,.60,.54),k:{...K,c:[[.52,.52,.53,.36]]},a:[[.53,.58],[.60,.64],[.68,.70],[.78,.76],[.90,.82]],l:[DT(.06,.64),[.38,.26,'Dragonfly doji: sellers rejected',cG,'Gravestone doji: buyers rejected',cR]]});
+D('Inside Bar Breakout','Inside Bar Breakdown','Candlesticks','bull','candle inside bar mother bar',{p:LD(.38,.44,.50,.54,.57),k:{...K,c:[[.57,.68,.70,.55],[.60,.63,.65,.58],[.63,.78,.80,.62]]},ln:[[.44,.70,.66,.70,cY],[.44,.55,.66,.55,cY]],a:[[.65,.80],[.72,.84],[.80,.88],[.90,.92]],l:[[.30,.44,'Mother bar',cY],[.48,.34,'Inside bar = pause',cY],[.62,.48,'Breakout ✔',cG]]});
+D('Rising Three Methods','Falling Three Methods','Candlesticks','bull','candle continuation small pullback candles',{p:LD(.20,.28,.36,.42,.46),k:{...K,c:[[.46,.64,.65,.45],[.62,.58,.63,.57],[.58,.54,.60,.53],[.55,.52,.57,.51],[.52,.72,.73,.51]]},ln:[[.43,.65,.72,.65,cY],[.43,.45,.72,.45,cY]],a:[[.77,.74],[.84,.80],[.92,.86]],l:[UT(.06,.10),[.40,.78,'Big green',cG,'Big red',cR],[.50,.34,'Small pullbacks stay inside',cY],[.62,.90,'Trend resumes ✔',cG]]});
+
+/* ---------- mirror text helper ---------- */
+const SWP=[['Resistance','Support'],['Breakout','Breakdown'],['Buyers','Sellers'],['Bullish','Bearish'],['Bull','Bear'],['Higher','Lower'],['Highs','Lows'],['High','Low'],['Rally','Drop'],['Demand','Supply'],['Uptrend','Downtrend'],['Top','Bottom'],['Above','Below'],['Buy','Sell'],['Up','Down'],['HH','LL'],['HL','LH'],['↑','↓'],['▲','▼']],SM={};
+SWP.forEach(([a,b])=>[[a,b],[b,a],[a.toLowerCase(),b.toLowerCase()],[b.toLowerCase(),a.toLowerCase()]].forEach(([x,y])=>{if(!(x in SM))SM[x]=y}));
+const SRE=new RegExp('(?<![A-Za-z])('+Object.keys(SM).sort((a,b)=>b.length-a.length).map(k=>k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|')+')(?![A-Za-z])','g'),swap=s=>s.replace(SRE,m=>SM[m]);
+const CATS=['Breakouts','Traps','Reversals','Continuation','Structure','Candlesticks'],CI={Breakouts:'🚀',Traps:'🪤',Reversals:'🔄',Continuation:'➡️',Structure:'🏗',Candlesticks:'🕯'};
+const LS=[];DEF.forEach(d=>{const dw={bull:'bullish buy long up tezi',bear:'bearish sell short down mandi',neu:'neutral'};
+ LS.push({id:LS.length,n:d.n,cat:d.cat,dir:d.d,d:d.o,mir:0,hay:(d.n+' '+(d.n2||'')+' '+d.cat+' '+d.tags+' '+dw[d.d]).toLowerCase()});
+ if(d.n2){const dd=d.d==='bull'?'bear':d.d==='bear'?'bull':'neu';LS.push({id:LS.length,n:d.n2,cat:d.cat,dir:dd,d:d.o,mir:1,hay:(d.n2+' '+d.n+' '+d.cat+' '+d.tags+' '+dw[dd]).toLowerCase()})}});
+function build(L){const d=L.d,M=L.mir,Y=p=>(M?p:1-p)*H,X=x=>x*W,cw=d.k?36:+$('#cw').value,sw=c=>M&&(c===cR||c===cG)?(c===cR?cG:cR):c;
+ I=[];rev=0;play=false;
+ (d.z||[]).forEach(z=>I.push({t:'z',a:[X(z[2]),Y(z[0])],b:[X(z[3]),Y(z[1])],c:sw(z[4]),w:2}));
+ (d.ln||[]).forEach(l=>I.push({t:'ln',a:[X(l[0]),Y(l[1])],b:[X(l[2]),Y(l[3])],c:sw(l[4]),w:3}));
+ if(d.pl)I.push({t:'pl',c:d.pl[1],w:4,pts:d.pl[0].map(q=>[X(q[0]),Y(q[1])])});
+ const pts=d.p.map(q=>[X(q[0]),Y(q[1])]);if(!d.k)I.push({t:'g',c:'#f59e0b',w:3,pts,thin:1});
+ mkCandles(pts,cw);
+ if(d.k){const cs=d.k.c.map((q,i)=>{const o=Y(q[0]),c=Y(q[1]),a=Y(q[2]),b=Y(q[3]);return{x:X(d.k.x+i*d.k.s),o,c,h:Math.min(a,b,o,c),l:Math.max(a,b,o,c),w:X(d.k.w)}});I.push({t:'k',cs})}
+ if(d.a)mkCandles(d.a.map(q=>[X(q[0]),Y(q[1])]),cw);
+ const xs=[];I.forEach(i=>i.cs&&i.cs.forEach(c=>xs.push(c.x)));
+ g.font='700 24px system-ui';
+ (d.l||[]).forEach(l=>{const s=M?(l[4]||swap(l[2])):l[2],c=M&&l[5]?l[5]:l[3],w=g.measureText(s).width,x=Math.max(16,Math.min(X(l[0]),W-w-24));
+  I.push({t:'x',s,x,y:Math.max(.05*H,Math.min(.94*H,Y(l[1]))),c,fs:24,bg:1,at:xs.filter(v=>v<=X(l[0])+1).length})});
+ play=true}
+function lesson(id){build(LS[id]);toast(LS[id].n+': press Space to pause and explain')}
+
 /* ---------- drawing ---------- */
 const path=p=>{g.beginPath();p.forEach((q,i)=>i?g.lineTo(q[0],q[1]):g.moveTo(q[0],q[1]))};
 function candle(c,r){if(r<=0)return;const t=Math.min(1,r),cl=c.o+(c.c-c.o)*t,top=Math.min(c.o,cl)-(Math.min(c.o,c.c)-c.h)*t,bot=Math.max(c.o,cl)+(c.l-Math.max(c.o,c.c))*t,k=c.c<=c.o?'#22c55e':'#ef4444';
@@ -57,6 +157,7 @@ function candle(c,r){if(r<=0)return;const t=Math.min(1,r),cl=c.o+(c.c-c.o)*t,top
 function item(it){if(it.at!=null&&rev<it.at)return;g.save();g.lineCap='round';g.lineJoin='round';const c=C(it.c);
  if(it.pts){if(it.t==='g'&&!$('#sp').checked){g.restore();return}g.strokeStyle=c;g.lineWidth=it.t==='h'?it.w*4:it.w;g.globalAlpha=it.t==='h'?.35:it.t==='g'?.7:1;if(it.t==='g')g.setLineDash(it.thin?[10,8]:[8,8]);path(it.pts);g.stroke()}
  else if(it.t==='a'){const a=it.a,b=it.b,an=Math.atan2(b[1]-a[1],b[0]-a[0]),hl=12+it.w*2;g.strokeStyle=g.fillStyle=c;g.lineWidth=it.w;g.beginPath();g.moveTo(a[0],a[1]);g.lineTo(b[0],b[1]);g.stroke();g.beginPath();g.moveTo(b[0],b[1]);g.lineTo(b[0]-hl*Math.cos(an-.45),b[1]-hl*Math.sin(an-.45));g.lineTo(b[0]-hl*Math.cos(an+.45),b[1]-hl*Math.sin(an+.45));g.closePath();g.fill()}
+ else if(it.t==='ln'){g.strokeStyle=c;g.lineWidth=it.w;g.setLineDash([12,8]);g.beginPath();g.moveTo(it.a[0],it.a[1]);g.lineTo(it.b[0],it.b[1]);g.stroke()}
  else if(it.t==='z'){const x=Math.min(it.a[0],it.b[0]),y=Math.min(it.a[1],it.b[1]),w=Math.abs(it.a[0]-it.b[0]),h=Math.abs(it.a[1]-it.b[1]);g.fillStyle=c;g.globalAlpha=.2;g.fillRect(x,y,w,h);g.globalAlpha=1;g.strokeStyle=c;g.lineWidth=2;g.strokeRect(x,y,w,h)}
  else if(it.t==='x'){g.font=`700 ${it.fs}px system-ui`;g.textBaseline='middle';const w=g.measureText(it.s).width;if(it.bg){g.fillStyle=c;g.globalAlpha=.92;g.beginPath();g.roundRect(it.x-8,it.y-it.fs*.7,w+16,it.fs*1.4,8);g.fill();g.globalAlpha=1;g.fillStyle='#0b0f14'}else g.fillStyle=c;g.fillText(it.s,it.x,it.y)}
  g.restore()}
@@ -71,7 +172,7 @@ function draw(){g.fillStyle=TH[th].bg;g.fillRect(0,0,W,H);
 /* ---------- input ---------- */
 const pos=e=>{const r=cv.getBoundingClientRect();return[(e.clientX-r.left)*W/r.width,(e.clientY-r.top)*H/r.height]};
 function segd(a,b,x,y){const dx=b[0]-a[0],dy=b[1]-a[1],L=dx*dx+dy*dy||1,u=Math.max(0,Math.min(1,((x-a[0])*dx+(y-a[1])*dy)/L));return Math.hypot(x-a[0]-u*dx,y-a[1]-u*dy)}
-function hit(it,x,y){if(it.pts)return it.pts.some(p=>Math.hypot(p[0]-x,p[1]-y)<12);if(it.t==='a')return segd(it.a,it.b,x,y)<10;
+function hit(it,x,y){if(it.pts)return it.pts.some(p=>Math.hypot(p[0]-x,p[1]-y)<12);if(it.t==='a'||it.t==='ln')return segd(it.a,it.b,x,y)<10;
  if(it.t==='z')return x>=Math.min(it.a[0],it.b[0])&&x<=Math.max(it.a[0],it.b[0])&&y>=Math.min(it.a[1],it.b[1])&&y<=Math.max(it.a[1],it.b[1]);
  if(it.t==='x'){g.font=`700 ${it.fs}px system-ui`;return x>=it.x-8&&x<=it.x+g.measureText(it.s).width+8&&Math.abs(y-it.y)<it.fs}
  if(it.cs)return it.cs.some(c=>Math.abs(c.x-x)<c.w&&y>=c.h-4&&y<=c.l+4);return false}
@@ -88,13 +189,12 @@ cv.onpointerup=()=>{if(!cur)return;const c=cur;cur=null;
  else if(c.b&&Math.hypot(c.b[0]-c.a[0],c.b[1]-c.a[1])>6)I.push(c)};
 document.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{tool=b.dataset.t;document.querySelectorAll('[data-t]').forEach(x=>x.classList.toggle('on',x===b));cv.style.cursor=tool==='l'?'none':'crosshair';if(tool==='k')toast('Draw the price path left to right: candles will follow it')});
 ['ink','#facc15','#22c55e','#ef4444','#38bdf8','#f472b6'].forEach((c,i)=>{const b=document.createElement('button');b.className='sw'+(i==1?' on':'');b.style.background=c==='ink'?'linear-gradient(135deg,#fff 50%,#111 50%)':c;b.onclick=()=>{col=c;document.querySelectorAll('.sw').forEach(x=>x.classList.toggle('on',x===b))};$('#cols').appendChild(b)});
-document.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>lesson(b.dataset.c));
 $('#pl').onclick=()=>{if(rev>=tot())rev=0;play=!play};$('#st').onclick=()=>{rev=Math.min(tot(),Math.floor(rev)+1);play=false};$('#rp').onclick=()=>{rev=0;play=true};
-$('#un').onclick=()=>{I.pop();rev=Math.min(rev,tot())};$('#cl').onclick=()=>{if(!I.length||confirm('Reset the board? Everything will be erased.')){I=[];rev=0;play=false}};
+
 $('#th').onchange=e=>th=e.target.value;
 function lay(){const h=$('#bar').classList.contains('h')?0:$('#bar').offsetHeight;document.querySelector('.stage').style.paddingTop=h+'px';$('#mn').style.display=h?'none':'block'}
 $('#hide').onclick=()=>{$('#bar').classList.add('h');lay()};$('#mn').onclick=()=>{$('#bar').classList.remove('h');lay()};addEventListener('resize',lay);lay();
-document.addEventListener('keydown',e=>{if(/INPUT|SELECT|TEXTAREA/.test(e.target.tagName))return;if(e.code==='Space'){e.preventDefault();$('#pl').click()}else if(e.key==='ArrowRight')$('#st').click();else if((e.ctrlKey||e.metaKey)&&e.key==='z'){e.preventDefault();$('#un').click()}});
+document.addEventListener('keydown',e=>{if(/INPUT|SELECT|TEXTAREA/.test(e.target.tagName)||pop.contains(e.target)||document.querySelector('.ov.on'))return;if(e.code==='Space'){e.preventDefault();$('#pl').click()}else if(e.key==='ArrowRight')$('#st').click();else if((e.ctrlKey||e.metaKey)&&e.key==='z'){e.preventDefault();$('#un').click()}});
 /* ---------- record + download ---------- */
 $('#rec').onclick=async()=>{
  if(mr&&mr.state==='recording'){mr.stop();return}
@@ -108,4 +208,42 @@ $('#rec').onclick=async()=>{
 $('#hpb').onclick=()=>$('#hov').classList.add('on');$('#hgo').onclick=()=>{$('#hov').classList.remove('on');try{localStorage.setItem('cls_seen',1)}catch(e){}};try{if(!localStorage.getItem('cls_seen'))$('#hov').classList.add('on')}catch(e){}
 /* ---------- loop ---------- */
 let last=performance.now();(function loop(now){const dt=(now-last)/1e3;last=now;const n=tot();if(play&&rev<n){rev=Math.min(n,rev+dt*+$('#spd').value);if(rev>=n)play=false}$('#pl').textContent=play?'⏸ Pause':'▶ Play';draw();requestAnimationFrame(loop)})(last);
+/* ---------- Lessons dropdown (search + filters) ---------- */
+let rec_=[],fCat='All',fDir='all';try{rec_=JSON.parse(localStorage.getItem('cls_recent')||'[]').filter(i=>LS[i])}catch(e){}
+const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;'),pop=$('#pop'),isOpen=()=>pop.classList.contains('on');
+function pv(L){const d=L.d,M=L.mir,Yv=p=>((M?p:1-p)*32+2).toFixed(1),pts=d.p.slice();if(d.a)pts.push(...d.a);
+ pts.sort((a,b)=>a[0]-b[0]);const col=L.dir==='bull'?'#22c55e':L.dir==='bear'?'#ef4444':'#94a3b8';
+ let s='<svg viewBox="0 0 64 36"><polyline fill="none" stroke="'+col+'" stroke-width="1.8" stroke-linejoin="round" points="'+pts.map(q=>(q[0]*64).toFixed(1)+','+Yv(q[1])).join(' ')+'"/>';
+ if(d.k)d.k.c.forEach((q,i)=>{const x=((d.k.x+i*d.k.s)*64).toFixed(1),up=(q[1]>q[0])!==!!M,c=up?'#22c55e':'#ef4444',y1=+Yv(q[0]),y2=+Yv(q[1]);
+  s+='<line x1="'+x+'" x2="'+x+'" y1="'+Yv(q[2])+'" y2="'+Yv(q[3])+'" stroke="'+c+'"/><rect x="'+(x-2.2)+'" y="'+Math.min(y1,y2)+'" width="4.4" height="'+Math.max(1.5,Math.abs(y1-y2))+'" fill="'+c+'"/>'});
+ return s+'</svg>'}
+LS.forEach(L=>L.svg=pv(L));$('#lsn').textContent='('+LS.length+')';
+const dot={bull:'🟢',bear:'🔴',neu:'⚪'},liHtml=L=>'<button class="li" data-i="'+L.id+'">'+L.svg+'<span><b>'+dot[L.dir]+' '+esc(L.n)+'</b><small>'+CI[L.cat]+' '+L.cat+'</small></span></button>';
+function render(){const q=$('#q').value.trim().toLowerCase().split(/\s+/).filter(Boolean);let h='',n=0;
+ const ok=L=>(fCat==='All'||L.cat===fCat)&&(fDir==='all'||L.dir===fDir)&&q.every(t=>L.hay.includes(t));
+ if(!q.length&&fCat==='All'&&fDir==='all'&&rec_.length)h+='<div class="hd">⏱ Recently used</div><div class="gr">'+rec_.map(i=>liHtml(LS[i])).join('')+'</div>';
+ CATS.forEach(c=>{const a=LS.filter(L=>L.cat===c&&ok(L));if(a.length){n+=a.length;h+='<div class="hd">'+CI[c]+' '+c+'<i>'+a.length+'</i></div><div class="gr">'+a.map(liHtml).join('')+'</div>'}});
+ $('#plist').innerHTML=h||'<div class="none">😕 No lesson found.<br>Try “flag”, “hammer”, “trap”, “double”, “sell”…</div>';$('#plist').scrollTop=0}
+function chips(box,arr,get,set){box.innerHTML='';arr.forEach(([v,t])=>{const b=document.createElement('button');b.className='chip'+(get()===v?' on':'');b.textContent=t;b.onclick=()=>{set(v);box.querySelectorAll('.chip').forEach(x=>x.classList.toggle('on',x===b));render()};box.appendChild(b)})}
+chips($('#chips'),[['All','All'],...CATS.map(c=>[c,CI[c]+' '+c])],()=>fCat,v=>fCat=v);
+chips($('#dirs'),[['all','All directions'],['bull','🟢 Bullish / Buy'],['bear','🔴 Bearish / Sell']],()=>fDir,v=>fDir=v);
+function openPop(){const b=$('#lsb').getBoundingClientRect(),br=$('#bar').getBoundingClientRect();pop.classList.add('on');
+ pop.style.left=Math.max(8,Math.min(b.left,innerWidth-pop.offsetWidth-8))+'px';pop.style.top=(br.bottom+6)+'px';pop.style.maxHeight=(innerHeight-br.bottom-16)+'px';render();$('#q').focus();$('#q').select()}
+const closePop=()=>pop.classList.remove('on');
+$('#lsb').onclick=()=>isOpen()?closePop():openPop();
+$('#q').oninput=render;
+$('#plist').onclick=e=>{const b=e.target.closest('.li');if(!b)return;const id=+b.dataset.i;rec_=[id,...rec_.filter(x=>x!==id)].slice(0,4);try{localStorage.setItem('cls_recent',JSON.stringify(rec_))}catch(e){}closePop();lesson(id)};
+pop.addEventListener('keydown',e=>{if(e.key==='Escape'){closePop();$('#lsb').focus();return}
+ if(e.key==='Enter'&&e.target.id==='q'){const f=pop.querySelector('.li');if(f)f.click();return}
+ if(/^Arrow(Down|Up|Left|Right)$/.test(e.key)&&!(e.target.id==='q'&&/Left|Right/.test(e.key))){const it=[...pop.querySelectorAll('.li')];let i=it.indexOf(document.activeElement);i+=/Down|Right/.test(e.key)?1:-1;e.preventDefault();if(i<0)$('#q').focus();else if(it.length)it[Math.min(i,it.length-1)].focus()}});
+document.addEventListener('pointerdown',e=>{if(isOpen()&&!pop.contains(e.target)&&!$('#lsb').contains(e.target))closePop()});
+/* ---------- Reset with confirm + undo ---------- */
+let bak=null;
+$('#cl').onclick=()=>{if(!I.length){toast('Board is already empty');return}$('#cov').classList.add('on');$('#cyes').focus()};
+$('#cno').onclick=()=>$('#cov').classList.remove('on');
+$('#cyes').onclick=()=>{bak=I;I=[];rev=0;play=false;laser=[];$('#cov').classList.remove('on');toast('Board reset. Press ↶ Undo to bring it back')};
+$('#un').onclick=()=>{if(!I.length&&bak){I=bak;bak=null;rev=tot();toast('Board restored');return}I.pop();rev=Math.min(rev,tot())};
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){$('#cov').classList.remove('on');$('#hov').classList.remove('on');closePop();return}
+ if((e.key==='/'&&!/INPUT|SELECT|TEXTAREA/.test(e.target.tagName))||((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k')){e.preventDefault();openPop()}});
+
 </script></body></html>
