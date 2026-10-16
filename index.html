@@ -1,45 +1,86 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>BFT Trade Lab – Backtest & Forward Test BANKNIFTY</title>
-<meta name="description" content="Practise your strategy on real BANKNIFTY history with demo money. Backtest, then forward-test on unseen data before risking real money.">
+<title>BFT Trade Lab – Learn, Practise, Prove and Journal your trading</title>
+<meta name="description" content="Learn price action in the Academy, practise on real BANKNIFTY history, prove your edge on unseen data and find your costly habits in the Premium Journal.">
+<meta name="theme-color" content="#070b14">
 <style>
-:root{--bg:#0b1220;--pn:#111a2e;--ln:#1f2b45;--tx:#e6edf7;--mu:#8a98b3;--ac:#3b82f6;--up:#16c784;--dn:#ea3943}
-@media(prefers-color-scheme:light){:root{--bg:#f4f7fb;--pn:#fff;--ln:#dbe3ee;--tx:#0f172a;--mu:#5b6b85}}
-*{box-sizing:border-box;margin:0}html{scroll-behavior:smooth}body{background:var(--bg);color:var(--tx);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
-a{color:inherit;text-decoration:none}.w{max-width:1040px;margin:0 auto;padding:0 20px}
-nav{display:flex;align-items:center;gap:18px;padding:16px 0}nav b{font-size:18px}nav b i{font-style:normal;color:var(--ac)}nav a.l{color:var(--mu);font-size:14px}nav .sp{flex:1}
-.btn{display:inline-block;background:var(--ac);color:#fff;font-weight:700;border-radius:10px;padding:12px 22px}.btn.o{background:none;border:1px solid var(--ln);color:var(--tx)}
-.hero{padding:56px 0 40px;text-align:center}.hero h1{font-size:clamp(30px,6vw,52px);line-height:1.12;letter-spacing:-.02em;max-width:800px;margin:0 auto}.hero h1 span{color:var(--ac)}
-.hero p{color:var(--mu);max-width:620px;margin:18px auto 26px;font-size:18px}.hero .bt{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-.chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:22px}.chips span{font-size:12px;border:1px solid var(--ln);background:var(--pn);border-radius:99px;padding:5px 12px;color:var(--mu)}
-.g3,.g2{display:grid;gap:14px}.g3{grid-template-columns:repeat(3,1fr)}.g2{grid-template-columns:1fr 1fr}
-.c{background:var(--pn);border:1px solid var(--ln);border-radius:16px;padding:22px}.c h3{font-size:18px;margin-bottom:6px}.c p,.c li{color:var(--mu);font-size:14.5px}.c ul{padding-left:18px;margin:10px 0 16px}
-.sec{padding:34px 0}.sec>h2{font-size:26px;margin-bottom:6px}.sec>.s{color:var(--mu);margin-bottom:20px}
-.ic{font-size:26px;margin-bottom:8px}.tag{display:inline-block;font-size:11px;font-weight:800;padding:3px 8px;border-radius:6px;background:var(--ac);color:#fff;margin-bottom:10px}.tag.g{background:var(--ln);color:var(--mu)}
-.warn{border:1px solid var(--ln);border-radius:12px;padding:14px 16px;color:var(--mu);font-size:13px;margin:10px 0 30px}
-.nb{padding:8px 14px;font-size:14px}.cl{border-color:var(--ac);box-shadow:0 0 0 1px var(--ac)}.c .btn{margin-top:4px}
-footer{border-top:1px solid var(--ln);padding:22px 0 34px;color:var(--mu);font-size:13px;text-align:center}
-@media(max-width:800px){.g3,.g2{grid-template-columns:1fr}nav a.l{display:none}}
-</style></head><body><div class="w">
-<nav><b>BFT <i>Trade Lab</i></b><a class="l" href="#why">Why</a><a class="l" href="#tools">Tools</a><a class="l" href="#how">How it works</a><a class="btn o nb" href="classroom.html">🎓 Classroom</a><span class="sp"></span><a class="btn nb" href="trade-lab-pro.html">Open Pro Lab</a></nav>
-<header class="hero"><h1>Test your strategy on <span>real market history</span> before you risk real money</h1>
-<p>Replay BANKNIFTY candle by candle with demo money, real-style costs and no hindsight. Then prove it on data you have never seen.</p>
-<div class="bt"><a class="btn" href="trade-lab-pro.html">🚀 Start practising free</a><a class="btn o" href="classroom.html">🎓 Open Classroom</a></div>
-<div class="chips"><span>₹10,00,000 demo money</span><span>BANKNIFTY 5-min data</span><span>Zones &amp; drawing tools</span><span>5 themes</span><span>🎓 Teach &amp; record video</span><span>Works on mobile</span></div></header>
+:root{--bg:#070b14;--tx:#e8eefb;--mu:#8e9bb8;--ln:rgba(255,255,255,.1);--gl:rgba(255,255,255,.05);--ac:#6aa5ff;--ac2:#a78bfa;--gold:#f5c76b;--ok:#3ddc97;--ink:#06101f}
+@media(prefers-color-scheme:light){:root{--bg:#f5f7fc;--tx:#0f172a;--mu:#55617a;--ln:rgba(15,23,42,.12);--gl:#fff;--ac:#2f6fe4;--ac2:#7c5ce6;--gold:#b7791f;--ok:#0f9d63;--ink:#fff}}
+*{box-sizing:border-box;margin:0}html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--tx);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradient(900px 500px at 10% -8%,rgba(106,165,255,.2),transparent 60%),radial-gradient(800px 500px at 100% 8%,rgba(167,139,250,.16),transparent 60%),radial-gradient(700px 500px at 50% 112%,rgba(245,199,107,.08),transparent 60%)}
+a{color:inherit;text-decoration:none}:focus-visible{outline:2px solid var(--ac);outline-offset:3px;border-radius:8px}
+.w{max-width:1100px;margin:0 auto;padding:0 20px}
+nav{position:sticky;top:0;z-index:20;backdrop-filter:blur(14px);background:color-mix(in srgb,var(--bg) 78%,transparent);border-bottom:1px solid var(--ln)}
+nav .w{display:flex;align-items:center;gap:6px;height:62px}nav b{font-size:18px;margin-right:14px;letter-spacing:-.01em}nav b i{font-style:normal;background:linear-gradient(90deg,var(--ac),var(--ac2));-webkit-background-clip:text;background-clip:text;color:transparent}
+nav .l{color:var(--mu);font-size:14px;padding:8px 11px;border-radius:9px}nav .l:hover{color:var(--tx);background:var(--gl)}nav .sp{flex:1}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:12px;padding:13px 24px;font-weight:700;font-size:15px;background:linear-gradient(135deg,var(--ac),var(--ac2));color:var(--ink);box-shadow:0 8px 28px rgba(106,165,255,.28);transition:.2s;cursor:pointer}
+.btn:hover{transform:translateY(-2px)}.btn.o{background:var(--gl);border:1px solid var(--ln);color:var(--tx);box-shadow:none}.btn.g{background:linear-gradient(135deg,var(--gold),#ffdf9c);color:#2a1d00;box-shadow:0 8px 28px rgba(245,199,107,.25)}.btn.s{padding:9px 16px;font-size:14px}
+.hero{padding:72px 0 30px;text-align:center}.pill{display:inline-block;border:1px solid var(--ln);background:var(--gl);border-radius:99px;padding:6px 14px;font-size:13px;color:var(--mu);margin-bottom:20px}
+.hero h1{font-size:clamp(34px,6.2vw,62px);line-height:1.07;letter-spacing:-.03em;max-width:860px;margin:0 auto}.hero h1 span{background:linear-gradient(90deg,var(--ac),var(--ac2) 60%,var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{color:var(--mu);font-size:19px;max-width:640px;margin:20px auto 28px}.bt{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.trust{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:26px}.trust span{font-size:13px;color:var(--mu);border:1px solid var(--ln);background:var(--gl);border-radius:99px;padding:5px 13px}
+#cont{display:none;margin:26px auto 0;max-width:680px;border:1px solid var(--ln);background:var(--gl);border-radius:14px;padding:12px 16px;font-size:14px;color:var(--mu);gap:10px 18px;flex-wrap:wrap;justify-content:center;align-items:center}#cont b{color:var(--tx)}#cont a{color:var(--ac);font-weight:700}
+.sec{padding:54px 0}.sec h2{font-size:clamp(26px,4vw,36px);letter-spacing:-.02em;text-align:center}.sub{color:var(--mu);text-align:center;margin:8px auto 28px;max-width:600px}
+.g2,.g3,.g4{display:grid;gap:16px}.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+.card{position:relative;display:block;background:var(--gl);border:1px solid var(--ln);border-radius:20px;padding:24px;transition:.25s;overflow:hidden}
+a.card:hover{transform:translateY(-4px);border-color:var(--ac)}.card h3{font-size:20px;margin:6px 0}.card p,.card li{color:var(--mu);font-size:14.5px}.card ul{list-style:none;margin:12px 0 16px;display:grid;gap:6px}.card li:before{content:"✓";color:var(--ok);font-weight:800;margin-right:8px}
+.ic{font-size:30px}.tag{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.07em;padding:3px 9px;border-radius:6px;background:rgba(245,199,107,.18);color:var(--gold)}.tag.f{background:rgba(61,220,151,.16);color:var(--ok)}
+.hl{border-color:rgba(245,199,107,.45);box-shadow:0 0 0 1px rgba(245,199,107,.12),0 24px 70px rgba(245,199,107,.07)}
+.step{text-align:center}.step .n{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;margin:0 auto 10px;font-weight:800;background:linear-gradient(135deg,var(--ac),var(--ac2));color:var(--ink)}
+.fq details{border:1px solid var(--ln);border-radius:14px;margin-bottom:10px;background:var(--gl);max-width:760px;margin-inline:auto}.fq summary{padding:16px 20px;font-weight:700;cursor:pointer}.fq p{padding:0 20px 16px;color:var(--mu)}
+.cta{text-align:center;padding:40px 20px;border-radius:24px;border:1px solid var(--ln);background:var(--gl)}.cta h2{margin-bottom:8px}
+.warn{color:var(--mu);font-size:13px;border:1px solid var(--ln);border-radius:12px;padding:14px 16px;margin:30px 0 10px}
+footer{border-top:1px solid var(--ln);padding:26px 0 40px;color:var(--mu);font-size:13px;text-align:center}footer a{text-decoration:underline;margin:0 8px}
+.rv{opacity:0;transform:translateY(14px);transition:.6s}.rv.in{opacity:1;transform:none}
+@media(max-width:900px){.g3,.g4{grid-template-columns:1fr 1fr}nav .l{display:none}}@media(max-width:620px){.g2,.g3,.g4{grid-template-columns:1fr}.hero{padding-top:44px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}.rv{opacity:1;transform:none}}
+</style></head><body>
+<nav><div class="w"><a href="index.html"><b>BFT <i>Trade Lab</i></b></a><a class="l" href="journal.html">Journal</a><a class="l" href="academy.html">Academy</a><a class="l" href="trade-lab-pro.html">Pro Lab</a><a class="l" href="classroom.html">Classroom</a><a class="l" href="#features">Features</a><span class="sp"></span><a class="btn o s" href="academy.html">🎓 Academy</a><a class="btn g s" href="journal.html">⭐ Premium Journal</a></div></nav>
 
-<section class="sec" id="tools"><h2>Pick a tool and start in 30 seconds</h2><p class="s">No sign-up. Everything runs in your browser.</p>
-<div class="g3"><div class="c" id="backtesting"><div class="ic">📊</div><span class="tag">PRO LAB</span><h3>Trade Lab Pro</h3><p>Practise like a broker terminal with demo money.</p><ul><li>BUY / SELL, SL, TP, trailing, pending orders</li><li>Backtest, then locked Forward Test</li><li>Zones, indicators, Pencil Path scenarios</li></ul><a class="btn" href="trade-lab-pro.html">Open Pro Lab →</a></div>
-<div class="c cl"><div class="ic">🎓</div><span class="tag">CLASSROOM</span><h3>Classroom Board</h3><p>Teach price action on a blank board.</p><ul><li>Draw a path and the candles follow it</li><li>100+ ready lessons: breakouts, traps, patterns, candlesticks</li><li>Record your voice and download the video</li></ul><a class="btn" href="classroom.html">Open Classroom →</a></div>
-<div class="c" id="forward-testing"><div class="ic">🧪</div><span class="tag g">CLASSIC</span><h3>Backtesting Lab</h3><p>The original replay workspace.</p><ul><li>Trade journal with setup and emotion</li><li>Strategy analytics, multi-timeframe</li><li>Save sessions and cloud sync</li></ul><a class="btn o" href="backtest.html">Open Classic Lab →</a></div></div>
-<div class="g2" style="margin-top:14px"><a class="c cl" href="journal.html"><span class="tag">NEW</span><h3>Premium Journal</h3><p>Equity curve, leak finder, tilt meter and a pre-trade gate. Find the habits costing you money.</p><span class="btn nb" style="margin-top:8px">Open Journal</span></a><div class="c"><span class="tag g">COMING SOON</span><h3>More markets</h3><p>BTC, Gold and more instruments. Load your own data today with the Data button.</p></div></div></section>
-<section class="sec" id="why"><h2>Why most strategies fail in real life</h2><p class="s">A backtest that looks great is easy to build. One that survives live trading is not.</p>
-<div class="g3"><div class="c"><div class="ic">🙈</div><h3>Hindsight bias</h3><p>You already know what happened next. Blind mode hides the date so you trade the chart, not your memory.</p></div>
-<div class="c"><div class="ic">💸</div><h3>Costs and spread ignored</h3><p>Brokerage, charges and spread quietly turn paper profits into losses. Every trade here includes them.</p></div>
-<div class="c"><div class="ic">🔒</div><h3>Over-fitted rules</h3><p>Lock your rules, then test on reserved data you never saw. Honest proof, not wishful thinking.</p></div></div></section>
+<header class="hero"><div class="w"><span class="pill">🇮🇳 Built for Indian retail traders · BANKNIFTY 5-min data</span>
+<h1>Learn it. Practise it. <span>Prove it.</span> Journal it.</h1>
+<p>One workspace to learn price action, replay real market history with demo money, test your edge on unseen data, and find the habits that cost you money.</p>
+<div class="bt"><a class="btn g" href="journal.html">⭐ Open Premium Journal</a><a class="btn" href="academy.html">🎓 Start the Academy</a><a class="btn o" href="trade-lab-pro.html">📊 Open Pro Lab</a></div>
+<div class="trust"><span>No sign-up to try</span><span>Runs in your browser</span><span>Works on mobile</span><span>Education only · no tips or signals</span></div>
+<div id="cont" role="status"></div></div></header>
 
-<section class="sec" id="how"><h2>How it works</h2><p class="s">Three steps, about five minutes to your first honest result.</p>
-<div class="g3"><div class="c"><div class="ic">1️⃣</div><h3>Practise</h3><p>Pick any past day. Press Next to reveal candles and trade with demo money. Mark zones as you go.</p></div>
-<div class="c"><div class="ic">2️⃣</div><h3>Lock your rules</h3><p>Write your exact rules and lock them. No edits, no rewinding, no peeking.</p></div>
-<div class="c"><div class="ic">3️⃣</div><h3>Forward test</h3><p>Trade the reserved unseen period. The lab compares Backtest and Forward and tells you if your edge held up.</p></div></div></section>
+<section class="sec" id="tools"><div class="w"><h2 class="rv">Everything you need, in one place</h2><p class="sub rv">Start with whatever fits you today. Each tool links to the next.</p>
+<div class="g2">
+<a class="card hl rv" href="journal.html"><span class="tag">PREMIUM</span><div class="ic">📒</div><h3>Premium Journal</h3><p>Know exactly where your money leaks.</p><ul><li>Equity curve, calendar and win/loss stats</li><li>Leak finder and tilt meter</li><li>Pre-trade gate that checks your own rules</li><li>Import CSV, export any time</li></ul><span class="btn g s">Open Journal →</span></a>
+<a class="card hl rv" href="academy.html"><span class="tag">PREMIUM</span><div class="ic">🎓</div><h3>BFT Academy</h3><p>Structured price-action learning, then practice.</p><ul><li>Step-by-step video lessons with saved progress</li><li>Books and guides to read in the app</li><li>Every lesson links to a practice board</li><li>Free lessons to try first</li></ul><span class="btn s">Open Academy →</span></a>
+<a class="card rv" href="trade-lab-pro.html"><span class="tag f">FREE</span><div class="ic">📊</div><h3>Trade Lab Pro</h3><p>Broker-style terminal with demo money.</p><ul><li>BUY / SELL, SL, TP, trailing, pending orders</li><li>Backtest, then locked Forward Test</li><li>Zones, indicators, Pencil Path scenarios</li></ul><span class="btn o s">Open Pro Lab →</span></a>
+<a class="card rv" href="classroom.html"><span class="tag f">FREE</span><div class="ic">🖍️</div><h3>Classroom Board</h3><p>Teach and learn price action on a blank board.</p><ul><li>Draw a path and the candles follow it</li><li>100+ ready lessons and patterns</li><li>Record your voice, download the video</li></ul><span class="btn o s">Open Classroom →</span></a></div>
+<p class="sub rv" style="margin-top:18px">Prefer the original? <a href="backtest.html" style="color:var(--ac);text-decoration:underline">Open the Classic Backtesting Lab</a> (journal, multi-timeframe, cloud sync).</p></div></section>
 
-<div class="warn"><b>Important:</b> BFT Trade Lab is an educational simulation using demo money and historical data. It gives no tips, signals or investment advice and does not promise profits. Past performance does not guarantee future results. Charges shown are approximate.</div>
-<footer>© BFT Trade Lab · <a href="trade-lab-pro.html" style="text-decoration:underline">Pro Lab</a> · <a href="backtest.html" style="text-decoration:underline">Classic Lab</a></footer></div></body></html>
+<section class="sec" id="how"><div class="w"><h2 class="rv">A simple path to an honest result</h2><p class="sub rv">Most traders skip steps 3 and 4. That is where real edge is found.</p>
+<div class="g4"><div class="card step rv"><div class="n">1</div><h3>Learn</h3><p>Short lessons in the Academy, in the right order.</p></div><div class="card step rv"><div class="n">2</div><h3>Practise</h3><p>Replay real history candle by candle with demo money.</p></div><div class="card step rv"><div class="n">3</div><h3>Prove</h3><p>Lock your rules, then forward-test on data you never saw.</p></div><div class="card step rv"><div class="n">4</div><h3>Review</h3><p>Log every trade and let the Journal expose your habits.</p></div></div></div></section>
+
+<section class="sec" id="features"><div class="w"><h2 class="rv">Smart features that change behaviour</h2><p class="sub rv">Not just charts. Tools that stop the mistakes you keep repeating.</p>
+<div class="g3">
+<div class="card rv"><div class="ic">🙈</div><h3>Blind mode</h3><p>Hide the date so you trade the chart, not your memory of what happened next.</p></div>
+<div class="card rv"><div class="ic">🔒</div><h3>Locked forward test</h3><p>Write your rules, lock them, then test on reserved data. No edits, no peeking.</p></div>
+<div class="card rv"><div class="ic">⚖️</div><h3>Backtest vs Forward</h3><p>See whether your edge survived data it had never seen.</p></div>
+<div class="card rv"><div class="ic">🕳️</div><h3>Leak finder</h3><p>Finds the habits, times and trade types that quietly cost you the most.</p></div>
+<div class="card rv"><div class="ic">🌡️</div><h3>Tilt meter</h3><p>Warns you when revenge trading or overtrading is building up.</p></div>
+<div class="card rv"><div class="ic">🚦</div><h3>Pre-trade gate</h3><p>Checks your trade against your own daily limits before you click.</p></div></div></div></section>
+
+<section class="sec fq" id="faq"><div class="w"><h2 class="rv" style="margin-bottom:22px">Questions</h2>
+<details><summary>Is the Lab free?</summary><p>Yes. Pro Lab and Classroom open in your browser with no sign-up. Premium Journal and Academy are the premium tools.</p></details>
+<details><summary>Where is my journal data stored?</summary><p>On your device in this browser. Use Export to keep a backup. Cloud sync is planned.</p></details>
+<details><summary>Do you give tips or signals?</summary><p>No. Everything here is education and practice using historical data and demo money.</p></details>
+<details><summary>Which market data is used?</summary><p>BANKNIFTY 5-minute history. You can load your own data in the Lab with the Data button.</p></details></div></section>
+
+<section class="sec"><div class="w"><div class="cta rv"><h2>Ready to trade with proof, not hope?</h2><p class="sub">Open the Journal for today's trades, or start the Academy from lesson one.</p><div class="bt"><a class="btn g" href="journal.html">⭐ Premium Journal</a><a class="btn" href="academy.html">🎓 Academy</a></div></div>
+<div class="warn"><b>Important:</b> BFT Trade Lab is an educational simulation using demo money and historical data. It gives no tips, signals or investment advice and does not promise profits. Past performance does not guarantee future results. Charges shown are approximate. Trading involves risk of loss.</div></div></section>
+<footer><div class="w">© <span id="yr"></span> BFT Trade Lab · <a href="journal.html">Journal</a><a href="academy.html">Academy</a><a href="trade-lab-pro.html">Pro Lab</a><a href="classroom.html">Classroom</a><a href="backtest.html">Classic Lab</a></div></footer>
+<script>
+document.getElementById('yr').textContent=new Date().getFullYear();
+const io='IntersectionObserver'in window?new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}}),{threshold:.12}):null;
+document.querySelectorAll('.rv').forEach(e=>io?io.observe(e):e.classList.add('in'));
+// "Continue" strip: reads only this browser's saved progress
+(function(){try{const p=[];let d=0;try{d=Object.keys(JSON.parse(localStorage.getItem('bftA_done'))||{}).length}catch(e){}
+if(d)p.push('🎓 <b>'+d+'</b> Academy lesson'+(d>1?'s':'')+' done · <a href="academy.html#curriculum">Continue</a>');
+let t=0;for(let i=0;i<localStorage.length;i++){try{const o=JSON.parse(localStorage.getItem(localStorage.key(i)));if(o&&Array.isArray(o.tr)&&!o.demo)t=Math.max(t,o.tr.length)}catch(e){}}
+if(t)p.push('📒 <b>'+t+'</b> trade'+(t>1?'s':'')+' in your Journal · <a href="journal.html">Review</a>');
+if(p.length){const c=document.getElementById('cont');c.innerHTML=p.join('<span>·</span>');c.style.display='flex'}}catch(e){}})();
+</script></body></html>

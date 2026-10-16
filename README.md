@@ -1,22 +1,16 @@
-# BFT Journal (Phase 0)
+# BFT Trade Lab
 
-Cinematic trading journal for Indian retail traders. Journaling and education tool, not investment advice.
+Static site (plain HTML/JS, no build step). Open `index.html` or serve the folder with any static host.
 
-## Run
-```bash
-npm install
-npm run dev          # http://localhost:5173  (add ?demo=50000 to stress-test the table)
-npm test             # Vitest: analytics fixtures (hand-calculated)
-npm run build        # typecheck + production build
-```
+| Page | What it is |
+|---|---|
+| `index.html` | Home: Premium Journal, Academy, Pro Lab, Classroom |
+| `journal.html` | Premium Journal (localStorage; CSV import/export) |
+| `academy.html` | Academy. Edit `CFG`, `COURSES`, `BOOKS` at the top of its script |
+| `trade-lab-pro.html` | Pro replay lab, backtest + locked forward test |
+| `classroom.html` | Teaching board |
+| `backtest.html` | Classic lab (Supabase login/sync) |
 
-## Database
-`supabase/migrations/0001_phase0.sql` creates the tables with RLS on all of them.
-`supabase/tests/rls.sql` is a cross-user test: `psql "$DB_URL" -f supabase/tests/rls.sql`.
-Copy `.env.example` to `.env` and fill in the URL + anon key (never the service-role key).
+Data: `bank-nifty-5m-data.csv` (Jan 2015 to Apr 2024).
 
-## Layout
-`src/design` tokens, themes, motion, GlassCard, CountUp · `src/lib/stats` pure tested analytics ·
-`src/features/{trades,table,charts,dashboard}` · `supabase/{migrations,tests}`
-
-See `DECISIONS.md` for assumptions and what is not built yet.
+Not production-ready yet: Academy paywall is client-side only, video/book links are empty, payment link and contact number are placeholders. See DECISIONS.md.
