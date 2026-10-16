@@ -1,0 +1,118 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BFT Academy – Learn Price Action, Then Practise It</title>
+<meta name="description" content="Structured price-action course, trading books and a practice lab. One-time payment, lifetime access.">
+<meta property="og:title" content="BFT Academy – Learn Price Action, Then Practise It"><meta property="og:description" content="Video lessons, trading books and a practice lab. One-time payment, lifetime access.">
+<style>
+:root{--bg:#070b14;--tx:#e8eefb;--mu:#8e9bb8;--ln:rgba(255,255,255,.09);--gl:rgba(255,255,255,.045);--ac:#6aa5ff;--ac2:#a78bfa;--gold:#f5c76b;--ok:#3ddc97}
+*{box-sizing:border-box;margin:0}html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--tx);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overflow-x:hidden}
+body:before{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradient(900px 500px at 12% -8%,rgba(106,165,255,.22),transparent 60%),radial-gradient(800px 500px at 100% 10%,rgba(167,139,250,.18),transparent 60%),radial-gradient(700px 600px at 50% 110%,rgba(245,199,107,.09),transparent 60%)}
+a{color:inherit;text-decoration:none}button{font:inherit;color:inherit;cursor:pointer}.w{max-width:1080px;margin:0 auto;padding:0 20px}
+nav{position:sticky;top:0;z-index:20;backdrop-filter:blur(14px);background:rgba(7,11,20,.7);border-bottom:1px solid var(--ln)}
+nav .w{display:flex;align-items:center;gap:20px;height:60px}nav b{font-size:18px;letter-spacing:-.01em}nav b i{font-style:normal;background:linear-gradient(90deg,var(--ac),var(--ac2));-webkit-background-clip:text;background-clip:text;color:transparent}
+nav .l{color:var(--mu);font-size:14px}nav .l:hover{color:var(--tx)}nav .sp{flex:1}
+.btn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:12px;padding:12px 22px;font-weight:700;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#06101f;box-shadow:0 8px 30px rgba(106,165,255,.28);transition:.2s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 12px 36px rgba(106,165,255,.4)}.btn.o{background:var(--gl);border:1px solid var(--ln);color:var(--tx);box-shadow:none}.btn.s{padding:8px 16px;font-size:14px}
+.hero{padding:84px 0 56px;text-align:center;position:relative}.hero h1{font-size:clamp(34px,6.4vw,64px);line-height:1.06;letter-spacing:-.03em;max-width:860px;margin:0 auto}
+.hero h1 span{background:linear-gradient(90deg,var(--ac),var(--ac2) 60%,var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{color:var(--mu);font-size:19px;max-width:620px;margin:20px auto 30px}.hero .bt{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.pill{display:inline-block;border:1px solid var(--ln);background:var(--gl);border-radius:99px;padding:6px 14px;font-size:13px;color:var(--mu);margin-bottom:22px}
+.stats{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:34px}.stats div{background:var(--gl);border:1px solid var(--ln);border-radius:14px;padding:12px 20px;min-width:120px}.stats b{display:block;font-size:24px}.stats span{font-size:12px;color:var(--mu)}
+.sec{padding:60px 0}.sec h2{font-size:clamp(26px,4vw,38px);letter-spacing:-.02em}.sub{color:var(--mu);margin:8px 0 26px}
+.card{position:relative;background:var(--gl);border:1px solid var(--ln);border-radius:18px;overflow:hidden;backdrop-filter:blur(8px)}
+.card:before{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:.3s;background:radial-gradient(320px circle at var(--mx,50%) var(--my,50%),rgba(106,165,255,.16),transparent 60%)}.card:hover:before{opacity:1}
+.crs{margin-bottom:22px}.crs>.hd{padding:20px 22px;display:flex;gap:16px;align-items:center;flex-wrap:wrap}.crs h3{font-size:21px}.crs p{color:var(--mu);font-size:14px}.pg{margin-left:auto;text-align:right;font-size:12px;color:var(--mu)}
+.bar{width:160px;height:6px;border-radius:9px;background:var(--ln);margin-top:6px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--ac),var(--ac2));width:0;transition:.5s}
+details{border-top:1px solid var(--ln)}summary{list-style:none;cursor:pointer;padding:14px 22px;font-weight:700;display:flex;align-items:center;gap:10px}summary::-webkit-details-marker{display:none}summary:after{content:"▾";margin-left:auto;color:var(--mu);transition:.2s}details[open] summary:after{transform:rotate(180deg)}summary small{color:var(--mu);font-weight:500}
+.ls{display:flex;align-items:center;gap:12px;width:100%;padding:11px 22px;background:none;border:0;border-top:1px solid var(--ln);text-align:left;transition:.15s}.ls:hover{background:rgba(255,255,255,.04)}
+.ic{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:rgba(106,165,255,.14);font-size:12px;flex:none}.ic.d{background:rgba(61,220,151,.18);color:var(--ok)}.ic.k{background:rgba(255,255,255,.06);color:var(--mu)}
+.ls .t{flex:1}.ls .d{color:var(--mu);font-size:13px}.tag{font-size:10px;font-weight:800;letter-spacing:.06em;padding:3px 8px;border-radius:6px;background:rgba(61,220,151,.16);color:var(--ok)}
+.bk{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px}.bk .card{padding:0;cursor:pointer;transition:.2s}.bk .card:hover{transform:translateY(-4px)}
+.cv{height:170px;display:flex;flex-direction:column;justify-content:flex-end;padding:16px;font-weight:800;font-size:19px;line-height:1.15;position:relative}.cv small{font-weight:600;font-size:11px;opacity:.8;margin-bottom:6px;letter-spacing:.08em}
+.bi{padding:14px 16px}.bi p{color:var(--mu);font-size:13px}.lk{position:absolute;top:12px;right:12px;background:rgba(0,0,0,.45);border-radius:99px;padding:4px 10px;font-size:11px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.g3 .card{padding:22px}.g3 h3{font-size:18px;margin:8px 0 4px}.g3 p{color:var(--mu);font-size:14px}.g3 .e{font-size:26px}
+.prc{max-width:520px;margin:0 auto;padding:34px;text-align:center;border-color:rgba(245,199,107,.4);box-shadow:0 0 0 1px rgba(245,199,107,.15),0 30px 80px rgba(245,199,107,.08)}
+.prc .am{font-size:56px;font-weight:800;letter-spacing:-.03em}.prc s{color:var(--mu);font-size:20px;margin-left:8px}.prc ul{list-style:none;text-align:left;margin:22px 0;display:grid;gap:10px}.prc li:before{content:"✓";color:var(--ok);margin-right:10px;font-weight:800}
+.prc .btn{width:100%;justify-content:center;padding:15px;font-size:17px;background:linear-gradient(135deg,var(--gold),#ffdf9c)}.prc .m{color:var(--mu);font-size:13px;margin-top:12px}
+.fq details{border:1px solid var(--ln);border-radius:14px;margin-bottom:10px;background:var(--gl)}.fq summary{padding:16px 20px}.fq p{padding:0 20px 16px;color:var(--mu)}
+footer{border-top:1px solid var(--ln);padding:30px 0 50px;color:var(--mu);font-size:13px;text-align:center}footer p{max-width:760px;margin:8px auto}
+.ov{position:fixed;inset:0;z-index:50;background:rgba(3,6,12,.82);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:16px}.ov.on{display:flex}
+.md{background:#0d1424;border:1px solid var(--ln);border-radius:20px;padding:22px;width:100%;max-width:880px;max-height:92vh;overflow:auto;position:relative}.md.n{max-width:460px;text-align:center}
+.x{position:absolute;top:12px;right:14px;background:var(--gl);border:1px solid var(--ln);border-radius:50%;width:34px;height:34px}
+.vid{aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#000;display:grid;place-items:center;margin:14px 0}.vid iframe,.vid video{width:100%;height:100%;border:0}.vid span{color:var(--mu);text-align:center;padding:20px}
+.row{display:flex;gap:10px;flex-wrap:wrap}.md h3{font-size:22px;padding-right:40px}.md p.m{color:var(--mu);margin-top:6px}
+.md input{width:100%;background:var(--gl);border:1px solid var(--ln);border-radius:12px;padding:13px;color:var(--tx);font:inherit;margin:14px 0;text-align:center;letter-spacing:.1em;text-transform:uppercase}
+.pdf{height:70vh;border-radius:12px;overflow:hidden;background:#111;margin-top:14px}.pdf iframe{width:100%;height:100%;border:0}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#111a2ef2;border:1px solid var(--ln);padding:11px 18px;border-radius:12px;z-index:60;display:none}
+.rv{opacity:0;transform:translateY(20px);transition:opacity .7s,transform .7s}.rv.in{opacity:1;transform:none}
+@media(max-width:800px){.g3{grid-template-columns:1fr}nav .l{display:none}.pg{margin-left:0;text-align:left}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}.rv{opacity:1;transform:none}}
+</style></head><body>
+<nav><div class="w"><b><span id="brand"></span></b><a class="l" href="#curriculum">Courses</a><a class="l" href="#library">Books</a><a class="l" href="#indicators">Indicators</a><a class="l" href="#pricing">Pricing</a><a class="l" href="trade-lab-pro.html">Practice Lab</a><span class="sp"></span><span id="st"></span></div></nav>
+<header class="hero"><div class="w"><span class="pill">🎓 Learn it. Then practise it in the Lab.</span>
+<h1>Learn price action the <span>structured way</span>, not from random videos</h1>
+<p>Step-by-step video lessons, trading books and a practice lab, in one place. Pay once, learn for life.</p>
+<div class="bt"><button class="btn" id="hBuy">Get lifetime access →</button><button class="btn o" id="hFree">▶ Watch a free lesson</button></div><div class="stats" id="stats"></div></div></header>
+<section class="sec" id="curriculum"><div class="w"><h2 class="rv">Your learning path</h2><p class="sub rv">Open a lesson to start. Lessons marked FREE are open to everyone.</p><div id="crs"></div></div></section>
+<section class="sec" id="library"><div class="w"><h2 class="rv">Trading library</h2><p class="sub rv">Books and PDFs you can read here, any time.</p><div class="bk" id="bk"></div></div></section>
+<section class="sec"><div class="w"><h2 class="rv">What you get</h2><p class="sub rv">Built for people who want to actually trade better.</p><div class="g3 rv"><div class="card"><div class="e">🎬</div><h3>Clear video lessons</h3><p>Short, structured lessons in the right order, with your progress saved.</p></div><div class="card"><div class="e">📚</div><h3>Books &amp; PDFs</h3><p>Read playbooks and guides inside the app. No scattered files.</p></div><div class="card"><div class="e">🧪</div><h3>Practise in the Lab</h3><p>Every concept links to a practice board or the replay lab with demo money.</p></div></div></div></section>
+<section class="sec" id="indicators"><div class="w"><div class="card" style="padding:30px;text-align:center"><span class="tag" style="background:rgba(245,199,107,.16);color:var(--gold)">COMING NEXT</span><h2 style="margin-top:12px;font-size:28px">Indicator Pack</h2><p class="sub" style="margin-bottom:0">EMA ribbon, Supertrend, zones and more. Lessons on how to read them, with practice in the Lab.</p></div></div></section>
+<section class="sec" id="pricing"><div class="w"><h2 class="rv" style="text-align:center">One payment. Everything unlocked.</h2><p class="sub rv" style="text-align:center">All courses, all books, and everything added later.</p>
+<div class="card prc rv"><div><span class="am" id="am"></span><s id="mrp"></s></div><p class="m" style="margin-top:4px">one-time payment · lifetime access</p><ul id="inc"></ul><button class="btn" id="pBuy">Get lifetime access →</button><p class="m">Already paid? <a href="#" id="pCode" style="text-decoration:underline">Enter your access code</a></p></div></div></section>
+<section class="sec"><div class="w fq" style="max-width:760px"><h2 class="rv" style="margin-bottom:18px">Questions</h2><div id="fq"></div></div></section>
+<footer><div class="w"><p>© <span id="yr"></span> <span id="b2"></span></p><p><b>Disclaimer:</b> All content is for education only and is not investment advice. Trading involves risk of loss. Past performance does not guarantee future results, and we do not promise profits or any particular outcome.</p></div></footer>
+<div class="ov" id="ov"><div class="md" id="md"></div></div><div id="toast"></div>
+<script>
+/* ============ EDIT THIS SECTION: your brand, price, courses and books ============ */
+const CFG={brand:'BFT Academy',price:4999,mrp:14999,payUrl:'https://rzp.io/l/your-payment-link',pixelId:'',codes:['DEMO2026'],
+ contact:'https://wa.me/91XXXXXXXXXX',refund:''};
+const COURSES=[{title:'Price Action Foundations',desc:'From candles to breakouts: the core of reading the market.',modules:[
+ {t:'Module 1 · Reading the market',lessons:[
+  {t:'What a candle really tells you',d:'8:20',free:1,video:'',lab:'classroom.html'},
+  {t:'Support, resistance and zones',d:'12:45',free:1,video:'',lab:'classroom.html'},
+  {t:'Trend, range and structure',d:'14:10',video:'',lab:'trade-lab-pro.html'}]},
+ {t:'Module 2 · Breakouts',lessons:[
+  {t:'The anatomy of a breakout',d:'16:30',video:'',lab:'classroom.html'},
+  {t:'Breakout failure (fake-outs)',d:'15:05',video:'',lab:'classroom.html'},
+  {t:'Retest and continuation',d:'13:40',video:'',lab:'trade-lab-pro.html'}]},
+ {t:'Module 3 · Risk and discipline',lessons:[
+  {t:'Position size and stop-loss',d:'11:50',video:''},
+  {t:'Journaling and review',d:'9:30',video:''}]}]}];
+const BOOKS=[{t:'Breakout Playbook',tag:'GUIDE',p:48,file:'',free:1},{t:'Risk Management Handbook',tag:'HANDBOOK',p:62,file:''},{t:'Trading Psychology Notes',tag:'NOTES',p:36,file:''}];
+/* Video: paste a YouTube/Vimeo EMBED link (https://www.youtube.com/embed/VIDEOID) or an .mp4 link.  PDF: put the file in /books and write its path, e.g. 'books/breakout.pdf' */
+/* ================================================================================== */
+const $=s=>document.querySelector(s),LS=k=>{try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},rs=n=>'₹'+n.toLocaleString('en-IN');
+let paid=!!LS('bftA_paid'),done=LS('bftA_done')||{};const flat=[];
+COURSES.forEach((c,ci)=>c.modules.forEach((m,mi)=>m.lessons.forEach((l,li)=>flat.push({c,l,id:ci+'-'+mi+'-'+li}))));
+const mins=d=>{const p=d.split(':').map(Number);return p[0]+p[1]/60},esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function toast(t){const e=$('#toast');e.textContent=t;e.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(()=>e.style.display='none',2600)}
+function fb(ev){try{window.fbq&&fbq('track',ev)}catch(e){}}
+if(CFG.pixelId){!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init',CFG.pixelId);fbq('track','PageView')}
+const open=h=>{$('#md').innerHTML='<button class="x" onclick="shut()" aria-label="Close">✕</button>'+h;$('#ov').classList.add('on')};
+function shut(){$('#ov').classList.remove('on');$('#md').innerHTML=''}
+$('#ov').onclick=e=>{if(e.target.id==='ov')shut()};document.addEventListener('keydown',e=>{if(e.key==='Escape')shut()});
+function buy(){fb('InitiateCheckout');window.open(CFG.payUrl,'_blank')}
+function wall(){fb('ViewContent');open(`<div style="text-align:center;padding:10px 6px"><div style="font-size:42px">🔒</div><h3 style="padding:0">This is premium content</h3><p class="m">Get lifetime access to every course, book and future update with one payment.</p><div class="am" style="font-size:40px;font-weight:800;margin:16px 0">${rs(CFG.price)} <s style="font-size:18px;color:var(--mu)">${rs(CFG.mrp)}</s></div><div class="row" style="justify-content:center"><button class="btn" onclick="buy()">Get lifetime access →</button><button class="btn o" onclick="codeBox()">I have an access code</button></div></div>`)}
+function codeBox(){open(`<div style="text-align:center;padding:6px"><h3 style="padding:0">Enter your access code</h3><p class="m">You receive this code after payment.</p><input id="cd" placeholder="ACCESS CODE" autocomplete="off"><button class="btn" id="cdb" style="width:100%;justify-content:center">Unlock everything</button><p class="m" style="font-size:12px;margin-top:12px">Need help? <a href="${esc(CFG.contact)}" target="_blank" style="text-decoration:underline">Contact us</a></p></div>`);
+ const go=()=>{if(CFG.codes.includes($('#cd').value.trim().toUpperCase())){paid=true;localStorage.setItem('bftA_paid','1');shut();all();toast('🎉 Unlocked. Welcome aboard!')}else toast('That code is not valid')};$('#cdb').onclick=go;$('#cd').onkeydown=e=>{if(e.key==='Enter')go()};setTimeout(()=>$('#cd').focus(),60)}
+function lesson(id){const i=flat.findIndex(x=>x.id===id),it=flat[i];if(!it)return;const l=it.l;if(!(paid||l.free))return wall();
+ const v=l.video?(/\.mp4(\?|$)/.test(l.video)?`<video controls controlsList="nodownload" src="${esc(l.video)}"></video>`:`<iframe src="${esc(l.video)}" allow="autoplay;fullscreen;picture-in-picture" allowfullscreen></iframe>`):'<span>🎬 Video will appear here.<br>Add its link in the COURSES list.</span>',nx=flat[i+1];
+ open(`<p class="m" style="margin:0 0 4px">${esc(it.c.title)}</p><h3>${esc(l.t)}</h3><div class="vid">${v}</div><div class="row"><button class="btn s ${done[id]?'o':''}" onclick="mark('${id}')">${done[id]?'✓ Completed':'Mark as complete'}</button>${l.lab?`<a class="btn s o" href="${esc(l.lab)}" target="_blank">🧪 Practise this</a>`:''}${nx?`<button class="btn s o" onclick="lesson('${nx.id}')">Next lesson →</button>`:''}</div>`)}
+function mark(id){done[id]=!done[id];localStorage.setItem('bftA_done',JSON.stringify(done));all();lesson(id)}
+function book(i){const b=BOOKS[i];if(!(paid||b.free))return wall();open(`<h3>${esc(b.t)}</h3><p class="m">${b.p} pages</p>${b.file?`<div class="pdf"><iframe src="${esc(b.file)}#toolbar=0&navpanes=0"></iframe></div><div class="row" style="margin-top:12px"><a class="btn s o" href="${esc(b.file)}" target="_blank">Open in new tab</a></div>`:'<div class="vid"><span>📘 Add this book\'s PDF path in the BOOKS list.</span></div>'}`)}
+function all(){const tot=flat.length,dn=flat.filter(x=>done[x.id]).length,hrs=flat.reduce((n,x)=>n+mins(x.l.d),0)/60;
+ $('#brand').innerHTML=CFG.brand.replace(/^(\S+)\s*(.*)$/,'$1 <i>$2</i>');$('#b2').textContent=CFG.brand;$('#yr').textContent=new Date().getFullYear();document.title=CFG.brand+' – Learn Price Action, Then Practise It';
+ $('#st').innerHTML=paid?'<span class="tag" style="padding:7px 12px;font-size:12px">✓ PREMIUM MEMBER</span>':'<button class="btn s" onclick="buy()">Get access</button> <button class="btn s o" onclick="codeBox()">Unlock</button>';
+ $('#stats').innerHTML=[[tot,'video lessons'],[hrs.toFixed(1)+'h','of content'],[BOOKS.length,'books & PDFs'],['∞','lifetime access']].map(a=>`<div><b>${a[0]}</b><span>${a[1]}</span></div>`).join('');
+ $('#crs').innerHTML=COURSES.map((c,ci)=>{const ids=flat.filter(x=>x.c===c),d=ids.filter(x=>done[x.id]).length;return`<div class="card crs rv in"><div class="hd"><div><h3>${esc(c.title)}</h3><p>${esc(c.desc)}</p></div><div class="pg">${d}/${ids.length} completed<div class="bar"><i style="width:${ids.length?d/ids.length*100:0}%"></i></div></div></div>`+c.modules.map((m,mi)=>`<details ${mi===0?'open':''}><summary>${esc(m.t)} <small>· ${m.lessons.length} lessons</small></summary>`+m.lessons.map((l,li)=>{const id=ci+'-'+mi+'-'+li,ok=paid||l.free;return`<button class="ls" onclick="lesson('${id}')"><span class="ic ${done[id]?'d':ok?'':'k'}">${done[id]?'✓':ok?'▶':'🔒'}</span><span class="t">${esc(l.t)}</span>${l.free&&!paid?'<span class="tag">FREE</span>':''}<span class="d">${esc(l.d)}</span></button>`}).join('')+'</details>').join('')+'</div>'}).join('');
+ const gr=['#3b6cff,#7c3aed','#0ea5a4,#2563eb','#f59e0b,#ef4444','#10b981,#0ea5e9'];
+ $('#bk').innerHTML=BOOKS.map((b,i)=>{const ok=paid||b.free;return`<div class="card" onclick="book(${i})"><div class="cv" style="background:linear-gradient(145deg,${gr[i%4]})"><span class="lk">${ok?(b.free&&!paid?'FREE':'📖 Read'):'🔒 Locked'}</span><small>${esc(b.tag||'BOOK')}</small>${esc(b.t)}</div><div class="bi"><b>${esc(b.t)}</b><p>${b.p} pages · PDF</p></div></div>`}).join('');
+ $('#am').textContent=rs(CFG.price);$('#mrp').textContent=rs(CFG.mrp);
+ $('#inc').innerHTML=[`All ${tot} video lessons, in order`,`${BOOKS.length} books and PDFs to read in the app`,'Practice links to the Classroom board and Replay Lab','Progress tracking','All future lessons and updates','One-time payment, no subscription'].map(x=>`<li>${x}</li>`).join('');
+ $('#fq').innerHTML=[['How do I get access?','Tap “Get lifetime access”, complete the payment and you will receive your access code. Enter it under “Unlock”.'],['Is it a subscription?','No. It is a single payment with lifetime access to everything, including future updates.'],['Who is this for?','Beginners and improving traders who want a clear, structured way to learn price action and then practise it.'],['Is this financial advice?','No. Everything here is educational. Trading involves risk and we do not promise profits.']].concat(CFG.refund?[['Refund policy',CFG.refund]]:[]).map(q=>`<details><summary>${esc(q[0])}</summary><p>${esc(q[1])}</p></details>`).join('')}
+$('#hBuy').onclick=buy;$('#pBuy').onclick=buy;$('#pCode').onclick=e=>{e.preventDefault();codeBox()};
+$('#hFree').onclick=()=>{const f=flat.find(x=>x.l.free);f?lesson(f.id):wall()};
+all();
+document.addEventListener('mousemove',e=>{const c=e.target.closest&&e.target.closest('.card');if(c){const r=c.getBoundingClientRect();c.style.setProperty('--mx',e.clientX-r.left+'px');c.style.setProperty('--my',e.clientY-r.top+'px')}});
+const io=new IntersectionObserver(a=>a.forEach(x=>{if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}}),{threshold:.12});document.querySelectorAll('.rv').forEach(x=>io.observe(x));
+</script></body></html>
