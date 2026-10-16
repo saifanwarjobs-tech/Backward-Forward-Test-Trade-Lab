@@ -5,10 +5,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>BFT Trade Lab V12 - XAUUSD Backtesting Lab | BFT Trade Lab</title>
+<title>BFT Trade Lab - BANKNIFTY Backtesting Lab | BFT Trade Lab</title>
 
 <meta name="description"
-content="Practice XAUUSD gold trading with historical market replay, candle-by-candle backtesting, stop loss, take profit and trading performance analytics.">
+content="Practice BANKNIFTY trading with historical market replay, candle-by-candle backtesting, stop loss, take profit and trading performance analytics.">
 
 <meta name="robots" content="index, follow">
 
@@ -814,7 +814,7 @@ select {
 
     <div class="header-right">
         <span class="market-status">● SIMULATION MODE</span>
-        <span>XAUUSD Backtesting</span>
+        <span>BANKNIFTY Backtesting</span>
         <span class="v183-account-label">ACCOUNT</span>
         <button class="v183-account-btn" id="v183TopSignIn" onclick="v17OpenAuth()">Sign In</button>
         <button class="v183-account-btn primary" id="v183TopSignup" onclick="v17OpenSignup()">Create Account</button>
@@ -837,8 +837,8 @@ select {
 <div class="topbar">
 
     <div class="symbol">
-        XAUUSD
-        <small>Gold / US Dollar</small>
+        BANKNIFTY
+        <small>Bank Nifty Index (NSE)</small>
     </div>
 
     <div class="control">
@@ -855,9 +855,9 @@ select {
         <label>Starting Balance</label>
 
         <select id="balanceSelect">
-            <option value="10000">$10,000</option>
-            <option value="5000">$5,000</option>
-            <option value="50000">$50,000</option>
+            <option value="1000000">₹10,00,000</option>
+            <option value="500000">₹5,00,000</option>
+            <option value="2500000">₹25,00,000</option>
         </select>
     </div>
 
@@ -1023,8 +1023,8 @@ select {
             </div>
 
             <div class="balance">
-                $<span id="balance">10000.00</span>
-                <small>USD</small>
+                ₹<span id="balance">1000000.00</span>
+                <small>INR</small>
             </div>
 
         </div>
@@ -1052,12 +1052,12 @@ select {
 
                 <div class="stat">
                     <div class="stat-label">Profit</div>
-                    <div class="stat-value profit" id="profit">$0.00</div>
+                    <div class="stat-value profit" id="profit">₹0.00</div>
                 </div>
 
                 <div class="stat">
                     <div class="stat-label">Loss</div>
-                    <div class="stat-value loss" id="loss">$0.00</div>
+                    <div class="stat-value loss" id="loss">₹0.00</div>
                 </div>
 
             </div>
@@ -1105,8 +1105,8 @@ select {
 
 
             <div class="trade-preview" id="tradePreview">
-                <div><span>Risk</span><strong id="previewRisk">$0.00</strong></div>
-                <div><span>Reward</span><strong id="previewReward">$0.00</strong></div>
+                <div><span>Risk</span><strong id="previewRisk">₹0.00</strong></div>
+                <div><span>Reward</span><strong id="previewReward">₹0.00</strong></div>
                 <div><span>R:R</span><strong id="previewRR">—</strong></div>
                 <div><span>Position</span><strong id="previewSize">0.000</strong></div>
             </div>
@@ -1121,14 +1121,14 @@ select {
             <div class="v15-exec">
                 <div class="v15-exec-head"><strong>Execution Costs</strong><span class="v15-exec-badge">V15 REALISTIC</span></div>
                 <div class="v15-grid">
-                    <div class="v15-field"><label>Spread (price)</label><input id="v15Spread" type="number" step="0.01" value="0.20" min="0"></div>
-                    <div class="v15-field"><label>Slippage (price)</label><input id="v15Slippage" type="number" step="0.01" value="0.05" min="0"></div>
-                    <div class="v15-field"><label>Commission / lot</label><input id="v15Commission" type="number" step="0.01" value="7" min="0"></div>
+                    <div class="v15-field"><label>Spread (price)</label><input id="v15Spread" type="number" step="0.01" value="2" min="0"></div>
+                    <div class="v15-field"><label>Slippage (price)</label><input id="v15Slippage" type="number" step="0.01" value="0.5" min="0"></div>
+                    <div class="v15-field"><label>Brokerage + charges / lot (round trip, approx.)</label><input id="v15Commission" type="number" step="0.01" value="40" min="0"></div>
                     <div class="v15-field"><label>Swap / lot / day</label><input id="v15Swap" type="number" step="0.01" value="0" min="0"></div>
                 </div>
                 <div class="v15-settings"><input id="v15Enabled" type="checkbox" checked><label for="v15Enabled" style="font-size:10px;color:#9aabc0">Apply execution costs to new trades</label></div>
-                <div class="v15-cost-strip"><div><span>Est. spread</span><b id="v15PreviewSpread">$0.00</b></div><div><span>Est. commission</span><b id="v15PreviewCommission">$0.00</b></div><div><span>Est. total</span><b id="v15PreviewTotal">$0.00</b></div></div>
-                <div class="v15-note">Spread/slippage are price units. Commission and swap use lots. Default contract size: 100 units = 1 lot. Change these values to match the market/broker you want to simulate.</div>
+                <div class="v15-cost-strip"><div><span>Est. spread</span><b id="v15PreviewSpread">₹0.00</b></div><div><span>Est. commission</span><b id="v15PreviewCommission">₹0.00</b></div><div><span>Est. total</span><b id="v15PreviewTotal">₹0.00</b></div></div>
+                <div class="v15-note">Spread/slippage are price units. Commission and swap use lots. Default: 1 lot = 30 qty (current BankNifty lot). Commission is an approximate flat round-trip figure; the Pro Lab has the full NSE charge breakdown (STT, GST, stamp duty).</div>
             </div>
 
             <div class="trade-message" id="tradeMessage" aria-live="polite"></div>
@@ -1223,17 +1223,17 @@ select {
     <div class="metric-grid">
       <div class="metric-card"><span>Total Trades</span><strong id="aTotalTrades">0</strong></div>
       <div class="metric-card"><span>Win Rate</span><strong id="aWinRate">0%</strong></div>
-      <div class="metric-card"><span>Net P&amp;L</span><strong id="aNetPnl" class="profit">$0.00</strong></div>
+      <div class="metric-card"><span>Net P&amp;L</span><strong id="aNetPnl" class="profit">₹0.00</strong></div>
       <div class="metric-card"><span>Profit Factor</span><strong id="aProfitFactor">—</strong></div>
       <div class="metric-card"><span>Average R</span><strong id="aAvgR">—</strong></div>
-      <div class="metric-card"><span>Max Drawdown</span><strong id="aDrawdown" class="loss">$0.00</strong></div>
+      <div class="metric-card"><span>Max Drawdown</span><strong id="aDrawdown" class="loss">₹0.00</strong></div>
       <div class="metric-card"><span>Best Streak</span><strong id="aBestStreak">0</strong></div>
       <div class="metric-card"><span>Worst Streak</span><strong id="aWorstStreak">0</strong></div>
     </div>
 
     <div class="analytics-two-col">
       <div class="analytics-card equity-card">
-        <div class="analytics-card-head"><strong>Equity Curve</strong><span id="equityMeta">Starting $10,000.00</span></div>
+        <div class="analytics-card-head"><strong>Equity Curve</strong><span id="equityMeta">Starting ₹10,00,000.00</span></div>
         <div class="equity-wrap"><svg id="equitySvg" viewBox="0 0 900 300" preserveAspectRatio="none" aria-label="Equity curve"></svg></div>
       </div>
       <div class="analytics-card">
@@ -1241,10 +1241,10 @@ select {
         <div class="breakdown-grid">
           <div><span>Wins</span><strong id="aWins">0</strong></div>
           <div><span>Losses</span><strong id="aLosses">0</strong></div>
-          <div><span>Gross Profit</span><strong id="aGrossProfit" class="profit">$0.00</strong></div>
-          <div><span>Gross Loss</span><strong id="aGrossLoss" class="loss">$0.00</strong></div>
-          <div><span>Average Win</span><strong id="aAvgWin">$0.00</strong></div>
-          <div><span>Average Loss</span><strong id="aAvgLoss">$0.00</strong></div>
+          <div><span>Gross Profit</span><strong id="aGrossProfit" class="profit">₹0.00</strong></div>
+          <div><span>Gross Loss</span><strong id="aGrossLoss" class="loss">₹0.00</strong></div>
+          <div><span>Average Win</span><strong id="aAvgWin">₹0.00</strong></div>
+          <div><span>Average Loss</span><strong id="aAvgLoss">₹0.00</strong></div>
           <div><span>Long / BUY</span><strong id="aLong">0</strong></div>
           <div><span>Short / SELL</span><strong id="aShort">0</strong></div>
         </div>
@@ -1268,10 +1268,10 @@ select {
     <div class="report-metrics">
       <div class="report-metric"><span>TOTAL TRADES</span><strong id="rTotal">0</strong></div>
       <div class="report-metric"><span>WIN RATE</span><strong id="rWinRate">0%</strong></div>
-      <div class="report-metric"><span>NET P&amp;L</span><strong id="rNet" class="profit">$0.00</strong></div>
+      <div class="report-metric"><span>NET P&amp;L</span><strong id="rNet" class="profit">₹0.00</strong></div>
       <div class="report-metric"><span>PROFIT FACTOR</span><strong id="rPF">—</strong></div>
       <div class="report-metric"><span>AVG R</span><strong id="rAvgR">—</strong></div>
-      <div class="report-metric"><span>MAX DRAWDOWN</span><strong id="rDD" class="loss">$0.00</strong></div>
+      <div class="report-metric"><span>MAX DRAWDOWN</span><strong id="rDD" class="loss">₹0.00</strong></div>
     </div>
     <div class="report-journal">
       <div class="report-journal-head"><strong>Trade Journal</strong><span id="journalCompletion">0 / 0 reviewed</span></div>
@@ -1674,9 +1674,9 @@ let chartPan = 0;
 
 let playTimer = null;
 
-let balance = 10000;
+let balance = 1000000;
 
-let startingBalance = 10000;
+let startingBalance = 1000000;
 
 let openPositions = [];
 let selectedPositionId = null;
@@ -1699,7 +1699,7 @@ let losses = 0;
 let journalTradeId = null;
 
 /* V15 execution model */
-let v15Execution = {enabled:true, spread:0.20, slippage:0.05, commission:7, swap:0, contractSize:100};
+let v15Execution = {enabled:true, spread:2, slippage:0.5, commission:40, swap:0, contractSize:30};
 
 /* Backtest session state */
 let sessionActive = false;
@@ -1709,14 +1709,14 @@ let sessionStatus = "READY";
 
 
 /* ------------------------------
-   GENERATE DEMO XAUUSD DATA
+   GENERATE DEMO BANKNIFTY-LIKE DATA
 ------------------------------ */
 
 function generateCandles() {
 
     candles = [];
 
-    let price = 3340;
+    let price = 48000;
 
     let startTime = new Date("2025-03-15T09:00:00");
 
@@ -1725,18 +1725,18 @@ function generateCandles() {
         let open = price;
 
         let movement =
-            (Math.random() - 0.48) * 8;
+            (Math.random() - 0.48) * 120;
 
         let close =
             open + movement;
 
         let high =
             Math.max(open, close)
-            + Math.random() * 4;
+            + Math.random() * 60;
 
         let low =
             Math.min(open, close)
-            - Math.random() * 4;
+            - Math.random() * 60;
 
         price = close;
 
@@ -1881,7 +1881,7 @@ function downloadCSVTemplate(){
     ];
     const csv=sample.map(r=>r.join(",")).join("\n");
     const blob=new Blob([csv],{type:"text/csv;charset=utf-8"});
-    const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="BFT-XAUUSD-M5-template.csv";a.click();URL.revokeObjectURL(a.href);
+    const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="BFT-BANKNIFTY-M5-template.csv";a.click();URL.revokeObjectURL(a.href);
 }
 
 /* ------------------------------
@@ -2442,7 +2442,7 @@ function exportTradesCSV(){
     const rows=trades.map(t=>[t.number,t.direction,t.entry.toFixed(2),t.exit.toFixed(2),t.sl.toFixed(2),t.tp.toFixed(2),t.pnl.toFixed(2),t.result,(t.riskMoney||0).toFixed(2),t.time.toISOString()]);
     const csv=[headers,...rows].map(r=>r.map(v=>`"${String(v).replaceAll('"','""')}"`).join(",")).join("\n");
     const blob=new Blob([csv],{type:"text/csv;charset=utf-8"});
-    const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=`BFT-XAUUSD-Backtest-${new Date().toISOString().slice(0,10)}.csv`;a.click();URL.revokeObjectURL(a.href);
+    const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=`BFT-BANKNIFTY-Backtest-${new Date().toISOString().slice(0,10)}.csv`;a.click();URL.revokeObjectURL(a.href);
 }
 
 /* ------------------------------
@@ -2617,7 +2617,7 @@ function setSpeed(
 function v15Num(id, fallback=0){const e=document.getElementById(id);const n=parseFloat(e?.value);return Number.isFinite(n)?Math.max(0,n):fallback;}
 function v15RefreshSettings(){
   v15Execution.enabled=!!document.getElementById('v15Enabled')?.checked;
-  v15Execution.spread=v15Num('v15Spread',0.20); v15Execution.slippage=v15Num('v15Slippage',0.05);
+  v15Execution.spread=v15Num('v15Spread',2); v15Execution.slippage=v15Num('v15Slippage',0.5);
   v15Execution.commission=v15Num('v15Commission',7); v15Execution.swap=v15Num('v15Swap',0);
   v15UpdateCostPreview();
 }
@@ -2631,7 +2631,7 @@ function v15ExitExecution(price,direction){if(!v15Execution.enabled)return price
 function v15Lots(positionSize){return Math.max(0,Number(positionSize||0))/v15Execution.contractSize;}
 function v15HoldingDays(openTime,closeTime){const a=new Date(openTime).getTime(),b=new Date(closeTime).getTime();if(!Number.isFinite(a)||!Number.isFinite(b)||b<=a)return 0;return Math.max(0,(b-a)/86400000);}
 function v15Costs(position, exitTime, includeExit=true){if(!v15Execution.enabled)return {commission:0,swap:0,total:0,lots:v15Lots(position.positionSize)};const lots=v15Lots(position.positionSize);const commission=v15Execution.commission*lots*(includeExit?1:0.5);const days=v15HoldingDays(position.openTime,exitTime);const swap=v15Execution.swap*lots*days;return {commission,swap,total:commission+swap,lots};}
-function v15UpdateCostPreview(){const c=candles[currentIndex];if(!c)return;const entry=parseFloat(document.getElementById('entry')?.value)||c.close,sl=parseFloat(document.getElementById('sl')?.value),risk=parseFloat(document.getElementById('risk')?.value)||0;const dist=Number.isFinite(sl)?Math.abs(entry-sl):0;const size=dist?balance*(risk/100)/dist:0;const lots=v15Lots(size);const spreadCost=v15Execution.enabled?Math.abs(v15Execution.spread)*size:0;const commission=v15Execution.enabled?v15Execution.commission*lots:0;const total=spreadCost+commission;const f=(id,val)=>{const e=document.getElementById(id);if(e)e.textContent='$'+val.toFixed(2)};f('v15PreviewSpread',spreadCost);f('v15PreviewCommission',commission);f('v15PreviewTotal',total);}
+function v15UpdateCostPreview(){const c=candles[currentIndex];if(!c)return;const entry=parseFloat(document.getElementById('entry')?.value)||c.close,sl=parseFloat(document.getElementById('sl')?.value),risk=parseFloat(document.getElementById('risk')?.value)||0;const dist=Number.isFinite(sl)?Math.abs(entry-sl):0;const size=dist?balance*(risk/100)/dist:0;const lots=v15Lots(size);const spreadCost=v15Execution.enabled?Math.abs(v15Execution.spread)*size:0;const commission=v15Execution.enabled?v15Execution.commission*lots:0;const total=spreadCost+commission;const f=(id,val)=>{const e=document.getElementById(id);if(e)e.textContent='₹'+val.toFixed(2)};f('v15PreviewSpread',spreadCost);f('v15PreviewCommission',commission);f('v15PreviewTotal',total);}
 
 function setRisk(value) {
     document.getElementById("risk").value = value;
@@ -2659,8 +2659,8 @@ function updateTradePreview() {
     const rewardDistance = Math.abs(tp - entry);
     const size = distance > 0 ? riskMoney / distance : 0;
     const reward = size * rewardDistance;
-    document.getElementById("previewRisk").textContent = "$" + (distance > 0 ? riskMoney.toFixed(2) : "0.00");
-    document.getElementById("previewReward").textContent = "$" + (distance > 0 ? reward.toFixed(2) : "0.00");
+    document.getElementById("previewRisk").textContent = "₹" + (distance > 0 ? riskMoney.toFixed(2) : "0.00");
+    document.getElementById("previewReward").textContent = "₹" + (distance > 0 ? reward.toFixed(2) : "0.00");
     document.getElementById("previewRR").textContent = distance > 0 ? "1:" + (rewardDistance / distance).toFixed(2) : "—";
     document.getElementById("previewSize").textContent = size > 0 ? size.toFixed(3) : "0.000";
     v15UpdateCostPreview();
@@ -2688,7 +2688,7 @@ function placePendingOrder(){
     pendingOrder={type:pendingType,direction,entry,sl,tp,riskPercent,createdTime:c.time};updatePendingArea();updateTerminal();showTradeMessage(`${pendingType} placed at ${entry.toFixed(2)}.` ,"success");drawChart();
 }
 function cancelPendingOrder(){pendingOrder=null;updatePendingArea();updateTerminal();showTradeMessage("Pending order cancelled.","success");drawChart();}
-function updatePendingArea(){const panel=document.getElementById("pendingPanel"),area=document.getElementById("pendingArea");if(!pendingOrder){panel.style.display="none";area.innerHTML="";updateTerminal();return;}panel.style.display="block";area.innerHTML=`<div class="pending-card"><div class="pending-head"><strong>${pendingOrder.type} XAUUSD</strong><button class="pending-cancel" onclick="cancelPendingOrder()">Cancel</button></div><div class="pending-line"><span>Entry</span><b>${pendingOrder.entry.toFixed(2)}</b></div><div class="pending-line"><span>Stop Loss</span><b>${pendingOrder.sl.toFixed(2)}</b></div><div class="pending-line"><span>Take Profit</span><b>${pendingOrder.tp.toFixed(2)}</b></div><div class="pending-line"><span>Status</span><b style="color:#f6b94a">Waiting</b></div></div>`;updateTerminal();}
+function updatePendingArea(){const panel=document.getElementById("pendingPanel"),area=document.getElementById("pendingArea");if(!pendingOrder){panel.style.display="none";area.innerHTML="";updateTerminal();return;}panel.style.display="block";area.innerHTML=`<div class="pending-card"><div class="pending-head"><strong>${pendingOrder.type} BANKNIFTY</strong><button class="pending-cancel" onclick="cancelPendingOrder()">Cancel</button></div><div class="pending-line"><span>Entry</span><b>${pendingOrder.entry.toFixed(2)}</b></div><div class="pending-line"><span>Stop Loss</span><b>${pendingOrder.sl.toFixed(2)}</b></div><div class="pending-line"><span>Take Profit</span><b>${pendingOrder.tp.toFixed(2)}</b></div><div class="pending-line"><span>Status</span><b style="color:#f6b94a">Waiting</b></div></div>`;updateTerminal();}
 function checkPendingOrder(){if(!pendingOrder)return;const c=candles[currentIndex];if(!c)return;let hit=false;if(pendingOrder.type==="BUY LIMIT"||pendingOrder.type==="SELL STOP")hit=c.low<=pendingOrder.entry;else hit=c.high>=pendingOrder.entry;if(!hit)return;const p=pendingOrder;pendingOrder=null;updatePendingArea();updateTerminal();activatePendingTrade(p);}
 function activatePendingTrade(p){const actualEntry=v15EntryExecution(p.entry,p.direction),riskMoney=balance*(p.riskPercent/100),distance=Math.abs(actualEntry-p.sl);if(distance<=0)return;const position={id:nextPositionId++,direction:p.direction,requestedEntry:p.entry,entry:actualEntry,sl:p.sl,tp:p.tp,riskMoney,positionSize:riskMoney/distance,openTime:candles[currentIndex].time,hidden:false};openPositions.push(position);selectedPositionId=position.id;document.getElementById("entry").value=actualEntry.toFixed(2);document.getElementById("sl").value=p.sl.toFixed(2);document.getElementById("tp").value=p.tp.toFixed(2);showTradeMessage(`${p.type} triggered at ${p.entry.toFixed(2)} → executed ${actualEntry.toFixed(2)}. Position #${position.id} opened.` ,"success");updateTradePreview();updatePosition();drawChart();}
 
@@ -2726,7 +2726,7 @@ function updatePosition(){
     const area=document.getElementById("positionArea");
     if(!openPositions.length){area.innerHTML=`<div style="color:#64768e;font-size:12px;">No open position</div>`;updateTerminal();return;}
     const candle=candles[currentIndex];
-    const cards=openPositions.map(p=>{const grossFloating=p.direction==="BUY"?(candle.close-p.entry)*p.positionSize:(p.entry-candle.close)*p.positionSize;const estExit=v15ExitExecution(candle.close,p.direction);const netFloating=(p.direction==="BUY"?(estExit-p.entry)*p.positionSize:(p.entry-estExit)*p.positionSize)-v15Costs(p,candle.time,true).total;const floating=netFloating,cls=floating>=0?"profit":"loss";if(p.hidden)return `<div class="position-card"><div class="position-hidden"><span>Position #${p.id} hidden</span><button class="hide-position-btn" onclick="showPositionCard(${p.id})">↗</button></div></div>`;return `<div class="position-card"><div class="position-card-head"><strong class="${p.direction==="BUY"?"profit":"loss"}">${p.direction} XAUUSD <span class="position-card-id">#${p.id}</span></strong><button class="hide-position-btn" onclick="hidePositionCard(${p.id})" title="Hide">×</button></div><div class="position-line"><span>Entry</span><strong>${p.entry.toFixed(2)}</strong></div><div class="position-line"><span>SL</span><strong>${p.sl.toFixed(2)}</strong></div><div class="position-line"><span>TP</span><strong>${p.tp.toFixed(2)}</strong></div><div class="position-line"><span>Size</span><strong>${p.positionSize.toFixed(3)}</strong></div><div class="position-line"><span>Floating P&L</span><strong class="${cls}">${floating>=0?"+":""}$${floating.toFixed(2)}</strong></div><div class="position-actions"><button class="close-trade-btn" onclick="manualCloseTrade(${p.id})">Close Trade</button></div></div>`;}).join("");
+    const cards=openPositions.map(p=>{const grossFloating=p.direction==="BUY"?(candle.close-p.entry)*p.positionSize:(p.entry-candle.close)*p.positionSize;const estExit=v15ExitExecution(candle.close,p.direction);const netFloating=(p.direction==="BUY"?(estExit-p.entry)*p.positionSize:(p.entry-estExit)*p.positionSize)-v15Costs(p,candle.time,true).total;const floating=netFloating,cls=floating>=0?"profit":"loss";if(p.hidden)return `<div class="position-card"><div class="position-hidden"><span>Position #${p.id} hidden</span><button class="hide-position-btn" onclick="showPositionCard(${p.id})">↗</button></div></div>`;return `<div class="position-card"><div class="position-card-head"><strong class="${p.direction==="BUY"?"profit":"loss"}">${p.direction} BANKNIFTY <span class="position-card-id">#${p.id}</span></strong><button class="hide-position-btn" onclick="hidePositionCard(${p.id})" title="Hide">×</button></div><div class="position-line"><span>Entry</span><strong>${p.entry.toFixed(2)}</strong></div><div class="position-line"><span>SL</span><strong>${p.sl.toFixed(2)}</strong></div><div class="position-line"><span>TP</span><strong>${p.tp.toFixed(2)}</strong></div><div class="position-line"><span>Size</span><strong>${p.positionSize.toFixed(3)}</strong></div><div class="position-line"><span>Floating P&L</span><strong class="${cls}">${floating>=0?"+":""}₹${floating.toFixed(2)}</strong></div><div class="position-actions"><button class="close-trade-btn" onclick="manualCloseTrade(${p.id})">Close Trade</button></div></div>`;}).join("");
     area.innerHTML=`<div class="positions-head"><span style="font-size:11px;color:#71839b">${openPositions.length} open trade${openPositions.length>1?'s':''}</span><button class="close-all-btn" onclick="closeAllTrades()">Close All</button></div>${cards}`;
     updateTerminal();
 }
@@ -2758,7 +2758,7 @@ function updateTerminal(){
         const rows=openPositions.map(p=>{
             const floating=p.direction==='BUY'?(candle.close-p.entry)*p.positionSize:(p.entry-candle.close)*p.positionSize;
             const cls=floating>=0?'profit':'loss';
-            return `<tr><td><strong class="${p.direction==='BUY'?'profit':'loss'}">${p.direction}</strong> <span class="terminal-side">#${p.id}</span></td><td>${p.entry.toFixed(2)}</td><td>${candle.close.toFixed(2)}</td><td>${p.sl.toFixed(2)}</td><td>${p.tp.toFixed(2)}</td><td>${p.positionSize.toFixed(3)}</td><td class="${cls}">${floating>=0?'+':''}$${floating.toFixed(2)}</td><td><button class="terminal-btn close" onclick="manualCloseTrade(${p.id})">Close</button></td></tr>`;
+            return `<tr><td><strong class="${p.direction==='BUY'?'profit':'loss'}">${p.direction}</strong> <span class="terminal-side">#${p.id}</span></td><td>${p.entry.toFixed(2)}</td><td>${candle.close.toFixed(2)}</td><td>${p.sl.toFixed(2)}</td><td>${p.tp.toFixed(2)}</td><td>${p.positionSize.toFixed(3)}</td><td class="${cls}">${floating>=0?'+':''}₹${floating.toFixed(2)}</td><td><button class="terminal-btn close" onclick="manualCloseTrade(${p.id})">Close</button></td></tr>`;
         }).join('');
         openPane.innerHTML=`<div style="overflow-x:auto"><table class="terminal-table"><thead><tr><th>Side</th><th>Entry</th><th>Current</th><th>SL</th><th>TP</th><th>Size</th><th>Floating P&L</th><th>Action</th></tr></thead><tbody>${rows}</tbody></table></div>`;
     }
@@ -2770,9 +2770,9 @@ function updateTerminal(){
     if(!trades.length){
         closedPane.innerHTML='<div class="terminal-empty">No closed trades yet.</div>';
     }else{
-        const rows=trades.slice().reverse().map(t=>{const cls=t.result==='WIN'?'win':t.result==='LOSS'?'loss':'be';return `<tr><td>#${t.number}</td><td><strong class="${t.direction==='BUY'?'profit':'loss'}">${t.direction}</strong></td><td>${t.entry.toFixed(2)}</td><td>${t.exit.toFixed(2)}</td><td>${t.sl.toFixed(2)}</td><td>${t.tp.toFixed(2)}</td><td class="terminal-result ${cls}">${t.pnl>=0?'+':''}$${t.pnl.toFixed(2)}</td><td class="v15-cost-cell">-$${Number(t.costs||0).toFixed(2)}</td><td class="terminal-result ${cls}">${t.result}</td><td class="terminal-side">${formatDate(t.time)}</td><td><button class="journal-btn ${hasJournal(t)?'done':''}" onclick="openJournal(${t.number})">${hasJournal(t)?'✓ Journal':'Journal'}</button></td></tr>`;}).join('');
+        const rows=trades.slice().reverse().map(t=>{const cls=t.result==='WIN'?'win':t.result==='LOSS'?'loss':'be';return `<tr><td>#${t.number}</td><td><strong class="${t.direction==='BUY'?'profit':'loss'}">${t.direction}</strong></td><td>${t.entry.toFixed(2)}</td><td>${t.exit.toFixed(2)}</td><td>${t.sl.toFixed(2)}</td><td>${t.tp.toFixed(2)}</td><td class="terminal-result ${cls}">${t.pnl>=0?'+':''}₹${t.pnl.toFixed(2)}</td><td class="v15-cost-cell">-₹${Number(t.costs||0).toFixed(2)}</td><td class="terminal-result ${cls}">${t.result}</td><td class="terminal-side">${formatDate(t.time)}</td><td><button class="journal-btn ${hasJournal(t)?'done':''}" onclick="openJournal(${t.number})">${hasJournal(t)?'✓ Journal':'Journal'}</button></td></tr>`;}).join('');
         const net=trades.reduce((a,t)=>a+t.pnl,0);
-        closedPane.innerHTML=`<div style="overflow-x:auto"><table class="terminal-table"><thead><tr><th>Trade</th><th>Side</th><th>Entry</th><th>Exit</th><th>SL</th><th>TP</th><th>P&L</th><th>Result</th><th>Time</th><th>Journal</th></tr></thead><tbody>${rows}</tbody></table></div><div class="terminal-summary"><span>Closed: <strong>${trades.length}</strong></span><span>Wins: <strong class="profit">${wins}</strong></span><span>Losses: <strong class="loss">${losses}</strong></span><span>Costs: <strong class="v15-cost-cell">-$${trades.reduce((a,t)=>a+Number(t.costs||0),0).toFixed(2)}</strong></span><span>Net P&L: <strong class="${net>=0?'profit':'loss'}">${net>=0?'+':''}$${net.toFixed(2)}</strong></span></div>`;
+        closedPane.innerHTML=`<div style="overflow-x:auto"><table class="terminal-table"><thead><tr><th>Trade</th><th>Side</th><th>Entry</th><th>Exit</th><th>SL</th><th>TP</th><th>P&L</th><th>Result</th><th>Time</th><th>Journal</th></tr></thead><tbody>${rows}</tbody></table></div><div class="terminal-summary"><span>Closed: <strong>${trades.length}</strong></span><span>Wins: <strong class="profit">${wins}</strong></span><span>Losses: <strong class="loss">${losses}</strong></span><span>Costs: <strong class="v15-cost-cell">-₹${trades.reduce((a,t)=>a+Number(t.costs||0),0).toFixed(2)}</strong></span><span>Net P&L: <strong class="${net>=0?'profit':'loss'}">${net>=0?'+':''}₹${net.toFixed(2)}</strong></span></div>`;
     }
 }
 
@@ -2816,7 +2816,7 @@ function updateStats() {
     document.getElementById(
         "profit"
     ).textContent =
-        "$"
+        "₹"
         +
         totalProfit.toFixed(2);
 
@@ -2824,7 +2824,7 @@ function updateStats() {
     document.getElementById(
         "loss"
     ).textContent =
-        "$"
+        "₹"
         +
         totalLoss.toFixed(2);
 }
@@ -2890,7 +2890,7 @@ function updateHistory() {
                     }">
 
                         ${trade.pnl >= 0 ? "+" : ""}
-                        $${trade.pnl.toFixed(2)}
+                        ₹${trade.pnl.toFixed(2)}
 
                     </strong>
 
@@ -2962,7 +2962,7 @@ function updateBacktestReport(){
   const box=document.getElementById('reportJournalTable'); if(!box)return;
   if(!trades.length){box.className='report-empty';box.textContent='No closed trades yet.';return;}
   box.className='';
-  const rows=trades.slice().reverse().map(t=>{const j=t.journal||{};return `<tr><td>#${t.number}</td><td>${t.direction}</td><td>${money(t.pnl)}</td><td class="v15-cost-cell">-$${Number(t.costs||0).toFixed(2)}</td><td>${t.result}</td><td>${j.setup||'—'}</td><td>${j.condition||'—'}</td><td>${j.emotion||'—'}</td><td>${j.rules||'—'}</td><td>${j.rating||'—'}</td><td><button class="journal-btn ${hasJournal(t)?'done':''}" onclick="openJournal(${t.number})">${hasJournal(t)?'Edit':'Add Journal'}</button></td></tr>`}).join('');
+  const rows=trades.slice().reverse().map(t=>{const j=t.journal||{};return `<tr><td>#${t.number}</td><td>${t.direction}</td><td>${money(t.pnl)}</td><td class="v15-cost-cell">-₹${Number(t.costs||0).toFixed(2)}</td><td>${t.result}</td><td>${j.setup||'—'}</td><td>${j.condition||'—'}</td><td>${j.emotion||'—'}</td><td>${j.rules||'—'}</td><td>${j.rating||'—'}</td><td><button class="journal-btn ${hasJournal(t)?'done':''}" onclick="openJournal(${t.number})">${hasJournal(t)?'Edit':'Add Journal'}</button></td></tr>`}).join('');
   box.innerHTML=`<table class="report-table"><thead><tr><th>Trade</th><th>Side</th><th>P&L</th><th>Result</th><th>Setup</th><th>Condition</th><th>Emotion</th><th>Rules</th><th>Rating</th><th>Action</th></tr></thead><tbody>${rows}</tbody></table>`;
 }
 function exportBacktestReport(){
@@ -2982,7 +2982,7 @@ function exportBacktestReport(){
 <div class="v13-modal" id="v13SaveModal">
   <div class="v13-card">
     <div class="v13-head"><h3>Save Backtest Session</h3><button class="v13-btn" onclick="v13CloseSave()">×</button></div>
-    <div class="v13-field"><label>SESSION NAME</label><input id="v13SessionName" maxlength="80" placeholder="e.g. XAUUSD M5 Trap Setup #01"></div>
+    <div class="v13-field"><label>SESSION NAME</label><input id="v13SessionName" maxlength="80" placeholder="e.g. BANKNIFTY M5 Trap Setup #01"></div>
     <div class="v13-field"><label>DESCRIPTION (OPTIONAL)</label><input id="v13SessionDesc" maxlength="140" placeholder="Short note about this backtest"></div>
     <div class="v13-note" id="v13SaveSummary"></div>
     <div class="v13-actions" style="justify-content:flex-end;margin-top:13px"><button class="v13-btn" onclick="v13CloseSave()">Cancel</button><button class="v13-btn primary" onclick="v13SaveSession()">Save Session</button></div>
@@ -2996,19 +2996,19 @@ function exportBacktestReport(){
   </div>
   <div class="v16-grid">
     <div class="v16-card">
-      <div class="v16-card-head"><strong id="v16ChartTitle">XAUUSD • Forward Market</strong><span id="v16CandleMeta">No forward session</span></div>
+      <div class="v16-card-head"><strong id="v16ChartTitle">BANKNIFTY • Forward Market</strong><span id="v16CandleMeta">No forward session</span></div>
       <div class="v16-chart-wrap"><canvas id="v16Chart" class="v16-chart"></canvas><span id="v16Price" class="v16-price">—</span></div>
       <div class="v16-controls">
         <div class="v16-field"><label>Forward Start Date</label><input id="v16StartDate" type="date"></div>
         <div class="v16-field"><label>Forward Start Time</label><input id="v16StartTime" type="time" step="300"></div>
-        <div class="v16-field"><label>Starting Balance</label><input id="v16Balance" type="number" value="10000" min="1" step="100"></div>
+        <div class="v16-field"><label>Starting Balance</label><input id="v16Balance" type="number" value="1000000" min="1" step="1000"></div>
         <div class="v16-field"><label>Replay Speed</label><select id="v16Speed"><option value="1">1×</option><option value="2">2×</option><option value="5">5×</option><option value="10">10×</option></select></div>
         <div class="v16-field v16-wide"><label>Forward Window</label><div id="v16Window" style="font-size:10px;color:#9cafc4;padding:8px;background:#0d1d2f;border:1px solid #29415c;border-radius:6px">Choose a start point. Only candles after the locked start will be revealed.</div></div>
       </div>
       <div class="v16-actions"><button class="v16-btn primary" onclick="v16Start()">▶ Start Forward Test</button><button class="v16-btn" onclick="v16Step()">NEXT CANDLE ▶</button><button class="v16-btn" onclick="v16TogglePlay()" id="v16PlayBtn">PLAY</button><button class="v16-btn warn" onclick="v16Finish()">Finish Test</button><button class="v16-btn danger" onclick="v16Reset()">Reset</button></div>
       <div class="v16-status" id="v16Status"><strong>Ready.</strong> Select a historical cutoff, then start the paper test. Future candles remain hidden until revealed by the forward clock.</div>
       <div class="v16-metrics">
-        <div class="v16-metric"><span>BALANCE</span><b id="v16BalanceOut">$10,000.00</b></div><div class="v16-metric"><span>TRADES</span><b id="v16TradesOut">0</b></div><div class="v16-metric"><span>WIN RATE</span><b id="v16WinOut">0%</b></div><div class="v16-metric"><span>NET P&L</span><b id="v16PnlOut">$0.00</b></div><div class="v16-metric"><span>PF</span><b id="v16PfOut">—</b></div><div class="v16-metric"><span>MODE</span><b style="color:#f2c75c">PAPER</b></div>
+        <div class="v16-metric"><span>BALANCE</span><b id="v16BalanceOut">₹10,00,000.00</b></div><div class="v16-metric"><span>TRADES</span><b id="v16TradesOut">0</b></div><div class="v16-metric"><span>WIN RATE</span><b id="v16WinOut">0%</b></div><div class="v16-metric"><span>NET P&L</span><b id="v16PnlOut">₹0.00</b></div><div class="v16-metric"><span>PF</span><b id="v16PfOut">—</b></div><div class="v16-metric"><span>MODE</span><b style="color:#f2c75c">PAPER</b></div>
       </div>
       <div class="v16-terminal"><div class="v16-card-head" style="margin-bottom:8px"><strong>Forward Trade History</strong><span>Mode = FORWARD</span></div><div class="v16-table-wrap"><table class="v16-table"><thead><tr><th>#</th><th>Side</th><th>Entry</th><th>Exit</th><th>SL</th><th>TP</th><th>P&L</th><th>Result</th><th>Reason</th></tr></thead><tbody id="v16TradeBody"><tr><td colspan="9" class="v16-empty">No forward trades yet.</td></tr></tbody></table></div></div>
     </div>
@@ -3019,7 +3019,7 @@ function exportBacktestReport(){
           <div><label>Entry</label><input id="v16Entry" type="number" step="0.01" placeholder="Current close"></div><div><label>Risk %</label><input id="v16Risk" type="number" value="1" step="0.1" min="0.01"></div>
           <div><label>Stop Loss</label><input id="v16SL" type="number" step="0.01" placeholder="Required"></div><div><label>Take Profit</label><input id="v16TP" type="number" step="0.01" placeholder="Required"></div>
           <div><label>Order Type</label><select id="v16OrderType"><option value="MARKET">Market</option><option value="BUY LIMIT">Buy Limit</option><option value="SELL LIMIT">Sell Limit</option><option value="BUY STOP">Buy Stop</option><option value="SELL STOP">Sell Stop</option></select></div><div><label>Spread</label><input id="v16Spread" type="number" value="0.20" step="0.01" min="0"></div>
-          <div><label>Slippage</label><input id="v16Slippage" type="number" value="0.05" step="0.01" min="0"></div><div><label>Commission / lot</label><input id="v16Commission" type="number" value="7" step="0.01" min="0"></div>
+          <div><label>Slippage</label><input id="v16Slippage" type="number" value="0.05" step="0.01" min="0"></div><div><label>Brokerage + charges / lot (round trip, approx.)</label><input id="v16Commission" type="number" value="7" step="0.01" min="0"></div>
         </div>
         <div class="v16-order-actions"><button class="v16-buy" onclick="v16Place('BUY')">BUY</button><button class="v16-sell" onclick="v16Place('SELL')">SELL</button></div>
         <div id="v16OrderMsg" style="min-height:18px;margin-top:7px;color:#71869e;font-size:9px"></div>
@@ -3029,7 +3029,7 @@ function exportBacktestReport(){
       <div class="v16-open" style="border-top:1px solid #1c344d"><div class="v16-open-head"><strong>Forward Equity</strong><span style="font-size:9px;color:#71869e">Live paper curve</span></div><div class="v16-equity"><canvas id="v16Equity"></canvas></div></div>
     </div>
   </div>
-  <div class="v16-report"><div class="v16-card-head" style="margin-bottom:8px"><strong>Forward Test Report</strong><span>Compare this later with Backtest Report</span></div><div class="v16-report-grid"><div class="v16-report-card"><span>TOTAL TRADES</span><b id="v16RptTrades">0</b></div><div class="v16-report-card"><span>WIN RATE</span><b id="v16RptWin">0%</b></div><div class="v16-report-card"><span>NET P&L</span><b id="v16RptPnl">$0.00</b></div><div class="v16-report-card"><span>PROFIT FACTOR</span><b id="v16RptPF">—</b></div><div class="v16-report-card"><span>AVG R</span><b id="v16RptR">—</b></div><div class="v16-report-card"><span>MAX DD</span><b id="v16RptDD">$0.00</b></div></div></div>
+  <div class="v16-report"><div class="v16-card-head" style="margin-bottom:8px"><strong>Forward Test Report</strong><span>Compare this later with Backtest Report</span></div><div class="v16-report-grid"><div class="v16-report-card"><span>TOTAL TRADES</span><b id="v16RptTrades">0</b></div><div class="v16-report-card"><span>WIN RATE</span><b id="v16RptWin">0%</b></div><div class="v16-report-card"><span>NET P&L</span><b id="v16RptPnl">₹0.00</b></div><div class="v16-report-card"><span>PROFIT FACTOR</span><b id="v16RptPF">—</b></div><div class="v16-report-card"><span>AVG R</span><b id="v16RptR">—</b></div><div class="v16-report-card"><span>MAX DD</span><b id="v16RptDD">₹0.00</b></div></div></div>
 </section>
 
 
@@ -3157,7 +3157,7 @@ setTimeout(()=>{try{v182RepairChart();}catch(e){}},900);
 /* ------------------------------
    ANALYTICS
 ------------------------------ */
-function money(v){return (v<0?'-':'')+'$'+Math.abs(v).toFixed(2);}
+function money(v){return (v<0?'-':'')+'₹'+Math.abs(v).toFixed(2);}
 function showAnalyticsTab(tab,btn){
   document.querySelectorAll('.analytics-tab').forEach(b=>b.classList.remove('active'));
   if(btn)btn.classList.add('active');
@@ -3195,7 +3195,7 @@ function updateAnalytics(){
 
 /* V12 ADVANCED STRATEGY ANALYTICS */
 function v12Esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
-function v12Money(v){return (v<0?'-':'')+'$'+Math.abs(v).toFixed(2);}
+function v12Money(v){return (v<0?'-':'')+'₹'+Math.abs(v).toFixed(2);}
 function v12R(t){return t.riskMoney ? t.pnl/t.riskMoney : 0;}
 function v12Hour(t){return new Date(t.time).getHours();}
 function v12Day(t){return new Date(t.time).toLocaleDateString('en-US',{weekday:'short'});}
@@ -3447,7 +3447,7 @@ async function v13SaveSession(){
   await v13PutDataset(state.datasetId,data);
   const list=v13ReadSessions();
   const id='S'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
-  list.unshift({id,name,desc,savedAt:state.savedAt,datasetId:state.datasetId,symbol:'XAUUSD',timeframe:document.getElementById('timeframe')?.value||'5',trades:trades.length,pnl:balance-startingBalance,status:sessionStatus,state});
+  list.unshift({id,name,desc,savedAt:state.savedAt,datasetId:state.datasetId,symbol:'BANKNIFTY',timeframe:document.getElementById('timeframe')?.value||'5',trades:trades.length,pnl:balance-startingBalance,status:sessionStatus,state});
   v13WriteSessions(list.slice(0,30));
   v13CloseSave();v13RefreshSessions();showTradeMessage(`Session “${name}” saved successfully.`,'success');
 }
@@ -3466,7 +3466,7 @@ async function v13Resume(id){
   const st=item.state||{};
   v13DatasetId=item.datasetId||v13DatasetKey();
   currentIndex=Math.min(st.currentIndex??100,candles.length-1);sessionStartIndex=Math.max(0,Math.min(st.sessionStartIndex??currentIndex,candles.length-1));sessionEndIndex=Math.max(sessionStartIndex,Math.min(st.sessionEndIndex??candles.length-1,candles.length-1));
-  sessionActive=!!st.sessionActive;sessionStatus=st.sessionStatus||'READY';startingBalance=Number(st.startingBalance)||10000;balance=Number(st.balance);totalProfit=Number(st.totalProfit)||0;totalLoss=Number(st.totalLoss)||0;wins=Number(st.wins)||0;losses=Number(st.losses)||0;nextPositionId=Number(st.nextPositionId)||1;selectedPositionId=st.selectedPositionId??null;journalTradeId=st.journalTradeId??null;chartZoom=Number(st.chartZoom)||1;chartPan=Number(st.chartPan)||0; if(document.getElementById('v14EntryTf')&&st.mtfEntryTf)document.getElementById('v14EntryTf').value=String(st.mtfEntryTf); if(st.v15Execution)v15Execution=Object.assign(v15Execution,st.v15Execution); v15ApplySettingsToUI();
+  sessionActive=!!st.sessionActive;sessionStatus=st.sessionStatus||'READY';startingBalance=Number(st.startingBalance)||1000000;balance=Number(st.balance);totalProfit=Number(st.totalProfit)||0;totalLoss=Number(st.totalLoss)||0;wins=Number(st.wins)||0;losses=Number(st.losses)||0;nextPositionId=Number(st.nextPositionId)||1;selectedPositionId=st.selectedPositionId??null;journalTradeId=st.journalTradeId??null;chartZoom=Number(st.chartZoom)||1;chartPan=Number(st.chartPan)||0; if(document.getElementById('v14EntryTf')&&st.mtfEntryTf)document.getElementById('v14EntryTf').value=String(st.mtfEntryTf); if(st.v15Execution)v15Execution=Object.assign(v15Execution,st.v15Execution); v15ApplySettingsToUI();
   openPositions=Array.isArray(st.openPositions)?st.openPositions:[];pendingOrder=st.pendingOrder||null;trades=Array.isArray(st.trades)?st.trades:[];
   updateDataSourceUI('HISTORICAL CSV');updateDataInspector();updatePendingArea();updateStats();updateAnalytics();updateHistory();updatePosition();updateTradePreview();setReplayInputs(currentIndex);updateSessionUI();updateDateInfo();drawChart();updateTerminal();
   showTradeMessage(`Session “${item.name}” resumed.`,'success');
@@ -3519,9 +3519,9 @@ setTimeout(()=>{try{updateV14MTF()}catch(e){}},350);
    V16 — FORWARD TESTING (PAPER / SIMULATION ONLY)
    Separate state: never mixed with backtest trades.
 ========================================================= */
-let v16={active:false,playing:false,status:'READY',startIndex:null,currentIndex:null,balance:10000,startingBalance:10000,trades:[],positions:[],pending:[],equity:[],timer:null,nextId:1,spread:.20,slippage:.05,commission:7};
+let v16={active:false,playing:false,status:'READY',startIndex:null,currentIndex:null,balance:1000000,startingBalance:1000000,trades:[],positions:[],pending:[],equity:[],timer:null,nextId:1,spread:2,slippage:.5,commission:40};
 function v16Fmt(n){return Number(n||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
-function v16Money(n){return (n>=0?'+':'-')+'$'+v16Fmt(Math.abs(n));}
+function v16Money(n){return (n>=0?'+':'-')+'₹'+v16Fmt(Math.abs(n));}
 function v16DateInput(d){const x=new Date(d);return {date:x.toISOString().slice(0,10),time:x.toTimeString().slice(0,5)};}
 function v16SetStatus(msg){const e=document.getElementById('v16Status');if(e)e.innerHTML=msg;}
 function v16Start(){
@@ -3531,7 +3531,7 @@ function v16Start(){
   let target=null;if(ds){target=new Date(`${ds}T${ts||'00:00'}:00`).getTime();}
   let idx=target?candles.findIndex(c=>new Date(c.time).getTime()>=target):Math.min(100,candles.length-2);
   if(idx<1)idx=1;if(idx>=candles.length-1){v16SetStatus('<strong>Invalid cutoff.</strong> Choose a start before the end of the loaded dataset.');return;}
-  v16.active=true;v16.playing=false;v16.status='RUNNING';v16.startIndex=idx;v16.currentIndex=idx;v16.startingBalance=Math.max(1,Number(document.getElementById('v16Balance').value)||10000);v16.balance=v16.startingBalance;v16.trades=[];v16.positions=[];v16.pending=[];v16.equity=[v16.balance];v16.nextId=1;
+  v16.active=true;v16.playing=false;v16.status='RUNNING';v16.startIndex=idx;v16.currentIndex=idx;v16.startingBalance=Math.max(1,Number(document.getElementById('v16Balance').value)||1000000);v16.balance=v16.startingBalance;v16.trades=[];v16.positions=[];v16.pending=[];v16.equity=[v16.balance];v16.nextId=1;
   v16.spread=Math.max(0,Number(document.getElementById('v16Spread').value)||0);v16.slippage=Math.max(0,Number(document.getElementById('v16Slippage').value)||0);v16.commission=Math.max(0,Number(document.getElementById('v16Commission').value)||0);
   const inp=v16DateInput(candles[idx].time);document.getElementById('v16StartDate').value=inp.date;document.getElementById('v16StartTime').value=inp.time;
   v16SetStatus(`<strong>Forward test active.</strong> Cutoff locked at ${formatDate(candles[idx].time)}. Candle ${idx+1} is the last known candle; the next candle is revealed only when you advance.`);
@@ -3575,12 +3575,12 @@ function v16ManualClose(id){const p=v16.positions.find(x=>x.id===id);if(!p)retur
 function v16Journal(number){const t=v16.trades.find(x=>x.number===Number(number));if(!t)return;const note=prompt('Forward Trade Journal — note for this trade:',t.journal||'');if(note===null)return;t.journal=note.trim();v16Render();}
 function v16CloseAll(){if(!v16.active)return;[...v16.positions].forEach(p=>v16ManualClose(p.id));v16Render();}
 function v16Finish(){if(!v16.active){v16SetStatus('<strong>No active forward test.</strong>');return;}v16StopPlay();v16.positions.slice().forEach(p=>v16ManualClose(p.id));v16.status='COMPLETED';v16.active=false;v16Render();v16SetStatus('<strong>Forward test finished.</strong> Open positions were closed at the last revealed candle. Backtest trades remain separate.');}
-function v16Reset(){v16StopPlay();v16={active:false,playing:false,status:'READY',startIndex:null,currentIndex:null,balance:10000,startingBalance:10000,trades:[],positions:[],pending:[],equity:[],timer:null,nextId:1,spread:.20,slippage:.05,commission:7};v16Render();v16SetStatus('<strong>Ready.</strong> Start a new forward test.');}
+function v16Reset(){v16StopPlay();v16={active:false,playing:false,status:'READY',startIndex:null,currentIndex:null,balance:1000000,startingBalance:1000000,trades:[],positions:[],pending:[],equity:[],timer:null,nextId:1,spread:2,slippage:.5,commission:40};v16Render();v16SetStatus('<strong>Ready.</strong> Start a new forward test.');}
 function v16Stats(){const n=v16.trades.length,w=v16.trades.filter(t=>t.pnl>0),l=v16.trades.filter(t=>t.pnl<0),gp=w.reduce((a,t)=>a+t.pnl,0),gl=Math.abs(l.reduce((a,t)=>a+t.pnl,0)),net=v16.balance-v16.startingBalance,pf=gl?gp/gl:null,avgR=n?v16.trades.reduce((a,t)=>a+(t.riskMoney?t.pnl/t.riskMoney:0),0)/n:null;let eq=v16.startingBalance,peak=eq,dd=0;v16.trades.forEach(t=>{eq+=t.pnl;peak=Math.max(peak,eq);dd=Math.max(dd,peak-eq)});return{n,w:w.length,net,pf,avgR,dd,wr:n?w.length/n*100:0};}
 function v16Render(){
   const has=v16.active&&v16.currentIndex!==null,c=has?candles[v16.currentIndex]:null,s=v16Stats();
-  document.getElementById('v16ModeBadge').textContent=`FORWARD TEST • ${v16.status}`;document.getElementById('v16BalanceOut').textContent='$'+v16Fmt(v16.balance);document.getElementById('v16TradesOut').textContent=s.n;document.getElementById('v16WinOut').textContent=s.wr.toFixed(1)+'%';const pnl=document.getElementById('v16PnlOut');pnl.textContent=v16Money(s.net);pnl.className=s.net>=0?'v16-profit':'v16-loss';document.getElementById('v16PfOut').textContent=s.pf===null?'—':s.pf.toFixed(2);
-  document.getElementById('v16RptTrades').textContent=s.n;document.getElementById('v16RptWin').textContent=s.wr.toFixed(1)+'%';const rp=document.getElementById('v16RptPnl');rp.textContent=v16Money(s.net);rp.className=s.net>=0?'v16-profit':'v16-loss';document.getElementById('v16RptPF').textContent=s.pf===null?'—':s.pf.toFixed(2);document.getElementById('v16RptR').textContent=s.avgR===null?'—':s.avgR.toFixed(2)+'R';document.getElementById('v16RptDD').textContent='$'+v16Fmt(s.dd);
+  document.getElementById('v16ModeBadge').textContent=`FORWARD TEST • ${v16.status}`;document.getElementById('v16BalanceOut').textContent='₹'+v16Fmt(v16.balance);document.getElementById('v16TradesOut').textContent=s.n;document.getElementById('v16WinOut').textContent=s.wr.toFixed(1)+'%';const pnl=document.getElementById('v16PnlOut');pnl.textContent=v16Money(s.net);pnl.className=s.net>=0?'v16-profit':'v16-loss';document.getElementById('v16PfOut').textContent=s.pf===null?'—':s.pf.toFixed(2);
+  document.getElementById('v16RptTrades').textContent=s.n;document.getElementById('v16RptWin').textContent=s.wr.toFixed(1)+'%';const rp=document.getElementById('v16RptPnl');rp.textContent=v16Money(s.net);rp.className=s.net>=0?'v16-profit':'v16-loss';document.getElementById('v16RptPF').textContent=s.pf===null?'—':s.pf.toFixed(2);document.getElementById('v16RptR').textContent=s.avgR===null?'—':s.avgR.toFixed(2)+'R';document.getElementById('v16RptDD').textContent='₹'+v16Fmt(s.dd);
   if(c){document.getElementById('v16CandleMeta').textContent=`REVEALED ${v16.currentIndex-v16.startIndex} • ${formatDate(c.time)}`;document.getElementById('v16Price').textContent=Number(c.close).toFixed(2);document.getElementById('v16Window').textContent=`Locked start: ${formatDate(candles[v16.startIndex].time)} • Current revealed: ${formatDate(c.time)} • ${Math.max(0,candles.length-1-v16.currentIndex)} candles remain hidden`;}else{document.getElementById('v16CandleMeta').textContent='No forward session';document.getElementById('v16Price').textContent='—';}
   document.getElementById('v16TradeBody').innerHTML=v16.trades.length?v16.trades.slice().reverse().map(t=>`<tr><td>#${t.number}</td><td class="${t.side==='BUY'?'v16-profit':'v16-loss'}">${t.side}</td><td>${t.entry.toFixed(2)}</td><td>${t.exit.toFixed(2)}</td><td>${t.sl.toFixed(2)}</td><td>${t.tp.toFixed(2)}</td><td class="${t.pnl>=0?'v16-profit':'v16-loss'}">${v16Money(t.pnl)}</td><td>${t.result}</td><td>${t.reason} <button class="v16-btn" style="padding:3px 5px;margin-left:3px" onclick="v16Journal(${t.number})">Journal</button></td></tr>`).join(''):'<tr><td colspan="9" class="v16-empty">No forward trades yet.</td></tr>';
   document.getElementById('v16PendingArea').innerHTML=v16.pending.length?v16.pending.map(o=>`<div class="v16-open-card"><div class="row"><b>${o.type} #${o.id}</b><button class="v16-btn danger" style="padding:3px 6px" onclick="v16CancelPending(${o.id})">Cancel</button></div><div class="row"><span>Entry</span><b>${o.requestedEntry.toFixed(2)}</b></div><div class="row"><span>SL / TP</span><b>${o.sl.toFixed(2)} / ${o.tp.toFixed(2)}</b></div></div>`).join(''):'<div class="v16-empty">No pending orders.</div>';
@@ -3627,7 +3627,7 @@ setTimeout(()=>{try{if(candles&&candles.length>2){const d=v16DateInput(candles[M
           <div class="v17-stat"><span>Workspace Data</span><b id="v17DataSize">0 KB</b></div>
         </div>
         <div class="v17-savebar">
-          <input id="v17WorkspaceName" class="v17-name-input" placeholder="Workspace name (e.g. Gold Breakout Test)" maxlength="80">
+          <input id="v17WorkspaceName" class="v17-name-input" placeholder="Workspace name (e.g. Breakout Test)" maxlength="80">
           <button class="v17-btn primary" onclick="v17SaveSnapshot()">Save Workspace</button>
           <button class="v17-btn" onclick="v17LoadCloudRows()">Sync Cloud</button>
           <button class="v17-btn" onclick="v17Refresh()">Refresh</button>
@@ -3743,10 +3743,10 @@ function v17Snapshot(){
   const backtestTrades=typeof trades!=='undefined'?trades.length:0;
   const forwardTrades=Array.isArray(f.trades)?f.trades.length:0;
   const tf=document.getElementById('timeframe')?.value||'5';
-  const name=(document.getElementById('v17WorkspaceName')?.value||'').trim()||`XAUUSD ${tf}M Workspace`;
+  const name=(document.getElementById('v17WorkspaceName')?.value||'').trim()||`BANKNIFTY ${tf}M Workspace`;
   return {
     version:'V17.3',id:'ws_'+Date.now(),savedAt:new Date().toISOString(),
-    symbol:'XAUUSD',timeframe:tf,name,backtestTrades,forwardTrades,
+    symbol:'BANKNIFTY',timeframe:tf,name,backtestTrades,forwardTrades,
     savedSessionCount:Array.isArray(bt)?bt.length:0,
     balance:Number(f.balance||document.getElementById('balance')?.textContent||0)||0,
     replayIndex:Number(f.index??f.replayIndex??0)||0,
@@ -3820,11 +3820,11 @@ function v17Refresh(){
   const list=document.getElementById('v17List');
   const cloud=v17.cloudRows||[];
   if(cloud.length){
-    list.innerHTML=cloud.slice(0,8).map(x=>`<div class="v17-row"><div><strong>${v17Esc(x.name||x.symbol+' '+x.timeframe+'M')}</strong><br><span>CLOUD · ${new Date(x.updated_at).toLocaleString('en-IN')} · ${v17Esc(x.mode)} · ${v17Esc(x.symbol)} ${v17Esc(x.timeframe)}M</span></div><div class="v17-row-actions"><span>${x.payload?.balance?('$'+Number(x.payload.balance).toFixed(2)):''}</span><button class="v17-btn" onclick="v17RestoreCloud('${x.id}')">Restore</button><button class="v17-btn danger" onclick="v17DeleteCloud('${x.id}')">Delete</button></div></div>`).join('');
+    list.innerHTML=cloud.slice(0,8).map(x=>`<div class="v17-row"><div><strong>${v17Esc(x.name||x.symbol+' '+x.timeframe+'M')}</strong><br><span>CLOUD · ${new Date(x.updated_at).toLocaleString('en-IN')} · ${v17Esc(x.mode)} · ${v17Esc(x.symbol)} ${v17Esc(x.timeframe)}M</span></div><div class="v17-row-actions"><span>${x.payload?.balance?('₹'+Number(x.payload.balance).toFixed(2)):''}</span><button class="v17-btn" onclick="v17RestoreCloud('${x.id}')">Restore</button><button class="v17-btn danger" onclick="v17DeleteCloud('${x.id}')">Delete</button></div></div>`).join('');
     return;
   }
   if(!d.snapshots.length){list.innerHTML='<div class="v17-empty">No workspace snapshots yet.</div>';return;}
-  list.innerHTML=d.snapshots.slice(0,8).map(x=>`<div class="v17-row"><div><strong>${v17Esc(x.name||x.symbol+' '+x.timeframe+'M')}</strong><br><span>LOCAL · ${new Date(x.savedAt).toLocaleString('en-IN')} · BT ${x.backtestTrades} · FT ${x.forwardTrades}</span></div><span>${x.balance?('$'+Number(x.balance).toFixed(2)):''}</span></div>`).join('');
+  list.innerHTML=d.snapshots.slice(0,8).map(x=>`<div class="v17-row"><div><strong>${v17Esc(x.name||x.symbol+' '+x.timeframe+'M')}</strong><br><span>LOCAL · ${new Date(x.savedAt).toLocaleString('en-IN')} · BT ${x.backtestTrades} · FT ${x.forwardTrades}</span></div><span>${x.balance?('₹'+Number(x.balance).toFixed(2)):''}</span></div>`).join('');
 }
 
 (function(){
@@ -3974,7 +3974,7 @@ async function v18LoadActiveToReplay(){
 async function v18DeleteDataset(id){if(!confirm('Delete this historical dataset from local storage?'))return;const bars=await v18BarsForDataset(id,Number.MAX_SAFE_INTEGER);await new Promise((res,rej)=>{const tx=v18db.transaction('bars','readwrite'),st=tx.objectStore('bars');for(const b of bars)st.delete(b.id);tx.oncomplete=()=>res();tx.onerror=()=>rej(tx.error)});await v18Delete('datasets',id);if(v18ActiveId===id)v18ActiveId=null;await v18RefreshDatasets();v18SetStatus('Dataset deleted.');}
 async function v18RefreshDatasets(){await v18OpenDB();const list=await v18All('datasets');list.sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));document.getElementById('v18DatasetCount').textContent=list.length;const active=list.find(x=>x.id===v18ActiveId)||list[0];if(active)v18ActiveId=active.id;document.getElementById('v18Active').textContent=active?active.name:'None';document.getElementById('v18Rows').textContent=active?(active.rows||0).toLocaleString():'0';document.getElementById('v18Range').textContent=active?(v18Date(active.first)+' → '+v18Date(active.last)):'—';const badge=document.getElementById('v18DbBadge');badge.textContent='LOCAL DB READY';badge.className='v18-badge ready';const el=document.getElementById('v18DatasetList');if(!list.length){el.innerHTML='<div class="v18-empty">No large datasets stored yet.</div>';return}el.innerHTML=list.map(x=>`<div class="v18-row"><div><strong>${String(x.name).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}</strong><br><span>${(x.rows||0).toLocaleString()} bars • ${v18Date(x.first)} → ${v18Date(x.last)}</span></div><div><span>Interval ${x.interval||'—'} min</span></div><div><span>Invalid ${x.invalid||0} • Dup ${x.duplicates||0}</span></div><div class="v18-row-actions"><button class="v18-btn" onclick="v18SelectDataset('${x.id}')">${x.id===v18ActiveId?'Active':'Select'}</button> <button class="v18-btn danger" onclick="v18DeleteDataset('${x.id}')">Delete</button></div></div>`).join('');}
 async function v18SelectDataset(id){v18ActiveId=id;await v18RefreshDatasets();v18SetStatus('Active dataset selected. Click Load Active → Replay when ready.')}
-document.getElementById('v18LargeCsv')?.addEventListener('change',e=>{const f=e.target.files?.[0];if(f)v18ImportFile(f);e.target.value=''})
+document.getElementById('v18LargeCsv')?.addEventListener('change',e=>{const f=e.target.files?.[0];if(f)v18ImportFile(f);e.target.value=''});
 (async()=>{try{await v18OpenDB();await v18RefreshDatasets()}catch(e){const b=document.getElementById('v18DbBadge');if(b){b.textContent='DB UNAVAILABLE';b.className='v18-badge warn'}v18SetStatus('IndexedDB unavailable in this browser/session.')}})();
 </script>
 

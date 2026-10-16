@@ -1,14 +1,45 @@
-<!doctype html>
-<html lang="en" data-theme="midnight">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="theme-color" content="#070b16" />
-    <link rel="icon" href="/icon.svg" />
-    <title>BFT Journal</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
-</html>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BFT Trade Lab – Backtest & Forward Test BANKNIFTY</title>
+<meta name="description" content="Practise your strategy on real BANKNIFTY history with demo money. Backtest, then forward-test on unseen data before risking real money.">
+<style>
+:root{--bg:#0b1220;--pn:#111a2e;--ln:#1f2b45;--tx:#e6edf7;--mu:#8a98b3;--ac:#3b82f6;--up:#16c784;--dn:#ea3943}
+@media(prefers-color-scheme:light){:root{--bg:#f4f7fb;--pn:#fff;--ln:#dbe3ee;--tx:#0f172a;--mu:#5b6b85}}
+*{box-sizing:border-box;margin:0}html{scroll-behavior:smooth}body{background:var(--bg);color:var(--tx);font:16px/1.55 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+a{color:inherit;text-decoration:none}.w{max-width:1040px;margin:0 auto;padding:0 20px}
+nav{display:flex;align-items:center;gap:18px;padding:16px 0}nav b{font-size:18px}nav b i{font-style:normal;color:var(--ac)}nav a.l{color:var(--mu);font-size:14px}nav .sp{flex:1}
+.btn{display:inline-block;background:var(--ac);color:#fff;font-weight:700;border-radius:10px;padding:12px 22px}.btn.o{background:none;border:1px solid var(--ln);color:var(--tx)}
+.hero{padding:56px 0 40px;text-align:center}.hero h1{font-size:clamp(30px,6vw,52px);line-height:1.12;letter-spacing:-.02em;max-width:800px;margin:0 auto}.hero h1 span{color:var(--ac)}
+.hero p{color:var(--mu);max-width:620px;margin:18px auto 26px;font-size:18px}.hero .bt{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:22px}.chips span{font-size:12px;border:1px solid var(--ln);background:var(--pn);border-radius:99px;padding:5px 12px;color:var(--mu)}
+.g3,.g2{display:grid;gap:14px}.g3{grid-template-columns:repeat(3,1fr)}.g2{grid-template-columns:1fr 1fr}
+.c{background:var(--pn);border:1px solid var(--ln);border-radius:16px;padding:22px}.c h3{font-size:18px;margin-bottom:6px}.c p,.c li{color:var(--mu);font-size:14.5px}.c ul{padding-left:18px;margin:10px 0 16px}
+.sec{padding:34px 0}.sec>h2{font-size:26px;margin-bottom:6px}.sec>.s{color:var(--mu);margin-bottom:20px}
+.ic{font-size:26px;margin-bottom:8px}.tag{display:inline-block;font-size:11px;font-weight:800;padding:3px 8px;border-radius:6px;background:var(--ac);color:#fff;margin-bottom:10px}.tag.g{background:var(--ln);color:var(--mu)}
+.warn{border:1px solid var(--ln);border-radius:12px;padding:14px 16px;color:var(--mu);font-size:13px;margin:10px 0 30px}
+.nb{padding:8px 14px;font-size:14px}.cl{border-color:var(--ac);box-shadow:0 0 0 1px var(--ac)}.c .btn{margin-top:4px}
+footer{border-top:1px solid var(--ln);padding:22px 0 34px;color:var(--mu);font-size:13px;text-align:center}
+@media(max-width:800px){.g3,.g2{grid-template-columns:1fr}nav a.l{display:none}}
+</style></head><body><div class="w">
+<nav><b>BFT <i>Trade Lab</i></b><a class="l" href="#why">Why</a><a class="l" href="#tools">Tools</a><a class="l" href="#how">How it works</a><a class="btn o nb" href="classroom.html">🎓 Classroom</a><span class="sp"></span><a class="btn nb" href="trade-lab-pro.html">Open Pro Lab</a></nav>
+<header class="hero"><h1>Test your strategy on <span>real market history</span> before you risk real money</h1>
+<p>Replay BANKNIFTY candle by candle with demo money, real-style costs and no hindsight. Then prove it on data you have never seen.</p>
+<div class="bt"><a class="btn" href="trade-lab-pro.html">🚀 Start practising free</a><a class="btn o" href="classroom.html">🎓 Open Classroom</a></div>
+<div class="chips"><span>₹10,00,000 demo money</span><span>BANKNIFTY 5-min data</span><span>Zones &amp; drawing tools</span><span>5 themes</span><span>🎓 Teach &amp; record video</span><span>Works on mobile</span></div></header>
+
+<section class="sec" id="tools"><h2>Pick a tool and start in 30 seconds</h2><p class="s">No sign-up. Everything runs in your browser.</p>
+<div class="g3"><div class="c" id="backtesting"><div class="ic">📊</div><span class="tag">PRO LAB</span><h3>Trade Lab Pro</h3><p>Practise like a broker terminal with demo money.</p><ul><li>BUY / SELL, SL, TP, trailing, pending orders</li><li>Backtest, then locked Forward Test</li><li>Zones, indicators, Pencil Path scenarios</li></ul><a class="btn" href="trade-lab-pro.html">Open Pro Lab →</a></div>
+<div class="c cl"><div class="ic">🎓</div><span class="tag">CLASSROOM</span><h3>Classroom Board</h3><p>Teach price action on a blank board.</p><ul><li>Draw a path and the candles follow it</li><li>One-click Breakout, Failure, Breakdown lessons</li><li>Record your voice and download the video</li></ul><a class="btn" href="classroom.html">Open Classroom →</a></div>
+<div class="c" id="forward-testing"><div class="ic">🧪</div><span class="tag g">CLASSIC</span><h3>Backtesting Lab</h3><p>The original replay workspace.</p><ul><li>Trade journal with setup and emotion</li><li>Strategy analytics, multi-timeframe</li><li>Save sessions and cloud sync</li></ul><a class="btn o" href="backtest.html">Open Classic Lab →</a></div></div>
+<div class="g2" style="margin-top:14px"><div class="c"><span class="tag g">COMING SOON</span><h3>Premium Journal</h3><p>A smart trading journal with equity curve, leak finder and discipline coach.</p></div><div class="c"><span class="tag g">COMING SOON</span><h3>More markets</h3><p>BTC, Gold and more instruments. Load your own data today with the Data button.</p></div></div></section>
+<section class="sec" id="why"><h2>Why most strategies fail in real life</h2><p class="s">A backtest that looks great is easy to build. One that survives live trading is not.</p>
+<div class="g3"><div class="c"><div class="ic">🙈</div><h3>Hindsight bias</h3><p>You already know what happened next. Blind mode hides the date so you trade the chart, not your memory.</p></div>
+<div class="c"><div class="ic">💸</div><h3>Costs and spread ignored</h3><p>Brokerage, charges and spread quietly turn paper profits into losses. Every trade here includes them.</p></div>
+<div class="c"><div class="ic">🔒</div><h3>Over-fitted rules</h3><p>Lock your rules, then test on reserved data you never saw. Honest proof, not wishful thinking.</p></div></div></section>
+
+<section class="sec" id="how"><h2>How it works</h2><p class="s">Three steps, about five minutes to your first honest result.</p>
+<div class="g3"><div class="c"><div class="ic">1️⃣</div><h3>Practise</h3><p>Pick any past day. Press Next to reveal candles and trade with demo money. Mark zones as you go.</p></div>
+<div class="c"><div class="ic">2️⃣</div><h3>Lock your rules</h3><p>Write your exact rules and lock them. No edits, no rewinding, no peeking.</p></div>
+<div class="c"><div class="ic">3️⃣</div><h3>Forward test</h3><p>Trade the reserved unseen period. The lab compares Backtest and Forward and tells you if your edge held up.</p></div></div></section>
+
+<div class="warn"><b>Important:</b> BFT Trade Lab is an educational simulation using demo money and historical data. It gives no tips, signals or investment advice and does not promise profits. Past performance does not guarantee future results. Charges shown are approximate.</div>
+<footer>© BFT Trade Lab · <a href="trade-lab-pro.html" style="text-decoration:underline">Pro Lab</a> · <a href="backtest.html" style="text-decoration:underline">Classic Lab</a></footer></div></body></html>
