@@ -1,72 +1,134 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>BFT Academy – Learn Price Action, Then Practise It</title>
-<meta name="description" content="Structured price-action course, trading books and a practice lab. One-time payment, lifetime access.">
-<meta property="og:title" content="BFT Academy – Learn Price Action, Then Practise It"><meta property="og:description" content="Video lessons, trading books and a practice lab. One-time payment, lifetime access.">
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>BFT Academy – Courses, Notes and TradingView Indicators</title>
+<meta name="description" content="Structured price-action courses, PDF notes and Pine Script indicators for TradingView. Learn it, then practise it in the Lab.">
+<meta name="theme-color" content="#070b14">
+<meta property="og:title" content="BFT Academy – Courses, Notes and TradingView Indicators"><meta property="og:description" content="Video courses, PDF notes and Pine indicators in one place. One-time payment, lifetime access.">
 <style>
-:root{--bg:#070b14;--tx:#e8eefb;--mu:#8e9bb8;--ln:rgba(255,255,255,.09);--gl:rgba(255,255,255,.045);--ac:#6aa5ff;--ac2:#a78bfa;--gold:#f5c76b;--ok:#3ddc97}
-*{box-sizing:border-box;margin:0}html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--tx);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overflow-x:hidden}
-body:before{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradient(900px 500px at 12% -8%,rgba(106,165,255,.22),transparent 60%),radial-gradient(800px 500px at 100% 10%,rgba(167,139,250,.18),transparent 60%),radial-gradient(700px 600px at 50% 110%,rgba(245,199,107,.09),transparent 60%)}
-a{color:inherit;text-decoration:none}button{font:inherit;color:inherit;cursor:pointer}.w{max-width:1080px;margin:0 auto;padding:0 20px}
-nav{position:sticky;top:0;z-index:20;backdrop-filter:blur(14px);background:rgba(7,11,20,.7);border-bottom:1px solid var(--ln)}
-nav .w{display:flex;align-items:center;gap:20px;height:60px}nav b{font-size:18px;letter-spacing:-.01em}nav b i{font-style:normal;background:linear-gradient(90deg,var(--ac),var(--ac2));-webkit-background-clip:text;background-clip:text;color:transparent}
-nav .l{color:var(--mu);font-size:14px}nav .l:hover{color:var(--tx)}nav .sp{flex:1}
-.btn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:12px;padding:12px 22px;font-weight:700;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#06101f;box-shadow:0 8px 30px rgba(106,165,255,.28);transition:.2s}
-.btn:hover{transform:translateY(-2px);box-shadow:0 12px 36px rgba(106,165,255,.4)}.btn.o{background:var(--gl);border:1px solid var(--ln);color:var(--tx);box-shadow:none}.btn.s{padding:8px 16px;font-size:14px}
-.hero{padding:84px 0 56px;text-align:center;position:relative}.hero h1{font-size:clamp(34px,6.4vw,64px);line-height:1.06;letter-spacing:-.03em;max-width:860px;margin:0 auto}
-.hero h1 span{background:linear-gradient(90deg,var(--ac),var(--ac2) 60%,var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
-.hero p{color:var(--mu);font-size:19px;max-width:620px;margin:20px auto 30px}.hero .bt{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-.pill{display:inline-block;border:1px solid var(--ln);background:var(--gl);border-radius:99px;padding:6px 14px;font-size:13px;color:var(--mu);margin-bottom:22px}
-.stats{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:34px}.stats div{background:var(--gl);border:1px solid var(--ln);border-radius:14px;padding:12px 20px;min-width:120px}.stats b{display:block;font-size:24px}.stats span{font-size:12px;color:var(--mu)}
-.sec{padding:60px 0}.sec h2{font-size:clamp(26px,4vw,38px);letter-spacing:-.02em}.sub{color:var(--mu);margin:8px 0 26px}
-.card{position:relative;background:var(--gl);border:1px solid var(--ln);border-radius:18px;overflow:hidden;backdrop-filter:blur(8px)}
+:root{--bg:#060a13;--bg2:#0b1222;--tx:#e8eefb;--mu:#8e9bb8;--ln:rgba(255,255,255,.09);--gl:rgba(255,255,255,.05);--gl2:rgba(255,255,255,.085);--ac:#6aa5ff;--ac2:#a78bfa;--gold:#f5c76b;--ok:#3ddc97;--dn:#ff7a59;--ink:#06101f;--code:#0a0f1d;--sh:0 20px 60px rgba(0,0,0,.45)}
+*{box-sizing:border-box;margin:0}html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--tx);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overflow-x:hidden;padding-bottom:env(safe-area-inset-bottom)}
+body:before{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradient(900px 520px at 10% -8%,rgba(106,165,255,.2),transparent 60%),radial-gradient(800px 520px at 100% 6%,rgba(167,139,250,.16),transparent 60%),radial-gradient(700px 520px at 50% 112%,rgba(245,199,107,.08),transparent 60%)}
+a{color:inherit;text-decoration:none}button{font:inherit;color:inherit;cursor:pointer}:focus-visible{outline:2px solid var(--ac);outline-offset:3px;border-radius:8px}
+.w{max-width:1160px;margin:0 auto;padding:0 20px}.mu{color:var(--mu)}
+/* top bar + tabs */
+.top{position:sticky;top:0;z-index:30;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);background:color-mix(in srgb,var(--bg) 78%,transparent);border-bottom:1px solid var(--ln)}
+.top .w{display:flex;align-items:center;gap:14px;height:60px}.logo{font-weight:800;font-size:18px;letter-spacing:-.01em}.logo i{font-style:normal;background:linear-gradient(90deg,var(--ac),var(--ac2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sp{flex:1}.nl{color:var(--mu);font-size:14px;padding:7px 10px;border-radius:9px}.nl:hover{color:var(--tx);background:var(--gl)}
+.tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;padding:8px 0}.tabs::-webkit-scrollbar{display:none}
+.tab{background:none;border:0;border-radius:99px;padding:9px 18px;font-weight:700;font-size:14px;color:var(--mu);white-space:nowrap;display:flex;gap:8px;align-items:center;transition:.2s}
+.tab:hover{color:var(--tx);background:var(--gl)}.tab.on{background:linear-gradient(135deg,var(--ac),var(--ac2));color:var(--ink);box-shadow:0 8px 24px -8px var(--ac)}.tab em{font-style:normal;font-size:11px;opacity:.75;font-weight:800}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:12px;padding:12px 22px;font-weight:700;font-size:15px;background:linear-gradient(135deg,var(--ac),var(--ac2));color:var(--ink);box-shadow:0 8px 28px rgba(106,165,255,.28);transition:.2s;white-space:nowrap}
+.btn:hover{transform:translateY(-2px)}.btn.o{background:var(--gl);border:1px solid var(--ln);color:var(--tx);box-shadow:none}.btn.o:hover{border-color:var(--ac)}.btn.g{background:linear-gradient(135deg,var(--gold),#ffdf9c);color:#2a1d00;box-shadow:0 8px 28px rgba(245,199,107,.25)}.btn.s{padding:8px 15px;font-size:13.5px;border-radius:10px}.btn.l{padding:15px 30px;font-size:17px}
+.tag{display:inline-block;font-size:10.5px;font-weight:800;letter-spacing:.07em;padding:3px 9px;border-radius:6px;background:rgba(245,199,107,.18);color:var(--gold)}.tag.f{background:rgba(61,220,151,.16);color:var(--ok)}.tag.b{background:rgba(106,165,255,.16);color:var(--ac)}
+/* hero */
+.hero{position:relative;overflow:hidden;text-align:center;padding:92px 0 64px;isolation:isolate}
+.hero canvas{position:absolute;inset:0;width:100%;height:100%;z-index:-1;opacity:.55;-webkit-mask-image:linear-gradient(#000 40%,transparent);mask-image:linear-gradient(#000 40%,transparent)}
+.hero:after{content:"";position:absolute;left:-20%;right:-20%;top:0;height:2px;background:linear-gradient(90deg,transparent,var(--ac),transparent);opacity:.7;animation:sweep 6s ease-in-out infinite}
+@keyframes sweep{0%,100%{transform:translateX(-30%)}50%{transform:translateX(30%)}}
+.pill{display:inline-block;border:1px solid var(--ln);background:var(--gl);border-radius:99px;padding:6px 15px;font-size:13px;color:var(--mu);margin-bottom:22px}
+.hero h1{font-size:clamp(36px,6.6vw,70px);line-height:1.04;letter-spacing:-.035em;max-width:900px;margin:0 auto}.hero h1 span,.gt{background:linear-gradient(90deg,var(--ac),var(--ac2) 55%,var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{color:var(--mu);font-size:19px;max-width:660px;margin:22px auto 30px}.bt{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.stats{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:38px}.stats div{background:var(--gl);border:1px solid var(--ln);border-radius:16px;padding:12px 22px;min-width:128px;backdrop-filter:blur(8px)}.stats b{display:block;font-size:26px;font-variant-numeric:tabular-nums}.stats span{font-size:12px;color:var(--mu)}
+#resume{display:none;margin:26px auto 0;max-width:620px;text-align:left;align-items:center;gap:14px;padding:12px 16px}#resume.on{display:flex}#resume .t{flex:1;min-width:0}#resume b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* sections / cards */
+.sec{padding:54px 0}.sec h2{font-size:clamp(26px,4vw,38px);letter-spacing:-.02em;line-height:1.15}.sub{color:var(--mu);margin:8px 0 28px;max-width:640px}.hd2{display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:6px}.hd2 .sub{margin-bottom:22px}
+.card{position:relative;background:var(--gl);border:1px solid var(--ln);border-radius:20px;overflow:hidden;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);transition:transform .25s,border-color .25s,box-shadow .25s}
 .card:before{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:.3s;background:radial-gradient(320px circle at var(--mx,50%) var(--my,50%),rgba(106,165,255,.16),transparent 60%)}.card:hover:before{opacity:1}
-.crs{margin-bottom:22px}.crs>.hd{padding:20px 22px;display:flex;gap:16px;align-items:center;flex-wrap:wrap}.crs h3{font-size:21px}.crs p{color:var(--mu);font-size:14px}.pg{margin-left:auto;text-align:right;font-size:12px;color:var(--mu)}
-.bar{width:160px;height:6px;border-radius:9px;background:var(--ln);margin-top:6px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--ac),var(--ac2));width:0;transition:.5s}
-details{border-top:1px solid var(--ln)}summary{list-style:none;cursor:pointer;padding:14px 22px;font-weight:700;display:flex;align-items:center;gap:10px}summary::-webkit-details-marker{display:none}summary:after{content:"▾";margin-left:auto;color:var(--mu);transition:.2s}details[open] summary:after{transform:rotate(180deg)}summary small{color:var(--mu);font-weight:500}
-.ls{display:flex;align-items:center;gap:12px;width:100%;padding:11px 22px;background:none;border:0;border-top:1px solid var(--ln);text-align:left;transition:.15s}.ls:hover{background:rgba(255,255,255,.04)}
-.ic{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:rgba(106,165,255,.14);font-size:12px;flex:none}.ic.d{background:rgba(61,220,151,.18);color:var(--ok)}.ic.k{background:rgba(255,255,255,.06);color:var(--mu)}
-.ls .t{flex:1}.ls .d{color:var(--mu);font-size:13px}.tag{font-size:10px;font-weight:800;letter-spacing:.06em;padding:3px 8px;border-radius:6px;background:rgba(61,220,151,.16);color:var(--ok)}
-.bk{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px}.bk .card{padding:0;cursor:pointer;transition:.2s}.bk .card:hover{transform:translateY(-4px)}
-.cv{height:170px;display:flex;flex-direction:column;justify-content:flex-end;padding:16px;font-weight:800;font-size:19px;line-height:1.15;position:relative}.cv small{font-weight:600;font-size:11px;opacity:.8;margin-bottom:6px;letter-spacing:.08em}
-.bi{padding:14px 16px}.bi p{color:var(--mu);font-size:13px}.lk{position:absolute;top:12px;right:12px;background:rgba(0,0,0,.45);border-radius:99px;padding:4px 10px;font-size:11px}
-.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.g3 .card{padding:22px}.g3 h3{font-size:18px;margin:8px 0 4px}.g3 p{color:var(--mu);font-size:14px}.g3 .e{font-size:26px}
-.prc{max-width:520px;margin:0 auto;padding:34px;text-align:center;border-color:rgba(245,199,107,.4);box-shadow:0 0 0 1px rgba(245,199,107,.15),0 30px 80px rgba(245,199,107,.08)}
-.prc .am{font-size:56px;font-weight:800;letter-spacing:-.03em}.prc s{color:var(--mu);font-size:20px;margin-left:8px}.prc ul{list-style:none;text-align:left;margin:22px 0;display:grid;gap:10px}.prc li:before{content:"✓";color:var(--ok);margin-right:10px;font-weight:800}
-.prc .btn{width:100%;justify-content:center;padding:15px;font-size:17px;background:linear-gradient(135deg,var(--gold),#ffdf9c)}.prc .m{color:var(--mu);font-size:13px;margin-top:12px}
-.fq details{border:1px solid var(--ln);border-radius:14px;margin-bottom:10px;background:var(--gl)}.fq summary{padding:16px 20px}.fq p{padding:0 20px 16px;color:var(--mu)}
-footer{border-top:1px solid var(--ln);padding:30px 0 50px;color:var(--mu);font-size:13px;text-align:center}footer p{max-width:760px;margin:8px auto}
-.ov{position:fixed;inset:0;z-index:50;background:rgba(3,6,12,.82);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:16px}.ov.on{display:flex}
-.md{background:#0d1424;border:1px solid var(--ln);border-radius:20px;padding:22px;width:100%;max-width:880px;max-height:92vh;overflow:auto;position:relative}.md.n{max-width:460px;text-align:center}
-.x{position:absolute;top:12px;right:14px;background:var(--gl);border:1px solid var(--ln);border-radius:50%;width:34px;height:34px}
-.vid{aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#000;display:grid;place-items:center;margin:14px 0}.vid iframe,.vid video{width:100%;height:100%;border:0}.vid span{color:var(--mu);text-align:center;padding:20px}
-.row{display:flex;gap:10px;flex-wrap:wrap}.md h3{font-size:22px;padding-right:40px}.md p.m{color:var(--mu);margin-top:6px}
-.md input{width:100%;background:var(--gl);border:1px solid var(--ln);border-radius:12px;padding:13px;color:var(--tx);font:inherit;margin:14px 0;text-align:center;letter-spacing:.1em;text-transform:uppercase}
-.pdf{height:70vh;border-radius:12px;overflow:hidden;background:#111;margin-top:14px}.pdf iframe{width:100%;height:100%;border:0}
-#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#111a2ef2;border:1px solid var(--ln);padding:11px 18px;border-radius:12px;z-index:60;display:none}
-.rv{opacity:0;transform:translateY(20px);transition:opacity .7s,transform .7s}.rv.in{opacity:1;transform:none}
-@media(max-width:800px){.g3{grid-template-columns:1fr}nav .l{display:none}.pg{margin-left:0;text-align:left}}
+.hov{cursor:pointer}.hov:hover{transform:translateY(-4px);border-color:rgba(106,165,255,.55);box-shadow:var(--sh)}
+.g2,.g3,.g4{display:grid;gap:18px}.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+.step{padding:22px;text-align:center}.step .n{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;margin:0 auto 10px;font-weight:800;background:linear-gradient(135deg,var(--ac),var(--ac2));color:var(--ink)}.step h3{font-size:18px}.step p{color:var(--mu);font-size:14px}
+.cv{position:relative;display:flex;flex-direction:column;justify-content:flex-end;padding:18px;color:#fff;overflow:hidden}.cv:after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 30%,rgba(0,0,0,.5));pointer-events:none}.cv>*{position:relative;z-index:1}
+.cv .big{position:absolute;right:-6px;top:-18px;font-size:120px;font-weight:900;opacity:.16;line-height:1;z-index:0;letter-spacing:-.05em}
+.cv small{font-weight:700;font-size:11px;letter-spacing:.1em;opacity:.85;margin-bottom:6px}.cv b{font-size:21px;line-height:1.15}
+.lk{position:absolute;top:12px;right:12px;z-index:2;background:rgba(0,0,0,.5);color:#fff;border-radius:99px;padding:4px 11px;font-size:11px;font-weight:700}
+.bd{padding:16px 18px 18px}.bd p{color:var(--mu);font-size:14px}.meta{display:flex;gap:14px;flex-wrap:wrap;color:var(--mu);font-size:12.5px;margin:10px 0}
+.bar{height:6px;border-radius:9px;background:var(--ln);overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--ac),var(--ac2));width:0;transition:width .6s}
+/* pdf */
+.tool{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;align-items:center}.tool input{flex:1;min-width:200px;background:var(--gl);border:1px solid var(--ln);border-radius:12px;padding:11px 14px;color:var(--tx);font:inherit;font-size:14px}.tool input:focus{outline:0;border-color:var(--ac)}
+.chip{background:var(--gl);border:1px solid var(--ln);border-radius:99px;padding:7px 15px;font-size:13px;font-weight:600;color:var(--mu)}.chip.on{background:var(--ac);border-color:var(--ac);color:var(--ink)}
+.pdf-c{height:150px}.empty{padding:40px;text-align:center;color:var(--mu);grid-column:1/-1}
+/* indicators */
+.ind{display:flex;flex-direction:column}.ind canvas{width:100%;height:150px;display:block;background:var(--code);border-bottom:1px solid var(--ln)}.ind .bd{flex:1;display:flex;flex-direction:column}.ind .bd .row{margin-top:auto;padding-top:12px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.chips2{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.chips2 span{font-size:11.5px;border:1px solid var(--ln);border-radius:99px;padding:2px 10px;color:var(--mu)}
+.code{position:relative;background:var(--code);border:1px solid var(--ln);border-radius:14px;overflow:hidden;margin-top:12px}.code .bar2{display:flex;align-items:center;gap:8px;padding:8px 12px;border-bottom:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);color:#9fb0d0;font-size:12.5px}
+.code pre{margin:0;padding:14px 0;overflow:auto;max-height:46vh;font:12.5px/1.65 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:#d6e0f5;tab-size:4}.code pre div{display:flex;padding:0 14px}.code pre div b{color:#5a6a8a;min-width:34px;font-weight:400;user-select:none;text-align:right;padding-right:14px}.code pre div span{white-space:pre}
+.k{color:#c792ea}.s2{color:#c3e88d}.n2{color:#f78c6c}.c2{color:#6b7a99;font-style:italic}.f2{color:#82aaff}
+.code.lock pre{filter:blur(5px);user-select:none;pointer-events:none;max-height:210px;overflow:hidden}.code .cta{position:absolute;inset:38px 0 0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:linear-gradient(transparent,rgba(6,10,19,.72));text-align:center;padding:16px;color:#fff}
+.steps{counter-reset:s;list-style:none;display:grid;gap:10px;margin:14px 0}.steps li{counter-increment:s;display:flex;gap:12px;align-items:flex-start;color:var(--mu);font-size:14.5px}.steps li:before{content:counter(s);flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:800;background:var(--gl2);border:1px solid var(--ln);color:var(--tx)}
+/* pricing */
+.prc{max-width:540px;margin:0 auto;padding:36px;text-align:center;border-color:rgba(245,199,107,.45);box-shadow:0 0 0 1px rgba(245,199,107,.14),0 30px 80px rgba(245,199,107,.09)}
+.prc .am{font-size:58px;font-weight:800;letter-spacing:-.03em}.prc s{color:var(--mu);font-size:20px;margin-left:8px}.prc ul{list-style:none;text-align:left;margin:22px 0;display:grid;gap:10px}.prc li:before{content:"✓";color:var(--ok);margin-right:10px;font-weight:800}.prc .btn{width:100%}.prc .m{color:var(--mu);font-size:13px;margin-top:12px}
+.fq details{border:1px solid var(--ln);border-radius:14px;margin-bottom:10px;background:var(--gl)}.fq summary{padding:16px 20px;font-weight:700;cursor:pointer;list-style:none;display:flex;gap:10px}.fq summary::-webkit-details-marker{display:none}.fq summary:after{content:"▾";margin-left:auto;color:var(--mu)}.fq details[open] summary:after{transform:rotate(180deg)}.fq p{padding:0 20px 16px;color:var(--mu)}
+.final{text-align:center;padding:44px 22px;border-radius:26px}.final h2{margin-bottom:8px}
+footer{border-top:1px solid var(--ln);padding:30px 0 50px;color:var(--mu);font-size:13px;text-align:center}footer p{max-width:780px;margin:8px auto}footer a{text-decoration:underline;margin:0 8px}
+/* overlays */
+.ov{position:fixed;inset:0;z-index:50;background:rgba(3,6,12,.84);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:16px}.ov.on{display:flex}
+.md{background:var(--bg2);border:1px solid var(--ln);border-radius:22px;padding:24px;width:100%;max-width:900px;max-height:92vh;overflow:auto;position:relative;box-shadow:var(--sh);animation:pop .25s ease-out}.md.n{max-width:470px}.md.p{max-width:1240px;padding:0;overflow:hidden}
+@keyframes pop{from{opacity:0;transform:translateY(14px) scale(.98)}}
+.x{position:absolute;top:12px;right:14px;background:var(--gl);border:1px solid var(--ln);border-radius:50%;width:36px;height:36px;z-index:3;display:grid;place-items:center}
+.md h3{font-size:23px;padding-right:44px;letter-spacing:-.01em}.md .m{color:var(--mu);margin-top:4px}
+.md input[type=text]{width:100%;background:var(--gl);border:1px solid var(--ln);border-radius:12px;padding:13px;color:var(--tx);font:inherit;margin:14px 0;text-align:center;letter-spacing:.08em}
+.vid{aspect-ratio:16/9;border-radius:16px;overflow:hidden;background:#000;display:grid;place-items:center;color:#9fb0d0}.vid iframe,.vid video{width:100%;height:100%;border:0}.vid span{text-align:center;padding:20px}
+.pl{display:grid;grid-template-columns:minmax(0,1fr) 360px;min-height:min(80vh,720px)}.pl .main{padding:22px;overflow:auto;max-height:92vh}.pl .list{border-left:1px solid var(--ln);overflow:auto;max-height:92vh;background:color-mix(in srgb,var(--bg) 50%,transparent)}
+.pl .list h4{padding:16px 18px 6px;font-size:15px}.pl .list .mh{padding:12px 18px 6px;font-size:11.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--mu);font-weight:800}
+.ls{display:flex;align-items:center;gap:12px;width:100%;padding:11px 18px;background:none;border:0;border-top:1px solid var(--ln);text-align:left;transition:.15s}.ls:hover{background:var(--gl2)}.ls.cur{background:rgba(106,165,255,.14)}
+.ic{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:rgba(106,165,255,.16);font-size:11px;flex:none}.ic.d{background:rgba(61,220,151,.2);color:var(--ok)}.ic.k{background:var(--gl2);color:var(--mu)}.ls .t{flex:1;font-size:14px;line-height:1.35}.ls .d{color:var(--mu);font-size:12px}
+.nt{width:100%;min-height:90px;background:var(--gl);border:1px solid var(--ln);border-radius:12px;padding:12px;color:var(--tx);font:inherit;font-size:14px;resize:vertical;margin-top:8px}.nt:focus{outline:0;border-color:var(--ac)}
+.pdfv{height:72vh;border-radius:14px;overflow:hidden;background:#111;margin-top:14px}.pdfv iframe{width:100%;height:100%;border:0}
+.dtabs{display:flex;gap:4px;margin:16px 0 4px;border-bottom:1px solid var(--ln)}.dtabs button{background:none;border:0;padding:9px 14px;font-weight:700;font-size:14px;color:var(--mu);border-bottom:2px solid transparent}.dtabs button.on{color:var(--tx);border-color:var(--ac)}
+#toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--bg2);border:1px solid var(--ln);padding:11px 18px;border-radius:12px;z-index:70;display:none;box-shadow:var(--sh)}
+.panel{display:none}.panel.on{display:block;animation:fade .4s ease-out}@keyframes fade{from{opacity:0;transform:translateY(8px)}}
+.rv{opacity:0;transform:translateY(18px);transition:opacity .7s,transform .7s}.rv.in{opacity:1;transform:none}
+@media(max-width:960px){.g3,.g4{grid-template-columns:1fr 1fr}.pl{grid-template-columns:1fr}.pl .list{border-left:0;border-top:1px solid var(--ln);max-height:none}}
+@media(max-width:640px){.g2,.g3,.g4{grid-template-columns:1fr}.hero{padding:56px 0 44px}.nl{display:none}.md{padding:18px}.top .btn.s.hid{display:none}.prc{padding:26px}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}.rv{opacity:1;transform:none}}
 </style></head><body>
-<nav><div class="w"><b><span id="brand"></span></b><a class="l" href="index.html">Home</a><a class="l" href="journal.html">Journal</a><a class="l" href="#curriculum">Courses</a><a class="l" href="#library">Books</a><a class="l" href="#indicators">Indicators</a><a class="l" href="#pricing">Pricing</a><a class="l" href="trade-lab-pro.html">Practice Lab</a><span class="sp"></span><span id="st"></span></div></nav>
-<header class="hero"><div class="w"><span class="pill">🎓 Learn it. Then practise it in the Lab.</span>
-<h1>Learn price action the <span>structured way</span>, not from random videos</h1>
-<p>Step-by-step video lessons, trading books and a practice lab, in one place. Pay once, learn for life.</p>
-<div class="bt"><button class="btn" id="hBuy">Get lifetime access →</button><button class="btn o" id="hFree">▶ Watch a free lesson</button></div><div class="stats" id="stats"></div></div></header>
-<section class="sec" id="curriculum"><div class="w"><h2 class="rv">Your learning path</h2><p class="sub rv">Open a lesson to start. Lessons marked FREE are open to everyone.</p><div id="crs"></div></div></section>
-<section class="sec" id="library"><div class="w"><h2 class="rv">Trading library</h2><p class="sub rv">Books and PDFs you can read here, any time.</p><div class="bk" id="bk"></div></div></section>
-<section class="sec"><div class="w"><h2 class="rv">What you get</h2><p class="sub rv">Built for people who want to actually trade better.</p><div class="g3 rv"><div class="card"><div class="e">🎬</div><h3>Clear video lessons</h3><p>Short, structured lessons in the right order, with your progress saved.</p></div><div class="card"><div class="e">📚</div><h3>Books &amp; PDFs</h3><p>Read playbooks and guides inside the app. No scattered files.</p></div><div class="card"><div class="e">🧪</div><h3>Practise in the Lab</h3><p>Every concept links to a practice board or the replay lab with demo money.</p></div></div></div></section>
-<section class="sec" id="indicators"><div class="w"><div class="card" style="padding:30px;text-align:center"><span class="tag" style="background:rgba(245,199,107,.16);color:var(--gold)">COMING NEXT</span><h2 style="margin-top:12px;font-size:28px">Indicator Pack</h2><p class="sub" style="margin-bottom:0">EMA ribbon, Supertrend, zones and more. Lessons on how to read them, with practice in the Lab.</p></div></div></section>
-<section class="sec" id="pricing"><div class="w"><h2 class="rv" style="text-align:center">One payment. Everything unlocked.</h2><p class="sub rv" style="text-align:center">All courses, all books, and everything added later.</p>
-<div class="card prc rv"><div><span class="am" id="am"></span><s id="mrp"></s></div><p class="m" style="margin-top:4px">one-time payment · lifetime access</p><ul id="inc"></ul><button class="btn" id="pBuy">Get lifetime access →</button><p class="m">Already paid? <a href="#" id="pCode" style="text-decoration:underline">Enter your access code</a></p></div></div></section>
-<section class="sec"><div class="w fq" style="max-width:760px"><h2 class="rv" style="margin-bottom:18px">Questions</h2><div id="fq"></div></div></section>
-<footer><div class="w"><p>© <span id="yr"></span> <span id="b2"></span></p><p><b>Disclaimer:</b> All content is for education only and is not investment advice. Trading involves risk of loss. Past performance does not guarantee future results, and we do not promise profits or any particular outcome.</p></div></footer>
-<div class="ov" id="ov"><div class="md" id="md"></div></div><div id="toast"></div>
+<header class="top"><div class="w"><a class="logo" href="index.html"><span id="brand"></span></a><span class="sp"></span><a class="nl" href="index.html">Home</a><a class="nl" href="journal.html">Journal</a><a class="nl" href="trade-lab-pro.html">Testing Lab</a><a class="nl" href="classroom.html">Classroom</a><span id="st"></span></div>
+<div class="w"><nav class="tabs" role="tablist" id="tabs"></nav></div></header>
+
+<main>
+<section class="panel on" id="p-home" role="tabpanel">
+ <div class="hero"><canvas id="hc" aria-hidden="true"></canvas><div class="w">
+  <span class="pill">🎓 Courses · 📄 PDF notes · 📈 TradingView indicators</span>
+  <h1>Learn price action the <span>structured way</span>. Then trade it with an edge.</h1>
+  <p class="lead">Video courses, PDF playbooks and Pine Script indicators in one place. Every lesson links to a practice board in the Lab.</p>
+  <div class="bt"><button class="btn l g" data-buy>Get lifetime access →</button><button class="btn l o" id="hFree">▶ Watch a free lesson</button></div>
+  <div class="stats" id="stats"></div>
+  <div class="card" id="resume"></div></div></div>
+
+ <div class="sec"><div class="w"><h2 class="rv">Everything in one library</h2><p class="sub rv">Pick a section. All three share one lifetime payment.</p>
+  <div class="g3" id="hub"></div></div></div>
+
+ <div class="sec"><div class="w"><h2 class="rv">Learn. Practise. Apply.</h2><p class="sub rv">The path most traders skip, in the right order.</p>
+  <div class="g4"><div class="card step rv"><div class="n">1</div><h3>Learn</h3><p>Watch the lesson and read the notes.</p></div><div class="card step rv"><div class="n">2</div><h3>Practise</h3><p>Open the linked board or replay lab with demo money.</p></div><div class="card step rv"><div class="n">3</div><h3>Apply</h3><p>Add the indicator on TradingView and mark your zones.</p></div><div class="card step rv"><div class="n">4</div><h3>Review</h3><p>Log trades in the Journal and fix your leaks.</p></div></div></div></div>
+
+ <div class="sec" id="pricing"><div class="w"><h2 class="rv" style="text-align:center">One payment. Everything unlocked.</h2><p class="sub rv" style="text-align:center;margin-inline:auto">All courses, all PDFs, all indicators and everything added later.</p>
+  <div class="card prc rv"><div><span class="am" id="am"></span><s id="mrp"></s></div><p class="m" style="margin-top:4px">one-time payment · lifetime access</p><ul id="inc"></ul><button class="btn l g" data-buy>Get lifetime access →</button><p class="m">Already paid? <a href="#" id="pCode" style="text-decoration:underline">Enter your access code</a></p></div></div></div>
+
+ <div class="sec fq"><div class="w" style="max-width:780px"><h2 class="rv" style="margin-bottom:18px">Questions</h2><div id="fq"></div></div></div>
+
+ <div class="sec"><div class="w"><div class="card final rv"><h2>Ready to learn it the right way?</h2><p class="sub" style="margin-inline:auto">Start with a free lesson, a free PDF and a free indicator. Upgrade only when you like it.</p><div class="bt"><button class="btn l g" data-buy>Get lifetime access →</button><button class="btn l o" data-go="courses">Browse courses</button></div></div></div></div>
+</section>
+
+<section class="panel" id="p-courses" role="tabpanel"><div class="sec"><div class="w"><div class="hd2"><div><h2>Video courses</h2><p class="sub">Open a course, learn in order, and your progress is saved.</p></div></div><div class="g3" id="crs"></div></div></div></section>
+
+<section class="panel" id="p-pdfs" role="tabpanel"><div class="sec"><div class="w"><h2>PDF notes &amp; playbooks</h2><p class="sub">Read inside the app. Search by topic or filter by type.</p>
+ <div class="tool"><input id="q" type="search" placeholder="Search notes, e.g. breakout, risk…" aria-label="Search PDFs"><span id="cats" class="row"></span></div><div class="g3" id="bk"></div></div></div></section>
+
+<section class="panel" id="p-ind" role="tabpanel"><div class="sec"><div class="w"><h2>TradingView indicators</h2><p class="sub">Pine Script indicators built for price action. Copy the code into TradingView, or request access to the invite-only ones.</p>
+ <div class="g3" id="ind"></div></div></div></section>
+</main>
+
+<footer><div class="w"><p>© <span id="yr"></span> <span id="b2"></span><span id="legal"></span></p><p><b>Disclaimer:</b> All content, including indicators, is for education only and is not investment advice or a signal service. Trading involves risk of loss. Past performance does not guarantee future results, and we do not promise profits or any particular outcome. TradingView is a trademark of its owner and is not affiliated with this site.</p></div></footer>
+<div class="ov" id="ov"><div class="md" id="md" role="dialog" aria-modal="true"></div></div><div id="toast" role="status"></div>
+
 <script>
-/* ============ EDIT THIS SECTION: your brand, price, courses and books ============ */
+/* ===================== EDIT THIS SECTION: brand, price, content ===================== */
 const CFG={brand:'BFT Academy',price:4999,mrp:14999,payUrl:'https://rzp.io/l/your-payment-link',pixelId:'',codes:['DEMO2026'],
- contact:'https://wa.me/91XXXXXXXXXX',refund:''};
-const COURSES=[{title:'Price Action Foundations',desc:'From candles to breakouts: the core of reading the market.',modules:[
+ contact:'https://wa.me/91XXXXXXXXXX',refund:'',terms:'',privacy:''};
+/* COURSES: video = YouTube/Vimeo EMBED link (https://www.youtube.com/embed/ID) or .mp4 link.  lab = page to practise on.  free:1 = open to everyone. */
+const COURSES=[
+{title:'Price Action Foundations',level:'BEGINNER',desc:'From candles to breakouts: the core of reading the market.',c:'#3b6cff,#7c3aed',modules:[
  {t:'Module 1 · Reading the market',lessons:[
   {t:'What a candle really tells you',d:'8:20',free:1,video:'',lab:'classroom.html'},
   {t:'Support, resistance and zones',d:'12:45',free:1,video:'',lab:'classroom.html'},
@@ -77,42 +139,231 @@ const COURSES=[{title:'Price Action Foundations',desc:'From candles to breakouts
   {t:'Retest and continuation',d:'13:40',video:'',lab:'trade-lab-pro.html'}]},
  {t:'Module 3 · Risk and discipline',lessons:[
   {t:'Position size and stop-loss',d:'11:50',video:''},
-  {t:'Journaling and review',d:'9:30',video:''}]}]}];
-const BOOKS=[{t:'Breakout Playbook',tag:'GUIDE',p:48,file:'',free:1},{t:'Risk Management Handbook',tag:'HANDBOOK',p:62,file:''},{t:'Trading Psychology Notes',tag:'NOTES',p:36,file:''}];
-/* Video: paste a YouTube/Vimeo EMBED link (https://www.youtube.com/embed/VIDEOID) or an .mp4 link.  PDF: put the file in /books and write its path, e.g. 'books/breakout.pdf' */
-/* ================================================================================== */
-const $=s=>document.querySelector(s),LS=k=>{try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},rs=n=>'₹'+n.toLocaleString('en-IN');
-let paid=!!LS('bftA_paid'),done=LS('bftA_done')||{};const flat=[];
-COURSES.forEach((c,ci)=>c.modules.forEach((m,mi)=>m.lessons.forEach((l,li)=>flat.push({c,l,id:ci+'-'+mi+'-'+li}))));
-const mins=d=>{const p=d.split(':').map(Number);return p[0]+p[1]/60},esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  {t:'Journaling and review',d:'9:30',video:'',lab:'journal.html'}]}]},
+{title:'Backtesting Like a Pro',level:'INTERMEDIATE',desc:'Test an idea honestly, then prove it on data you never saw.',c:'#0ea5a4,#2563eb',modules:[
+ {t:'Module 1 · Testing basics',lessons:[
+  {t:'Why most backtests lie',d:'10:15',free:1,video:'',lab:'trade-lab-pro.html'},
+  {t:'Writing rules you can test',d:'13:20',video:'',lab:'trade-lab-pro.html'}]},
+ {t:'Module 2 · Proving the edge',lessons:[
+  {t:'Backtest vs forward test',d:'14:45',video:'',lab:'trade-lab-pro.html'},
+  {t:'Reading the results',d:'12:05',video:'',lab:'trade-lab-pro.html'}]}]}];
+/* PDFS: cat = Notes / Playbook / Cheatsheet.  file = path in /books, e.g. 'books/breakout.pdf'.  p = pages. */
+const PDFS=[
+{t:'Breakout Playbook',cat:'Playbook',p:48,free:1,file:'',d:'How to find, time and manage a breakout trade.',c:'#3b6cff,#7c3aed'},
+{t:'Risk Management Handbook',cat:'Playbook',p:62,file:'',d:'Position size, stop-loss and daily loss limits.',c:'#f59e0b,#ef4444'},
+{t:'Trading Psychology Notes',cat:'Notes',p:36,file:'',d:'Handling fear, FOMO and revenge trades.',c:'#10b981,#0ea5e9'},
+{t:'Candlestick Cheat Sheet',cat:'Cheatsheet',p:4,free:1,file:'',d:'One-page reference for the patterns that matter.',c:'#0ea5a4,#2563eb'},
+{t:'BANKNIFTY Master Notes',cat:'Notes',p:80,file:'',d:'Price-action notes for Nifty and BankNifty.',c:'#7c3aed,#db2777'},
+{t:'Daily Checklist',cat:'Cheatsheet',p:2,file:'',d:'Pre-market and post-market routine in two pages.',c:'#475569,#1e293b'}];
+/* INDICATORS: free:1 + pine = code shown to everyone.  invite:'tradingview-script-url' = paid, invite-only on TradingView (code NOT in this page, so it cannot be copied from the source). */
+const INDICATORS=[
+{id:'ribbon',name:'BFT EMA Ribbon',type:'ribbon',free:1,tf:'Any timeframe',mk:'All markets',d:'Six EMAs with a shaded ribbon. Green = buyers in control, red = sellers.',pine:`//@version=5
+indicator("BFT EMA Ribbon", overlay=true)
+
+src  = input.source(close, "Source")
+base = input.int(20, "First EMA length", minval=1)
+step = input.int(5,  "Step between EMAs", minval=1)
+
+e1 = ta.ema(src, base)
+e2 = ta.ema(src, base + step)
+e3 = ta.ema(src, base + step * 2)
+e4 = ta.ema(src, base + step * 3)
+e5 = ta.ema(src, base + step * 4)
+e6 = ta.ema(src, base + step * 5)
+
+bull = e1 > e6
+tone = bull ? color.new(#19d38f, 0) : color.new(#ff7a59, 0)
+
+p1 = plot(e1, "EMA 1", color=tone, linewidth=2)
+plot(e2, "EMA 2", color=color.new(tone, 40))
+plot(e3, "EMA 3", color=color.new(tone, 50))
+plot(e4, "EMA 4", color=color.new(tone, 60))
+plot(e5, "EMA 5", color=color.new(tone, 70))
+p6 = plot(e6, "EMA 6", color=color.new(tone, 40))
+fill(p1, p6, color=color.new(tone, 85))
+
+flipUp   = ta.crossover(e1, e6)
+flipDown = ta.crossunder(e1, e6)
+plotshape(flipUp,   "Bull flip", shape.triangleup,   location.belowbar, #19d38f, size=size.tiny)
+plotshape(flipDown, "Bear flip", shape.triangledown, location.abovebar, #ff7a59, size=size.tiny)
+alertcondition(flipUp,   "Ribbon bullish", "EMA ribbon turned bullish")
+alertcondition(flipDown, "Ribbon bearish", "EMA ribbon turned bearish")`},
+{id:'st',name:'BFT Supertrend Signals',type:'st',free:1,tf:'5m to 1D',mk:'Index, stocks, gold',d:'Supertrend with clean buy/sell labels on every trend flip and built-in alerts.',pine:`//@version=5
+indicator("BFT Supertrend Signals", overlay=true)
+
+atrLen = input.int(10, "ATR length", minval=1)
+mult   = input.float(3.0, "Multiplier", minval=0.1, step=0.1)
+
+[st, dir] = ta.supertrend(mult, atrLen)
+isUp = dir < 0
+
+mid  = plot((open + close) / 2, "Mid", display=display.none)
+upL  = plot(isUp ? st : na, "Up trend",   color=#19d38f, style=plot.style_linebr, linewidth=2)
+dnL  = plot(isUp ? na : st, "Down trend", color=#ff7a59, style=plot.style_linebr, linewidth=2)
+fill(mid, upL, color=color.new(#19d38f, 88))
+fill(mid, dnL, color=color.new(#ff7a59, 88))
+
+buy  = ta.change(dir) < 0
+sell = ta.change(dir) > 0
+plotshape(buy,  "Buy",  shape.labelup,   location.belowbar, #19d38f, text="BUY",  textcolor=color.white, size=size.small)
+plotshape(sell, "Sell", shape.labeldown, location.abovebar, #ff7a59, text="SELL", textcolor=color.white, size=size.small)
+alertcondition(buy,  "Supertrend BUY",  "Supertrend turned bullish")
+alertcondition(sell, "Supertrend SELL", "Supertrend turned bearish")`},
+{id:'zones',name:'BFT Pivot Zones',type:'zones',tf:'15m to 1D',mk:'All markets',d:'Auto-draws supply and demand zones from swing pivots, sized by ATR.',pine:`//@version=5
+indicator("BFT Pivot Zones", overlay=true, max_boxes_count=100)
+
+left   = input.int(10, "Pivot bars left",  minval=1)
+right  = input.int(10, "Pivot bars right", minval=1)
+thick  = input.float(0.25, "Zone thickness (x ATR)", minval=0.05, step=0.05)
+extend = input.int(80, "Extend zone (bars)", minval=5)
+
+a  = ta.atr(14)
+ph = ta.pivothigh(high, left, right)
+pl = ta.pivotlow(low,  left, right)
+
+if not na(ph)
+    box.new(left=bar_index - right, top=ph, right=bar_index + extend, bottom=ph - a * thick,
+         border_color=color.new(#ff7a59, 55), bgcolor=color.new(#ff7a59, 86))
+if not na(pl)
+    box.new(left=bar_index - right, top=pl + a * thick, right=bar_index + extend, bottom=pl,
+         border_color=color.new(#19d38f, 55), bgcolor=color.new(#19d38f, 86))`},
+{id:'orb',name:'BFT Opening Range Breakout',type:'orb',tf:'1m to 15m intraday',mk:'BANKNIFTY, NIFTY',d:'Marks the opening range (IST) and labels the first breakout each side, each day.',pine:`//@version=5
+indicator("BFT Opening Range Breakout", overlay=true)
+
+orMins = input.int(15, "Opening range (minutes)", minval=1)
+sess   = input.session("0915-1530", "Session (IST)")
+
+inSess = not na(time(timeframe.period, sess, "Asia/Kolkata"))
+newDay = inSess and not inSess[1]
+
+var float hi = na
+var float lo = na
+var int   t0 = na
+var bool  longDone  = false
+var bool  shortDone = false
+
+if newDay
+    hi := high
+    lo := low
+    t0 := time
+    longDone  := false
+    shortDone := false
+
+inOR = inSess and not na(t0) and time < t0 + orMins * 60 * 1000
+if inOR
+    hi := math.max(hi, high)
+    lo := math.min(lo, low)
+
+longB  = inSess and not inOR and not longDone  and close > hi
+shortB = inSess and not inOR and not shortDone and close < lo
+if longB
+    longDone := true
+if shortB
+    shortDone := true
+
+plot(inSess and not inOR ? hi : na, "OR High", color=#19d38f, style=plot.style_linebr, linewidth=2)
+plot(inSess and not inOR ? lo : na, "OR Low",  color=#ff7a59, style=plot.style_linebr, linewidth=2)
+bgcolor(inOR ? color.new(#6aa5ff, 90) : na)
+plotshape(longB,  "Long breakout",  shape.labelup,   location.belowbar, #19d38f, text="ORB↑", textcolor=color.white, size=size.small)
+plotshape(shortB, "Short breakout", shape.labeldown, location.abovebar, #ff7a59, text="ORB↓", textcolor=color.white, size=size.small)
+alertcondition(longB,  "ORB long",  "Opening range high broken")
+alertcondition(shortB, "ORB short", "Opening range low broken")`}];
+/* Paid indicators are shown gated, but this is only a client-side lock. For real protection publish the script on TradingView as INVITE-ONLY, put its URL in invite:'...', and delete its pine code from this file. */
+/* ===================================================================================== */
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)],LS=k=>{try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},SS=(k,v)=>{try{localStorage.setItem(k,typeof v==='string'?v:JSON.stringify(v))}catch(e){}},rs=n=>'₹'+n.toLocaleString('en-IN');
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])),mins=d=>{const p=d.split(':').map(Number);return p[0]+p[1]/60};
+let paid=false;try{paid=!!localStorage.getItem('bftA_paid')}catch(e){}
+let done=LS('bftA_done')||{},notes=LS('bftA_notes')||{},last=LS('bftA_last'),cat='All',tab='home';
+const flat=[];COURSES.forEach((c,ci)=>c.modules.forEach((m,mi)=>m.lessons.forEach((l,li)=>flat.push({c,ci,mi,l,id:ci+'-'+mi+'-'+li}))));
 function toast(t){const e=$('#toast');e.textContent=t;e.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(()=>e.style.display='none',2600)}
 function fb(ev){try{window.fbq&&fbq('track',ev)}catch(e){}}
 if(CFG.pixelId){!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init',CFG.pixelId);fbq('track','PageView')}
-const open=h=>{$('#md').innerHTML='<button class="x" onclick="shut()" aria-label="Close">✕</button>'+h;$('#ov').classList.add('on')};
-function shut(){$('#ov').classList.remove('on');$('#md').innerHTML=''}
-$('#ov').onclick=e=>{if(e.target.id==='ov')shut()};document.addEventListener('keydown',e=>{if(e.key==='Escape')shut()});
-function buy(){fb('InitiateCheckout');window.open(CFG.payUrl,'_blank')}
-function wall(){fb('ViewContent');open(`<div style="text-align:center;padding:10px 6px"><div style="font-size:42px">🔒</div><h3 style="padding:0">This is premium content</h3><p class="m">Get lifetime access to every course, book and future update with one payment.</p><div class="am" style="font-size:40px;font-weight:800;margin:16px 0">${rs(CFG.price)} <s style="font-size:18px;color:var(--mu)">${rs(CFG.mrp)}</s></div><div class="row" style="justify-content:center"><button class="btn" onclick="buy()">Get lifetime access →</button><button class="btn o" onclick="codeBox()">I have an access code</button></div></div>`)}
-function codeBox(){open(`<div style="text-align:center;padding:6px"><h3 style="padding:0">Enter your access code</h3><p class="m">You receive this code after payment.</p><input id="cd" placeholder="ACCESS CODE" autocomplete="off"><button class="btn" id="cdb" style="width:100%;justify-content:center">Unlock everything</button><p class="m" style="font-size:12px;margin-top:12px">Need help? <a href="${esc(CFG.contact)}" target="_blank" style="text-decoration:underline">Contact us</a></p></div>`);
- const go=()=>{if(CFG.codes.includes($('#cd').value.trim().toUpperCase())){paid=true;localStorage.setItem('bftA_paid','1');shut();all();toast('🎉 Unlocked. Welcome aboard!')}else toast('That code is not valid')};$('#cdb').onclick=go;$('#cd').onkeydown=e=>{if(e.key==='Enter')go()};setTimeout(()=>$('#cd').focus(),60)}
-function lesson(id){const i=flat.findIndex(x=>x.id===id),it=flat[i];if(!it)return;const l=it.l;if(!(paid||l.free))return wall();
- const v=l.video?(/\.mp4(\?|$)/.test(l.video)?`<video controls controlsList="nodownload" src="${esc(l.video)}"></video>`:`<iframe src="${esc(l.video)}" allow="autoplay;fullscreen;picture-in-picture" allowfullscreen></iframe>`):'<span>🎬 Video will appear here.<br>Add its link in the COURSES list.</span>',nx=flat[i+1];
- open(`<p class="m" style="margin:0 0 4px">${esc(it.c.title)}</p><h3>${esc(l.t)}</h3><div class="vid">${v}</div><div class="row"><button class="btn s ${done[id]?'o':''}" onclick="mark('${id}')">${done[id]?'✓ Completed':'Mark as complete'}</button>${l.lab?`<a class="btn s o" href="${esc(l.lab)}" target="_blank">🧪 Practise this</a>`:''}${nx?`<button class="btn s o" onclick="lesson('${nx.id}')">Next lesson →</button>`:''}</div>`)}
-function mark(id){done[id]=!done[id];localStorage.setItem('bftA_done',JSON.stringify(done));all();lesson(id)}
-function book(i){const b=BOOKS[i];if(!(paid||b.free))return wall();open(`<h3>${esc(b.t)}</h3><p class="m">${b.p} pages</p>${b.file?`<div class="pdf"><iframe src="${esc(b.file)}#toolbar=0&navpanes=0"></iframe></div><div class="row" style="margin-top:12px"><a class="btn s o" href="${esc(b.file)}" target="_blank">Open in new tab</a></div>`:'<div class="vid"><span>📘 Add this book\'s PDF path in the BOOKS list.</span></div>'}`)}
-function all(){const tot=flat.length,dn=flat.filter(x=>done[x.id]).length,hrs=flat.reduce((n,x)=>n+mins(x.l.d),0)/60;
- $('#brand').innerHTML=CFG.brand.replace(/^(\S+)\s*(.*)$/,'$1 <i>$2</i>');$('#b2').textContent=CFG.brand;$('#yr').textContent=new Date().getFullYear();document.title=CFG.brand+' – Learn Price Action, Then Practise It';
- $('#st').innerHTML=paid?'<span class="tag" style="padding:7px 12px;font-size:12px">✓ PREMIUM MEMBER</span>':'<button class="btn s" onclick="buy()">Get access</button> <button class="btn s o" onclick="codeBox()">Unlock</button>';
- $('#stats').innerHTML=[[tot,'video lessons'],[hrs.toFixed(1)+'h','of content'],[BOOKS.length,'books & PDFs'],['∞','lifetime access']].map(a=>`<div><b>${a[0]}</b><span>${a[1]}</span></div>`).join('');
- $('#crs').innerHTML=COURSES.map((c,ci)=>{const ids=flat.filter(x=>x.c===c),d=ids.filter(x=>done[x.id]).length;return`<div class="card crs rv in"><div class="hd"><div><h3>${esc(c.title)}</h3><p>${esc(c.desc)}</p></div><div class="pg">${d}/${ids.length} completed<div class="bar"><i style="width:${ids.length?d/ids.length*100:0}%"></i></div></div></div>`+c.modules.map((m,mi)=>`<details ${mi===0?'open':''}><summary>${esc(m.t)} <small>· ${m.lessons.length} lessons</small></summary>`+m.lessons.map((l,li)=>{const id=ci+'-'+mi+'-'+li,ok=paid||l.free;return`<button class="ls" onclick="lesson('${id}')"><span class="ic ${done[id]?'d':ok?'':'k'}">${done[id]?'✓':ok?'▶':'🔒'}</span><span class="t">${esc(l.t)}</span>${l.free&&!paid?'<span class="tag">FREE</span>':''}<span class="d">${esc(l.d)}</span></button>`}).join('')+'</details>').join('')+'</div>'}).join('');
- const gr=['#3b6cff,#7c3aed','#0ea5a4,#2563eb','#f59e0b,#ef4444','#10b981,#0ea5e9'];
- $('#bk').innerHTML=BOOKS.map((b,i)=>{const ok=paid||b.free;return`<div class="card" onclick="book(${i})"><div class="cv" style="background:linear-gradient(145deg,${gr[i%4]})"><span class="lk">${ok?(b.free&&!paid?'FREE':'📖 Read'):'🔒 Locked'}</span><small>${esc(b.tag||'BOOK')}</small>${esc(b.t)}</div><div class="bi"><b>${esc(b.t)}</b><p>${b.p} pages · PDF</p></div></div>`}).join('');
+let lastFocus=null;
+function open(h,cls){lastFocus=document.activeElement;const m=$('#md');m.className='md '+(cls||'');m.innerHTML='<button class="x" onclick="shut()" aria-label="Close">✕</button>'+h;$('#ov').classList.add('on');document.body.style.overflow='hidden'}
+function shut(){$('#ov').classList.remove('on');$('#md').innerHTML='';document.body.style.overflow='';all();if(lastFocus&&lastFocus.focus)try{lastFocus.focus()}catch(e){}}
+$('#ov').onclick=e=>{if(e.target.id==='ov')shut()};document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('#ov').classList.contains('on'))shut()});
+function buy(){fb('InitiateCheckout');window.open(CFG.payUrl,'_blank','noopener')}
+function wall(what){fb('ViewContent');open(`<div style="text-align:center;padding:10px 6px"><div style="font-size:42px">🔒</div><h3 style="padding:0">${what?esc(what)+' is premium':'This is premium content'}</h3><p class="m">Get lifetime access to every course, PDF and indicator, plus all future updates.</p><div style="font-size:42px;font-weight:800;margin:16px 0">${rs(CFG.price)} <s style="font-size:18px;color:var(--mu)">${rs(CFG.mrp)}</s></div><div class="row" style="justify-content:center"><button class="btn g" onclick="buy()">Get lifetime access →</button><button class="btn o" onclick="codeBox()">I have an access code</button></div></div>`,'n')}
+function codeBox(){open(`<div style="text-align:center;padding:6px"><h3 style="padding:0">Enter your access code</h3><p class="m">You receive this code after payment.</p><input type="text" id="cd" placeholder="ACCESS CODE" autocomplete="off" autocapitalize="characters" aria-label="Access code"><button class="btn" id="cdb" style="width:100%">Unlock everything</button><p class="m" style="font-size:12px;margin-top:12px">Need help? <a href="${esc(CFG.contact)}" target="_blank" rel="noopener" style="text-decoration:underline">Contact us</a></p></div>`,'n');
+ const go=()=>{if(CFG.codes.includes($('#cd').value.trim().toUpperCase())){paid=true;SS('bftA_paid','1');shut();toast('🎉 Unlocked. Welcome aboard!')}else toast('That code is not valid')};$('#cdb').onclick=go;$('#cd').onkeydown=e=>{if(e.key==='Enter')go()};setTimeout(()=>$('#cd').focus(),60)}
+/* ---- tabs ---- */
+const TABS=[['home','Overview'],['courses','Courses'],['pdfs','PDF notes'],['ind','Indicators']];
+function go(t){if(!TABS.some(x=>x[0]===t))t='home';tab=t;history.replaceState(null,'','#'+t);$$('.panel').forEach(p=>p.classList.toggle('on',p.id==='p-'+t));$$('.tab').forEach(b=>{const on=b.dataset.t===t;b.classList.toggle('on',on);b.setAttribute('aria-selected',on)});window.scrollTo({top:0,behavior:'smooth'});if(t==='ind')setTimeout(previews,30)}
+/* ---- lessons ---- */
+function lesson(id){const i=flat.findIndex(x=>x.id===id),it=flat[i];if(!it)return;if(!(paid||it.l.free))return wall(it.l.t);last=id;SS('bftA_last',id);
+ const l=it.l,sib=flat.filter(x=>x.ci===it.ci),nx=sib[sib.findIndex(x=>x.id===id)+1];
+ const v=l.video?(/\.mp4(\?|$)/.test(l.video)?`<video controls controlsList="nodownload" src="${esc(l.video)}"></video>`:`<iframe src="${esc(l.video)}" title="${esc(l.t)}" allow="autoplay;fullscreen;picture-in-picture" allowfullscreen></iframe>`):'<span>🎬 Video will appear here.<br><small>Add its link in the COURSES list.</small></span>';
+ let list='<h4>'+esc(it.c.title)+'</h4>';it.c.modules.forEach((m,mi)=>{list+=`<div class="mh">${esc(m.t)}</div>`+m.lessons.map((x,li)=>{const k=it.ci+'-'+mi+'-'+li,ok=paid||x.free;return`<button class="ls ${k===id?'cur':''}" onclick="lesson('${k}')"><span class="ic ${done[k]?'d':ok?'':'k'}">${done[k]?'✓':ok?'▶':'🔒'}</span><span class="t">${esc(x.t)}</span><span class="d">${esc(x.d)}</span></button>`}).join('')});
+ open(`<div class="pl"><div class="main"><p class="m" style="margin:0 44px 4px 0">${esc(it.c.title)} · Lesson ${sib.findIndex(x=>x.id===id)+1} of ${sib.length}</p><h3>${esc(l.t)}</h3><div class="vid" style="margin:14px 0">${v}</div>
+ <div class="row"><button class="btn s ${done[id]?'o':''}" onclick="mark('${id}')">${done[id]?'✓ Completed':'Mark as complete'}</button>${l.lab?`<a class="btn s o" href="${esc(l.lab)}" target="_blank" rel="noopener">🧪 Practise this</a>`:''}${nx?`<button class="btn s o" onclick="lesson('${nx.id}')">Next lesson →</button>`:''}</div>
+ <p class="m" style="margin-top:20px;font-size:13px;font-weight:700">MY NOTES</p><textarea class="nt" id="nt" placeholder="Write what you learned. Saved on this device." aria-label="Lesson notes">${esc(notes[id]||'')}</textarea></div><div class="list">${list}</div></div>`,'p');
+ $('#nt').oninput=e=>{notes[id]=e.target.value;SS('bftA_notes',notes)}}
+function mark(id){done[id]=!done[id];SS('bftA_done',done);lesson(id)}
+function course(ci){const f=flat.find(x=>x.ci===ci&&(paid||x.l.free))||flat.find(x=>x.ci===ci);const nx=flat.find(x=>x.ci===ci&&!done[x.id]&&(paid||x.l.free));lesson((nx||f).id)}
+/* ---- pdf ---- */
+function pdf(i){const b=PDFS[i];if(!(paid||b.free))return wall(b.t);open(`<h3>${esc(b.t)}</h3><p class="m">${esc(b.cat)} · ${b.p} pages</p>${b.file?`<div class="pdfv"><iframe src="${esc(b.file)}#toolbar=0&navpanes=0" title="${esc(b.t)}"></iframe></div><div class="row" style="margin-top:12px"><a class="btn s o" href="${esc(b.file)}" target="_blank" rel="noopener">Open in new tab</a>${paid?`<a class="btn s o" href="${esc(b.file)}" download>⬇ Download</a>`:''}</div>`:'<div class="vid" style="margin-top:14px"><span>📘 Add this PDF\'s path in the PDFS list.</span></div>'}`)}
+/* ---- indicators ---- */
+function hl(code){return esc(code).split('\n').map((ln,i)=>{const h=ln.replace(/(\/\/.*$)|(&quot;[^&]*?&quot;)|(\b(?:input|ta|math|plot|plotshape|fill|bgcolor|alertcondition|indicator|box|color|display|shape|location|size)\.[a-zA-Z_]+|\b(?:plot|plotshape|fill|bgcolor|alertcondition|indicator|time)\b(?=\())|(\b(?:if|not|and|or|var|int|float|bool|true|false|na|else|for|to|and)\b)|(\b\d+(?:\.\d+)?\b)/g,(m,c,s,f,k,n)=>c?`<span class="c2">${m}</span>`:s?`<span class="s2">${m}</span>`:f?`<span class="f2">${m}</span>`:k?`<span class="k">${m}</span>`:`<span class="n2">${m}</span>`);return`<div><b>${i+1}</b><span>${h||' '}</span></div>`}).join('')}
+function ind(id,t){const x=INDICATORS.find(a=>a.id===id);if(!x)return;const ok=paid||x.free;t=t||'over';
+ const hasCode=!!x.pine;
+ let body='';
+ if(t==='over')body=`<p style="margin-top:14px">${esc(x.d)}</p><div class="chips2"><span>⏱ ${esc(x.tf)}</span><span>📊 ${esc(x.mk)}</span><span>Pine Script v5</span></div><canvas id="pv" style="width:100%;height:220px;border-radius:14px;margin-top:16px;background:var(--code)"></canvas>`;
+ if(t==='code'){body=hasCode?`<div class="code ${ok?'':'lock'}"><div class="bar2"><span>${esc(x.name)}.pine</span><span class="sp"></span>${ok?`<button class="btn s o" id="cp">📋 Copy code</button><button class="btn s o" id="dl">⬇ .pine</button>`:''}</div><pre>${hl(ok?x.pine:x.pine.split('\n').slice(0,14).join('\n'))}</pre>${ok?'':`<div class="cta"><div style="font-size:30px">🔒</div><b>Full code is for members</b><div class="row" style="justify-content:center"><button class="btn s g" onclick="buy()">Get lifetime access</button><button class="btn s o" onclick="codeBox()">I have a code</button></div></div>`}</div>`
+  :`<div class="card" style="padding:22px;margin-top:14px;text-align:center"><div style="font-size:30px">🔐</div><h3 style="padding:0;font-size:18px">Invite-only on TradingView</h3><p class="m">This indicator is delivered as a protected TradingView script. Members send their TradingView username and get access.</p></div>`}
+ if(t==='how')body=`<ol class="steps">${hasCode?'<li>Open the <b>Code</b> tab and press <b>Copy code</b>.</li><li>On TradingView open any chart, then the <b>Pine Editor</b> tab at the bottom.</li><li>Paste the code (replace the sample), then press <b>Add to chart</b>.</li><li>Use <b>Save</b> to keep it, and the ⏰ icon to set alerts.</li>':'<li>Unlock Academy, then press <b>Request access</b> and send your TradingView username.</li><li>You get an invite. Open the indicator link and press <b>Add to favorites</b>.</li><li>On any chart choose Indicators → Invite-only scripts → add it.</li><li>Use the ⏰ icon to set alerts.</li>'}</ol><p class="m" style="font-size:13px">Works on every TradingView plan. The free plan limits how many indicators fit on one chart.</p>`;
+ const cta=ok?(hasCode?`<a class="btn s" href="https://www.tradingview.com/chart/" target="_blank" rel="noopener">Open TradingView ↗</a>`:`<button class="btn s g" id="rq">Request access ↗</button>${x.invite?`<a class="btn s o" href="${esc(x.invite)}" target="_blank" rel="noopener">Open script ↗</a>`:''}`):`<button class="btn s g" onclick="buy()">Unlock with lifetime access</button>`;
+ open(`<span class="tag ${x.free?'f':''}">${x.free?'FREE':'PREMIUM'}</span><h3 style="margin-top:8px">${esc(x.name)}</h3><div class="dtabs"><button class="${t==='over'?'on':''}" onclick="ind('${id}','over')">Overview</button><button class="${t==='code'?'on':''}" onclick="ind('${id}','code')">${hasCode?'Pine code':'Access'}</button><button class="${t==='how'?'on':''}" onclick="ind('${id}','how')">How to add</button></div>${body}<div class="row" style="margin-top:18px">${cta}</div>`);
+ if(t==='over'){const c=$('#pv');if(c)setTimeout(()=>draw(c,x.type,x.id.length*7919),20)}
+ const cp=$('#cp');if(cp)cp.onclick=()=>{(navigator.clipboard?navigator.clipboard.writeText(x.pine):Promise.reject()).then(()=>toast('✓ Code copied. Paste it in TradingView Pine Editor'),()=>{const r=document.createRange();r.selectNodeContents($('.code pre'));const s=getSelection();s.removeAllRanges();s.addRange(r);toast('Press Ctrl+C to copy')})};
+ const dl=$('#dl');if(dl)dl.onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([x.pine],{type:'text/plain'}));a.download=x.name.replace(/\s+/g,'_')+'.pine';a.click()};
+ const rq=$('#rq');if(rq)rq.onclick=()=>{const u=prompt('Your TradingView username?');if(u)window.open(CFG.contact+(CFG.contact.includes('?')?'&':'?')+'text='+encodeURIComponent('Hi, I am a member. Please give my TradingView username '+u+' access to: '+x.name),'_blank','noopener')}}
+/* ---- chart previews (decorative, generated) ---- */
+function series(seed,n){let s=seed%2147483647||1;const r=()=>(s=s*16807%2147483647)/2147483647;let p=100;const a=[];for(let i=0;i<n;i++){const o=p,c=o+(r()-.46)*3+Math.sin(i/8)*.9,h=Math.max(o,c)+r()*1.3,l=Math.min(o,c)-r()*1.3;a.push({o,h,l,c});p=c}return a}
+const ema=(a,n)=>{const k=2/(n+1);let e=a[0];return a.map(v=>e=v*k+e*(1-k))};
+function draw(cv,type,seed){const d=window.devicePixelRatio||1,W=cv.clientWidth||300,H=cv.clientHeight||150;cv.width=W*d;cv.height=H*d;const x=cv.getContext('2d');x.scale(d,d);x.clearRect(0,0,W,H);
+ const N=Math.max(24,Math.floor(W/9)),S=series(seed||7,N),hi=Math.max(...S.map(q=>q.h)),lo=Math.min(...S.map(q=>q.l)),py=v=>H-8-(v-lo)/(hi-lo)*(H-16),px=i=>6+i*(W-12)/N,bw=Math.max(2,(W-12)/N*.6),G='#19d38f',R='#ff7a59';
+ const line=(arr,col,w)=>{x.beginPath();arr.forEach((v,i)=>i?x.lineTo(px(i)+bw/2,py(v)):x.moveTo(px(i)+bw/2,py(v)));x.strokeStyle=col;x.lineWidth=w||1.5;x.stroke()};
+ const candles=()=>S.forEach((q,i)=>{const up=q.c>=q.o;x.strokeStyle=x.fillStyle=up?G:R;x.globalAlpha=.85;x.beginPath();x.moveTo(px(i)+bw/2,py(q.h));x.lineTo(px(i)+bw/2,py(q.l));x.lineWidth=1;x.stroke();x.fillRect(px(i),Math.min(py(q.o),py(q.c)),bw,Math.max(1,Math.abs(py(q.o)-py(q.c))));x.globalAlpha=1});
+ if(type==='ribbon'){const cl=S.map(q=>q.c),es=[20,25,30,35,40,45].map(n=>ema(cl,n/3));x.beginPath();es[0].forEach((v,i)=>i?x.lineTo(px(i),py(v)):x.moveTo(px(i),py(v)));for(let i=N-1;i>=0;i--)x.lineTo(px(i),py(es[5][i]));x.closePath();x.fillStyle='rgba(106,165,255,.18)';x.fill();candles();es.forEach((e,i)=>line(e,`rgba(106,165,255,${.95-i*.12})`,i?1:2))}
+ else if(type==='st'){const T=S.map((q,i)=>Math.max(q.h-q.l,i?Math.abs(q.h-S[i-1].c):0,i?Math.abs(q.l-S[i-1].c):0));let atr=T[0],fu=0,fl=0,tr=1,pts=[];S.forEach((q,i)=>{atr=(atr*9+T[i])/10;const m=(q.h+q.l)/2,u=m+2*atr,l=m-2*atr;if(i){fu=(u<fu||S[i-1].c>fu)?u:fu;fl=(l>fl||S[i-1].c<fl)?l:fl;if(tr===1&&q.c<fl)tr=-1;else if(tr===-1&&q.c>fu)tr=1}else{fu=u;fl=l}pts.push({v:tr===1?fl:fu,tr})});candles();pts.forEach((p,i)=>{if(!i)return;x.beginPath();x.moveTo(px(i-1)+bw/2,py(pts[i-1].v));x.lineTo(px(i)+bw/2,py(p.v));x.strokeStyle=p.tr===1?G:R;x.lineWidth=2;x.stroke();if(p.tr!==pts[i-1].tr){x.fillStyle=p.tr===1?G:R;x.fillRect(px(i)-8,p.tr===1?py(S[i].l)+6:py(S[i].h)-18,26,12)}})}
+ else if(type==='zones'){for(let i=4;i<N-4;i++){const q=S[i];if(S.slice(i-4,i+5).every(z=>z.h<=q.h)){x.fillStyle='rgba(255,122,89,.2)';x.fillRect(px(i),py(q.h),W-px(i)-6,10)}if(S.slice(i-4,i+5).every(z=>z.l>=q.l)){x.fillStyle='rgba(25,211,143,.2)';x.fillRect(px(i),py(q.l)-10,W-px(i)-6,10)}}candles()}
+ else{const k=Math.floor(N*.22),oh=Math.max(...S.slice(0,k).map(q=>q.h)),ol=Math.min(...S.slice(0,k).map(q=>q.l));x.fillStyle='rgba(106,165,255,.14)';x.fillRect(px(0),0,px(k)-px(0),H);candles();x.setLineDash([5,4]);[[oh,G],[ol,R]].forEach(([v,c])=>{x.beginPath();x.moveTo(px(k),py(v));x.lineTo(W-6,py(v));x.strokeStyle=c;x.lineWidth=1.6;x.stroke()});x.setLineDash([]);const b=S.findIndex((q,i)=>i>=k&&(q.c>oh||q.c<ol));if(b>0){const up=S[b].c>oh;x.fillStyle=up?G:R;x.fillRect(px(b)-6,up?py(S[b].l)+6:py(S[b].h)-18,30,12)}}}
+function previews(){$$('canvas[data-t]').forEach(c=>draw(c,c.dataset.t,+c.dataset.s))}
+let rz;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(()=>{if(tab==='ind')previews();hero()},200)});
+/* ---- render ---- */
+function cover(c,tx,big,sm){return`<div class="cv" style="background:linear-gradient(145deg,${c});height:${sm||170}px"><span class="big">${esc(big||'')}</span><small>${esc(tx[0])}</small><b>${esc(tx[1])}</b></div>`}
+function all(){
+ const tot=flat.length,hrs=flat.reduce((n,x)=>n+mins(x.l.d),0)/60;
+ $('#brand').innerHTML=CFG.brand.replace(/^(\S+)\s*(.*)$/,'$1 <i>$2</i>');$('#b2').textContent=CFG.brand;$('#yr').textContent=new Date().getFullYear();
+ $('#legal').innerHTML=[['Terms',CFG.terms],['Privacy',CFG.privacy]].filter(a=>a[1]).map(a=>` · <a href="${esc(a[1])}" target="_blank" rel="noopener">${a[0]}</a>`).join('');
+ $('#st').innerHTML=paid?'<span class="tag f" style="padding:7px 12px;font-size:12px">✓ PREMIUM MEMBER</span>':'<button class="btn s g hid" data-buy>Get access</button> <button class="btn s o" onclick="codeBox()">Unlock</button>';
+ $('#tabs').innerHTML=TABS.map(t=>`<button class="tab ${t[0]===tab?'on':''}" role="tab" data-t="${t[0]}" aria-selected="${t[0]===tab}">${t[1]}${t[0]==='courses'?`<em>${COURSES.length}</em>`:t[0]==='pdfs'?`<em>${PDFS.length}</em>`:t[0]==='ind'?`<em>${INDICATORS.length}</em>`:''}</button>`).join('');
+ $('#stats').innerHTML=[[tot,'video lessons'],[hrs.toFixed(1)+'h','of content'],[PDFS.length,'PDFs & notes'],[INDICATORS.length,'Pine indicators']].map(a=>`<div><b>${a[0]}</b><span>${a[1]}</span></div>`).join('');
+ const L=flat.find(x=>x.id===last);const r=$('#resume');if(L&&(paid||L.l.free)){r.className='card on';r.innerHTML=`<span class="ic">▶</span><div class="t"><span class="mu" style="font-size:12px">CONTINUE WHERE YOU LEFT</span><b>${esc(L.l.t)}</b></div><button class="btn s" onclick="lesson('${L.id}')">Resume →</button>`}else r.className='card';
+ $('#hub').innerHTML=[['courses','🎬','Video courses',`${COURSES.length} courses · ${tot} lessons`,'Learn in order with saved progress, notes and a practice link on every lesson.','#3b6cff,#7c3aed'],['pdfs','📄','PDF notes & playbooks',`${PDFS.length} documents`,'Playbooks, notes and one-page cheat sheets you can read right in the app.','#f59e0b,#ef4444'],['ind','📈','TradingView indicators',`${INDICATORS.length} Pine scripts`,'Copy-paste Pine code or invite-only scripts for TradingView, with alerts.','#10b981,#0ea5e9']].map(h=>`<div class="card hov rv in" data-go="${h[0]}" tabindex="0" role="link">${cover(h[5],[h[3].toUpperCase(),h[2]],h[1],150)}<div class="bd"><p>${h[4]}</p><div class="row" style="margin-top:12px"><span class="btn s o">Open →</span></div></div></div>`).join('');
+ $('#crs').innerHTML=COURSES.map((c,ci)=>{const ids=flat.filter(x=>x.ci===ci),d=ids.filter(x=>done[x.id]).length,h=ids.reduce((n,x)=>n+mins(x.l.d),0)/60,fl=ids.filter(x=>x.l.free).length;return`<div class="card hov" data-course="${ci}" tabindex="0" role="button">${cover(c.c,[c.level,c.title],String(ci+1))}<div class="bd"><p>${esc(c.desc)}</p><div class="meta"><span>🎬 ${ids.length} lessons</span><span>⏱ ${h.toFixed(1)}h</span>${fl?`<span class="tag f">${fl} FREE</span>`:''}</div><div class="bar"><i style="width:${ids.length?d/ids.length*100:0}%"></i></div><div class="row" style="margin-top:12px;justify-content:space-between"><span class="mu" style="font-size:12.5px">${d}/${ids.length} completed</span><span class="btn s">${d===ids.length&&d?'Review':d?'Continue →':'Start →'}</span></div></div></div>`}).join('');
+ const cs=['All',...new Set(PDFS.map(b=>b.cat))];$('#cats').innerHTML=cs.map(c=>`<button class="chip ${c===cat?'on':''}" data-cat="${c}">${c}</button>`).join('');pdfs();
+ $('#ind').innerHTML=INDICATORS.map(x=>{const ok=paid||x.free;return`<div class="card ind hov" data-ind="${x.id}" tabindex="0" role="button"><canvas data-t="${x.type}" data-s="${x.id.length*7919}" aria-hidden="true"></canvas><div class="bd"><div class="row" style="gap:8px"><span class="tag ${x.free?'f':''}">${x.free?'FREE':ok?'UNLOCKED':'🔒 PREMIUM'}</span><span class="tag b">${x.pine?'PINE CODE':'INVITE-ONLY'}</span></div><h3 style="font-size:19px;margin:10px 0 4px">${esc(x.name)}</h3><p>${esc(x.d)}</p><div class="chips2"><span>⏱ ${esc(x.tf)}</span><span>📊 ${esc(x.mk)}</span></div><div class="row"><span class="btn s ${ok?'':'o'}">${ok?'View code →':'Preview →'}</span></div></div></div>`}).join('');
  $('#am').textContent=rs(CFG.price);$('#mrp').textContent=rs(CFG.mrp);
- $('#inc').innerHTML=[`All ${tot} video lessons, in order`,`${BOOKS.length} books and PDFs to read in the app`,'Practice links to the Classroom board and Replay Lab','Progress tracking','All future lessons and updates','One-time payment, no subscription'].map(x=>`<li>${x}</li>`).join('');
- $('#fq').innerHTML=[['How do I get access?','Tap “Get lifetime access”, complete the payment and you will receive your access code. Enter it under “Unlock”.'],['Is it a subscription?','No. It is a single payment with lifetime access to everything, including future updates.'],['Who is this for?','Beginners and improving traders who want a clear, structured way to learn price action and then practise it.'],['Is this financial advice?','No. Everything here is educational. Trading involves risk and we do not promise profits.']].concat(CFG.refund?[['Refund policy',CFG.refund]]:[]).map(q=>`<details><summary>${esc(q[0])}</summary><p>${esc(q[1])}</p></details>`).join('')}
-$('#hBuy').onclick=buy;$('#pBuy').onclick=buy;$('#pCode').onclick=e=>{e.preventDefault();codeBox()};
+ $('#inc').innerHTML=[`${COURSES.length} courses · ${tot} video lessons`,`${PDFS.length} PDF notes and playbooks`,`${INDICATORS.length} TradingView Pine indicators with alerts`,'Practice links to the Classroom and Replay Lab','Progress tracking and lesson notes','All future updates · no subscription'].map(x=>`<li>${x}</li>`).join('');
+ $('#fq').innerHTML=[['How do I get access?','Tap “Get lifetime access”, complete the payment and you receive your access code on WhatsApp or email. Enter it under “Unlock”.'],['How do I add an indicator to TradingView?','Open the indicator, copy its Pine code, paste it into TradingView’s Pine Editor and press “Add to chart”. Invite-only scripts are added from your TradingView username after you request access.'],['Does it work on free TradingView?','Yes. The free plan only limits how many indicators you can add to one chart.'],['Is it a subscription?','No. One payment, lifetime access to everything, including future updates.'],['Do indicators give buy/sell signals?','They highlight structure and trend changes for study. They are tools, not advice, and no indicator wins every trade.'],['Is this financial advice?','No. Everything here is educational. Trading involves risk and we do not promise profits.']].concat(CFG.refund?[['Refund policy',CFG.refund]]:[]).map(q=>`<details><summary>${esc(q[0])}</summary><p>${esc(q[1])}</p></details>`).join('');
+ if(tab==='ind')setTimeout(previews,30)}
+function pdfs(){const q=($('#q').value||'').toLowerCase().trim(),L=PDFS.map((b,i)=>({b,i})).filter(o=>(cat==='All'||o.b.cat===cat)&&(!q||(o.b.t+' '+o.b.d+' '+o.b.cat).toLowerCase().includes(q)));
+ $('#bk').innerHTML=L.length?L.map(({b,i})=>{const ok=paid||b.free;return`<div class="card hov" data-pdf="${i}" tabindex="0" role="button"><span class="lk">${ok?(b.free&&!paid?'FREE':'📖 Read'):'🔒 Locked'}</span>${cover(b.c,[b.cat.toUpperCase(),b.t],'PDF',150)}<div class="bd"><p>${esc(b.d)}</p><div class="meta"><span>📄 ${b.p} pages</span></div></div></div>`}).join(''):'<div class="empty">No PDF matches your search.</div>'}
+/* ---- events ---- */
+document.addEventListener('click',e=>{const t=e.target.closest('[data-t],[data-go],[data-buy],[data-course],[data-pdf],[data-ind],[data-cat]');if(!t)return;
+ if(t.matches('.tab')){go(t.dataset.t)}else if(t.dataset.go){go(t.dataset.go)}else if(t.hasAttribute('data-buy')){buy()}else if(t.dataset.course!==undefined){course(+t.dataset.course)}else if(t.dataset.pdf!==undefined){pdf(+t.dataset.pdf)}else if(t.dataset.ind){ind(t.dataset.ind)}else if(t.dataset.cat){cat=t.dataset.cat;all()}});
+document.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches&&e.target.matches('.card[role=button],.card[role=link]')){e.preventDefault();e.target.click()}});
+$('#q').oninput=pdfs;$('#pCode').onclick=e=>{e.preventDefault();codeBox()};
 $('#hFree').onclick=()=>{const f=flat.find(x=>x.l.free);f?lesson(f.id):wall()};
-all();
+addEventListener('hashchange',()=>go(location.hash.slice(1)));
 document.addEventListener('mousemove',e=>{const c=e.target.closest&&e.target.closest('.card');if(c){const r=c.getBoundingClientRect();c.style.setProperty('--mx',e.clientX-r.left+'px');c.style.setProperty('--my',e.clientY-r.top+'px')}});
-const io=new IntersectionObserver(a=>a.forEach(x=>{if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}}),{threshold:.12});document.querySelectorAll('.rv').forEach(x=>io.observe(x));
+/* ---- hero candles (decorative, pauses when hidden) ---- */
+let hraf,hc=$('#hc');function hero(){if(!hc)return;const d=window.devicePixelRatio||1,W=hc.clientWidth,H=hc.clientHeight;hc.width=W*d;hc.height=H*d;const x=hc.getContext('2d');x.scale(d,d);const S=series(42,140),bw=11;let off=0;cancelAnimationFrame(hraf);
+ const frame=()=>{x.clearRect(0,0,W,H);const n=Math.ceil(W/bw)+2,sh=Math.floor(off/bw);let mn=1e9,mx=-1e9;for(let i=0;i<n;i++){const q=S[(i+sh)%S.length];mn=Math.min(mn,q.l);mx=Math.max(mx,q.h)}
+  for(let i=0;i<n;i++){const q=S[(i+sh)%S.length],X=i*bw-(off%bw),Y=v=>H*.9-(v-mn)/(mx-mn)*H*.7,up=q.c>=q.o;x.fillStyle=x.strokeStyle=up?'#19d38f':'#ff7a59';x.globalAlpha=.5;x.beginPath();x.moveTo(X+4,Y(q.h));x.lineTo(X+4,Y(q.l));x.stroke();x.fillRect(X,Math.min(Y(q.o),Y(q.c)),8,Math.max(1.5,Math.abs(Y(q.o)-Y(q.c))))}
+  if(!matchMedia('(prefers-reduced-motion:reduce)').matches&&!document.hidden){off+=.35;hraf=requestAnimationFrame(frame)}};frame()}
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&tab==='home')hero()});
+all();hero();go(location.hash.slice(1)||'home');window.scrollTo(0,0);
+const io=new IntersectionObserver(a=>a.forEach(x=>{if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}}),{threshold:.12});$$('.rv:not(.in)').forEach(x=>io.observe(x));
 </script></body></html>
