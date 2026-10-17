@@ -16,7 +16,7 @@ label{font-size:13px;color:var(--mu)}.k{font-size:11px;padding:2px 8px;border-ra
 <div><label>Type</label><select id="kind"><option value="course">Course (video link)</option><option value="pdf">PDF / notes</option><option value="indicator">TradingView indicator</option></select></div>
 <div><label>Sort order</label><input id="sort" type="number" value="0"></div></div>
 <label>Title</label><input id="title"><label>Description</label><textarea id="descr" rows="2"></textarea>
-<div id="f_video"><label>Video link (YouTube unlisted / Vimeo / Drive)</label><input id="video"></div>
+<div id="f_video"><label id="vl">Video link</label><input id="video"></div>
 <div id="f_pdf" class="hid"><label>PDF file <span id="cur"></span></label><input id="pdf" type="file" accept="application/pdf"></div>
 <div id="f_code" class="hid"><label>Pine Script code</label><textarea id="code" rows="6"></textarea></div>
 <label><input class="ck" id="free" type="checkbox">Free preview (anyone signed up can open)</label><br><label><input class="ck" id="pub" type="checkbox" checked>Published (visible on Academy)</label><br><br>
@@ -31,7 +31,7 @@ const msg=(id,t)=>{$(id).textContent=t};
 $('#send').onclick=async()=>{msg('#lm','Signing in...');try{const{error}=await sb.auth.signInWithPassword({email:$('#em').value.trim(),password:$('#pw').value});if(error)return msg('#lm','Error: '+error.message);msg('#lm','Signed in. Checking admin...');await init();if(!$('#app').classList.contains('hid')==false)msg('#lm','Signed in, but admin check failed. See console (F12).')}catch(e){console.error(e);msg('#lm','Error: '+e.message)}};
 $('#pw').addEventListener('keydown',e=>{if(e.key==='Enter')$('#send').click()});
 $('#out').onclick=async()=>{await sb.auth.signOut();location.reload()};
-const types=()=>{const k=$('#kind').value;$('#f_video').classList.toggle('hid',k!=='course');$('#f_pdf').classList.toggle('hid',k!=='pdf');$('#f_code').classList.toggle('hid',k!=='indicator')};$('#kind').onchange=types;
+const types=()=>{const k=$('#kind').value;$('#f_video').classList.toggle('hid',k==='pdf');$('#vl').textContent=k==='indicator'?'TradingView script link (for invite-only; leave Pine code empty)':'Video link (YouTube unlisted / Vimeo)';$('#f_pdf').classList.toggle('hid',k!=='pdf');$('#f_code').classList.toggle('hid',k!=='indicator')};$('#kind').onchange=types;
 async function init(){const{data:{session}}=await sb.auth.getSession();if(!session)return;
  const{data,error:ae}=await sb.from('admins').select('email');if(ae){console.error(ae);msg('#lm','Admin check error: '+ae.message);return}if(!data||!data.length){$('#login').innerHTML='<h3>Not an admin</h3>'+esc(session.user.email)+' is not in the admins table.';return}
  $('#login').hidden=true;$('#app').classList.remove('hid');$('#who').textContent='Signed in: '+session.user.email;load()}
@@ -45,7 +45,7 @@ function clr(){edit=null;$('#ft').textContent='Add item';['title','descr','video
 $('#save').onclick=async()=>{const title=$('#title').value.trim();if(!title)return msg('#sm','Title required');msg('#sm','Saving...');
  const row={kind:$('#kind').value,title,descr:$('#descr').value.trim(),free:$('#free').checked,published:$('#pub').checked,sort:+$('#sort').value||0};
  if(edit)row.id=edit.id;const{data,error}=await sb.from('items').upsert(row).select().single();if(error)return msg('#sm',error.message);
- const sec={item_id:data.id,video_url:row.kind==='course'?$('#video').value.trim():null,code:row.kind==='indicator'?$('#code').value:null,pdf_path:edit?.pdf_path||null};
+ const sec={item_id:data.id,video_url:row.kind!=='pdf'?$('#video').value.trim():null,code:row.kind==='indicator'?$('#code').value:null,pdf_path:edit?.pdf_path||null};
  const f=$('#pdf').files[0];if(row.kind==='pdf'&&f){const p=data.id+'/'+f.name.replace(/[^\w.-]/g,'_');const u=await sb.storage.from('academy-pdfs').upload(p,f,{upsert:true});if(u.error)return msg('#sm',u.error.message);if(sec.pdf_path&&sec.pdf_path!==p)await sb.storage.from('academy-pdfs').remove([sec.pdf_path]);sec.pdf_path=p}
  const s=await sb.from('item_secrets').upsert(sec);if(s.error)return msg('#sm',s.error.message);msg('#sm','Saved');clr();load()};
 $('#sadd').onclick=async()=>{const email=$('#se').value.trim().toLowerCase();if(!email)return;const{error}=await sb.from('students').upsert({email,note:$('#sn').value.trim()});if(error)return alert(error.message);$('#se').value=$('#sn').value='';load()};

@@ -380,6 +380,6 @@ COURSES.length=PDFS.length=INDICATORS.length=0;let k=0;
 for(const i of a.data){const s=sec[i.id]||{},c=cl[k++%4],f=i.free?1:0;
  if(i.kind==='course')COURSES.push({title:i.title,level:'COURSE',desc:i.descr||'',c,modules:[{t:'Lessons',lessons:[{t:i.title,d:'0:00',free:f,video:emb(s.video_url),lab:'classroom.html'}]}]});
  else if(i.kind==='pdf'){let file='';if(s.pdf_path){const u=await sb.storage.from('academy-pdfs').createSignedUrl(s.pdf_path,3600);file=u.data?u.data.signedUrl:''}PDFS.push({t:i.title,cat:'Notes',p:0,free:f,file,d:i.descr||'',c})}
- else INDICATORS.push({id:'d'+k,name:i.title,type:'ribbon',free:f,tf:'Any timeframe',mk:'All markets',d:i.descr||'',pine:s.code||''})}
+ else INDICATORS.push({id:'d'+k,name:i.title,type:'ribbon',free:f,tf:'Any timeframe',mk:'All markets',d:i.descr||'',pine:s.code||'',invite:s.video_url||''})}
 flat.length=0;COURSES.forEach((c,ci)=>c.modules.forEach((m,mi)=>m.lessons.forEach((l,li)=>flat.push({c,ci,mi,l,id:ci+'-'+mi+'-'+li}))));all()})();
 </script></body></html>
