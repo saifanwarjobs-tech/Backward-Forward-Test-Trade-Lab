@@ -97,6 +97,13 @@ body.hdc .ch,body.hdc #isel,body.hdc #datb,body.hdc #setb{display:none}
 .mx .app{display:flex;flex-direction:column;gap:6px;padding:4px;height:calc(100vh - 64px);height:calc(100svh - var(--dh))}
 .mx .lf>.cb{flex:1 1 auto;height:auto;min-height:0;max-height:none}
 }
+@media(max-width:700px){
+.mg button,.mg select,.mg input:not([type=checkbox]){background:var(--bg);color:var(--tx);border:1px solid var(--ln);border-radius:8px;padding:6px 10px}
+.mg input::placeholder{color:var(--mu)}.mg input[type=date]{color-scheme:dark}
+.sheet .tk input,.sheet .tk select{background:var(--bg);color:var(--tx);border:1px solid var(--ln);border-radius:8px}
+#btc[style*="inline"]{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+#btc>*{margin:0}#btc input:not([type=checkbox]){flex:1 1 100%;width:auto}#btc button{flex:1 1 40%;width:auto}#btc label{flex:1 1 100%}
+}
 </style></head><body>
 <div class="hd"><span class="lg">BFT <i>Trade Lab</i> Pro</span><span class="demo">DEMO</span>
 <button class="mt on" data-m="bt">Backtest</button><button class="mt" data-m="fw">Forward Test</button>
