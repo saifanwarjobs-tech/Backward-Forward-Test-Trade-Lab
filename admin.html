@@ -50,5 +50,5 @@ $('#save').onclick=async()=>{const title=$('#title').value.trim();if(!title)retu
  const s=await sb.from('item_secrets').upsert(sec);if(s.error)return msg('#sm',s.error.message);msg('#sm','Saved');clr();load()};
 $('#sadd').onclick=async()=>{const email=$('#se').value.trim().toLowerCase();if(!email)return;const{error}=await sb.from('students').upsert({email,note:$('#sn').value.trim()});if(error)return alert(error.message);$('#se').value=$('#sn').value='';load()};
 $('#slist').onclick=async e=>{const m=e.target.dataset.s;if(m&&confirm('Remove access for '+m+'?')){await sb.from('students').delete().eq('email',m);load()}};
-sb.auth.onAuthStateChange(()=>init());init();types()}
+sb.auth.onAuthStateChange(()=>{setTimeout(init,0)});init();types()}
 </script></body></html>
