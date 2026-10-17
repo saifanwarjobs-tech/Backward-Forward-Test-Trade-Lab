@@ -109,7 +109,7 @@ function mkCandles(pts,cwv){const cw=cwv||+$('#cw').value;pts=pts.slice().sort((
  const before=tot();I.push({t:'k',cs});rev=Math.min(rev,before);play=true}
 /* ---------- lesson library (price space: 0..1, higher = up). Each lesson auto-gets a mirrored twin ---------- */
 const cR='#ef4444',cG='#22c55e',cB='#38bdf8',cY='#facc15',cO='#f59e0b',DEF=[];
-const D=(n,n2,cat,d,tags,o)=>DEF.push({n,n2,cat,d,tags,o});
+const D=(n,n2,cat,d,tags,o)=>{o.nm=n;DEF.push({n,n2,cat,d,tags,o})};
 const RS=(x,p)=>[x,p,'Resistance',cR,null,cG],UT=(x,p)=>[x,p,'Uptrend',cG,null,cR],DT=(x,p)=>[x,p,'Downtrend',cR,null,cG];
 const RA=[[.08,.50],[.13,.60],[.17,.49],[.22,.63],[.27,.50],[.32,.62],[.37,.51],[.42,.63],[.46,.64]],RZ=[.615,.665,.06,.96,cR];
 const K={x:.46,s:.06,w:.036};
@@ -173,12 +173,33 @@ D('Dragonfly Doji','Gravestone Doji','Candlesticks','bull','candle reversal long
 D('Inside Bar Breakout','Inside Bar Breakdown','Candlesticks','bull','candle inside bar mother bar',{p:LD(.38,.44,.50,.54,.57),k:{...K,c:[[.57,.68,.70,.55],[.60,.63,.65,.58],[.63,.78,.80,.62]]},ln:[[.44,.70,.66,.70,cY],[.44,.55,.66,.55,cY]],a:[[.65,.80],[.72,.84],[.80,.88],[.90,.92]],l:[[.30,.44,'Mother bar',cY],[.48,.34,'Inside bar = pause',cY],[.62,.48,'Breakout ✔',cG]]});
 D('Rising Three Methods','Falling Three Methods','Candlesticks','bull','candle continuation small pullback candles',{p:LD(.20,.28,.36,.42,.46),k:{...K,c:[[.46,.64,.65,.45],[.62,.58,.63,.57],[.58,.54,.60,.53],[.55,.52,.57,.51],[.52,.72,.73,.51]]},ln:[[.43,.65,.72,.65,cY],[.43,.45,.72,.45,cY]],a:[[.77,.74],[.84,.80],[.92,.86]],l:[UT(.06,.10),[.40,.78,'Big green',cG,'Big red',cR],[.50,.34,'Small pullbacks stay inside',cY],[.62,.90,'Trend resumes ✔',cG]]});
 
+/* ===== Risk & Psychology (rule lessons: dir 'edu') ===== */
+D('Risk Reward 1:2',null,'Risk','edu','risk reward ratio rr stop loss target plan',{p:[[.08,.40],[.14,.46],[.20,.42],[.26,.48],[.32,.44],[.38,.52],[.44,.58],[.50,.54],[.56,.64],[.64,.72],[.72,.80],[.82,.86],[.92,.90]],ln:[[.30,.50,.95,.50,cB]],z:[[.38,.50,.36,.70,cR],[.50,.74,.36,.70,cG]],l:[[.08,.62,'Entry',cB],[.38,.28,'SL: Risk = 1 hissa',cR],[.40,.84,'Target: Reward = 2 hisse',cG],[.66,.58,'1:2 = 3 me 1 jeetna bhi kaafi',cY]]});
+D('1% Rule (Position Size)',null,'Risk','edu','capital position sizing quantity lot money management',{p:[[.08,.60],[.14,.52],[.20,.56],[.26,.46],[.32,.50],[.38,.40],[.44,.46],[.50,.56],[.58,.66],[.66,.74],[.76,.80],[.88,.88]],l:[[.06,.80,'Capital: 1,00,000',cY],[.20,.28,'Har trade me max 1% risk',cB],[.42,.18,'Loss: sirf 1,000',cR],[.60,.50,'Ek win = kai loss recover',cG]]});
+D('FOMO Chase',null,'Psychology','edu','fomo late entry emotion greed chase',{p:[[.08,.40],[.14,.42],[.20,.40],[.26,.44],[.32,.52],[.38,.64],[.44,.78],[.48,.88],[.52,.84],[.58,.74],[.64,.64],[.70,.56],[.78,.50],[.88,.46]],l:[[.08,.62,'Sabko profit dikh raha hai',cY],[.36,.94,'Late entry = FOMO',cR],[.60,.52,'Pullback: SL hit',cR],[.62,.26,'Setup ka wait karo',cG]]});
+D('Revenge Trading',null,'Psychology','edu','revenge loss anger overtrading emotion quantity',{p:[[.08,.70],[.14,.62],[.20,.66],[.26,.56],[.32,.60],[.38,.48],[.44,.52],[.50,.40],[.56,.44],[.62,.32],[.70,.36],[.80,.24],[.90,.20]],l:[[.08,.86,'Loss hua. Gussa aaya',cO],[.30,.72,'Bada quantity, bina setup',cR],[.60,.50,'Aur bada loss',cR],[.50,.12,'Ruko. Screen band karo.',cG]]});
+const SCR={
+'Breakout':{h:'Dhyan se dekho. Price baar baar ek hi level se wapas aa raha hai. Wahi level aaj ki kahani hai.',e:'Entry: candle level ke Above close kare, tab Buy. Sirf touch par nahi.',s:'Stop-loss: breakout candle ke Low ke Below.',t:'Target: pichli range ki height jitna, ya 1 ratio 2.',m:'Galti: close ka wait kiye bina pehle hi entry le lena. Wahi fakeout me phasaata hai.',r:'Level ke Above close, tab entry. SL Low ke Below.'},
+'Breakout & Retest':{h:'Sabse tez trader breakout par kood jaata hai. Samajhdar trader price ke wapas aane ka wait karta hai.',e:'Entry: breakout ke baad price purane level par wapas aaye aur wahan se bounce kare, tab Buy.',s:'Stop-loss: retest ke Low ke Below.',t:'Target: pichla swing High, ya 1 ratio 2.',m:'Galti: retest ka wait na karna, ya retest fail hone par bhi trade pakde rehna.',r:'Purana Resistance ab Support. Bounce dikhe tabhi Buy.'},
+'Breakout Failure':{h:'Har breakout sachcha nahi hota. Kabhi kabhi market bas stops uda deti hai.',e:'Entry: price level ke wapas andar close kare, tab Sell.',s:'Stop-loss: fake breakout ke High ke Above.',t:'Target: range ka doosra Low.',m:'Galti: breakout dekhte hi FOMO me Buy kar dena.',r:'Breakout ke baad wapas andar close matlab trap. Yahi Sell ka signal hai.'},
+'Double Bottom':{h:'Price ne do baar ek hi jagah se bounce kiya. Matlab Buyers wahan taiyaar baithe hain.',e:'Entry: neckline ke Above close par Buy.',s:'Stop-loss: dusre Low ke Below.',t:'Target: neckline se Low tak ki height, neckline ke Above jod do.',m:'Galti: neckline tootne se pehle hi Buy kar dena.',r:'Do Low, ek neckline, close ke Above entry.'},
+'Bull Flag':{h:'Tez move ke baad market thoda saans leti hai. Ye flag hai.',e:'Entry: flag ki upar wali line ke Above close par Buy.',s:'Stop-loss: flag ke Low ke Below.',t:'Target: flag pole jitni lambai, breakout se jod do.',m:'Galti: bade aur dheele pullback ko flag samajhna. Flag tight hona chahiye.',r:'Pole, tight flag, breakout, phir Buy.'},
+'Hammer':{h:'Ek chhoti body aur lambi wick. Ye Sellers ke haar jaane ka nishaan hai.',e:'Entry: confirmation candle ke High ke Above Buy.',s:'Stop-loss: hammer ke Low ke Below.',t:'Target: pichla swing High, ya 1 ratio 2.',m:'Galti: sirf hammer dekh kar entry. Confirmation ka wait karo.',r:'Lambi wick, confirmation, phir Buy.'},
+'Bullish Engulfing':{h:'Ek badi candle ne pichli chhoti candle ko poora nigal liya.',e:'Entry: engulfing candle ke High ke Above Buy.',s:'Stop-loss: engulfing candle ke Low ke Below.',t:'Target: pichla swing High, ya 1 ratio 2.',m:'Galti: chhoti candle ko engulfing maan lena. Body poori cover honi chahiye.',r:'Badi body, poora cover, phir Buy.'},
+'Stop Hunt Below Lows':{h:'Market kabhi kabhi jaan boojh kar stop-loss tak jaati hai, phir wapas palat jaati hai.',e:'Entry: Low ke Below jaakar price wapas level ke andar close kare, tab Buy.',s:'Stop-loss: sweep ke sabse Low ke Below.',t:'Target: range ka doosra End, ya 1 ratio 2.',m:'Galti: sweep ke beech me hi Sell kar dena. Wahi trap hai.',r:'Sweep, wapas andar close, phir Buy.'},
+'Demand Zone Bounce':{h:'Jahan se price ne tezi se ud kar dikhaya, wahan Buyers ke order bache hote hain.',e:'Entry: price zone me wapas aaye aur rejection candle bane, tab Buy.',s:'Stop-loss: zone ke Below.',t:'Target: pichla swing High, ya 1 ratio 2.',m:'Galti: bahut purani ya baar baar touch hui zone par entry. Fresh zone best hai.',r:'Fresh Demand zone, rejection, phir Buy.'},
+'Choppy Market (Stay Out)':{h:'Kabhi kabhi sabse achha trade, koi trade na lena hota hai.',e:'Entry: koi nahi. Range ke andar sirf noise hai.',s:'Stop-loss: jab trade hi nahi, to loss bhi nahi.',t:'Target: capital bachana. Clear breakout ka wait karo.',m:'Galti: bore hokar trade lena. Overtrading paisa khaati hai.',r:'Chop me ruko. Capital bachana bhi profit hai.'},
+'Risk Reward 1:2':{h:'Pehle poochho, kitna loss sah sakte ho. Phir poochho, kitna kamaana hai.',e:'Entry: setup confirm hone par. Entry se pehle SL aur target tay karo.',s:'Stop-loss: wo jagah jahan aapka idea galat sabit ho jaata hai.',t:'Target: risk ka kam se kam do guna. Yani 1 ratio 2.',m:'Galti: target bada dikhane ke liye levels aage peeche karna.',r:'Pehle risk, phir reward. 1 ratio 2 se kam ho to trade chhod do.'},
+'1% Rule (Position Size)':{h:'Market me tabahi ek bade loss se aati hai. Isliye har trade me sirf thoda risk lo.',e:'Quantity: risk amount ko SL ke fasle se bhaag do. Yahi aapki position size hai.',s:'Stop-loss: pehle tay karo, phir quantity nikalo. Ulta nahi.',t:'Target: lagataar das loss ke baad bhi capital zinda rehna chahiye.',m:'Galti: ek trade me poora capital laga dena, ya loss ke baad quantity badha dena.',r:'Ek trade me 1 percent. Bachoge, tabhi seekhoge.'},
+'FOMO Chase':{h:'Price bhaag raha hai aur lagta hai train chhoot rahi hai. Yahi FOMO hai.',e:'Entry: sirf plan ke mutabiq. Bhaagte price ke peeche nahi.',s:'Stop-loss: late entry ka SL door hota hai, isliye risk bada ho jaata hai.',t:'Target: agla setup. Market kal bhi khulegi.',m:'Galti: green candle dekh kar bina plan ke entry.',r:'Ek train chhooti to agli aayegi. Paisa lagaane se pehle plan.'},
+'Revenge Trading':{h:'Loss ke baad lagta hai ki abhi wapas kama lein. Ye dimaag nahi, gussa bol raha hai.',e:'Entry: loss ke baad kam se kam ek ghanta break. Phir sirf A grade setup.',s:'Stop-loss: din ka max loss tay karo. Wahan pahunche to platform band.',t:'Target: kal saaf dimaag ke saath wapas aana.',m:'Galti: quantity double karke loss recover karne ki koshish.',r:'Loss trading ka hissa hai. Revenge nahi, review karo.'}};
+
 /* ---------- mirror text helper ---------- */
 const SWP=[['Resistance','Support'],['Breakout','Breakdown'],['Buyers','Sellers'],['Bullish','Bearish'],['Bull','Bear'],['Higher','Lower'],['Highs','Lows'],['High','Low'],['Rally','Drop'],['Demand','Supply'],['Uptrend','Downtrend'],['Top','Bottom'],['Above','Below'],['Buy','Sell'],['Up','Down'],['HH','LL'],['HL','LH'],['↑','↓'],['▲','▼']],SM={};
 SWP.forEach(([a,b])=>[[a,b],[b,a],[a.toLowerCase(),b.toLowerCase()],[b.toLowerCase(),a.toLowerCase()]].forEach(([x,y])=>{if(!(x in SM))SM[x]=y}));
 const SRE=new RegExp('(?<![A-Za-z])('+Object.keys(SM).sort((a,b)=>b.length-a.length).map(k=>k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|')+')(?![A-Za-z])','g'),swap=s=>s.replace(SRE,m=>SM[m]);
-const CATS=['Breakouts','Traps','Reversals','Continuation','Structure','Candlesticks'],CI={Breakouts:'🚀',Traps:'🪤',Reversals:'🔄',Continuation:'➡️',Structure:'🏗',Candlesticks:'🕯'};
-const LS=[];DEF.forEach(d=>{const dw={bull:'bullish buy long up tezi',bear:'bearish sell short down mandi',neu:'neutral'};
+const CATS=['Breakouts','Traps','Reversals','Continuation','Structure','Candlesticks','Risk','Psychology'],CI={Risk:'🛡',Psychology:'🧠',Breakouts:'🚀',Traps:'🪤',Reversals:'🔄',Continuation:'➡️',Structure:'🏗',Candlesticks:'🕯'};
+const LS=[];DEF.forEach(d=>{const dw={bull:'bullish buy long up tezi',bear:'bearish sell short down mandi',neu:'neutral',edu:'rule risk psychology'};
  LS.push({id:LS.length,n:d.n,cat:d.cat,dir:d.d,d:d.o,mir:0,hay:(d.n+' '+(d.n2||'')+' '+d.cat+' '+d.tags+' '+dw[d.d]).toLowerCase()});
  if(d.n2){const dd=d.d==='bull'?'bear':d.d==='bear'?'bull':'neu';LS.push({id:LS.length,n:d.n2,cat:d.cat,dir:dd,d:d.o,mir:1,hay:(d.n2+' '+d.n+' '+d.cat+' '+d.tags+' '+dw[dd]).toLowerCase()})}});
 function build(L){const d=L.d,M=L.mir,Y=p=>(M?p:1-p)*H,X=x=>x*W,cw=d.k?36:+$('#cw').value,sw=c=>M&&(c===cR||c===cG)?(c===cR?cG:cR):c;
@@ -275,7 +296,7 @@ function pv(L){const d=L.d,M=L.mir,Yv=p=>((M?p:1-p)*32+2).toFixed(1),pts=d.p.sli
   s+='<line x1="'+x+'" x2="'+x+'" y1="'+Yv(q[2])+'" y2="'+Yv(q[3])+'" stroke="'+c+'"/><rect x="'+(x-2.2)+'" y="'+Math.min(y1,y2)+'" width="4.4" height="'+Math.max(1.5,Math.abs(y1-y2))+'" fill="'+c+'"/>'});
  return s+'</svg>'}
 LS.forEach(L=>L.svg=pv(L));$('#lsn').textContent='('+LS.length+')';
-const dot={bull:'🟢',bear:'🔴',neu:'⚪'},liHtml=L=>'<button class="li" data-i="'+L.id+'">'+L.svg+'<span><b>'+dot[L.dir]+' '+esc(L.n)+'</b><small>'+CI[L.cat]+' '+L.cat+'</small></span></button>';
+const dot={bull:'🟢',bear:'🔴',neu:'⚪',edu:'📘'},liHtml=L=>'<button class="li" data-i="'+L.id+'">'+L.svg+'<span><b>'+dot[L.dir]+' '+esc(L.n)+'</b><small>'+CI[L.cat]+' '+L.cat+'</small></span></button>';
 function render(){const q=$('#q').value.trim().toLowerCase().split(/\s+/).filter(Boolean);let h='',n=0;
  const ok=L=>(fCat==='All'||L.cat===fCat)&&(fDir==='all'||L.dir===fDir)&&q.every(t=>L.hay.includes(t));
  if(!q.length&&fCat==='All'&&fDir==='all'&&rec_.length)h+='<div class="hd">⏱ Recently used</div><div class="gr">'+rec_.map(i=>liHtml(LS[i])).join('')+'</div>';
@@ -304,7 +325,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'){$('#cov').classList
  if((e.key==='/'&&!/INPUT|SELECT|TEXTAREA/.test(e.target.tagName))||((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k')){e.preventDefault();openPop()}});
 
 /* ---------- LIVE / Reels mode: lessons auto-play one after another, with HUD + voice ---------- */
-const DIRW={bull:'Bullish setup',bear:'Bearish setup',neu:'Neutral. Stay out'};
+const DIRW={bull:'Bullish setup',bear:'Bearish setup',neu:'Neutral. Stay out',edu:'Trading rule'};
 let actx=null,A=null,VS=null,VG=0,mT=null,mi=0;const VC={};
 function AU(){if(!A){const C=window.AudioContext||window.webkitAudioContext,ctx=new C(),bus=ctx.createGain(),dest=ctx.createMediaStreamDestination(),mg=ctx.createGain(),vg=ctx.createGain();bus.connect(ctx.destination);bus.connect(dest);mg.gain.value=.6;mg.connect(bus);vg.connect(bus);A={ctx,bus,dest,mg,vg};actx=ctx}if(A.ctx.state==='suspended')A.ctx.resume();return A}
 const CH=[[220,261.6,329.6],[174.6,220,261.6],[261.6,329.6,392],[196,246.9,293.7]];
@@ -318,7 +339,9 @@ function say(t,cb){if(!LV.opt.voice||!t){cb&&cb();return}const g0=VG;LV.tk=(LV.t
  vbuf(t).then(b=>{if(g0!==VG)return;if(b){const a=AU(),n=a.ctx.createBufferSource();n.buffer=b;n.connect(a.vg);n.onended=fin;VS=n;n.start()}else tts(t,fin)})}
 function vstop(){VG++;LV.tk=0;try{if(VS){VS.onended=null;VS.stop()}}catch(e){}VS=null;try{speechSynthesis.cancel()}catch(e){}duck(0)}
 function labelHit(it,now){SP.add(it);if(!LV.on){if($('#ap').checked)HOLD=now+1000;return}if(/✔|✓/.test(it.s))chime(880,1175,.05);if(LV.opt.voice){HOLD=Infinity;LV.pend=it.s;LV.pt=now+1000}else HOLD=now+2000}
-window.voiceList=()=>{const q=new Set();LS.forEach(L=>{q.add('Namaste. Aaj ka lesson: '+L.n+'. '+DIRW[L.dir]+'.');(L.d.l||[]).forEach(l=>q.add(clean(L.mir?(l[4]||swap(l[2])):l[2])))});q.add('Comment karo. Buy ya sell?');Object.values(DIRW).forEach(v=>q.add(v+'.'));const o=[...q].map(t=>slug(t)+'.mp3\t'+t).join('\n');console.log(o);return o};
+const scH=L=>{const c=SCR[L.d.nm];return c&&(L.mir?swap(c.h):c.h)};
+const scSteps=L=>{const c=SCR[L.d.nm];if(!c)return[];return[['Entry',c.e],['Stop-loss',c.s],['Target',c.t],['Galti',c.m],['Yaad rakho',c.r]].map(([a,b])=>[a,L.mir?swap(b):b])};
+window.voiceList=()=>{const q=new Set();LS.forEach(L=>{q.add('Namaste. Aaj ka lesson: '+L.n+'. '+DIRW[L.dir]+'.');(L.d.l||[]).forEach(l=>q.add(clean(L.mir?(l[4]||swap(l[2])):l[2])));const h=scH(L);if(h)q.add(h);scSteps(L).forEach(x=>q.add(x[1]))});q.add('Comment karo. Buy ya sell?');Object.values(DIRW).forEach(v=>q.add(v+'.'));const o=[...q].map(t=>slug(t)+'.mp3\t'+t).join('\n');console.log(o);return o};
 function chime(f1,f2,vol){try{const a=AU(),t=a.ctx.currentTime;[[f1,0],[f2,.16]].forEach(([f,d])=>{const o=a.ctx.createOscillator(),gn=a.ctx.createGain();o.type='sine';o.frequency.value=f;gn.gain.setValueAtTime(0,t+d);gn.gain.linearRampToValueAtTime(vol||.07,t+d+.02);gn.gain.exponentialRampToValueAtTime(.0001,t+d+.3);o.connect(gn).connect(a.bus);o.start(t+d);o.stop(t+d+.32)})}catch(e){}}
 function voices(){return(window.speechSynthesis?speechSynthesis.getVoices():[]).filter(v=>/^(en|hi)/i.test(v.lang))}
 function fillVoices(){const sel=$('#lvvn'),vs=voices();if(!vs.length){sel.innerHTML='<option value="">Default voice</option>';return}
@@ -339,13 +362,16 @@ function liveStart(){LV.opt={cat:$('#lvcat').value,shuffle:+$('#lvord').value,ga
  lay();liveNext()}
 function liveNext(){LV.i++;if(LV.i>=LV.order.length){LV.order=liveOrder();LV.i=0}
  const L=LS[LV.order[LV.i]];LV.cur=L;LV.spoken=new Set();$('#spd').value=LV.opt.spd;build(L);LV.state='run';LV.hold=0;
- vstop();LV.pend=null;LV.rv=0;
+ vstop();LV.pend=null;LV.rv=0;LV.cap=null;
  if(L.dir==='bear')chime(660,440);else chime(523,784);
- HOLD=Infinity;say('Namaste. Aaj ka lesson: '+L.n+'. '+DIRW[L.dir]+'.',()=>{HOLD=performance.now()+1000})}
+ HOLD=Infinity;const hk=scH(L);say('Namaste. Aaj ka lesson: '+L.n+'. '+DIRW[L.dir]+'.',()=>{if(hk){const g1=VG;setTimeout(()=>{if(g1===VG)say(hk,()=>{HOLD=performance.now()+1000})},1000)}else HOLD=performance.now()+1000})}
+const BS=L=>L.dir==='bull'||L.dir==='bear';
+function holdStart(now,L){LV.state='hold';LV.hold=now+LV.opt.gap*1000;LV.rv=0;LV.cap=null;if(BS(L))say('Comment karo. Buy ya sell?')}
 function liveTick(now){const L=LV.cur;if(!L)return;
  if(LV.state==='run'){if(LV.pend&&now>=LV.pt){const q=clean(LV.pend);LV.pend=null;say(q,()=>{HOLD=performance.now()+1000})}
-  if(!play&&rev>=tot()-.001&&!LV.pend&&HOLD!==Infinity){LV.state='hold';LV.hold=now+LV.opt.gap*1000;LV.rv=0;if(L.dir!=='neu')say('Comment karo. Buy ya sell?')}}
- else if(LV.state==='hold'){if(!LV.rv&&now>LV.hold-1500){LV.rv=1;say(DIRW[L.dir]+'.')}
+  if(!play&&rev>=tot()-.001&&!LV.pend&&HOLD!==Infinity){const st=scSteps(L);if(st.length){LV.state='teach';LV.tq=st;LV.ti=0;LV.tn=now+1000}else holdStart(now,L)}}
+ else if(LV.state==='teach'){if(now>=LV.tn&&!LV.tk){if(LV.ti<LV.tq.length){const[a,b]=LV.tq[LV.ti++];LV.cap=[a,b];LV.tn=Infinity;if(LV.opt.voice)say(b,()=>{LV.tn=performance.now()+1000});else LV.tn=now+4500}else holdStart(now,L)}}
+ else if(LV.state==='hold'){if(!LV.rv&&now>LV.hold-1500){LV.rv=1;if(BS(L))say(DIRW[L.dir]+'.')}
   const busy=LV.opt.voice&&(LV.tk>0||LV.pend);if(now>LV.hold&&(!busy||now>LV.hold+9000))liveNext()}}
 function liveStop(){vstop();if(!(mr&&mr.state==='recording'))musicOff();HOLD=0;LV.on=false;LV.cur=null;document.body.classList.remove('live');try{speechSynthesis.cancel()}catch(e){}try{LV.wl&&LV.wl.release()}catch(e){}LV.wl=null;lay();toast('Live mode stopped')}
 document.addEventListener('visibilitychange',()=>{if(LV.on&&document.visibilityState==='visible'){try{navigator.wakeLock&&navigator.wakeLock.request('screen').then(l=>LV.wl=l).catch(()=>{})}catch(e){}}});
@@ -355,11 +381,12 @@ function liveHUD(){const L=LV.cur;if(!L)return;g.save();g.textBaseline='alphabet
  const col=L.dir==='bull'?'#22c55e':L.dir==='bear'?'#ef4444':'#94a3b8';
  g.fillStyle=TH[th].ink;g.font='800 34px system-ui';g.textAlign='left';g.fillText(L.n,24,40);
  g.font='600 16px system-ui';g.fillStyle='#9fb0d0';g.fillText(CI[L.cat]+' '+L.cat+'  ·  '+(LV.i+1)+' / '+LV.order.length,24,64);
- const dt=L.dir==='bull'?'▲ BULLISH':L.dir==='bear'?'▼ BEARISH':'■ NEUTRAL';g.font='800 22px system-ui';const w=g.measureText(dt).width;
+ const dt=L.dir==='bull'?'▲ BULLISH':L.dir==='bear'?'▼ BEARISH':L.dir==='edu'?'📘 RULE':'■ NEUTRAL';g.font='800 22px system-ui';const w=g.measureText(dt).width;
  g.fillStyle=col;g.beginPath();g.roundRect(W-w-52,14,w+28,38,19);g.fill();g.fillStyle='#07120b';g.textAlign='center';g.fillText(dt,W-w/2-38,41);
  const t=tot()||1,pr=Math.min(1,rev/t);g.fillStyle='rgba(148,163,184,.25)';g.fillRect(0,H-6,W,6);g.fillStyle=col;g.fillRect(0,H-6,W*pr,6);
  const nx=LS[LV.order[(LV.i+1)%LV.order.length]];g.textAlign='left';g.font='600 16px system-ui';g.fillStyle='#9fb0d0';g.globalAlpha=.9;if(nx)g.fillText('Up next: '+nx.n,24,H-30);
- if(LV.state==='hold'){const r=Math.max(0,Math.ceil((LV.hold-performance.now())/1000)),tx=r<=1?'✅ Answer: '+DIRW[L.dir]:'💬 Comment karo: Buy ya Sell?   ⏱ '+r;g.globalAlpha=1;g.font='800 26px system-ui';const w2=g.measureText(tx).width;g.fillStyle='#000c';g.beginPath();g.roundRect(W/2-w2/2-20,H-84,w2+40,46,23);g.fill();g.fillStyle='#facc15';g.textAlign='center';g.fillText(tx,W/2,H-52);g.textAlign='left'}
+ if(LV.cap){const[ca,cb2]=LV.cap;g.globalAlpha=1;g.font='700 26px system-ui';const mw=W-120,ln=[];let cu='';cb2.split(' ').forEach(x=>{const tt=cu?cu+' '+x:x;if(g.measureText(tt).width>mw&&cu){ln.push(cu);cu=x}else cu=tt});ln.push(cu);const bh=ln.length*34+56,by=H-bh-40;g.fillStyle='#0b1220ee';g.beginPath();g.roundRect(50,by,W-100,bh,16);g.fill();g.strokeStyle='#facc15';g.lineWidth=2;g.stroke();g.fillStyle='#facc15';g.font='800 20px system-ui';g.fillText(ca.toUpperCase(),72,by+30);g.fillStyle='#fff';g.font='700 26px system-ui';ln.forEach((x,i)=>g.fillText(x,72,by+62+i*34))}
+ if(LV.state==='hold'&&BS(L)){const r=Math.max(0,Math.ceil((LV.hold-performance.now())/1000)),tx=r<=1?'✅ Answer: '+DIRW[L.dir]:'💬 Comment karo: Buy ya Sell?   ⏱ '+r;g.globalAlpha=1;g.font='800 26px system-ui';const w2=g.measureText(tx).width;g.fillStyle='#000c';g.beginPath();g.roundRect(W/2-w2/2-20,H-84,w2+40,46,23);g.fill();g.fillStyle='#facc15';g.textAlign='center';g.fillText(tx,W/2,H-52);g.textAlign='left'}
  g.globalAlpha=1;g.strokeStyle='#7c4a1e';g.lineWidth=12;g.strokeRect(6,6,W-12,H-12);
  g.font='500 12px system-ui';g.globalAlpha=.55;g.fillText('Educational purpose only · Not investment advice',24,H-12);g.restore()}
 $('#lvb').onclick=liveSetup;$('#lvgo').onclick=liveStart;$('#lvcancel').onclick=()=>$('#lvo').classList.remove('on');$('#lvx').onclick=liveStop;
