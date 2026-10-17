@@ -1,0 +1,53 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex">
+<title>BFT Admin</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<style>:root{--bg:#f5f7fc;--c:#fff;--tx:#0f172a;--mu:#55617a;--ln:#d8deea;--ac:#2f6fe4}@media(prefers-color-scheme:dark){:root{--bg:#070b14;--c:#111a2e;--tx:#e8eefb;--mu:#8e9bb8;--ln:#26324d;--ac:#6aa5ff}}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.5 system-ui,sans-serif}.w{max-width:900px;margin:0 auto;padding:20px}
+.c{background:var(--c);border:1px solid var(--ln);border-radius:14px;padding:16px;margin-bottom:14px}h1{font-size:22px}h3{margin:0 0 10px}
+input,select,textarea{width:100%;box-sizing:border-box;padding:9px;margin:4px 0 10px;border:1px solid var(--ln);border-radius:8px;background:var(--bg);color:var(--tx);font:inherit}
+button{background:var(--ac);color:#fff;border:0;border-radius:8px;padding:9px 16px;font-weight:600;cursor:pointer}button.o{background:none;color:var(--tx);border:1px solid var(--ln)}button.d{background:#d33}
+.r{display:flex;gap:10px;align-items:center;justify-content:space-between;border-top:1px solid var(--ln);padding:10px 0;flex-wrap:wrap}.g{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
+label{font-size:13px;color:var(--mu)}.k{font-size:11px;padding:2px 8px;border-radius:99px;border:1px solid var(--ln);color:var(--mu)}.hid{display:none}.ck{width:auto;margin-right:6px}</style></head><body><div class="w">
+<h1>BFT Academy Admin</h1>
+<div class="c" id="cfg" hidden>Set <b>SB_URL</b> and <b>SB_KEY</b> (anon key) at the top of this file's script, then reload.</div>
+<div class="c" id="login"><h3>Admin sign in</h3><label>Email</label><input id="em" type="email"><button id="send">Email me a sign-in link</button> <span id="lm" style="color:var(--mu)"></span></div>
+<div id="app" class="hid">
+<div class="c"><span id="who"></span> <button class="o" id="out" style="float:right">Sign out</button></div>
+<div class="c"><h3 id="ft">Add item</h3><div class="g">
+<div><label>Type</label><select id="kind"><option value="course">Course (video link)</option><option value="pdf">PDF / notes</option><option value="indicator">TradingView indicator</option></select></div>
+<div><label>Sort order</label><input id="sort" type="number" value="0"></div></div>
+<label>Title</label><input id="title"><label>Description</label><textarea id="descr" rows="2"></textarea>
+<div id="f_video"><label>Video link (YouTube unlisted / Vimeo / Drive)</label><input id="video"></div>
+<div id="f_pdf" class="hid"><label>PDF file <span id="cur"></span></label><input id="pdf" type="file" accept="application/pdf"></div>
+<div id="f_code" class="hid"><label>Pine Script code</label><textarea id="code" rows="6"></textarea></div>
+<label><input class="ck" id="free" type="checkbox">Free preview (anyone signed up can open)</label><br><label><input class="ck" id="pub" type="checkbox" checked>Published (visible on Academy)</label><br><br>
+<button id="save">Save</button> <button class="o" id="clr">Clear</button> <span id="sm" style="color:var(--mu)"></span></div>
+<div class="c"><h3>Content</h3><div id="list"></div></div>
+<div class="c"><h3>Students with access</h3><div class="g"><div><input id="se" type="email" placeholder="buyer@email.com"></div><div><input id="sn" placeholder="Note (e.g. UPI, 18 Oct)"></div></div><button id="sadd">Grant access</button><div id="slist"></div></div>
+</div></div><script>
+const SB_URL='',SB_KEY='';const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+if(!SB_URL||!SB_KEY){$('#cfg').hidden=false;$('#login').hidden=true}else{
+const sb=supabase.createClient(SB_URL,SB_KEY);let edit=null,items=[];
+const msg=(id,t)=>{$(id).textContent=t};
+$('#send').onclick=async()=>{const{error}=await sb.auth.signInWithOtp({email:$('#em').value.trim(),options:{emailRedirectTo:location.href.split('#')[0]}});msg('#lm',error?error.message:'Check your email.')};
+$('#out').onclick=async()=>{await sb.auth.signOut();location.reload()};
+const types=()=>{const k=$('#kind').value;$('#f_video').classList.toggle('hid',k!=='course');$('#f_pdf').classList.toggle('hid',k!=='pdf');$('#f_code').classList.toggle('hid',k!=='indicator')};$('#kind').onchange=types;
+async function init(){const{data:{session}}=await sb.auth.getSession();if(!session)return;
+ const{data}=await sb.from('admins').select('email');if(!data||!data.length){$('#login').innerHTML='<h3>Not an admin</h3>'+esc(session.user.email)+' is not in the admins table.';return}
+ $('#login').hidden=true;$('#app').classList.remove('hid');$('#who').textContent='Signed in: '+session.user.email;load()}
+async function load(){const[a,b,c]=await Promise.all([sb.from('items').select('*').order('sort').order('created_at'),sb.from('item_secrets').select('*'),sb.from('students').select('*').order('created_at',{ascending:false})]);
+ const sec=Object.fromEntries((b.data||[]).map(x=>[x.item_id,x]));items=(a.data||[]).map(i=>({...i,...sec[i.id]}));
+ $('#list').innerHTML=items.map(i=>`<div class="r"><div><b>${esc(i.title)}</b> <span class="k">${i.kind}</span> ${i.free?'<span class="k">free</span>':''} ${i.published?'':'<span class="k">draft</span>'}</div><div><button class="o" data-e="${i.id}">Edit</button> <button class="d" data-d="${i.id}">Delete</button></div></div>`).join('')||'<p style="color:var(--mu)">Nothing yet.</p>';
+ $('#slist').innerHTML=(c.data||[]).map(s=>`<div class="r"><div>${esc(s.email)} <span class="k">${esc(s.note||'')}</span></div><button class="d" data-s="${esc(s.email)}">Remove</button></div>`).join('')}
+$('#list').onclick=async e=>{const t=e.target;if(t.dataset.e){const i=items.find(x=>x.id===t.dataset.e);edit=i;$('#ft').textContent='Edit item';$('#kind').value=i.kind;$('#sort').value=i.sort;$('#title').value=i.title;$('#descr').value=i.descr||'';$('#video').value=i.video_url||'';$('#code').value=i.code||'';$('#free').checked=i.free;$('#pub').checked=i.published;$('#cur').textContent=i.pdf_path?'(current: '+i.pdf_path.split('/').pop()+')':'';types();scrollTo(0,0)}
+ if(t.dataset.d&&confirm('Delete this item permanently?')){const i=items.find(x=>x.id===t.dataset.d);if(i.pdf_path)await sb.storage.from('academy-pdfs').remove([i.pdf_path]);await sb.from('items').delete().eq('id',i.id);load()}};
+function clr(){edit=null;$('#ft').textContent='Add item';['title','descr','video','code'].forEach(k=>$('#'+k).value='');$('#pdf').value='';$('#cur').textContent='';$('#sort').value=0;$('#free').checked=false;$('#pub').checked=true;types()}$('#clr').onclick=clr;
+$('#save').onclick=async()=>{const title=$('#title').value.trim();if(!title)return msg('#sm','Title required');msg('#sm','Saving...');
+ const row={kind:$('#kind').value,title,descr:$('#descr').value.trim(),free:$('#free').checked,published:$('#pub').checked,sort:+$('#sort').value||0};
+ if(edit)row.id=edit.id;const{data,error}=await sb.from('items').upsert(row).select().single();if(error)return msg('#sm',error.message);
+ const sec={item_id:data.id,video_url:row.kind==='course'?$('#video').value.trim():null,code:row.kind==='indicator'?$('#code').value:null,pdf_path:edit?.pdf_path||null};
+ const f=$('#pdf').files[0];if(row.kind==='pdf'&&f){const p=data.id+'/'+f.name.replace(/[^\w.-]/g,'_');const u=await sb.storage.from('academy-pdfs').upload(p,f,{upsert:true});if(u.error)return msg('#sm',u.error.message);if(sec.pdf_path&&sec.pdf_path!==p)await sb.storage.from('academy-pdfs').remove([sec.pdf_path]);sec.pdf_path=p}
+ const s=await sb.from('item_secrets').upsert(sec);if(s.error)return msg('#sm',s.error.message);msg('#sm','Saved');clr();load()};
+$('#sadd').onclick=async()=>{const email=$('#se').value.trim().toLowerCase();if(!email)return;const{error}=await sb.from('students').upsert({email,note:$('#sn').value.trim()});if(error)return alert(error.message);$('#se').value=$('#sn').value='';load()};
+$('#slist').onclick=async e=>{const m=e.target.dataset.s;if(m&&confirm('Remove access for '+m+'?')){await sb.from('students').delete().eq('email',m);load()}};
+sb.auth.onAuthStateChange(()=>init());init();types()}
+</script></body></html>
