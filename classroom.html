@@ -39,7 +39,26 @@ button,.b,.sw,.chip,.li{touch-action:manipulation;-webkit-tap-highlight-color:tr
  .pop .ph #q{font-size:16px}
  .card{padding:16px;max-height:calc(100vh - 24px);overflow:auto}
 }
-@media(max-width:900px) and (orientation:portrait){#rot{display:flex}#rot.x{display:none}#toast{bottom:96px;max-width:calc(100vw - 24px);text-align:center}}
+@media(max-width:900px) and (orientation:portrait){#rot{display:flex}#rot.x{display:none}#toast{bottom:112px;max-width:calc(100vw - 24px);text-align:center}}
+
+.m .bar,.m #mn{display:none!important}.m.uih #mn{display:block!important}.m.uih .rail,.m.uih .cpop{display:none!important}
+.m .rail{position:fixed;z-index:6;display:flex;gap:3px;padding:4px;overflow:auto;scrollbar-width:none;background:#0b1220e6}.m .rail::-webkit-scrollbar{display:none}
+.m .rail .b{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:36px;padding:2px 1px;font-size:10px;line-height:1.05;gap:1px;text-align:center;white-space:nowrap;border-radius:9px;flex:none;box-shadow:none;font-weight:600}
+.m .rail .b i{font-style:normal;font-size:15px;line-height:1}.m .rail .b small{font-size:9px;font-weight:600}
+.m .rail .b.hero:not(.on){border-color:var(--ln)}
+.dot{display:block;width:16px;height:16px;border-radius:50%;border:2px solid #fff}
+.m .cpop{position:fixed;z-index:20;display:none;background:#0f1729;border:1px solid #33456b;border-radius:12px;padding:10px;gap:10px;flex-direction:column;align-items:flex-start;box-shadow:0 10px 30px #000a}.m .cpop.on{display:flex}
+.m .cpop .g{border:0;padding:0;margin:0}.m .cpop .sw{width:34px;height:34px}.m .cpop input[type=range]{width:170px}
+.m #mcard{width:min(600px,96vw);max-height:calc(100vh - 16px);overflow:auto;padding:12px}
+.m .mh{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-size:15px}
+.m .mg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.m .mg label{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12px;color:var(--tx);padding:6px 8px;background:#0b1220;border-radius:8px;min-height:36px}
+.m .mg input[type=range]{width:90px}.m .mg select{width:100%}
+.m .ma{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.m .ma .b{flex:1 1 28%;text-align:center;min-height:38px}
+.m #tm{position:fixed;top:4px;left:50%;transform:translateX(-50%);z-index:7;background:#b91c1ccc;border-radius:99px;padding:2px 10px;font-size:12px;color:#fff}.m #tm:empty{display:none}
+.m #rot{bottom:auto;top:8px}
+@media(orientation:landscape){.m #lr,.m #rr{top:0;bottom:0;width:64px;flex-direction:column}.m #lr{left:0;border-right:1px solid var(--ln)}.m #rr{right:0;border-left:1px solid var(--ln)}.m .rail .b{width:100%}.m .cpop{right:70px;top:6px}}
+@media(orientation:portrait){.m #lr,.m #rr{left:0;right:0;flex-direction:row}.m #rr{bottom:0}.m #lr{bottom:52px;border-top:1px solid var(--ln)}.m .rail .b{flex:1 1 0;min-width:0;min-height:44px}.m .cpop{left:8px;right:8px;bottom:112px}}
 </style></head><body>
 <div class="bar" id="bar">
 <div class="row">
@@ -64,6 +83,7 @@ button,.b,.sw,.chip,.li{touch-action:manipulation;-webkit-tap-highlight-color:tr
 <div class="ov" id="cov"><div class="card"><h2>🗑 Reset the board?</h2><p class="m">Every drawing, candle and lesson will be erased. You can still press Undo right after to bring it back.</p><div class="btns"><button class="b" id="cno">Cancel</button><button class="b reset" id="cyes">Yes, reset</button></div></div></div>
 <div id="toast"></div>
 <script>
+const MOB=matchMedia('(max-width:900px),(max-height:520px)').matches;let pl_s='';
 const $=s=>document.querySelector(s),W=1280,H=720,cv=$('#cv'),g=cv.getContext('2d');cv.width=W;cv.height=H;
 const TH={black:{bg:'#0b0f14',gr:'#18222f',ink:'#ffffff'},white:{bg:'#ffffff',gr:'#e5e7eb',ink:'#111827'},chalk:{bg:'#1f3d2b',gr:'#2c553c',ink:'#f1f5f9'}};
 let th='black',tool='k',col='#facc15',I=[],cur=null,rev=0,play=false,laser=[],mr=null,chunks=[],mic=null,rt=0,rti=null,sd=Date.now()>>>0;
@@ -163,7 +183,7 @@ function build(L){const d=L.d,M=L.mir,Y=p=>(M?p:1-p)*H,X=x=>x*W,cw=d.k?36:+$('#c
  (d.l||[]).forEach(l=>{const s=M?(l[4]||swap(l[2])):l[2],c=M&&l[5]?l[5]:l[3],w=g.measureText(s).width,x=Math.max(16,Math.min(X(l[0]),W-w-24));
   I.push({t:'x',s,x,y:Math.max(.05*H,Math.min(.94*H,Y(l[1]))),c,fs:24,bg:1,at:xs.filter(v=>v<=X(l[0])+1).length})});
  play=true}
-function lesson(id){build(LS[id]);toast(LS[id].n+': press Space to pause and explain')}
+function lesson(id){build(LS[id]);toast(LS[id].n+(MOB?': Pause dabake explain kijiye':': press Space to pause and explain'))}
 
 /* ---------- drawing ---------- */
 const path=p=>{g.beginPath();p.forEach((q,i)=>i?g.lineTo(q[0],q[1]):g.moveTo(q[0],q[1]))};
@@ -223,10 +243,10 @@ $('#rec').onclick=async()=>{
  const mt=['video/webm;codecs=vp9,opus','video/webm;codecs=vp8,opus','video/webm'].find(t=>MediaRecorder.isTypeSupported(t));chunks=[];
  mr=new MediaRecorder(cs,{mimeType:mt,videoBitsPerSecond:5e6});mr.ondataavailable=e=>{if(e.data.size)chunks.push(e.data)};
  mr.onstop=()=>{clearInterval(rti);$('#tm').textContent='';$('#rec').textContent='● Record';if(mic)mic.getTracks().forEach(t=>t.stop());const u=URL.createObjectURL(new Blob(chunks,{type:'video/webm'})),a=document.createElement('a');a.href=u;a.download='classroom-'+new Date().toISOString().slice(0,16).replace(/[:T]/g,'-')+'.webm';a.click();toast('Lesson saved: check your Downloads')};
- mr.start(500);rt=0;$('#rec').textContent='■ Stop & Download';rti=setInterval(()=>{rt++;$('#tm').textContent='● '+String(rt/60|0).padStart(2,'0')+':'+String(rt%60).padStart(2,'0')},1000);toast('Recording started. Hide the toolbar (☰) for a clean video')};
+ mr.start(500);rt=0;$('#rec').textContent=MOB?'■ Stop':'■ Stop & Download';rti=setInterval(()=>{rt++;$('#tm').textContent='● '+String(rt/60|0).padStart(2,'0')+':'+String(rt%60).padStart(2,'0')},1000);toast('Recording started. Hide the toolbar (☰) for a clean video')};
 $('#hpb').onclick=()=>$('#hov').classList.add('on');$('#hgo').onclick=()=>{$('#hov').classList.remove('on');try{localStorage.setItem('cls_seen',1)}catch(e){}};try{if(!localStorage.getItem('cls_seen'))$('#hov').classList.add('on')}catch(e){}
 /* ---------- loop ---------- */
-let last=performance.now();(function loop(now){const dt=(now-last)/1e3;last=now;const n=tot();if(play&&rev<n){rev=Math.min(n,rev+dt*+$('#spd').value);if(rev>=n)play=false}$('#pl').textContent=play?'⏸ Pause':'▶ Play';draw();requestAnimationFrame(loop)})(last);
+let last=performance.now();(function loop(now){const dt=(now-last)/1e3;last=now;const n=tot();if(play&&rev<n){rev=Math.min(n,rev+dt*+$('#spd').value);if(rev>=n)play=false}{const s=play?'⏸ Pause':'▶ Play';if(pl_s!==s){pl_s=s;const a=s.split(' ');$('#pl').innerHTML=MOB?'<i>'+a[0]+'</i><small>'+a[1]+'</small>':s}}draw();requestAnimationFrame(loop)})(last);
 /* ---------- Lessons dropdown (search + filters) ---------- */
 let rec_=[],fCat='All',fDir='all';try{rec_=JSON.parse(localStorage.getItem('cls_recent')||'[]').filter(i=>LS[i])}catch(e){}
 const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;'),pop=$('#pop'),isOpen=()=>pop.classList.contains('on');
@@ -265,4 +285,35 @@ $('#un').onclick=()=>{if(!I.length&&bak){I=bak;bak=null;rev=tot();toast('Board r
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){$('#cov').classList.remove('on');$('#hov').classList.remove('on');closePop();return}
  if((e.key==='/'&&!/INPUT|SELECT|TEXTAREA/.test(e.target.tagName))||((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k')){e.preventDefault();openPop()}});
 
+/* ---------- compact mobile UI: tool rails + More sheet (same ids/handlers, just re-parented) ---------- */
+if(MOB){document.body.classList.add('m');
+ const mk=(id,cls)=>{const d=document.createElement('div');d.id=id;d.className=cls;document.body.appendChild(d);return d};
+ const mkb=(id,i,t)=>{const b=document.createElement('button');b.className='b';b.id=id;b.innerHTML='<i>'+i+'</i><small>'+t+'</small>';return b};
+ const L=mk('lr','rail'),R=mk('rr','rail');
+ const lab={k:['🕯','Candle'],p:['✏️','Pen'],h:['🖍','Marker'],a:['➚','Arrow'],z:['▭','Zone'],x:['T','Text'],l:['🔴','Laser'],e:['⌫','Erase']};
+ document.querySelectorAll('[data-t]').forEach(b=>{const t=lab[b.dataset.t];if(t)b.innerHTML='<i>'+t[0]+'</i><small>'+t[1]+'</small>';L.appendChild(b)});
+ const cb=mkb('cbtn','','Colour'),dot=document.createElement('span');dot.className='dot';dot.style.background=col;cb.firstChild.replaceWith(dot);
+ const cp=mk('cpop','cpop');cp.append($('#cols'),$('#lw').parentNode);
+ document.querySelectorAll('.sw').forEach(sw=>sw.addEventListener('click',()=>{dot.style.background=sw.style.background}));
+ cb.onclick=()=>cp.classList.toggle('on');
+ document.addEventListener('pointerdown',e=>{if(cp.classList.contains('on')&&!cp.contains(e.target)&&!cb.contains(e.target))cp.classList.remove('on')});
+ [['#st','⏭','Step'],['#rp','⟲','Replay'],['#un','↶','Undo'],['#lsb','📚','Lessons']].forEach(([s,i,t])=>{$(s).innerHTML='<i>'+i+'</i><small>'+t+'</small>'});
+ R.append(cb,$('#pl'),$('#st'),$('#rp'),$('#un'),$('#lsb'),$('#rec'));
+ const mb=mkb('morebtn','⚙','More');R.appendChild(mb);
+ document.body.appendChild($('#tm'));
+ const ov=mk('mov','ov'),card=document.createElement('div');card.className='card';card.id='mcard';ov.appendChild(card);
+ card.innerHTML='<div class="mh"><b>⚙ Controls</b><button class="b" id="mclose">✕ Close</button></div><div class="mg" id="mg"></div><div class="ma" id="ma"></div>';
+ ['#spd','#cw','#vol','#th','#sp','#gr','#wm','#mic'].forEach(s=>{const e=$(s);$('#mg').appendChild(e.closest('label')||e)});
+ $('a[href="index.html"]').textContent='⌂ Home';$('#fs').textContent='⛶ Fullscreen';
+ const hb=document.createElement('button');hb.className='b';hb.textContent='🙈 Hide controls';
+ $('#ma').append($('#cl'),$('#hpb'),$('a[href="index.html"]'),$('#fs'),hb);
+ const shut=()=>ov.classList.remove('on');
+ mb.onclick=()=>ov.classList.add('on');$('#mclose').onclick=shut;ov.addEventListener('pointerdown',e=>{if(e.target===ov)shut()});
+ ['#cl','#hpb','#fs'].forEach(s=>$(s).addEventListener('click',shut));
+ hb.onclick=()=>{shut();document.body.classList.add('uih');toast('Controls chhup gaye: upar-right ☰ se wapas aayenge')};
+ $('#mn').addEventListener('click',()=>document.body.classList.remove('uih'));
+ $('#mn').textContent='☰ Controls';
+ document.addEventListener('keydown',e=>{if(e.key==='Escape')shut()});
+ lay();
+}
 </script><script>if('serviceWorker'in navigator&&location.protocol.indexOf('http')===0)addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})</script></body></html>
