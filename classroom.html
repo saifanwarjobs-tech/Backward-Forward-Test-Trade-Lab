@@ -59,10 +59,14 @@ button,.b,.sw,.chip,.li{touch-action:manipulation;-webkit-tap-highlight-color:tr
 .m #rot{bottom:auto;top:8px}
 @media(orientation:landscape){.m #lr,.m #rr{top:0;bottom:0;width:64px;flex-direction:column}.m #lr{left:0;border-right:1px solid var(--ln)}.m #rr{right:0;border-left:1px solid var(--ln)}.m .rail .b{width:100%}.m .cpop{right:70px;top:6px}}
 @media(orientation:portrait){.m #lr,.m #rr{left:0;right:0;flex-direction:row}.m #rr{bottom:0}.m #lr{bottom:52px;border-top:1px solid var(--ln)}.m .rail .b{flex:1 1 0;min-width:0;min-height:44px}.m .cpop{left:8px;right:8px;bottom:112px}}
+.lvg{display:grid;grid-template-columns:1fr 1fr;gap:8px}.lvg label{display:flex;flex-direction:column;gap:3px;font-size:11px;color:#8a98b3}.lvg select{min-height:36px;font-size:13px;color:var(--tx)}
+#lvx{position:fixed;top:8px;right:8px;z-index:60;display:none;opacity:0;pointer-events:none;transition:opacity .2s;background:#b91c1c;border-color:#f87171;color:#fff;font-weight:700}.live #lvx{display:block}.live #lvx.show{opacity:1;pointer-events:auto}
+.m .lvg{grid-template-columns:1fr 1fr 1fr;gap:6px}.m #lvo p{display:none}.m #lvo h2{font-size:16px;margin-bottom:8px}.m #lvo .btns{margin-top:10px}
+.live .bar,.live .rail,.live .cpop,.live #mn,.live #rot,.live #pop,.live #toast,.live #tm{display:none!important}.live,.live *{cursor:none}
 </style></head><body>
 <div class="bar" id="bar">
 <div class="row">
-<div class="g"><a class="b" href="index.html" title="Home">⌂</a><button class="b" id="hpb" title="How to use">? Help</button><button class="b" id="hide" title="Hide toolbar (video me toolbar record nahi hota)">☰</button><button class="b" id="fs" title="Fullscreen + landscape">⛶</button></div>
+<div class="g"><a class="b" href="index.html" title="Home">⌂</a><button class="b" id="hpb" title="How to use">? Help</button><button class="b" id="hide" title="Hide toolbar (video me toolbar record nahi hota)">☰</button><button class="b" id="fs" title="Fullscreen + landscape">⛶</button><button class="b" id="lvb" title="Auto-play lessons like Reels (YouTube Live mode)">📺 Live</button></div>
 <div class="g" id="tools"><button class="b hero on" data-t="k" title="Draw a path: candles will follow it">🕯 Candle Path</button><button class="b" data-t="p" title="Pen">✏️ Pen</button><button class="b" data-t="h" title="Highlighter">🖍 Highlight</button><button class="b" data-t="a" title="Arrow">➚ Arrow</button><button class="b" data-t="z" title="Zone box">▭ Zone</button><button class="b" data-t="x" title="Text">T Text</button><button class="b" data-t="l" title="Laser pointer">🔴 Laser</button><button class="b" data-t="e" title="Eraser: click or drag over a drawing">⌫ Eraser</button></div>
 <div class="g"><button class="b menu" id="lsb" title="Search and pick a ready-made lesson (shortcut: / or Ctrl+K)">📚 Lessons <span id="lsn"></span> ▾</button></div>
 <div class="g" id="cols"></div><div class="g"><label>Size<input type="range" id="lw" min="2" max="14" value="4"></label></div>
@@ -82,9 +86,16 @@ button,.b,.sw,.chip,.li{touch-action:manipulation;-webkit-tap-highlight-color:tr
 <p class="m">Made a mistake? ↶ Undo, ⌫ Eraser, or 🗑 <b>Reset</b> to start fresh.</p><button class="b on" id="hgo" style="width:100%;margin-top:14px;padding:10px">Start teaching →</button></div></div>
 <div class="ov" id="cov"><div class="card"><h2>🗑 Reset the board?</h2><p class="m">Every drawing, candle and lesson will be erased. You can still press Undo right after to bring it back.</p><div class="btns"><button class="b" id="cno">Cancel</button><button class="b reset" id="cyes">Yes, reset</button></div></div></div>
 <div class="ov" id="tov"><div class="card" style="width:min(420px,94vw)"><b>T Text likhiye</b><input id="tin" type="text" maxlength="80" placeholder="e.g. Buy above high, SL below low" autocomplete="off" style="width:100%;margin-top:10px;background:#0b1220;border:1px solid #33456b;border-radius:10px;padding:10px 12px;font-size:16px"><div class="btns"><button class="b" id="tcan">Cancel</button><button class="b on" id="tadd">Add on board</button></div></div></div>
+<div class="ov" id="lvo"><div class="card" style="width:min(480px,94vw)"><h2>📺 Live / Reels mode</h2><p class="m" style="margin:4px 0 10px">Lessons ek ke baad ek apne aap chalenge: upar strategy ka naam, awaaz me explain, aur loop me. YouTube Live ke liye chhod dein.</p>
+<div class="lvg"><label>Category<select id="lvcat"></select></label><label>Order<select id="lvord"><option value="1">Shuffle (random)</option><option value="0">In order</option></select></label>
+<label>Gap between lessons<select id="lvgap"><option>3</option><option selected>5</option><option>8</option><option>12</option></select></label><label>Candle speed<select id="lvspd"><option value="2">Slow</option><option value="3" selected>Normal</option><option value="5">Fast</option></select></label>
+<label>Voice<select id="lvvo"><option value="1">On</option><option value="0">Off</option></select></label><label>Voice type<select id="lvvn"></select></label></div>
+<div class="btns"><button class="b" id="lvcancel">Cancel</button><button class="b on" id="lvgo">▶ Start Live</button></div>
+<p class="m" style="font-size:11px;margin-top:10px;color:#8a98b3">Exit: Esc ya screen tap → ⏹ Exit. Tab ko visible aur screen on rakhein. Stream ke liye OBS me window capture + desktop audio.</p></div></div>
+<button class="b" id="lvx">⏹ Exit Live</button>
 <div id="toast"></div>
 <script>
-const MOB=matchMedia('(max-width:900px),(max-height:520px)').matches;let pl_s='';
+const LS_=.82;const MOB=matchMedia('(max-width:900px),(max-height:520px)').matches;let pl_s='';const LV={on:false,order:[],i:0,state:'',hold:0,spoken:new Set(),cur:null,wl:null,opt:{shuffle:1,cat:'All',gap:5,spd:3,voice:1,vname:''}};
 const $=s=>document.querySelector(s),W=1280,H=720,cv=$('#cv'),g=cv.getContext('2d');cv.width=W;cv.height=H;
 const TH={black:{bg:'#0b0f14',gr:'#18222f',ink:'#ffffff'},white:{bg:'#ffffff',gr:'#e5e7eb',ink:'#111827'},chalk:{bg:'#1f3d2b',gr:'#2c553c',ink:'#f1f5f9'}};
 let th='black',tool='k',col='#facc15',I=[],cur=null,rev=0,play=false,laser=[],mr=null,chunks=[],mic=null,rt=0,rti=null,sd=Date.now()>>>0;
@@ -199,12 +210,12 @@ function item(it){if(it.at!=null&&rev<it.at)return;g.save();g.lineCap='round';g.
  g.restore()}
 function draw(){g.fillStyle=TH[th].bg;g.fillRect(0,0,W,H);
  if($('#gr').checked){g.strokeStyle=TH[th].gr;g.lineWidth=1;g.beginPath();for(let x=0;x<W;x+=40){g.moveTo(x,0);g.lineTo(x,H)}for(let y=0;y<H;y+=40){g.moveTo(0,y);g.lineTo(W,y)}g.stroke()}
- let base=0;I.forEach(it=>{if(it.cs){it.cs.forEach((c,i)=>candle(c,rev-(base+i)));base+=it.cs.length}else item(it)});
+ let base=0;if(LV.on){g.save();g.translate(W*(1-LS_)/2,74);g.scale(LS_,LS_)}I.forEach(it=>{if(it.cs){it.cs.forEach((c,i)=>candle(c,rev-(base+i)));base+=it.cs.length}else item(it)});if(LV.on)g.restore();
  if(cur&&cur.t!=='laser'&&cur.t!=='erase')item(cur.t==='g'?{...cur,at:null}:cur);
  const now=performance.now();laser=laser.filter(p=>now-p[2]<700);
  for(let i=1;i<laser.length;i++){g.strokeStyle='rgba(255,40,40,'+(1-(now-laser[i][2])/700)+')';g.lineWidth=6;g.lineCap='round';g.beginPath();g.moveTo(laser[i-1][0],laser[i-1][1]);g.lineTo(laser[i][0],laser[i][1]);g.stroke()}
  if(laser.length){const q=laser[laser.length-1];g.fillStyle='#ff2828';g.shadowColor='#ff2828';g.shadowBlur=18;g.beginPath();g.arc(q[0],q[1],8,0,7);g.fill();g.shadowBlur=0}
- if($('#wm').checked){g.font='700 16px system-ui';g.textBaseline='alphabetic';g.fillStyle=C('ink');g.globalAlpha=.35;g.textAlign='right';g.fillText('BFT Trade Lab · Classroom',W-16,H-14);g.textAlign='left';g.globalAlpha=1}}
+ if($('#wm').checked){g.font='700 16px system-ui';g.textBaseline='alphabetic';g.fillStyle=C('ink');g.globalAlpha=.35;g.textAlign='right';g.fillText('BFT Trade Lab · Classroom',W-16,H-14);g.textAlign='left';g.globalAlpha=1}if(LV.on)liveHUD()}
 /* ---------- input ---------- */
 const pos=e=>{const r=cv.getBoundingClientRect();return[(e.clientX-r.left)*W/r.width,(e.clientY-r.top)*H/r.height]};
 function segd(a,b,x,y){const dx=b[0]-a[0],dy=b[1]-a[1],L=dx*dx+dy*dy||1,u=Math.max(0,Math.min(1,((x-a[0])*dx+(y-a[1])*dy)/L));return Math.hypot(x-a[0]-u*dx,y-a[1]-u*dy)}
@@ -213,7 +224,7 @@ function hit(it,x,y){if(it.pts)return it.pts.some(p=>Math.hypot(p[0]-x,p[1]-y)<1
  if(it.t==='x'){g.font=`700 ${it.fs}px system-ui`;return x>=it.x-8&&x<=it.x+g.measureText(it.s).width+8&&Math.abs(y-it.y)<it.fs}
  if(it.cs)return it.cs.some(c=>Math.abs(c.x-x)<c.w&&y>=c.h-4&&y<=c.l+4);return false}
 function erase(x,y){for(let i=I.length-1;i>=0;i--)if(hit(I[i],x,y)){I.splice(i,1);rev=Math.min(rev,tot());return}}
-cv.onpointerdown=e=>{cv.setPointerCapture(e.pointerId);const[x,y]=pos(e),w=+$('#lw').value;
+cv.onpointerdown=e=>{if(LV.on){liveX();return}cv.setPointerCapture(e.pointerId);const[x,y]=pos(e),w=+$('#lw').value;
  if(tool==='p'||tool==='h')cur={t:tool,c:col,w,pts:[[x,y]]};else if(tool==='k')cur={t:'g',c:'#f59e0b',w:3,pts:[[x,y]]};
  else if(tool==='a'||tool==='z')cur={t:tool,c:col,w,a:[x,y],b:[x,y]};
  else if(tool==='x'){askText(x,y,w)}
@@ -252,7 +263,7 @@ $('#rec').onclick=async()=>{
  mr.start(500);rt=0;$('#rec').textContent=MOB?'■ Stop':'■ Stop & Download';rti=setInterval(()=>{rt++;$('#tm').textContent='● '+String(rt/60|0).padStart(2,'0')+':'+String(rt%60).padStart(2,'0')},1000);toast('Recording started. Hide the toolbar (☰) for a clean video')};
 $('#hpb').onclick=()=>$('#hov').classList.add('on');$('#hgo').onclick=()=>{$('#hov').classList.remove('on');try{localStorage.setItem('cls_seen',1)}catch(e){}};try{if(!localStorage.getItem('cls_seen'))$('#hov').classList.add('on')}catch(e){}
 /* ---------- loop ---------- */
-let last=performance.now();(function loop(now){const dt=(now-last)/1e3;last=now;const n=tot();if(play&&rev<n){rev=Math.min(n,rev+dt*+$('#spd').value);if(rev>=n)play=false}{const s=play?'⏸ Pause':'▶ Play';if(pl_s!==s){pl_s=s;const a=s.split(' ');$('#pl').innerHTML=MOB?'<i>'+a[0]+'</i><small>'+a[1]+'</small>':s}}draw();requestAnimationFrame(loop)})(last);
+let last=performance.now();(function loop(now){const dt=(now-last)/1e3;last=now;if(LV.on)liveTick(now);const n=tot();if(play&&rev<n){rev=Math.min(n,rev+dt*+$('#spd').value);if(rev>=n)play=false}{const s=play?'⏸ Pause':'▶ Play';if(pl_s!==s){pl_s=s;const a=s.split(' ');$('#pl').innerHTML=MOB?'<i>'+a[0]+'</i><small>'+a[1]+'</small>':s}}draw();requestAnimationFrame(loop)})(last);
 /* ---------- Lessons dropdown (search + filters) ---------- */
 let rec_=[],fCat='All',fDir='all';try{rec_=JSON.parse(localStorage.getItem('cls_recent')||'[]').filter(i=>LS[i])}catch(e){}
 const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;'),pop=$('#pop'),isOpen=()=>pop.classList.contains('on');
@@ -291,6 +302,55 @@ $('#un').onclick=()=>{if(!I.length&&bak){I=bak;bak=null;rev=tot();toast('Board r
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){$('#cov').classList.remove('on');$('#hov').classList.remove('on');closePop();return}
  if((e.key==='/'&&!/INPUT|SELECT|TEXTAREA/.test(e.target.tagName))||((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k')){e.preventDefault();openPop()}});
 
+/* ---------- LIVE / Reels mode: lessons auto-play one after another, with HUD + voice ---------- */
+const DIRW={bull:'Bullish setup',bear:'Bearish setup',neu:'Neutral. Stay out'};
+let actx=null;
+function chime(f1,f2,vol){try{actx=actx||new (window.AudioContext||window.webkitAudioContext)();const t=actx.currentTime;[[f1,0],[f2,.16]].forEach(([f,d])=>{const o=actx.createOscillator(),gn=actx.createGain();o.type='sine';o.frequency.value=f;gn.gain.setValueAtTime(0,t+d);gn.gain.linearRampToValueAtTime(vol||.07,t+d+.02);gn.gain.exponentialRampToValueAtTime(.0001,t+d+.3);o.connect(gn).connect(actx.destination);o.start(t+d);o.stop(t+d+.32)})}catch(e){}}
+function voices(){return(window.speechSynthesis?speechSynthesis.getVoices():[]).filter(v=>/^(en|hi)/i.test(v.lang))}
+function fillVoices(){const sel=$('#lvvn'),vs=voices();if(!vs.length){sel.innerHTML='<option value="">Default voice</option>';return}
+ const pick=LV.opt.vname&&vs.find(v=>v.name===LV.opt.vname)||vs.find(v=>/en-IN/i.test(v.lang))||vs.find(v=>/^en/i.test(v.lang))||vs[0];
+ sel.innerHTML=vs.map(v=>'<option value="'+esc(v.name)+'"'+(v===pick?' selected':'')+'>'+esc(v.name)+' ('+v.lang+')</option>').join('')}
+if(window.speechSynthesis){speechSynthesis.onvoiceschanged=fillVoices}
+function say(t){if(!LV.opt.voice||!window.speechSynthesis||!t)return;try{const u=new SpeechSynthesisUtterance(t),v=voices().find(x=>x.name===LV.opt.vname);if(v){u.voice=v;u.lang=v.lang}else u.lang='en-IN';u.rate=.95;speechSynthesis.speak(u)}catch(e){}}
+const clean=s=>s.replace(/[^\w\s&',.:%\-\/]/g,' ').replace(/\s+/g,' ').trim();
+function liveSetup(){try{Object.assign(LV.opt,JSON.parse(localStorage.getItem('cls_live')||'{}'))}catch(e){}
+ $('#lvcat').innerHTML='<option value="All">All lessons ('+LS.length+')</option>'+CATS.map(c=>'<option value="'+c+'">'+CI[c]+' '+c+'</option>').join('');
+ $('#lvcat').value=LV.opt.cat;$('#lvord').value=LV.opt.shuffle;$('#lvgap').value=LV.opt.gap;$('#lvspd').value=LV.opt.spd;$('#lvvo').value=LV.opt.voice;fillVoices();$('#lvo').classList.add('on')}
+function liveOrder(){const a=LS.filter(L=>LV.opt.cat==='All'||L.cat===LV.opt.cat).map(L=>L.id);if(LV.opt.shuffle)for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function liveStart(){LV.opt={cat:$('#lvcat').value,shuffle:+$('#lvord').value,gap:+$('#lvgap').value,spd:+$('#lvspd').value,voice:+$('#lvvo').value,vname:$('#lvvn').value};
+ try{localStorage.setItem('cls_live',JSON.stringify(LV.opt))}catch(e){}
+ $('#lvo').classList.remove('on');LV.order=liveOrder();if(!LV.order.length)return;LV.i=-1;LV.on=true;document.body.classList.add('live');
+ try{actx=actx||new (window.AudioContext||window.webkitAudioContext)();actx.resume()}catch(e){}
+ try{if(speechSynthesis){speechSynthesis.cancel();speechSynthesis.resume()}}catch(e){}
+ if(MOB&&!document.fullscreenElement)goFull();
+ try{navigator.wakeLock&&navigator.wakeLock.request('screen').then(l=>LV.wl=l).catch(()=>{})}catch(e){}
+ lay();liveNext()}
+function liveNext(){LV.i++;if(LV.i>=LV.order.length){LV.order=liveOrder();LV.i=0}
+ const L=LS[LV.order[LV.i]];LV.cur=L;LV.spoken=new Set();$('#spd').value=LV.opt.spd;build(L);LV.state='run';LV.hold=0;
+ try{speechSynthesis.cancel()}catch(e){}
+ if(L.dir==='bear')chime(660,440);else chime(523,784);
+ say(L.n+'. '+DIRW[L.dir]+'.')}
+function liveTick(now){if(!LV.cur)return;
+ if(LV.state==='run'){I.filter(it=>it.t==='x'&&it.at!=null&&rev>=it.at&&!LV.spoken.has(it)).sort((a,b)=>a.at-b.at).forEach(it=>{LV.spoken.add(it);if(/✔|✓/.test(it.s))chime(880,1175,.05);say(clean(it.s))});
+  if(!play&&rev>=tot()-.001){LV.state='hold';LV.hold=now+LV.opt.gap*1000}}
+ else if(LV.state==='hold'){const busy=window.speechSynthesis&&LV.opt.voice&&(speechSynthesis.speaking||speechSynthesis.pending);
+  if(now>LV.hold&&(!busy||now>LV.hold+9000))liveNext()}}
+function liveStop(){LV.on=false;LV.cur=null;document.body.classList.remove('live');try{speechSynthesis.cancel()}catch(e){}try{LV.wl&&LV.wl.release()}catch(e){}LV.wl=null;lay();toast('Live mode stopped')}
+document.addEventListener('visibilitychange',()=>{if(LV.on&&document.visibilityState==='visible'){try{navigator.wakeLock&&navigator.wakeLock.request('screen').then(l=>LV.wl=l).catch(()=>{})}catch(e){}}});
+let lvxT=0;function liveX(){$('#lvx').classList.add('show');clearTimeout(lvxT);lvxT=setTimeout(()=>$('#lvx').classList.remove('show'),3500)}
+function liveHUD(){const L=LV.cur;if(!L)return;g.save();g.textBaseline='alphabetic';
+ const gr=g.createLinearGradient(0,0,0,72);gr.addColorStop(0,'rgba(8,13,22,.96)');gr.addColorStop(1,'rgba(8,13,22,.0)');g.fillStyle=gr;g.fillRect(0,0,W,80);
+ const col=L.dir==='bull'?'#22c55e':L.dir==='bear'?'#ef4444':'#94a3b8';
+ g.fillStyle=TH[th].ink;g.font='800 34px system-ui';g.textAlign='left';g.fillText(L.n,24,40);
+ g.font='600 16px system-ui';g.fillStyle='#9fb0d0';g.fillText(CI[L.cat]+' '+L.cat+'  ·  '+(LV.i+1)+' / '+LV.order.length,24,64);
+ const dt=L.dir==='bull'?'▲ BULLISH':L.dir==='bear'?'▼ BEARISH':'■ NEUTRAL';g.font='800 22px system-ui';const w=g.measureText(dt).width;
+ g.fillStyle=col;g.beginPath();g.roundRect(W-w-52,14,w+28,38,19);g.fill();g.fillStyle='#07120b';g.textAlign='center';g.fillText(dt,W-w/2-38,41);
+ const t=tot()||1,pr=Math.min(1,rev/t);g.fillStyle='rgba(148,163,184,.25)';g.fillRect(0,H-6,W,6);g.fillStyle=col;g.fillRect(0,H-6,W*pr,6);
+ const nx=LS[LV.order[(LV.i+1)%LV.order.length]];g.textAlign='left';g.font='600 16px system-ui';g.fillStyle='#9fb0d0';g.globalAlpha=.9;if(nx)g.fillText('Up next: '+nx.n,24,H-30);
+ g.font='500 12px system-ui';g.globalAlpha=.55;g.fillText('Educational purpose only · Not investment advice',24,H-12);g.restore()}
+$('#lvb').onclick=liveSetup;$('#lvgo').onclick=liveStart;$('#lvcancel').onclick=()=>$('#lvo').classList.remove('on');$('#lvx').onclick=liveStop;
+addEventListener('keydown',e=>{if(e.key==='Escape'&&LV.on)liveStop()});
+
 /* ---------- compact mobile UI: tool rails + More sheet (same ids/handlers, just re-parented) ---------- */
 if(MOB){document.body.classList.add('m');
  const mk=(id,cls)=>{const d=document.createElement('div');d.id=id;d.className=cls;document.body.appendChild(d);return d};
@@ -312,10 +372,10 @@ if(MOB){document.body.classList.add('m');
  ['#spd','#cw','#vol','#th','#sp','#gr','#wm','#mic'].forEach(s=>{const e=$(s);$('#mg').appendChild(e.closest('label')||e)});
  $('a[href="index.html"]').textContent='⌂ Home';$('#fs').textContent='⛶ Fullscreen';
  const hb=document.createElement('button');hb.className='b';hb.textContent='🙈 Hide controls';
- $('#ma').append($('#cl'),$('#hpb'),$('a[href="index.html"]'),$('#fs'),hb);
+ $('#ma').append($('#lvb'),$('#cl'),$('#hpb'),$('a[href="index.html"]'),$('#fs'),hb);
  const shut=()=>ov.classList.remove('on');
  mb.onclick=()=>ov.classList.add('on');$('#mclose').onclick=shut;ov.addEventListener('pointerdown',e=>{if(e.target===ov)shut()});
- ['#cl','#hpb','#fs'].forEach(s=>$(s).addEventListener('click',shut));
+ ['#cl','#hpb','#fs','#lvb'].forEach(s=>$(s).addEventListener('click',shut));
  hb.onclick=()=>{shut();document.body.classList.add('uih');toast('Controls chhup gaye: upar-right ☰ se wapas aayenge')};
  $('#mn').addEventListener('click',()=>document.body.classList.remove('uih'));
  $('#mn').textContent='☰ Controls';
