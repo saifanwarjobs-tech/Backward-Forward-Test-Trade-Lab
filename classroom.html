@@ -81,6 +81,7 @@ button,.b,.sw,.chip,.li{touch-action:manipulation;-webkit-tap-highlight-color:tr
 <ol><li><b>Start</b>: draw your own price path with 🕯 <b>Candle Path</b> (candles follow it), or open 📚 <b>Lessons</b>, search and pick from 100+ ready lessons (breakouts, traps, patterns, candlesticks).</li><li><b>Explain</b>: press <b>Space</b> to pause, ⏭ to step one candle, 🔴 Laser to point, ✏️ Pen to write.</li><li><b>Record</b>: hide the toolbar with ☰, press ● <b>Record</b>, talk, then <b>Stop &amp; Download</b>.</li></ol>
 <p class="m">Made a mistake? ↶ Undo, ⌫ Eraser, or 🗑 <b>Reset</b> to start fresh.</p><button class="b on" id="hgo" style="width:100%;margin-top:14px;padding:10px">Start teaching →</button></div></div>
 <div class="ov" id="cov"><div class="card"><h2>🗑 Reset the board?</h2><p class="m">Every drawing, candle and lesson will be erased. You can still press Undo right after to bring it back.</p><div class="btns"><button class="b" id="cno">Cancel</button><button class="b reset" id="cyes">Yes, reset</button></div></div></div>
+<div class="ov" id="tov"><div class="card" style="width:min(420px,94vw)"><b>T Text likhiye</b><input id="tin" type="text" maxlength="80" placeholder="e.g. Buy above high, SL below low" autocomplete="off" style="width:100%;margin-top:10px;background:#0b1220;border:1px solid #33456b;border-radius:10px;padding:10px 12px;font-size:16px"><div class="btns"><button class="b" id="tcan">Cancel</button><button class="b on" id="tadd">Add on board</button></div></div></div>
 <div id="toast"></div>
 <script>
 const MOB=matchMedia('(max-width:900px),(max-height:520px)').matches;let pl_s='';
@@ -215,11 +216,16 @@ function erase(x,y){for(let i=I.length-1;i>=0;i--)if(hit(I[i],x,y)){I.splice(i,1
 cv.onpointerdown=e=>{cv.setPointerCapture(e.pointerId);const[x,y]=pos(e),w=+$('#lw').value;
  if(tool==='p'||tool==='h')cur={t:tool,c:col,w,pts:[[x,y]]};else if(tool==='k')cur={t:'g',c:'#f59e0b',w:3,pts:[[x,y]]};
  else if(tool==='a'||tool==='z')cur={t:tool,c:col,w,a:[x,y],b:[x,y]};
- else if(tool==='x'){const s=prompt('Write text:');if(s)I.push({t:'x',s,x,y,c:col,fs:Math.max(20,w*6)})}
+ else if(tool==='x'){askText(x,y,w)}
  else if(tool==='l'){cur={t:'laser'}}else if(tool==='e'){erase(x,y);cur={t:'erase'}}};
 cv.onpointermove=e=>{const[x,y]=pos(e);if(tool==='l'){laser.push([x,y,performance.now()]);return}if(!cur)return;
  if(cur.pts)cur.pts.push([x,y]);else if(cur.b)cur.b=[x,y];else if(cur.t==='erase')erase(x,y)};
 cv.onpointercancel=()=>{cur=null};
+let tpend=null;
+function askText(x,y,w){tpend={x,y,w};$('#tin').value='';$('#tov').classList.add('on');setTimeout(()=>$('#tin').focus(),50)}
+function textDone(ok){const v=$('#tin').value.trim();$('#tov').classList.remove('on');if(ok&&v&&tpend)I.push({t:'x',s:v,x:Math.min(tpend.x,W-60),y:tpend.y,c:col,fs:Math.max(20,tpend.w*6)});tpend=null}
+$('#tadd').onclick=()=>textDone(true);$('#tcan').onclick=()=>textDone(false);
+$('#tin').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();textDone(true)}else if(e.key==='Escape')textDone(false)});
 async function goFull(){try{const d=document.documentElement;if(!document.fullscreenElement&&d.requestFullscreen)await d.requestFullscreen();else if(document.fullscreenElement)await document.exitFullscreen()}catch(e){}try{await screen.orientation.lock('landscape')}catch(e){toast('Phone ko landscape me ghumaiye')}}
 $('#fs').onclick=goFull;$('#rotgo').onclick=()=>{goFull();$('#rot').classList.add('x')};$('#rotx').onclick=()=>$('#rot').classList.add('x');
 addEventListener('orientationchange',()=>setTimeout(lay,200));
@@ -240,9 +246,9 @@ $('#rec').onclick=async()=>{
  if(!window.MediaRecorder){toast('Recording is not supported in this browser. Use Chrome or Edge.');return}
  const cs=cv.captureStream(30);mic=null;
  if($('#mic').checked){try{mic=await navigator.mediaDevices.getUserMedia({audio:true});mic.getAudioTracks().forEach(t=>cs.addTrack(t))}catch(e){toast('Mic blocked: recording without voice')}}
- const mt=['video/webm;codecs=vp9,opus','video/webm;codecs=vp8,opus','video/webm'].find(t=>MediaRecorder.isTypeSupported(t));chunks=[];
- mr=new MediaRecorder(cs,{mimeType:mt,videoBitsPerSecond:5e6});mr.ondataavailable=e=>{if(e.data.size)chunks.push(e.data)};
- mr.onstop=()=>{clearInterval(rti);$('#tm').textContent='';$('#rec').textContent='● Record';if(mic)mic.getTracks().forEach(t=>t.stop());const u=URL.createObjectURL(new Blob(chunks,{type:'video/webm'})),a=document.createElement('a');a.href=u;a.download='classroom-'+new Date().toISOString().slice(0,16).replace(/[:T]/g,'-')+'.webm';a.click();toast('Lesson saved: check your Downloads')};
+ const mt=['video/mp4;codecs=avc1.42E01E,mp4a.40.2','video/mp4;codecs=avc1,mp4a.40.2','video/mp4','video/webm;codecs=vp9,opus','video/webm;codecs=vp8,opus','video/webm'].find(t=>MediaRecorder.isTypeSupported(t)),ext=mt&&mt.indexOf('mp4')>-1?'mp4':'webm';chunks=[];
+ mr=new MediaRecorder(cs,mt?{mimeType:mt,videoBitsPerSecond:5e6}:{videoBitsPerSecond:5e6});mr.ondataavailable=e=>{if(e.data.size)chunks.push(e.data)};
+ mr.onstop=()=>{clearInterval(rti);$('#tm').textContent='';$('#rec').textContent='● Record';if(mic)mic.getTracks().forEach(t=>t.stop());const u=URL.createObjectURL(new Blob(chunks,{type:ext==='mp4'?'video/mp4':'video/webm'})),a=document.createElement('a');a.href=u;a.download='classroom-'+new Date().toISOString().slice(0,16).replace(/[:T]/g,'-')+'.'+ext;document.body.appendChild(a);a.click();setTimeout(()=>{a.remove();URL.revokeObjectURL(u)},4000);toast(ext==='mp4'?'Lesson saved (MP4): check your Downloads':'Lesson saved (WEBM): is browser me MP4 support nahi, VLC/Chrome me chalegi')};
  mr.start(500);rt=0;$('#rec').textContent=MOB?'■ Stop':'■ Stop & Download';rti=setInterval(()=>{rt++;$('#tm').textContent='● '+String(rt/60|0).padStart(2,'0')+':'+String(rt%60).padStart(2,'0')},1000);toast('Recording started. Hide the toolbar (☰) for a clean video')};
 $('#hpb').onclick=()=>$('#hov').classList.add('on');$('#hgo').onclick=()=>{$('#hov').classList.remove('on');try{localStorage.setItem('cls_seen',1)}catch(e){}};try{if(!localStorage.getItem('cls_seen'))$('#hov').classList.add('on')}catch(e){}
 /* ---------- loop ---------- */
