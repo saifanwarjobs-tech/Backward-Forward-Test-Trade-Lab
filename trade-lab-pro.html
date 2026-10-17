@@ -81,6 +81,14 @@ input,select,textarea{font-size:16px}
 .tk{padding:12px}.fr{gap:8px}.fr input,.fr select{min-height:44px}.pri{min-height:46px}.sg b{font-size:15px}
 .mx .rt,.mx .tm{display:none!important}.mx .app{padding:4px}.mx .cb{height:calc(100svh - 230px);max-height:none}
 }
+#qbh{display:none}
+@media(max-width:700px){
+.mini #qbh{display:block;position:absolute;top:-27px;right:12px;flex:none;min-height:0;height:27px;padding:0 14px;font-size:12px;font-weight:700;color:var(--mu);background:var(--pn);border:1px solid var(--ln);border-bottom:0;border-radius:10px 10px 0 0}
+body.qbm,body.qbm.hasp{padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))}
+body.qbm .mini{background:none;border:0;padding:0;pointer-events:none}
+body.qbm .mini>:not(#qbh){display:none!important}
+body.qbm .mini #qbh{position:fixed;top:auto;right:12px;bottom:calc(14px + env(safe-area-inset-bottom,0px));height:46px;padding:0 20px;font-size:14px;color:#06101f;background:var(--ac);border:0;border-radius:99px;pointer-events:auto;box-shadow:0 6px 20px rgba(0,0,0,.4)}
+}
 </style></head><body>
 <div class="hd"><span class="lg">BFT <i>Trade Lab</i> Pro</span><span class="demo">DEMO</span>
 <button class="mt on" data-m="bt">Backtest</button><button class="mt" data-m="fw">Forward Test</button>
@@ -462,4 +470,10 @@ d.querySelector('span').onclick=function(){var tm=document.querySelector('.tm');
 d.querySelector('button').onclick=function(){document.getElementById('ca').click()};
 function u(){var m=/\((\d+)\)/.exec(tg.textContent),n=m?+m[1]:0,pl=cP.textContent.trim();d.classList.toggle('show',n>0);document.body.classList.toggle('hasp',n>0);
 if(n>0)document.getElementById('pstx').innerHTML='<b>'+n+' open</b> · P/L <b style="color:var(--'+(pl.charAt(0)==='-'?'dn':'up')+')">'+pl+'</b> · tap to view'}
-var o=new MutationObserver(u);[tg,cP].forEach(function(e){o.observe(e,{childList:true,characterData:true,subtree:true})});u()})();</script><script>if('serviceWorker'in navigator&&location.protocol.indexOf('http')===0)addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})</script></body></html>
+var o=new MutationObserver(u);[tg,cP].forEach(function(e){o.observe(e,{childList:true,characterData:true,subtree:true})});u()})();</script><script>/* mobile: minimise / restore the BUY-SELL bar */
+(function(){var mini=document.querySelector('.mini'),tg=document.getElementById('tgT');if(!mini||!tg)return;var KEY='bftp_qbm',h=document.createElement('button');h.id='qbh';
+function get(){try{return localStorage.getItem(KEY)==='1'}catch(e){return false}}function set(v){try{localStorage.setItem(KEY,v?'1':'0')}catch(e){}}
+function ui(){var m=document.body.classList.contains('qbm'),r=/\((\d+)\)/.exec(tg.textContent),n=r?+r[1]:0;h.textContent=m?'▴ Trade'+(n?' · '+n+' open':''):'▾ Hide';h.setAttribute('aria-label',m?'Show BUY and SELL bar':'Hide BUY and SELL bar')}
+h.onclick=function(){var m=document.body.classList.toggle('qbm');set(m);ui()};
+mini.insertBefore(h,mini.firstChild);if(get())document.body.classList.add('qbm');ui();
+new MutationObserver(ui).observe(tg,{childList:true,characterData:true,subtree:true})})();</script><script>if('serviceWorker'in navigator&&location.protocol.indexOf('http')===0)addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})</script></body></html>
