@@ -82,7 +82,7 @@ footer{border-top:1px solid var(--ln);padding:30px 0 50px;color:var(--mu);font-s
 @media(max-width:960px){.g3,.g4{grid-template-columns:1fr 1fr}.pl{grid-template-columns:1fr}.pl .list{border-left:0;border-top:1px solid var(--ln);max-height:none}}
 @media(max-width:640px){.g2,.g3,.g4{grid-template-columns:1fr}.hero{padding:56px 0 44px}.nl{display:none}.md{padding:18px}.top .btn.s.hid{display:none}.prc{padding:26px}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}.rv{opacity:1;transform:none}}
-</style></head><body>
+</style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script></head><body>
 <header class="top"><div class="w"><a class="logo" href="index.html"><span id="brand"></span></a><span class="sp"></span><a class="nl" href="index.html">Home</a><a class="nl" href="journal.html">Journal</a><a class="nl" href="trade-lab-pro.html">Testing Lab</a><a class="nl" href="classroom.html">Classroom</a><span id="st"></span></div>
 <div class="w"><nav class="tabs" role="tablist" id="tabs"></nav></div></header>
 
@@ -124,7 +124,7 @@ footer{border-top:1px solid var(--ln);padding:30px 0 50px;color:var(--mu);font-s
 
 <script>
 /* ===================== EDIT THIS SECTION: brand, price, content ===================== */
-const CFG={brand:'BFT Academy',price:4999,mrp:14999,payUrl:'https://rzp.io/l/your-payment-link',pixelId:'',codes:['DEMO2026'],
+const CFG={brand:'BFT Academy',price:4999,mrp:14999,payUrl:'https://rzp.io/l/your-payment-link',pixelId:'',codes:[],
  contact:'https://wa.me/91XXXXXXXXXX',refund:'',terms:'',privacy:''};
 /* COURSES: video = YouTube/Vimeo EMBED link (https://www.youtube.com/embed/ID) or .mp4 link.  lab = page to practise on.  free:1 = open to everyone. */
 const COURSES=[
@@ -301,7 +301,7 @@ function lesson(id){const i=flat.findIndex(x=>x.id===id),it=flat[i];if(!it)retur
 function mark(id){done[id]=!done[id];SS('bftA_done',done);lesson(id)}
 function course(ci){const f=flat.find(x=>x.ci===ci&&(paid||x.l.free))||flat.find(x=>x.ci===ci);const nx=flat.find(x=>x.ci===ci&&!done[x.id]&&(paid||x.l.free));lesson((nx||f).id)}
 /* ---- pdf ---- */
-function pdf(i){const b=PDFS[i];if(!(paid||b.free))return wall(b.t);open(`<h3>${esc(b.t)}</h3><p class="m">${esc(b.cat)} · ${b.p} pages</p>${b.file?`<div class="pdfv"><iframe src="${esc(b.file)}#toolbar=0&navpanes=0" title="${esc(b.t)}"></iframe></div><div class="row" style="margin-top:12px"><a class="btn s o" href="${esc(b.file)}" target="_blank" rel="noopener">Open in new tab</a>${paid?`<a class="btn s o" href="${esc(b.file)}" download>⬇ Download</a>`:''}</div>`:'<div class="vid" style="margin-top:14px"><span>📘 Add this PDF\'s path in the PDFS list.</span></div>'}`)}
+function pdf(i){const b=PDFS[i];if(!(paid||b.free))return wall(b.t);open(`<h3>${esc(b.t)}</h3><p class="m">${esc(b.cat)} · ${b.p?b.p+' pages':'PDF'}</p>${b.file?`<div class="pdfv"><iframe src="${esc(b.file)}#toolbar=0&navpanes=0" title="${esc(b.t)}"></iframe></div><div class="row" style="margin-top:12px"><a class="btn s o" href="${esc(b.file)}" target="_blank" rel="noopener">Open in new tab</a>${paid?`<a class="btn s o" href="${esc(b.file)}" download>⬇ Download</a>`:''}</div>`:'<div class="vid" style="margin-top:14px"><span>📘 Add this PDF\'s path in the PDFS list.</span></div>'}`)}
 /* ---- indicators ---- */
 function hl(code){return esc(code).split('\n').map((ln,i)=>{const h=ln.replace(/(\/\/.*$)|(&quot;[^&]*?&quot;)|(\b(?:input|ta|math|plot|plotshape|fill|bgcolor|alertcondition|indicator|box|color|display|shape|location|size)\.[a-zA-Z_]+|\b(?:plot|plotshape|fill|bgcolor|alertcondition|indicator|time)\b(?=\())|(\b(?:if|not|and|or|var|int|float|bool|true|false|na|else|for|to|and)\b)|(\b\d+(?:\.\d+)?\b)/g,(m,c,s,f,k,n)=>c?`<span class="c2">${m}</span>`:s?`<span class="s2">${m}</span>`:f?`<span class="f2">${m}</span>`:k?`<span class="k">${m}</span>`:`<span class="n2">${m}</span>`);return`<div><b>${i+1}</b><span>${h||' '}</span></div>`}).join('')}
 function ind(id,t){const x=INDICATORS.find(a=>a.id===id);if(!x)return;const ok=paid||x.free;t=t||'over';
@@ -349,7 +349,7 @@ function all(){
  $('#fq').innerHTML=[['How do I get access?','Tap “Get lifetime access”, complete the payment and you receive your access code on WhatsApp or email. Enter it under “Unlock”.'],['How do I add an indicator to TradingView?','Open the indicator, copy its Pine code, paste it into TradingView’s Pine Editor and press “Add to chart”. Invite-only scripts are added from your TradingView username after you request access.'],['Does it work on free TradingView?','Yes. The free plan only limits how many indicators you can add to one chart.'],['Is it a subscription?','No. One payment, lifetime access to everything, including future updates.'],['Do indicators give buy/sell signals?','They highlight structure and trend changes for study. They are tools, not advice, and no indicator wins every trade.'],['Is this financial advice?','No. Everything here is educational. Trading involves risk and we do not promise profits.']].concat(CFG.refund?[['Refund policy',CFG.refund]]:[]).map(q=>`<details><summary>${esc(q[0])}</summary><p>${esc(q[1])}</p></details>`).join('');
  if(tab==='ind')setTimeout(previews,30)}
 function pdfs(){const q=($('#q').value||'').toLowerCase().trim(),L=PDFS.map((b,i)=>({b,i})).filter(o=>(cat==='All'||o.b.cat===cat)&&(!q||(o.b.t+' '+o.b.d+' '+o.b.cat).toLowerCase().includes(q)));
- $('#bk').innerHTML=L.length?L.map(({b,i})=>{const ok=paid||b.free;return`<div class="card hov" data-pdf="${i}" tabindex="0" role="button"><span class="lk">${ok?(b.free&&!paid?'FREE':'📖 Read'):'🔒 Locked'}</span>${cover(b.c,[b.cat.toUpperCase(),b.t],'PDF',150)}<div class="bd"><p>${esc(b.d)}</p><div class="meta"><span>📄 ${b.p} pages</span></div></div></div>`}).join(''):'<div class="empty">No PDF matches your search.</div>'}
+ $('#bk').innerHTML=L.length?L.map(({b,i})=>{const ok=paid||b.free;return`<div class="card hov" data-pdf="${i}" tabindex="0" role="button"><span class="lk">${ok?(b.free&&!paid?'FREE':'📖 Read'):'🔒 Locked'}</span>${cover(b.c,[b.cat.toUpperCase(),b.t],'PDF',150)}<div class="bd"><p>${esc(b.d)}</p><div class="meta"><span>📄 ${b.p?b.p+' pages':'PDF'}</span></div></div></div>`}).join(''):'<div class="empty">No PDF matches your search.</div>'}
 /* ---- events ---- */
 document.addEventListener('click',e=>{const t=e.target.closest('[data-t],[data-go],[data-buy],[data-course],[data-pdf],[data-ind],[data-cat]');if(!t)return;
  if(t.matches('.tab')){go(t.dataset.t)}else if(t.dataset.go){go(t.dataset.go)}else if(t.hasAttribute('data-buy')){buy()}else if(t.dataset.course!==undefined){course(+t.dataset.course)}else if(t.dataset.pdf!==undefined){pdf(+t.dataset.pdf)}else if(t.dataset.ind){ind(t.dataset.ind)}else if(t.dataset.cat){cat=t.dataset.cat;all()}});
@@ -366,4 +366,20 @@ let hraf,hc=$('#hc');function hero(){if(!hc)return;const d=window.devicePixelRat
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&tab==='home')hero()});
 all();hero();go(location.hash.slice(1)||'home');window.scrollTo(0,0);
 const io=new IntersectionObserver(a=>a.forEach(x=>{if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}}),{threshold:.12});$$('.rv:not(.in)').forEach(x=>io.observe(x));
+
+/* ===== LIVE CONTENT + BUYER LOGIN (Supabase). Content is managed in admin.html ===== */
+(async()=>{const SB_URL='https://ytdipdzzwuzdnzrabpwx.supabase.co',SB_KEY='sb_publishable_TZWfmoKVdyeuoBpmOvllUA_Cj7atACi';
+if(!window.supabase)return;const sb=supabase.createClient(SB_URL,SB_KEY);
+try{localStorage.removeItem('bftA_paid')}catch(e){}paid=false;
+window.codeBox=()=>open(`<div style="text-align:center;padding:6px"><h3 style="padding:0">Sign in to unlock</h3><p class="m">Use the email you paid with. We email you a sign-in link.</p><input type="email" id="cd" placeholder="you@email.com" aria-label="Email"><button class="btn s" id="cdb">Email me the link</button></div>`),setTimeout(()=>{const b=$('#cdb');if(!b)return;b.onclick=async()=>{const{error}=await sb.auth.signInWithOtp({email:$('#cd').value.trim(),options:{emailRedirectTo:location.href.split('#')[0]}});toast(error?error.message:'Check your email for the link')}},0);
+const{data:{session}}=await sb.auth.getSession();
+if(session){const r=await sb.from('students').select('email');paid=!!(r.data&&r.data.length);if(!paid)toast('No purchase found for '+session.user.email)}
+const[a,b]=await Promise.all([sb.from('items').select('*').order('sort'),sb.from('item_secrets').select('*')]);if(a.error||!a.data)return;
+const sec=Object.fromEntries((b.data||[]).map(x=>[x.item_id,x])),emb=u=>{const m=(u||'').match(/(?:youtu\.be\/|v=)([\w-]{11})/);return m?'https://www.youtube.com/embed/'+m[1]:u||''},cl=['#3b6cff,#7c3aed','#f59e0b,#ef4444','#10b981,#0ea5e9','#7c3aed,#db2777'];
+COURSES.length=PDFS.length=INDICATORS.length=0;let k=0;
+for(const i of a.data){const s=sec[i.id]||{},c=cl[k++%4],f=i.free?1:0;
+ if(i.kind==='course')COURSES.push({title:i.title,level:'COURSE',desc:i.descr||'',c,modules:[{t:'Lessons',lessons:[{t:i.title,d:'0:00',free:f,video:emb(s.video_url),lab:'classroom.html'}]}]});
+ else if(i.kind==='pdf'){let file='';if(s.pdf_path){const u=await sb.storage.from('academy-pdfs').createSignedUrl(s.pdf_path,3600);file=u.data?u.data.signedUrl:''}PDFS.push({t:i.title,cat:'Notes',p:0,free:f,file,d:i.descr||'',c})}
+ else INDICATORS.push({id:'d'+k,name:i.title,type:'ribbon',free:f,tf:'Any timeframe',mk:'All markets',d:i.descr||'',pine:s.code||''})}
+flat.length=0;COURSES.forEach((c,ci)=>c.modules.forEach((m,mi)=>m.lessons.forEach((l,li)=>flat.push({c,ci,mi,l,id:ci+'-'+mi+'-'+li}))));all()})();
 </script></body></html>
