@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<!doctype html><html lang="en"><head><meta charset="utf-8"><link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg" type="image/svg+xml"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>BFT Academy – Courses, Notes and TradingView Indicators</title>
 <meta name="description" content="Structured price-action courses, PDF notes and Pine Script indicators for TradingView. Learn it, then practise it in the Lab.">
 <meta name="theme-color" content="#070b14">
@@ -136,7 +136,7 @@ main{transition:opacity .35s}.ld main{opacity:0}
 <script>
 /* ===================== EDIT THIS SECTION: brand, price, content ===================== */
 const CFG={brand:'BFT Academy',price:4999,mrp:14999,payUrl:'https://rzp.io/l/your-payment-link',pixelId:'',codes:[],
- contact:'https://wa.me/916350566010',refund:'',terms:'',privacy:''};
+ contact:'https://wa.me/916350566010',refund:'7 days from payment, if you have completed less than 20% of the lessons. Ask on WhatsApp with your registered email. Full details are on the Terms page.',terms:'legal.html#terms',privacy:'legal.html#privacy'};
 /* COURSES: video = YouTube/Vimeo EMBED link (https://www.youtube.com/embed/ID) or .mp4 link.  lab = page to practise on.  free:1 = open to everyone. */
 const COURSES=[
 {title:'Price Action Foundations',level:'BEGINNER',desc:'From candles to breakouts: the core of reading the market.',c:'#3b6cff,#7c3aed',modules:[
@@ -412,4 +412,4 @@ all();ready();
 const want=(location.hash||'').slice(1);if(want)go(want);
 })();
 
-</script></body></html>
+</script><script>if('serviceWorker'in navigator&&location.protocol.indexOf('http')===0)addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})</script></body></html>

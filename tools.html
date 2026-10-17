@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8">
+<!doctype html><html lang="en"><head><meta charset="utf-8"><link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg" type="image/svg+xml"><meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>BFT Tools – Risk, Options, Monte Carlo and Daily Discipline</title>
 <meta name="theme-color" content="#070b14">
@@ -178,4 +178,4 @@ $('#dlSv').onclick=()=>{td().n=$('#dlN').value;save();$('#dlSv').textContent='Sa
 $('#dlX').onclick=()=>{st.cool=0;save();tick()};
 function tick(){const l=st.cool-Date.now(),a=$('#dlA');if(l>0){a.classList.add('on');const s=Math.ceil(l/1000);$('#dlT').textContent=Math.floor(s/60)+':'+String(s%60).padStart(2,'0')}else a.classList.remove('on')}
 setInterval(tick,1000);dl();
-</script></body></html>
+</script><script>if('serviceWorker'in navigator&&location.protocol.indexOf('http')===0)addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})</script></body></html>

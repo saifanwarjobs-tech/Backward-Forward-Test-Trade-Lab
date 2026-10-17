@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BFT Classroom Board</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg" type="image/svg+xml"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BFT Classroom Board</title>
 <style>
 :root{--pn:#111a2e;--ln:#26324d;--tx:#e6edf7;--ac:#3b82f6}
 *{box-sizing:border-box;margin:0}html,body{height:100%;background:#05080d;color:var(--tx);font:13px system-ui,-apple-system,Segoe UI,sans-serif;overflow:hidden}
@@ -246,4 +246,4 @@ $('#un').onclick=()=>{if(!I.length&&bak){I=bak;bak=null;rev=tot();toast('Board r
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){$('#cov').classList.remove('on');$('#hov').classList.remove('on');closePop();return}
  if((e.key==='/'&&!/INPUT|SELECT|TEXTAREA/.test(e.target.tagName))||((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k')){e.preventDefault();openPop()}});
 
-</script></body></html>
+</script><script>if('serviceWorker'in navigator&&location.protocol.indexOf('http')===0)addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})</script></body></html>

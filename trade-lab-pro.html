@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BFT Trade Lab Pro</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg" type="image/svg+xml"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BFT Trade Lab Pro</title>
 <style>
 :root{--bg:#0b1220;--pn:#111a2e;--ln:#1f2b45;--tx:#e6edf7;--mu:#7d8ba5;--up:#16c784;--dn:#ea3943;--ac:#3b82f6;--gr:#16223a;--cb:#0b1220}
 [data-t=light]{--bg:#eef2f7;--pn:#fff;--ln:#dbe3ee;--tx:#0f172a;--mu:#64748b;--ac:#2563eb;--gr:#eef2f7;--cb:#fff}
@@ -422,4 +422,4 @@ function setOLv(id,w,v){if(document.activeElement)document.activeElement.blur();
  save();refresh()}
 document.addEventListener('pointerdown',e=>{if(!e.target.closest('.dd'))$('#ixm').classList.remove('on')});
 dtbUI();
-</script></body></html>
+</script><script>if('serviceWorker'in navigator&&location.protocol.indexOf('http')===0)addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})</script></body></html>

@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<!doctype html><html lang="en"><head><meta charset="utf-8"><link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg" type="image/svg+xml"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>BFT Trade Lab – Learn, Practise, Prove and Journal your trading</title>
 <meta name="description" content="Learn price action in the Academy, practise on real BANKNIFTY history, prove your edge on unseen data and find your costly habits in the Premium Journal.">
 <meta name="theme-color" content="#070b14">
@@ -78,7 +78,7 @@ footer{border-top:1px solid var(--ln);padding:26px 0 40px;color:var(--mu);font-s
 
 <section class="sec"><div class="w"><div class="cta rv"><h2>Ready to trade with proof, not hope?</h2><p class="sub">Open the Journal for today's trades, or start the Academy from lesson one.</p><div class="bt"><a class="btn g" href="journal.html">⭐ Premium Journal</a><a class="btn" href="academy.html">🎓 Academy</a></div></div>
 <div class="warn"><b>Important:</b> BFT Trade Lab is an educational simulation using demo money and historical data. It gives no tips, signals or investment advice and does not promise profits. Past performance does not guarantee future results. Charges shown are approximate. Trading involves risk of loss.</div></div></section>
-<footer><div class="w">© <span id="yr"></span> BFT Trade Lab · <a href="journal.html">Journal</a><a href="academy.html">Academy</a><a href="trade-lab-pro.html">Testing Lab</a><a href="classroom.html">Classroom</a><a href="tools.html">Tools</a></div></footer>
+<footer><div class="w">© <span id="yr"></span> BFT Trade Lab · <a href="journal.html">Journal</a><a href="academy.html">Academy</a><a href="trade-lab-pro.html">Testing Lab</a><a href="classroom.html">Classroom</a><a href="tools.html">Tools</a><a href="legal.html#terms">Terms</a><a href="legal.html#refund">Refund</a><a href="legal.html#privacy">Privacy</a></div></footer>
 <script>
 document.getElementById('yr').textContent=new Date().getFullYear();
 const io='IntersectionObserver'in window?new IntersectionObserver(e=>e.forEach(x=>{if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}}),{threshold:.12}):null;
@@ -89,4 +89,4 @@ if(d)p.push('🎓 <b>'+d+'</b> Academy lesson'+(d>1?'s':'')+' done · <a href="a
 let t=0;for(let i=0;i<localStorage.length;i++){try{const o=JSON.parse(localStorage.getItem(localStorage.key(i)));if(o&&Array.isArray(o.tr)&&!o.demo)t=Math.max(t,o.tr.length)}catch(e){}}
 if(t)p.push('📒 <b>'+t+'</b> trade'+(t>1?'s':'')+' in your Journal · <a href="journal.html">Review</a>');
 if(p.length){const c=document.getElementById('cont');c.innerHTML=p.join('<span>·</span>');c.style.display='flex'}}catch(e){}})();
-</script></body></html>
+</script><script>if('serviceWorker'in navigator&&location.protocol.indexOf('http')===0)addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})</script></body></html>

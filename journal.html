@@ -1,4 +1,4 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<!doctype html><html lang="en"><head><meta charset="utf-8"><link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg" type="image/svg+xml"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>BFT Journal – Smart Trading Journal</title><meta name="description" content="Find the habits costing you money, in rupees. Equity curve, leak finder, tilt meter and pre-trade gate. Runs in your browser.">
 <style>
 :root{--bg:#070d1a;--pn:#0f182c;--ln:#1f2b45;--tx:#e6edf7;--mu:#8a98b3;--ac:#4c9bff;--up:#19d38f;--dn:#ff7a59;--gl:rgba(17,27,48,.62)}
@@ -275,4 +275,4 @@ $('#tbl').innerHTML=`<div class="sh"><table><thead><tr>${th('t','Time')}${th('sy
 <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px"><button class="b" ${PG?'':'disabled'} onclick="PG--;rows()">‹ Prev</button><span class="s mu">Page ${PG+1} of ${pg}</span><button class="b" ${PG<pg-1?'':'disabled'} onclick="PG++;rows()">Next ›</button></div>`}
 addEventListener('keydown',e=>{if(e.key=='Escape')$('#dr').classList.remove('open')});
 render();
-</script></body></html>
+</script><script>if('serviceWorker'in navigator&&location.protocol.indexOf('http')===0)addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})</script></body></html>
