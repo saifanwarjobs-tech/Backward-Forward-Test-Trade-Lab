@@ -82,7 +82,17 @@ footer{border-top:1px solid var(--ln);padding:30px 0 50px;color:var(--mu);font-s
 @media(max-width:960px){.g3,.g4{grid-template-columns:1fr 1fr}.pl{grid-template-columns:1fr}.pl .list{border-left:0;border-top:1px solid var(--ln);max-height:none}}
 @media(max-width:640px){.g2,.g3,.g4{grid-template-columns:1fr}.hero{padding:56px 0 44px}.nl{display:none}.md{padding:18px}.top .btn.s.hid{display:none}.prc{padding:26px}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}.rv{opacity:1;transform:none}}
-</style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script></head><body>
+/* v2: bottom nav, auth inputs, watermark, loading */
+.md input[type=email],.md input[type=password]{width:100%;background:var(--gl);border:1px solid var(--ln);border-radius:12px;padding:13px;color:var(--tx);font:inherit;font-size:16px;margin:8px 0}.md input:focus{outline:0;border-color:var(--ac)}
+.md .lnk{background:none;border:0;color:var(--mu);text-decoration:underline;font-size:13px;padding:6px}
+.vid{position:relative}.wm{position:absolute;z-index:2;pointer-events:none;font:600 11px system-ui;color:rgba(255,255,255,.28);text-shadow:0 0 3px rgba(0,0,0,.6);animation:wm 48s linear infinite;left:6%;top:8%}
+@keyframes wm{0%,100%{left:6%;top:8%}25%{left:55%;top:14%}50%{left:48%;top:80%}75%{left:8%;top:72%}}
+main{transition:opacity .35s}.ld main{opacity:0}
+.bnav{display:none;position:fixed;left:0;right:0;bottom:0;z-index:40;padding:6px 6px calc(6px + env(safe-area-inset-bottom));background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid var(--ln)}
+.bn{flex:1;background:none;border:0;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;font-weight:700;color:var(--mu);padding:7px 0;border-radius:12px}.bn i{font-style:normal;font-size:20px;line-height:1}.bn.on{color:var(--ac);background:rgba(106,165,255,.1)}
+@media(max-width:640px){.bnav{display:flex}body{padding-bottom:calc(78px + env(safe-area-inset-bottom))}.top .w+.w{display:none}#toast{bottom:calc(92px + env(safe-area-inset-bottom))}.pl .main{padding:16px}.hero h1{font-size:34px}}
+
+</style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script></head><body class="ld"><script>window._wo=window.open.bind(window);setTimeout(function(){document.body.classList.remove('ld')},5000)</script>
 <header class="top"><div class="w"><a class="logo" href="index.html"><span id="brand"></span></a><span class="sp"></span><a class="nl" href="index.html">Home</a><a class="nl" href="journal.html">Journal</a><a class="nl" href="trade-lab-pro.html">Testing Lab</a><a class="nl" href="classroom.html">Classroom</a><span id="st"></span></div>
 <div class="w"><nav class="tabs" role="tablist" id="tabs"></nav></div></header>
 
@@ -103,7 +113,7 @@ footer{border-top:1px solid var(--ln);padding:30px 0 50px;color:var(--mu);font-s
   <div class="g4"><div class="card step rv"><div class="n">1</div><h3>Learn</h3><p>Watch the lesson and read the notes.</p></div><div class="card step rv"><div class="n">2</div><h3>Practise</h3><p>Open the linked board or replay lab with demo money.</p></div><div class="card step rv"><div class="n">3</div><h3>Apply</h3><p>Add the indicator on TradingView and mark your zones.</p></div><div class="card step rv"><div class="n">4</div><h3>Review</h3><p>Log trades in the Journal and fix your leaks.</p></div></div></div></div>
 
  <div class="sec" id="pricing"><div class="w"><h2 class="rv" style="text-align:center">One payment. Everything unlocked.</h2><p class="sub rv" style="text-align:center;margin-inline:auto">All courses, all PDFs, all indicators and everything added later.</p>
-  <div class="card prc rv"><div><span class="am" id="am"></span><s id="mrp"></s></div><p class="m" style="margin-top:4px">one-time payment · lifetime access</p><ul id="inc"></ul><button class="btn l g" data-buy>Get lifetime access →</button><p class="m">Already paid? <a href="#" id="pCode" style="text-decoration:underline">Enter your access code</a></p></div></div></div>
+  <div class="card prc rv"><div><span class="am" id="am"></span><s id="mrp"></s></div><p class="m" style="margin-top:4px">one-time payment · lifetime access</p><ul id="inc"></ul><button class="btn l g" data-buy>Get lifetime access →</button><p class="m">Already paid? <a href="#" id="pCode" style="text-decoration:underline">Sign in</a></p></div></div></div>
 
  <div class="sec fq"><div class="w" style="max-width:780px"><h2 class="rv" style="margin-bottom:18px">Questions</h2><div id="fq"></div></div></div>
 
@@ -119,6 +129,7 @@ footer{border-top:1px solid var(--ln);padding:30px 0 50px;color:var(--mu);font-s
  <div class="g3" id="ind"></div></div></div></section>
 </main>
 
+<nav class="bnav" id="bnav" aria-label="Sections"></nav>
 <footer><div class="w"><p>© <span id="yr"></span> <span id="b2"></span><span id="legal"></span></p><p><b>Disclaimer:</b> All content, including indicators, is for education only and is not investment advice or a signal service. Trading involves risk of loss. Past performance does not guarantee future results, and we do not promise profits or any particular outcome. TradingView is a trademark of its owner and is not affiliated with this site.</p></div></footer>
 <div class="ov" id="ov"><div class="md" id="md" role="dialog" aria-modal="true"></div></div><div id="toast" role="status"></div>
 
@@ -209,72 +220,15 @@ plotshape(buy,  "Buy",  shape.labelup,   location.belowbar, #19d38f, text="BUY",
 plotshape(sell, "Sell", shape.labeldown, location.abovebar, #ff7a59, text="SELL", textcolor=color.white, size=size.small)
 alertcondition(buy,  "Supertrend BUY",  "Supertrend turned bullish")
 alertcondition(sell, "Supertrend SELL", "Supertrend turned bearish")`},
-{id:'zones',name:'BFT Pivot Zones',type:'zones',tf:'15m to 1D',mk:'All markets',d:'Auto-draws supply and demand zones from swing pivots, sized by ATR.',pine:`//@version=5
-indicator("BFT Pivot Zones", overlay=true, max_boxes_count=100)
-
-left   = input.int(10, "Pivot bars left",  minval=1)
-right  = input.int(10, "Pivot bars right", minval=1)
-thick  = input.float(0.25, "Zone thickness (x ATR)", minval=0.05, step=0.05)
-extend = input.int(80, "Extend zone (bars)", minval=5)
-
-a  = ta.atr(14)
-ph = ta.pivothigh(high, left, right)
-pl = ta.pivotlow(low,  left, right)
-
-if not na(ph)
-    box.new(left=bar_index - right, top=ph, right=bar_index + extend, bottom=ph - a * thick,
-         border_color=color.new(#ff7a59, 55), bgcolor=color.new(#ff7a59, 86))
-if not na(pl)
-    box.new(left=bar_index - right, top=pl + a * thick, right=bar_index + extend, bottom=pl,
-         border_color=color.new(#19d38f, 55), bgcolor=color.new(#19d38f, 86))`},
-{id:'orb',name:'BFT Opening Range Breakout',type:'orb',tf:'1m to 15m intraday',mk:'BANKNIFTY, NIFTY',d:'Marks the opening range (IST) and labels the first breakout each side, each day.',pine:`//@version=5
-indicator("BFT Opening Range Breakout", overlay=true)
-
-orMins = input.int(15, "Opening range (minutes)", minval=1)
-sess   = input.session("0915-1530", "Session (IST)")
-
-inSess = not na(time(timeframe.period, sess, "Asia/Kolkata"))
-newDay = inSess and not inSess[1]
-
-var float hi = na
-var float lo = na
-var int   t0 = na
-var bool  longDone  = false
-var bool  shortDone = false
-
-if newDay
-    hi := high
-    lo := low
-    t0 := time
-    longDone  := false
-    shortDone := false
-
-inOR = inSess and not na(t0) and time < t0 + orMins * 60 * 1000
-if inOR
-    hi := math.max(hi, high)
-    lo := math.min(lo, low)
-
-longB  = inSess and not inOR and not longDone  and close > hi
-shortB = inSess and not inOR and not shortDone and close < lo
-if longB
-    longDone := true
-if shortB
-    shortDone := true
-
-plot(inSess and not inOR ? hi : na, "OR High", color=#19d38f, style=plot.style_linebr, linewidth=2)
-plot(inSess and not inOR ? lo : na, "OR Low",  color=#ff7a59, style=plot.style_linebr, linewidth=2)
-bgcolor(inOR ? color.new(#6aa5ff, 90) : na)
-plotshape(longB,  "Long breakout",  shape.labelup,   location.belowbar, #19d38f, text="ORB↑", textcolor=color.white, size=size.small)
-plotshape(shortB, "Short breakout", shape.labeldown, location.abovebar, #ff7a59, text="ORB↓", textcolor=color.white, size=size.small)
-alertcondition(longB,  "ORB long",  "Opening range high broken")
-alertcondition(shortB, "ORB short", "Opening range low broken")`}];
-/* Paid indicators are shown gated, but this is only a client-side lock. For real protection publish the script on TradingView as INVITE-ONLY, put its URL in invite:'...', and delete its pine code from this file. */
+{id:'zones',name:'BFT Pivot Zones',type:'zones',tf:'15m to 1D',mk:'All markets',d:'Auto-draws supply and demand zones from swing pivots, sized by ATR.'},
+{id:'orb',name:'BFT Opening Range Breakout',type:'orb',tf:'1m to 15m intraday',mk:'BANKNIFTY, NIFTY',d:'Marks the opening range (IST) and labels the first breakout each side, each day.'}];
+/* Demo content only. Live content comes from the database (admin.html); paid code is never stored in this file. */
 /* ===================================================================================== */
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)],LS=k=>{try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},SS=(k,v)=>{try{localStorage.setItem(k,typeof v==='string'?v:JSON.stringify(v))}catch(e){}},rs=n=>'₹'+n.toLocaleString('en-IN');
-const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])),mins=d=>{const p=d.split(':').map(Number);return p[0]+p[1]/60};
-let paid=false;try{paid=!!localStorage.getItem('bftA_paid')}catch(e){}
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])),mins=d=>{const p=String(d||'0:0').split(':').map(Number).reverse();return(p[2]||0)*60+(p[1]||0)+(p[0]||0)/60};
+let paid=false;
 let done=LS('bftA_done')||{},notes=LS('bftA_notes')||{},last=LS('bftA_last'),cat='All',tab='home';
-const flat=[];COURSES.forEach((c,ci)=>c.modules.forEach((m,mi)=>m.lessons.forEach((l,li)=>flat.push({c,ci,mi,l,id:ci+'-'+mi+'-'+li}))));
+const flat=[];COURSES.forEach((c,ci)=>c.modules.forEach((m,mi)=>m.lessons.forEach((l,li)=>flat.push({c,ci,mi,l,id:l.id||ci+'-'+mi+'-'+li}))));
 function toast(t){const e=$('#toast');e.textContent=t;e.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(()=>e.style.display='none',2600)}
 function fb(ev){try{window.fbq&&fbq('track',ev)}catch(e){}}
 if(CFG.pixelId){!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init',CFG.pixelId);fbq('track','PageView')}
@@ -282,41 +236,49 @@ let lastFocus=null;
 function open(h,cls){lastFocus=document.activeElement;const m=$('#md');m.className='md '+(cls||'');m.innerHTML='<button class="x" onclick="shut()" aria-label="Close">✕</button>'+h;$('#ov').classList.add('on');document.body.style.overflow='hidden'}
 function shut(){$('#ov').classList.remove('on');$('#md').innerHTML='';document.body.style.overflow='';all();if(lastFocus&&lastFocus.focus)try{lastFocus.focus()}catch(e){}}
 $('#ov').onclick=e=>{if(e.target.id==='ov')shut()};document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('#ov').classList.contains('on'))shut()});
-function buy(){fb('InitiateCheckout');window.open(CFG.payUrl,'_blank','noopener')}
-function wall(what){fb('ViewContent');open(`<div style="text-align:center;padding:10px 6px"><div style="font-size:42px">🔒</div><h3 style="padding:0">${what?esc(what)+' is premium':'This is premium content'}</h3><p class="m">Get lifetime access to every course, PDF and indicator, plus all future updates.</p><div style="font-size:42px;font-weight:800;margin:16px 0">${rs(CFG.price)} <s style="font-size:18px;color:var(--mu)">${rs(CFG.mrp)}</s></div><div class="row" style="justify-content:center"><button class="btn g" onclick="buy()">Get lifetime access →</button><button class="btn o" onclick="codeBox()">I have an access code</button></div></div>`,'n')}
+function buy(){fb('InitiateCheckout');_wo(CFG.payUrl,'_blank','noopener')}
+function wall(what){fb('ViewContent');open(`<div style="text-align:center;padding:10px 6px"><div style="font-size:42px">🔒</div><h3 style="padding:0">${what?esc(what)+' is premium':'This is premium content'}</h3><p class="m">Get lifetime access to every course, PDF and indicator, plus all future updates.</p><div style="font-size:42px;font-weight:800;margin:16px 0">${rs(CFG.price)} <s style="font-size:18px;color:var(--mu)">${rs(CFG.mrp)}</s></div><div class="row" style="justify-content:center"><button class="btn g" onclick="buy()">Get lifetime access →</button><button class="btn o" onclick="codeBox()">I'm already a member</button></div></div>`,'n')}
+function acct(){codeBox()}
 function codeBox(){open(`<div style="text-align:center;padding:6px"><h3 style="padding:0">Enter your access code</h3><p class="m">You receive this code after payment.</p><input type="text" id="cd" placeholder="ACCESS CODE" autocomplete="off" autocapitalize="characters" aria-label="Access code"><button class="btn" id="cdb" style="width:100%">Unlock everything</button><p class="m" style="font-size:12px;margin-top:12px">Need help? <a href="${esc(CFG.contact)}" target="_blank" rel="noopener" style="text-decoration:underline">Contact us</a></p></div>`,'n');
- const go=()=>{if(CFG.codes.includes($('#cd').value.trim().toUpperCase())){paid=true;SS('bftA_paid','1');shut();toast('🎉 Unlocked. Welcome aboard!')}else toast('That code is not valid')};$('#cdb').onclick=go;$('#cd').onkeydown=e=>{if(e.key==='Enter')go()};setTimeout(()=>$('#cd').focus(),60)}
+ const go=()=>{if(CFG.codes.includes($('#cd').value.trim().toUpperCase())){toast('Please sign in to unlock')}else toast('That code is not valid')};$('#cdb').onclick=go;$('#cd').onkeydown=e=>{if(e.key==='Enter')go()};setTimeout(()=>$('#cd').focus(),60)}
 /* ---- tabs ---- */
 const TABS=[['home','Overview'],['courses','Courses'],['pdfs','PDF notes'],['ind','Indicators']];
-function go(t){if(!TABS.some(x=>x[0]===t))t='home';tab=t;history.replaceState(null,'','#'+t);$$('.panel').forEach(p=>p.classList.toggle('on',p.id==='p-'+t));$$('.tab').forEach(b=>{const on=b.dataset.t===t;b.classList.toggle('on',on);b.setAttribute('aria-selected',on)});window.scrollTo({top:0,behavior:'smooth'});if(t==='ind')setTimeout(previews,30)}
+function go(t){if(!TABS.some(x=>x[0]===t))t='home';tab=t;history.replaceState(null,'','#'+t);$$('.panel').forEach(p=>p.classList.toggle('on',p.id==='p-'+t));$$('.tab,.bn[data-t]').forEach(b=>{const on=b.dataset.t===t;b.classList.toggle('on',on);b.setAttribute('aria-selected',on)});window.scrollTo({top:0,behavior:'smooth'});if(t==='ind')setTimeout(previews,30)}
 /* ---- lessons ---- */
 function lesson(id){const i=flat.findIndex(x=>x.id===id),it=flat[i];if(!it)return;if(!(paid||it.l.free))return wall(it.l.t);last=id;SS('bftA_last',id);
  const l=it.l,sib=flat.filter(x=>x.ci===it.ci),nx=sib[sib.findIndex(x=>x.id===id)+1];
- const v=l.video?(/\.mp4(\?|$)/.test(l.video)?`<video controls controlsList="nodownload" src="${esc(l.video)}"></video>`:`<iframe src="${esc(l.video)}" title="${esc(l.t)}" allow="autoplay;fullscreen;picture-in-picture" allowfullscreen></iframe>`):'<span>🎬 Video will appear here.<br><small>Add its link in the COURSES list.</small></span>';
- let list='<h4>'+esc(it.c.title)+'</h4>';it.c.modules.forEach((m,mi)=>{list+=`<div class="mh">${esc(m.t)}</div>`+m.lessons.map((x,li)=>{const k=it.ci+'-'+mi+'-'+li,ok=paid||x.free;return`<button class="ls ${k===id?'cur':''}" onclick="lesson('${k}')"><span class="ic ${done[k]?'d':ok?'':'k'}">${done[k]?'✓':ok?'▶':'🔒'}</span><span class="t">${esc(x.t)}</span><span class="d">${esc(x.d)}</span></button>`}).join('')});
- open(`<div class="pl"><div class="main"><p class="m" style="margin:0 44px 4px 0">${esc(it.c.title)} · Lesson ${sib.findIndex(x=>x.id===id)+1} of ${sib.length}</p><h3>${esc(l.t)}</h3><div class="vid" style="margin:14px 0">${v}</div>
- <div class="row"><button class="btn s ${done[id]?'o':''}" onclick="mark('${id}')">${done[id]?'✓ Completed':'Mark as complete'}</button>${l.lab?`<a class="btn s o" href="${esc(l.lab)}" target="_blank" rel="noopener">🧪 Practise this</a>`:''}${nx?`<button class="btn s o" onclick="lesson('${nx.id}')">Next lesson →</button>`:''}</div>
+ const v='<span>Loading video…</span>',pv=sib[sib.findIndex(x=>x.id===id)-1];
+ let list='<h4>'+esc(it.c.title)+'</h4>';it.c.modules.forEach((m,mi)=>{list+=`<div class="mh">${esc(m.t)}</div>`+m.lessons.map((x,li)=>{const k=x.id||(it.ci+'-'+mi+'-'+li),ok=paid||x.free;return`<button class="ls ${k===id?'cur':''}" onclick="lesson('${k}')"><span class="ic ${done[k]?'d':ok?'':'k'}">${done[k]?'✓':ok?'▶':'🔒'}</span><span class="t">${esc(x.t)}</span><span class="d">${esc(x.d)}</span></button>`}).join('')});
+ open(`<div class="pl"><div class="main"><p class="m" style="margin:0 44px 4px 0">${esc(it.c.title)} · Lesson ${sib.findIndex(x=>x.id===id)+1} of ${sib.length}</p><h3>${esc(l.t)}</h3><div class="vid" id="vd" style="margin:14px 0">${v}</div>
+ <div class="row"><button class="btn s ${done[id]?'o':''}" onclick="mark('${id}')">${done[id]?'✓ Completed':'Mark as complete'}</button>${l.lab?`<a class="btn s o" href="${esc(l.lab)}" target="_blank" rel="noopener">🧪 Practise this</a>`:''}${pv?`<button class="btn s o" onclick="lesson('${pv.id}')">← Previous</button>`:''}${nx?`<button class="btn s o" onclick="lesson('${nx.id}')">Next lesson →</button>`:''}</div>
  <p class="m" style="margin-top:20px;font-size:13px;font-weight:700">MY NOTES</p><textarea class="nt" id="nt" placeholder="Write what you learned. Saved on this device." aria-label="Lesson notes">${esc(notes[id]||'')}</textarea></div><div class="list">${list}</div></div>`,'p');
- $('#nt').oninput=e=>{notes[id]=e.target.value;SS('bftA_notes',notes)}}
+ $('#nt').oninput=e=>{notes[id]=e.target.value;SS('bftA_notes',notes)};
+ Promise.resolve(window.getVid&&l.live?getVid(l):l.video).then(u=>{const e=$('#vd');if(e&&last===id)e.innerHTML=vidHTML(u,l.t)+(window.WM?`<div class="wm">${esc(window.WM)}</div>`:'')}).catch(()=>{const e=$('#vd');if(e)e.innerHTML='<span>Could not load this video. Refresh and try again.</span>'})}
+function embedUrl(u){u=String(u||'').trim();if(!/^https:\/\//i.test(u))return'';let m=u.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/))([\w-]{11})/);if(m)return'https://www.youtube-nocookie.com/embed/'+m[1]+'?rel=0&modestbranding=1';m=u.match(/vimeo\.com\/(?:video\/)?(\d+)(?:\/(\w+))?/);if(m)return'https://player.vimeo.com/video/'+m[1]+(m[2]?'?h='+m[2]:'');return u}
+function vidHTML(u,t){if(!u)return'<span>🎬 Video coming soon.</span>';return/\.(mp4|webm|mov|m4v)(\?|$)/i.test(u)?`<video controls playsinline controlsList="nodownload" disablePictureInPicture oncontextmenu="return false" src="${esc(u)}"></video>`:`<iframe src="${esc(embedUrl(u))}" title="${esc(t)}" allow="autoplay;fullscreen;picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`}
 function mark(id){done[id]=!done[id];SS('bftA_done',done);lesson(id)}
 function course(ci){const f=flat.find(x=>x.ci===ci&&(paid||x.l.free))||flat.find(x=>x.ci===ci);const nx=flat.find(x=>x.ci===ci&&!done[x.id]&&(paid||x.l.free));lesson((nx||f).id)}
 /* ---- pdf ---- */
-function pdf(i){const b=PDFS[i];if(!(paid||b.free))return wall(b.t);open(`<h3>${esc(b.t)}</h3><p class="m">${esc(b.cat)} · ${b.p?b.p+' pages':'PDF'}</p>${b.file?`<div class="pdfv"><iframe src="${esc(b.file)}#toolbar=0&navpanes=0" title="${esc(b.t)}"></iframe></div><div class="row" style="margin-top:12px"><a class="btn s o" href="${esc(b.file)}" target="_blank" rel="noopener">Open in new tab</a>${paid?`<a class="btn s o" href="${esc(b.file)}" download>⬇ Download</a>`:''}</div>`:'<div class="vid" style="margin-top:14px"><span>📘 Add this PDF\'s path in the PDFS list.</span></div>'}`)}
+function pdf(i){const b=PDFS[i];if(!(paid||b.free))return wall(b.t);
+ open(`<h3>${esc(b.t)}</h3><p class="m">${esc(b.cat)} · ${b.p?b.p+' pages':'PDF'}</p><div id="pdb"><div class="vid" style="margin-top:14px"><span>Loading…</span></div></div>`);
+ Promise.resolve(window.getPdf&&b.live?getPdf(b):{view:b.file||'',dl:b.file||''}).then(u=>{const e=$('#pdb');if(!e)return;if(!u||!u.view){e.innerHTML='<div class="vid" style="margin-top:14px"><span>📘 This PDF will be available soon.</span></div>';return}
+  e.innerHTML=`<div class="pdfv"><iframe src="${esc(u.view)}#toolbar=0&navpanes=0" title="${esc(b.t)}"></iframe></div><div class="row" style="margin-top:12px"><a class="btn s o" href="${esc(u.view)}" target="_blank" rel="noopener">Open in new tab</a>${paid?`<a class="btn s o" href="${esc(u.dl)}" download>⬇ Download</a>`:''}</div>`}).catch(()=>{const e=$('#pdb');if(e)e.innerHTML='<p class="m">Could not load this PDF. Refresh and try again.</p>'})}
 /* ---- indicators ---- */
 function hl(code){return esc(code).split('\n').map((ln,i)=>{const h=ln.replace(/(\/\/.*$)|(&quot;[^&]*?&quot;)|(\b(?:input|ta|math|plot|plotshape|fill|bgcolor|alertcondition|indicator|box|color|display|shape|location|size)\.[a-zA-Z_]+|\b(?:plot|plotshape|fill|bgcolor|alertcondition|indicator|time)\b(?=\())|(\b(?:if|not|and|or|var|int|float|bool|true|false|na|else|for|to|and)\b)|(\b\d+(?:\.\d+)?\b)/g,(m,c,s,f,k,n)=>c?`<span class="c2">${m}</span>`:s?`<span class="s2">${m}</span>`:f?`<span class="f2">${m}</span>`:k?`<span class="k">${m}</span>`:`<span class="n2">${m}</span>`);return`<div><b>${i+1}</b><span>${h||' '}</span></div>`}).join('')}
 function ind(id,t){const x=INDICATORS.find(a=>a.id===id);if(!x)return;const ok=paid||x.free;t=t||'over';
- const hasCode=!!x.pine;
+ if(x.live&&ok&&!x.loaded&&window.getInd){open('<p class="m" style="padding:30px 0;text-align:center">Loading…</p>','n');return getInd(x).then(()=>{x.loaded=1;ind(id,t)}).catch(()=>{x.loaded=1;ind(id,t)})}
+ const hasCode=x.live?x.mode==='code':!!x.pine;
  let body='';
  if(t==='over')body=`<p style="margin-top:14px">${esc(x.d)}</p><div class="chips2"><span>⏱ ${esc(x.tf)}</span><span>📊 ${esc(x.mk)}</span><span>Pine Script v5</span></div><canvas id="pv" style="width:100%;height:220px;border-radius:14px;margin-top:16px;background:var(--code)"></canvas>`;
- if(t==='code'){body=hasCode?`<div class="code ${ok?'':'lock'}"><div class="bar2"><span>${esc(x.name)}.pine</span><span class="sp"></span>${ok?`<button class="btn s o" id="cp">📋 Copy code</button><button class="btn s o" id="dl">⬇ .pine</button>`:''}</div><pre>${hl(ok?x.pine:x.pine.split('\n').slice(0,14).join('\n'))}</pre>${ok?'':`<div class="cta"><div style="font-size:30px">🔒</div><b>Full code is for members</b><div class="row" style="justify-content:center"><button class="btn s g" onclick="buy()">Get lifetime access</button><button class="btn s o" onclick="codeBox()">I have a code</button></div></div>`}</div>`
-  :`<div class="card" style="padding:22px;margin-top:14px;text-align:center"><div style="font-size:30px">🔐</div><h3 style="padding:0;font-size:18px">Invite-only on TradingView</h3><p class="m">This indicator is delivered as a protected TradingView script. Members send their TradingView username and get access.</p></div>`}
+ if(t==='code'){body=hasCode?`<div class="code ${ok?'':'lock'}"><div class="bar2"><span>${esc(x.name)}.pine</span><span class="sp"></span>${ok?`<button class="btn s o" id="cp">📋 Copy code</button><button class="btn s o" id="dl">⬇ .pine</button>`:''}</div><pre>${hl(ok?x.pine:(x.live?'// Members only.\n// Unlock to view the full Pine v5 code.':x.pine.split('\n').slice(0,14).join('\n')))}</pre>${ok?'':`<div class="cta"><div style="font-size:30px">🔒</div><b>Full code is for members</b><div class="row" style="justify-content:center"><button class="btn s g" onclick="buy()">Get lifetime access</button><button class="btn s o" onclick="codeBox()">Sign in</button></div></div>`}</div>`
+  :`<div class="card" style="padding:22px;margin-top:14px;text-align:center"><div style="font-size:30px">🔐</div><h3 style="padding:0;font-size:18px">Invite-only on TradingView</h3><p class="m">This indicator is delivered as a protected TradingView script. ${ok?'Press Request access and send your TradingView username.':'Unlock Academy to request access.'}</p></div>`}
  if(t==='how')body=`<ol class="steps">${hasCode?'<li>Open the <b>Code</b> tab and press <b>Copy code</b>.</li><li>On TradingView open any chart, then the <b>Pine Editor</b> tab at the bottom.</li><li>Paste the code (replace the sample), then press <b>Add to chart</b>.</li><li>Use <b>Save</b> to keep it, and the ⏰ icon to set alerts.</li>':'<li>Unlock Academy, then press <b>Request access</b> and send your TradingView username.</li><li>You get an invite. Open the indicator link and press <b>Add to favorites</b>.</li><li>On any chart choose Indicators → Invite-only scripts → add it.</li><li>Use the ⏰ icon to set alerts.</li>'}</ol><p class="m" style="font-size:13px">Works on every TradingView plan. The free plan limits how many indicators fit on one chart.</p>`;
  const cta=ok?(hasCode?`<a class="btn s" href="https://www.tradingview.com/chart/" target="_blank" rel="noopener">Open TradingView ↗</a>`:`<button class="btn s g" id="rq">Request access ↗</button>${x.invite?`<a class="btn s o" href="${esc(x.invite)}" target="_blank" rel="noopener">Open script ↗</a>`:''}`):`<button class="btn s g" onclick="buy()">Unlock with lifetime access</button>`;
  open(`<span class="tag ${x.free?'f':''}">${x.free?'FREE':'PREMIUM'}</span><h3 style="margin-top:8px">${esc(x.name)}</h3><div class="dtabs"><button class="${t==='over'?'on':''}" onclick="ind('${id}','over')">Overview</button><button class="${t==='code'?'on':''}" onclick="ind('${id}','code')">${hasCode?'Pine code':'Access'}</button><button class="${t==='how'?'on':''}" onclick="ind('${id}','how')">How to add</button></div>${body}<div class="row" style="margin-top:18px">${cta}</div>`);
- if(t==='over'){const c=$('#pv');if(c)setTimeout(()=>draw(c,x.type,x.id.length*7919),20)}
+ if(t==='over'){const c=$('#pv');if(c)setTimeout(()=>draw(c,x.type,String(x.id).length*7919+String(x.id).charCodeAt(0)),20)}
  const cp=$('#cp');if(cp)cp.onclick=()=>{(navigator.clipboard?navigator.clipboard.writeText(x.pine):Promise.reject()).then(()=>toast('✓ Code copied. Paste it in TradingView Pine Editor'),()=>{const r=document.createRange();r.selectNodeContents($('.code pre'));const s=getSelection();s.removeAllRanges();s.addRange(r);toast('Press Ctrl+C to copy')})};
  const dl=$('#dl');if(dl)dl.onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([x.pine],{type:'text/plain'}));a.download=x.name.replace(/\s+/g,'_')+'.pine';a.click()};
- const rq=$('#rq');if(rq)rq.onclick=()=>{const u=prompt('Your TradingView username?');if(u)window.open(CFG.contact+(CFG.contact.includes('?')?'&':'?')+'text='+encodeURIComponent('Hi, I am a member. Please give my TradingView username '+u+' access to: '+x.name),'_blank','noopener')}}
+ const rq=$('#rq');if(rq)rq.onclick=()=>{const u=prompt('Your TradingView username?');if(u)_wo(CFG.contact+(CFG.contact.includes('?')?'&':'?')+'text='+encodeURIComponent('Hi, I am a member. Please give my TradingView username '+u+' access to: '+x.name),'_blank','noopener')}}
 /* ---- chart previews (decorative, generated) ---- */
 function series(seed,n){let s=seed%2147483647||1;const r=()=>(s=s*16807%2147483647)/2147483647;let p=100;const a=[];for(let i=0;i<n;i++){const o=p,c=o+(r()-.46)*3+Math.sin(i/8)*.9,h=Math.max(o,c)+r()*1.3,l=Math.min(o,c)-r()*1.3;a.push({o,h,l,c});p=c}return a}
 const ema=(a,n)=>{const k=2/(n+1);let e=a[0];return a.map(v=>e=v*k+e*(1-k))};
@@ -328,31 +290,32 @@ function draw(cv,type,seed){const d=window.devicePixelRatio||1,W=cv.clientWidth|
  else if(type==='st'){const T=S.map((q,i)=>Math.max(q.h-q.l,i?Math.abs(q.h-S[i-1].c):0,i?Math.abs(q.l-S[i-1].c):0));let atr=T[0],fu=0,fl=0,tr=1,pts=[];S.forEach((q,i)=>{atr=(atr*9+T[i])/10;const m=(q.h+q.l)/2,u=m+2*atr,l=m-2*atr;if(i){fu=(u<fu||S[i-1].c>fu)?u:fu;fl=(l>fl||S[i-1].c<fl)?l:fl;if(tr===1&&q.c<fl)tr=-1;else if(tr===-1&&q.c>fu)tr=1}else{fu=u;fl=l}pts.push({v:tr===1?fl:fu,tr})});candles();pts.forEach((p,i)=>{if(!i)return;x.beginPath();x.moveTo(px(i-1)+bw/2,py(pts[i-1].v));x.lineTo(px(i)+bw/2,py(p.v));x.strokeStyle=p.tr===1?G:R;x.lineWidth=2;x.stroke();if(p.tr!==pts[i-1].tr){x.fillStyle=p.tr===1?G:R;x.fillRect(px(i)-8,p.tr===1?py(S[i].l)+6:py(S[i].h)-18,26,12)}})}
  else if(type==='zones'){for(let i=4;i<N-4;i++){const q=S[i];if(S.slice(i-4,i+5).every(z=>z.h<=q.h)){x.fillStyle='rgba(255,122,89,.2)';x.fillRect(px(i),py(q.h),W-px(i)-6,10)}if(S.slice(i-4,i+5).every(z=>z.l>=q.l)){x.fillStyle='rgba(25,211,143,.2)';x.fillRect(px(i),py(q.l)-10,W-px(i)-6,10)}}candles()}
  else{const k=Math.floor(N*.22),oh=Math.max(...S.slice(0,k).map(q=>q.h)),ol=Math.min(...S.slice(0,k).map(q=>q.l));x.fillStyle='rgba(106,165,255,.14)';x.fillRect(px(0),0,px(k)-px(0),H);candles();x.setLineDash([5,4]);[[oh,G],[ol,R]].forEach(([v,c])=>{x.beginPath();x.moveTo(px(k),py(v));x.lineTo(W-6,py(v));x.strokeStyle=c;x.lineWidth=1.6;x.stroke()});x.setLineDash([]);const b=S.findIndex((q,i)=>i>=k&&(q.c>oh||q.c<ol));if(b>0){const up=S[b].c>oh;x.fillStyle=up?G:R;x.fillRect(px(b)-6,up?py(S[b].l)+6:py(S[b].h)-18,30,12)}}}
-function previews(){$$('canvas[data-t]').forEach(c=>draw(c,c.dataset.t,+c.dataset.s))}
+function previews(){$$('canvas[data-ty]').forEach(c=>draw(c,c.dataset.ty,+c.dataset.s))}
 let rz;addEventListener('resize',()=>{clearTimeout(rz);rz=setTimeout(()=>{if(tab==='ind')previews();hero()},200)});
 /* ---- render ---- */
-function cover(c,tx,big,sm){return`<div class="cv" style="background:linear-gradient(145deg,${c});height:${sm||170}px"><span class="big">${esc(big||'')}</span><small>${esc(tx[0])}</small><b>${esc(tx[1])}</b></div>`}
+function cover(c,tx,big,sm,img){return`<div class="cv" style="background:${img?`linear-gradient(transparent 20%,rgba(0,0,0,.65)),url('${esc(img)}') center/cover`:`linear-gradient(145deg,${c})`};height:${sm||170}px"><span class="big">${esc(big||'')}</span><small>${esc(tx[0])}</small><b>${esc(tx[1])}</b></div>`}
 function all(){
  const tot=flat.length,hrs=flat.reduce((n,x)=>n+mins(x.l.d),0)/60;
  $('#brand').innerHTML=CFG.brand.replace(/^(\S+)\s*(.*)$/,'$1 <i>$2</i>');$('#b2').textContent=CFG.brand;$('#yr').textContent=new Date().getFullYear();
  $('#legal').innerHTML=[['Terms',CFG.terms],['Privacy',CFG.privacy]].filter(a=>a[1]).map(a=>` · <a href="${esc(a[1])}" target="_blank" rel="noopener">${a[0]}</a>`).join('');
- $('#st').innerHTML=paid?'<span class="tag f" style="padding:7px 12px;font-size:12px">✓ PREMIUM MEMBER</span>':'<button class="btn s g hid" data-buy>Get access</button> <button class="btn s o" onclick="codeBox()">Unlock</button>';
+ $('#st').innerHTML=window.stHTML?stHTML():paid?'<span class="tag f" style="padding:7px 12px;font-size:12px">✓ PREMIUM MEMBER</span>':'<button class="btn s g hid" data-buy>Get access</button> <button class="btn s o" onclick="codeBox()">Sign in</button>';
+ $('#bnav').innerHTML=[['home','🏠','Home'],['courses','🎬','Courses'],['pdfs','📄','Notes'],['ind','📈','Tools']].map(t=>`<button class="bn ${t[0]===tab?'on':''}" data-t="${t[0]}"><i>${t[1]}</i>${t[2]}</button>`).join('')+`<button class="bn" data-acct><i>${paid?'⭐':'👤'}</i>${window.WM?'Account':'Sign in'}</button>`;
  $('#tabs').innerHTML=TABS.map(t=>`<button class="tab ${t[0]===tab?'on':''}" role="tab" data-t="${t[0]}" aria-selected="${t[0]===tab}">${t[1]}${t[0]==='courses'?`<em>${COURSES.length}</em>`:t[0]==='pdfs'?`<em>${PDFS.length}</em>`:t[0]==='ind'?`<em>${INDICATORS.length}</em>`:''}</button>`).join('');
  $('#stats').innerHTML=[[tot,'video lessons'],[hrs.toFixed(1)+'h','of content'],[PDFS.length,'PDFs & notes'],[INDICATORS.length,'Pine indicators']].map(a=>`<div><b>${a[0]}</b><span>${a[1]}</span></div>`).join('');
  const L=flat.find(x=>x.id===last);const r=$('#resume');if(L&&(paid||L.l.free)){r.className='card on';r.innerHTML=`<span class="ic">▶</span><div class="t"><span class="mu" style="font-size:12px">CONTINUE WHERE YOU LEFT</span><b>${esc(L.l.t)}</b></div><button class="btn s" onclick="lesson('${L.id}')">Resume →</button>`}else r.className='card';
  $('#hub').innerHTML=[['courses','🎬','Video courses',`${COURSES.length} courses · ${tot} lessons`,'Learn in order with saved progress, notes and a practice link on every lesson.','#3b6cff,#7c3aed'],['pdfs','📄','PDF notes & playbooks',`${PDFS.length} documents`,'Playbooks, notes and one-page cheat sheets you can read right in the app.','#f59e0b,#ef4444'],['ind','📈','TradingView indicators',`${INDICATORS.length} Pine scripts`,'Copy-paste Pine code or invite-only scripts for TradingView, with alerts.','#10b981,#0ea5e9']].map(h=>`<div class="card hov rv in" data-go="${h[0]}" tabindex="0" role="link">${cover(h[5],[h[3].toUpperCase(),h[2]],h[1],150)}<div class="bd"><p>${h[4]}</p><div class="row" style="margin-top:12px"><span class="btn s o">Open →</span></div></div></div>`).join('');
- $('#crs').innerHTML=COURSES.map((c,ci)=>{const ids=flat.filter(x=>x.ci===ci),d=ids.filter(x=>done[x.id]).length,h=ids.reduce((n,x)=>n+mins(x.l.d),0)/60,fl=ids.filter(x=>x.l.free).length;return`<div class="card hov" data-course="${ci}" tabindex="0" role="button">${cover(c.c,[c.level,c.title],String(ci+1))}<div class="bd"><p>${esc(c.desc)}</p><div class="meta"><span>🎬 ${ids.length} lessons</span><span>⏱ ${h.toFixed(1)}h</span>${fl?`<span class="tag f">${fl} FREE</span>`:''}</div><div class="bar"><i style="width:${ids.length?d/ids.length*100:0}%"></i></div><div class="row" style="margin-top:12px;justify-content:space-between"><span class="mu" style="font-size:12.5px">${d}/${ids.length} completed</span><span class="btn s">${d===ids.length&&d?'Review':d?'Continue →':'Start →'}</span></div></div></div>`}).join('');
+ $('#crs').innerHTML=COURSES.map((c,ci)=>{const ids=flat.filter(x=>x.ci===ci),d=ids.filter(x=>done[x.id]).length,h=ids.reduce((n,x)=>n+mins(x.l.d),0)/60,fl=ids.filter(x=>x.l.free).length;return`<div class="card hov" data-course="${ci}" tabindex="0" role="button">${cover(c.c,[c.level,c.title],c.img?'':String(ci+1),170,c.img)}<div class="bd"><p>${esc(c.desc)}</p><div class="meta"><span>🎬 ${ids.length} lessons</span><span>⏱ ${h.toFixed(1)}h</span>${fl?`<span class="tag f">${fl} FREE</span>`:''}</div><div class="bar"><i style="width:${ids.length?d/ids.length*100:0}%"></i></div><div class="row" style="margin-top:12px;justify-content:space-between"><span class="mu" style="font-size:12.5px">${d}/${ids.length} completed</span><span class="btn s">${d===ids.length&&d?'Review':d?'Continue →':'Start →'}</span></div></div></div>`}).join('');
  const cs=['All',...new Set(PDFS.map(b=>b.cat))];$('#cats').innerHTML=cs.map(c=>`<button class="chip ${c===cat?'on':''}" data-cat="${c}">${c}</button>`).join('');pdfs();
- $('#ind').innerHTML=INDICATORS.map(x=>{const ok=paid||x.free;return`<div class="card ind hov" data-ind="${x.id}" tabindex="0" role="button"><canvas data-t="${x.type}" data-s="${x.id.length*7919}" aria-hidden="true"></canvas><div class="bd"><div class="row" style="gap:8px"><span class="tag ${x.free?'f':''}">${x.free?'FREE':ok?'UNLOCKED':'🔒 PREMIUM'}</span><span class="tag b">${x.pine?'PINE CODE':'INVITE-ONLY'}</span></div><h3 style="font-size:19px;margin:10px 0 4px">${esc(x.name)}</h3><p>${esc(x.d)}</p><div class="chips2"><span>⏱ ${esc(x.tf)}</span><span>📊 ${esc(x.mk)}</span></div><div class="row"><span class="btn s ${ok?'':'o'}">${ok?'View code →':'Preview →'}</span></div></div></div>`}).join('');
+ $('#ind').innerHTML=INDICATORS.map(x=>{const ok=paid||x.free;return`<div class="card ind hov" data-ind="${x.id}" tabindex="0" role="button"><canvas data-ty="${x.type}" data-s="${String(x.id).length*7919+String(x.id).charCodeAt(0)}" aria-hidden="true"></canvas><div class="bd"><div class="row" style="gap:8px"><span class="tag ${x.free?'f':''}">${x.free?'FREE':ok?'UNLOCKED':'🔒 PREMIUM'}</span><span class="tag b">${(x.live?x.mode==='code':!!x.pine)?'PINE CODE':'INVITE-ONLY'}</span></div><h3 style="font-size:19px;margin:10px 0 4px">${esc(x.name)}</h3><p>${esc(x.d)}</p><div class="chips2"><span>⏱ ${esc(x.tf)}</span><span>📊 ${esc(x.mk)}</span></div><div class="row"><span class="btn s ${ok?'':'o'}">${ok?((x.live?x.mode==='code':!!x.pine)?'View code →':'Open →'):'Preview →'}</span></div></div></div>`}).join('');
  $('#am').textContent=rs(CFG.price);$('#mrp').textContent=rs(CFG.mrp);
  $('#inc').innerHTML=[`${COURSES.length} courses · ${tot} video lessons`,`${PDFS.length} PDF notes and playbooks`,`${INDICATORS.length} TradingView Pine indicators with alerts`,'Practice links to the Classroom and Replay Lab','Progress tracking and lesson notes','All future updates · no subscription'].map(x=>`<li>${x}</li>`).join('');
- $('#fq').innerHTML=[['How do I get access?','Tap “Get lifetime access”, complete the payment and you receive your access code on WhatsApp or email. Enter it under “Unlock”.'],['How do I add an indicator to TradingView?','Open the indicator, copy its Pine code, paste it into TradingView’s Pine Editor and press “Add to chart”. Invite-only scripts are added from your TradingView username after you request access.'],['Does it work on free TradingView?','Yes. The free plan only limits how many indicators you can add to one chart.'],['Is it a subscription?','No. One payment, lifetime access to everything, including future updates.'],['Do indicators give buy/sell signals?','They highlight structure and trend changes for study. They are tools, not advice, and no indicator wins every trade.'],['Is this financial advice?','No. Everything here is educational. Trading involves risk and we do not promise profits.']].concat(CFG.refund?[['Refund policy',CFG.refund]]:[]).map(q=>`<details><summary>${esc(q[0])}</summary><p>${esc(q[1])}</p></details>`).join('');
+ $('#fq').innerHTML=[['How do I get access?','Tap “Get lifetime access”, pay by UPI and send the screenshot with your email on WhatsApp. We unlock that email within a few hours. Then tap “Sign in” and use the same email.'],['How do I add an indicator to TradingView?','Open the indicator, copy its Pine code, paste it into TradingView’s Pine Editor and press “Add to chart”. Invite-only scripts are added from your TradingView username after you request access.'],['Does it work on free TradingView?','Yes. The free plan only limits how many indicators you can add to one chart.'],['Is it a subscription?','No. One payment, lifetime access to everything, including future updates.'],['Do indicators give buy/sell signals?','They highlight structure and trend changes for study. They are tools, not advice, and no indicator wins every trade.'],['Is this financial advice?','No. Everything here is educational. Trading involves risk and we do not promise profits.']].concat(CFG.refund?[['Refund policy',CFG.refund]]:[]).map(q=>`<details><summary>${esc(q[0])}</summary><p>${esc(q[1])}</p></details>`).join('');
  if(tab==='ind')setTimeout(previews,30)}
 function pdfs(){const q=($('#q').value||'').toLowerCase().trim(),L=PDFS.map((b,i)=>({b,i})).filter(o=>(cat==='All'||o.b.cat===cat)&&(!q||(o.b.t+' '+o.b.d+' '+o.b.cat).toLowerCase().includes(q)));
- $('#bk').innerHTML=L.length?L.map(({b,i})=>{const ok=paid||b.free;return`<div class="card hov" data-pdf="${i}" tabindex="0" role="button"><span class="lk">${ok?(b.free&&!paid?'FREE':'📖 Read'):'🔒 Locked'}</span>${cover(b.c,[b.cat.toUpperCase(),b.t],'PDF',150)}<div class="bd"><p>${esc(b.d)}</p><div class="meta"><span>📄 ${b.p?b.p+' pages':'PDF'}</span></div></div></div>`}).join(''):'<div class="empty">No PDF matches your search.</div>'}
+ $('#bk').innerHTML=L.length?L.map(({b,i})=>{const ok=paid||b.free;return`<div class="card hov" data-pdf="${i}" tabindex="0" role="button"><span class="lk">${ok?(b.free&&!paid?'FREE':'📖 Read'):'🔒 Locked'}</span>${cover(b.c,[b.cat.toUpperCase(),b.t],b.img?'':'PDF',150,b.img)}<div class="bd"><p>${esc(b.d)}</p><div class="meta"><span>📄 ${b.p?b.p+' pages':'PDF'}</span></div></div></div>`}).join(''):'<div class="empty">No PDF matches your search.</div>'}
 /* ---- events ---- */
-document.addEventListener('click',e=>{const t=e.target.closest('[data-t],[data-go],[data-buy],[data-course],[data-pdf],[data-ind],[data-cat]');if(!t)return;
- if(t.matches('.tab')){go(t.dataset.t)}else if(t.dataset.go){go(t.dataset.go)}else if(t.hasAttribute('data-buy')){buy()}else if(t.dataset.course!==undefined){course(+t.dataset.course)}else if(t.dataset.pdf!==undefined){pdf(+t.dataset.pdf)}else if(t.dataset.ind){ind(t.dataset.ind)}else if(t.dataset.cat){cat=t.dataset.cat;all()}});
+document.addEventListener('click',e=>{const t=e.target.closest('[data-t],[data-go],[data-buy],[data-acct],[data-course],[data-pdf],[data-ind],[data-cat]');if(!t)return;
+ if(t.matches('.tab,.bn[data-t]')){go(t.dataset.t)}else if(t.hasAttribute('data-acct')){acct()}else if(t.dataset.go){go(t.dataset.go)}else if(t.hasAttribute('data-buy')){buy()}else if(t.dataset.course!==undefined){course(+t.dataset.course)}else if(t.dataset.pdf!==undefined){pdf(+t.dataset.pdf)}else if(t.dataset.ind){ind(t.dataset.ind)}else if(t.dataset.cat){cat=t.dataset.cat;all()}});
 document.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches&&e.target.matches('.card[role=button],.card[role=link]')){e.preventDefault();e.target.click()}});
 $('#q').oninput=pdfs;$('#pCode').onclick=e=>{e.preventDefault();codeBox()};
 $('#hFree').onclick=()=>{const f=flat.find(x=>x.l.free);f?lesson(f.id):wall()};
@@ -378,20 +341,75 @@ open(`<div style="text-align:center;padding:6px"><h3 style="padding:0">Get lifet
 <p class="m"><b>Step 2.</b> Enter the email you will use to sign in, then send us the payment screenshot on WhatsApp.</p>
 <input type="email" id="pe" placeholder="your@email.com" aria-label="Your email"><button class="btn s g" id="pw">Send screenshot on WhatsApp</button>
 <p class="m" style="font-size:13px">We check the payment and unlock your account, usually within a few hours. Then press Unlock and sign in.</p></div>`);
-setTimeout(()=>{const b=$('#pw');if(b)b.onclick=()=>{const e=$('#pe').value.trim();if(!/\S+@\S+\.\S+/.test(e))return toast('Enter a valid email');fb('Lead');window.open('https://wa.me/'+WA+'?text='+encodeURIComponent('Hi, I paid \u20b9'+amt+' for BFT Academy. My email: '+e+' (screenshot attached)'),'_blank','noopener')}},0)};
-/* ===== LIVE CONTENT + BUYER LOGIN (Supabase). Content is managed in admin.html ===== */
+setTimeout(()=>{const b=$('#pw');if(b)b.onclick=()=>{const e=$('#pe').value.trim();if(!/\S+@\S+\.\S+/.test(e))return toast('Enter a valid email');fb('Lead');_wo('https://wa.me/'+WA+'?text='+encodeURIComponent('Hi, I paid \u20b9'+amt+' for BFT Academy. My email: '+e+' (screenshot attached)'),'_blank','noopener')}},0)};
+/* ===== LIVE CONTENT + MEMBER LOGIN (Supabase). Content is managed in admin.html ===== */
 (async()=>{const SB_URL='https://ytdipdzzwuzdnzrabpwx.supabase.co',SB_KEY='sb_publishable_TZWfmoKVdyeuoBpmOvllUA_Cj7atACi';
-if(!window.supabase)return;const sb=supabase.createClient(SB_URL,SB_KEY);
-try{localStorage.removeItem('bftA_paid')}catch(e){}paid=false;
-window.codeBox=()=>open(`<div style="text-align:center;padding:6px"><h3 style="padding:0">Sign in to unlock</h3><p class="m">Use the email you paid with.</p><input type="email" id="cd" placeholder="you@email.com" aria-label="Email"><input type="password" id="cp" placeholder="Password (min 6 characters)" aria-label="Password"><div class="row" style="justify-content:center;margin-top:10px"><button class="btn s" id="cdb">Sign in</button><button class="btn s o" id="cdn">Create account</button></div></div>`),setTimeout(()=>{const f=async n=>{const e=$('#cd').value.trim(),p=$('#cp').value,r=n?await sb.auth.signUp({email:e,password:p}):await sb.auth.signInWithPassword({email:e,password:p});if(r.error)toast(r.error.message);else if(r.data.session)location.reload();else toast('Account created. Now press Sign in.')};if($('#cdb')){$('#cdb').onclick=()=>f(0);$('#cdn').onclick=()=>f(1)}},0);
-const{data:{session}}=await sb.auth.getSession();
-if(session){const r=await sb.from('students').select('email');paid=!!(r.data&&r.data.length);if(!paid)toast('No purchase found for '+session.user.email)}
-const[a,b]=await Promise.all([sb.from('items').select('*').order('sort'),sb.from('item_secrets').select('*')]);if(a.error||!a.data)return;
-const sec=Object.fromEntries((b.data||[]).map(x=>[x.item_id,x])),emb=u=>{const m=(u||'').match(/(?:youtu\.be\/|v=)([\w-]{11})/);return m?'https://www.youtube.com/embed/'+m[1]:u||''},cl=['#3b6cff,#7c3aed','#f59e0b,#ef4444','#10b981,#0ea5e9','#7c3aed,#db2777'];
+const ready=()=>document.body.classList.remove('ld');
+if(!window.supabase){ready();return}
+const sb=supabase.createClient(SB_URL,SB_KEY);
+let session=null,member=null,isAdmin=false;
+paid=false;try{localStorage.removeItem('bftA_paid')}catch(e){}
+const here=location.origin+location.pathname;
+/* ---- sign in / create account / reset ---- */
+function authBox(mode){mode=mode||'in';
+ const T={in:['Sign in','Use the email you paid with.','Sign in'],up:['Create your account','Use the same email you paid with, then confirm it from the email we send.','Create account'],reset:['Reset password','We will email you a link to set a new password.','Send reset link']}[mode];
+ open(`<div style="text-align:center;padding:6px"><h3 style="padding:0">${T[0]}</h3><p class="m">${T[1]}</p><input type="email" id="ae" placeholder="you@email.com" autocomplete="email" inputmode="email" aria-label="Email">${mode!=='reset'?`<input type="password" id="ap" placeholder="Password (min 6 characters)" autocomplete="${mode==='up'?'new':'current'}-password" aria-label="Password">`:''}<button class="btn" id="ab" style="width:100%;margin-top:6px">${T[2]}</button>
+ <div class="row" style="justify-content:center;margin-top:10px;gap:2px">${mode!=='in'?'<button class="lnk" data-m="in">I have an account</button>':''}${mode!=='up'?'<button class="lnk" data-m="up">Create account</button>':''}${mode!=='reset'?'<button class="lnk" data-m="reset">Forgot password?</button>':''}</div>
+ <p class="m" style="font-size:12px;margin-top:8px">Need help? <a href="${esc(CFG.contact)}" target="_blank" rel="noopener" style="text-decoration:underline">Contact us</a></p></div>`,'n');
+ $('#md').querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>authBox(b.dataset.m));
+ const go=async()=>{const e=$('#ae').value.trim(),p=$('#ap')?$('#ap').value:'';if(!/\S+@\S+\.\S+/.test(e))return toast('Enter a valid email');
+  if(mode!=='reset'&&p.length<6)return toast('Password must be at least 6 characters');
+  const b=$('#ab');b.disabled=true;
+  try{
+   if(mode==='reset'){const r=await sb.auth.resetPasswordForEmail(e,{redirectTo:here});toast(r.error?r.error.message:'Reset link sent. Check your email.')}
+   else{const r=mode==='up'?await sb.auth.signUp({email:e,password:p,options:{emailRedirectTo:here}}):await sb.auth.signInWithPassword({email:e,password:p});
+    if(r.error)toast(/not confirmed/i.test(r.error.message)?'Please confirm your email first (check your inbox and spam).':r.error.message);
+    else if(r.data.session)location.reload();
+    else toast('Account created. Confirm the email we sent, then sign in.')}
+  }catch(x){toast(x.message||'Something went wrong')}
+  b.disabled=false};
+ $('#ab').onclick=go;$('#md').onkeydown=e=>{if(e.key==='Enter'&&e.target.tagName==='INPUT')go()};setTimeout(()=>$('#ae')&&$('#ae').focus(),60)}
+window.codeBox=()=>authBox('in');
+function newPass(){open(`<div style="text-align:center;padding:6px"><h3 style="padding:0">Set a new password</h3><p class="m">Choose a password with at least 6 characters.</p><input type="password" id="np" placeholder="New password" autocomplete="new-password" aria-label="New password"><button class="btn" id="nb" style="width:100%;margin-top:6px">Save password</button></div>`,'n');
+ $('#nb').onclick=async()=>{const p=$('#np').value;if(p.length<6)return toast('Password must be at least 6 characters');const r=await sb.auth.updateUser({password:p});if(r.error)return toast(r.error.message);toast('Password updated ✓');history.replaceState(null,'',here);setTimeout(()=>location.reload(),800)}}
+sb.auth.onAuthStateChange(ev=>{if(ev==='PASSWORD_RECOVERY')setTimeout(newPass,50)});
+/* ---- account ---- */
+window.acct=()=>{if(!session)return authBox('in');
+ const exp=member&&member.expires_at?new Date(member.expires_at):null,dt=d=>d.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
+ const status=isAdmin?'<span class="tag b">ADMIN PREVIEW</span><p class="m" style="margin-top:8px">Everything is unlocked for you.</p>':paid?`<span class="tag f">✓ PREMIUM MEMBER</span><p class="m" style="margin-top:8px">${exp?'Access until '+dt(exp):'Lifetime access'}</p>`:member&&exp?`<span class="tag">EXPIRED</span><p class="m" style="margin-top:8px">Your access ended on ${dt(exp)}. Contact us to renew.</p>`:'<span class="tag">NO PURCHASE FOUND</span><p class="m" style="margin-top:8px">We could not find a purchase for this email. Paid with another email? Contact us.</p>';
+ open(`<div style="text-align:center;padding:6px"><div style="font-size:40px">${paid?'⭐':'👤'}</div><h3 style="padding:0 0 8px;overflow-wrap:anywhere">${esc(session.user.email)}</h3>${status}<div class="row" style="justify-content:center;margin-top:18px">${paid||isAdmin?'':'<button class="btn s g" onclick="buy()">Get lifetime access</button>'}<a class="btn s o" href="${esc(CFG.contact)}" target="_blank" rel="noopener">WhatsApp support</a><button class="btn s o" id="so">Sign out</button></div></div>`,'n');
+ $('#so').onclick=async()=>{await sb.auth.signOut();location.reload()}};
+window.stHTML=()=>session?`<button class="btn s ${paid?'':'o'}" onclick="acct()" aria-label="Account">${paid?'⭐ Member':'👤 Account'}</button>`:'<button class="btn s o" onclick="codeBox()">Sign in</button>';
+/* ---- session + membership ---- */
+try{const r=await sb.auth.getSession();session=r.data.session}catch(e){}
+if(session){window.WM=session.user.email;
+ const[m,a]=await Promise.all([sb.from('students').select('email,expires_at').eq('email',(session.user.email||'').toLowerCase()).maybeSingle(),sb.from('admins').select('email')]);
+ member=m.data||null;isAdmin=!!(a.data&&a.data.length);
+ paid=isAdmin||!!(member&&(!member.expires_at||new Date(member.expires_at)>new Date()));
+ if(!paid)toast(member?'Your access has expired.':'No purchase found for '+session.user.email)}
+/* ---- content ---- */
+const[ri,rl]=await Promise.all([sb.from('items').select('*').eq('published',true).order('sort').order('created_at'),sb.from('lessons').select('*').order('sort').order('created_at')]);
+if(ri.error||!ri.data){toast('Could not load the latest content. Please refresh.');ready();all();return}
+const cl=['#3b6cff,#7c3aed','#f59e0b,#ef4444','#10b981,#0ea5e9','#7c3aed,#db2777'],TY=['ribbon','st','zones','orb'],
+ img=p=>p?sb.storage.from('academy-thumbs').getPublicUrl(p).data.publicUrl:'',
+ hash=t=>[...String(t)].reduce((n,c)=>(n*31+c.charCodeAt(0))>>>0,7),
+ tyOf=(t,id)=>/super|trend/i.test(t)?'st':/ribbon|ema|average/i.test(t)?'ribbon':/zone|pivot|supply|demand/i.test(t)?'zones':/orb|opening|range|break/i.test(t)?'orb':TY[hash(id)%4];
+const by={};(rl.data||[]).forEach(x=>(by[x.item_id]=by[x.item_id]||[]).push(x));
 COURSES.length=PDFS.length=INDICATORS.length=0;let k=0;
-for(const i of a.data){const s=sec[i.id]||{},c=cl[k++%4],f=i.free?1:0;
- if(i.kind==='course')COURSES.push({title:i.title,level:'COURSE',desc:i.descr||'',c,modules:[{t:'Lessons',lessons:[{t:i.title,d:'0:00',free:f,video:emb(s.video_url),lab:'classroom.html'}]}]});
- else if(i.kind==='pdf'){let file='';if(s.pdf_path){const u=await sb.storage.from('academy-pdfs').createSignedUrl(s.pdf_path,3600);file=u.data?u.data.signedUrl:''}PDFS.push({t:i.title,cat:'Notes',p:0,free:f,file,d:i.descr||'',c})}
- else INDICATORS.push({id:'d'+k,name:i.title,type:'ribbon',free:f,tf:'Any timeframe',mk:'All markets',d:i.descr||'',pine:s.code||'',invite:s.video_url||''})}
-flat.length=0;COURSES.forEach((c,ci)=>c.modules.forEach((m,mi)=>m.lessons.forEach((l,li)=>flat.push({c,ci,mi,l,id:ci+'-'+mi+'-'+li}))));all()})();
+for(const i of ri.data){const c=cl[k++%cl.length],f=i.free?1:0,im=img(i.thumb_path);
+ if(i.kind==='course'){const mods=[];(by[i.id]||[]).forEach(x=>{const n=x.module||'Lessons';let m=mods.find(z=>z.t===n);if(!m)mods.push(m={t:n,lessons:[]});m.lessons.push({id:x.id,t:x.title,d:x.duration||'0:00',free:(f||x.free)?1:0,lab:x.lab||'',live:1})});
+  if(mods.length)COURSES.push({title:i.title,level:String(i.level||'Course').toUpperCase(),desc:i.descr||'',c,img:im,modules:mods})}
+ else if(i.kind==='pdf')PDFS.push({id:i.id,t:i.title,cat:i.category||'Notes',p:i.pages||0,free:f,d:i.descr||'',c,img:im,live:1});
+ else INDICATORS.push({id:i.id,name:i.title,type:tyOf(i.title,i.id),free:f,tf:i.tf||'Any timeframe',mk:i.mk||'All markets',d:i.descr||'',mode:i.delivery==='invite'?'invite':'code',live:1,pine:'',invite:''})}
+flat.length=0;COURSES.forEach((c,ci)=>c.modules.forEach((m,mi)=>m.lessons.forEach((l,li)=>flat.push({c,ci,mi,l,id:l.id||ci+'-'+mi+'-'+li}))));
+/* ---- lazy, expiring links: fetched only when something is opened ---- */
+window.getVid=async l=>{const r=await sb.from('lesson_secrets').select('video_url,video_path').eq('lesson_id',l.id).maybeSingle();const s=r.data;if(!s)return'';
+ if(s.video_path){const u=await sb.storage.from('academy-videos').createSignedUrl(s.video_path,7200);return u.data?u.data.signedUrl:''}return s.video_url||''};
+window.getPdf=async b=>{const r=await sb.from('item_secrets').select('pdf_path').eq('item_id',b.id).maybeSingle();const p=r.data&&r.data.pdf_path;if(!p)return null;
+ const[v,d]=await Promise.all([sb.storage.from('academy-pdfs').createSignedUrl(p,3600),sb.storage.from('academy-pdfs').createSignedUrl(p,3600,{download:true})]);return v.data?{view:v.data.signedUrl,dl:d.data?d.data.signedUrl:v.data.signedUrl}:null};
+window.getInd=async x=>{const r=await sb.from('item_secrets').select('code,video_url').eq('item_id',x.id).maybeSingle();if(r.data){x.pine=r.data.code||'';x.invite=r.data.video_url||''}};
+all();ready();
+const want=(location.hash||'').slice(1);if(want)go(want);
+})();
+
 </script></body></html>
