@@ -52,6 +52,34 @@ button,input,select,textarea{font:inherit;color:var(--tx)}button{cursor:pointer}
 #dtb b{color:var(--tx)}.pbar button.on{background:var(--ac);border-color:var(--ac);color:#fff}
 .fbs{position:absolute;top:84px;right:76px;width:262px;max-height:calc(100% - 110px);overflow:auto;display:none;background:var(--pn);border:1px solid var(--ln);border-radius:12px;padding:10px;z-index:6;box-shadow:0 8px 30px #0008}.fbs.on{display:block}
 .fbs .fh{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}.fbs .lr{display:flex;align-items:center;gap:6px;padding:3px 0;font-size:12px}.fbs .lr input[type=number]{width:84px;background:var(--bg);border:1px solid var(--ln);border-radius:6px;padding:3px 6px}.fbs .lr input[type=color]{width:26px;height:22px;padding:0;border:0;background:none}.fbs button{background:none;border:1px solid var(--ln);border-radius:6px;padding:2px 8px}.fbs h5{font-size:10px;color:var(--mu);text-transform:uppercase;margin:8px 0 3px}
+
+/* ===== Mobile layout (phones only; desktop unchanged) ===== */
+@media(max-width:700px){
+body{padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))}
+input,select,textarea{font-size:16px}
+.hd{gap:6px;padding:8px 10px}.hd .demo,.hd a.ib,#fsb{display:none}
+.lg{order:1;flex:1 1 auto;font-size:15px}.mt{order:2;min-height:40px;padding:8px 12px}
+.ch{order:3;flex:0 0 100%;margin:0;display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.ch div{background:var(--bg);border-radius:8px;padding:6px 8px}.ch div:nth-child(3),.ch div:nth-child(4){display:none}.ch b{font-size:14px}
+#isel{order:4;flex:1 1 0;min-width:0;max-width:none;min-height:40px}#datb,#setb{order:5;min-height:40px;padding:6px 10px;font-size:12px}
+.app,.app.noR{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;padding:6px;height:auto}
+.app .lf,.app .rt{display:contents}
+.lf>.cb{order:1;height:60vh;height:60svh;min-height:320px;max-height:520px;flex:none;flex-direction:column}
+.lf>.rc{order:2;padding:8px;gap:8px}.rt>:nth-child(2),.rt>:nth-child(3){order:3}.lf>.tm{order:4}.rt>:nth-child(4){order:5}.rt>:nth-child(5){order:6}
+.rh{display:none}.rt .bs{display:none}
+.tl{flex-direction:row;overflow-x:auto;overflow-y:hidden;border-right:0;border-bottom:1px solid var(--ln);padding:5px;flex:none;gap:6px}
+.tl button,.tl select{flex:none;width:42px;height:42px;font-size:16px}
+.ctl{right:8px;top:8px}.ctl #cCen,.ctl #cAuto{display:none}.ctl button{min-height:36px}
+.ixb{top:46px;max-width:70%}.pbar{max-width:96%;flex-wrap:wrap;justify-content:center}.pbar input{width:64px}
+.mini{display:flex!important;position:fixed;left:0;right:0;bottom:0;top:auto;gap:10px;padding:8px 12px calc(8px + env(safe-area-inset-bottom,0px));background:var(--pn);border-top:1px solid var(--ln);z-index:30}
+.mini button{flex:1;min-height:52px;font-size:17px;border-radius:12px}.mini button small{display:block;font-size:11px;font-weight:500;opacity:.9}
+#toast{bottom:92px}
+.rc button,.rc select,.rc input{min-height:42px}#nx{flex:2 1 130px;font-size:16px}#play{flex:1 1 90px}
+#btc{flex:1 1 100%}#btc>*{margin:0 6px 6px 0}.dt{flex:1 1 100%;margin:0;text-align:center}
+.tm{height:auto;max-height:340px}.tm .tc{max-height:230px}.tb{overflow-x:auto}.tb button{flex:none;white-space:nowrap;padding:10px 12px}
+.tk{padding:12px}.fr{gap:8px}.fr input,.fr select{min-height:44px}.pri{min-height:46px}.sg b{font-size:15px}
+.mx .rt,.mx .tm{display:none!important}.mx .app{padding:4px}.mx .cb{height:calc(100svh - 230px);max-height:none}
+}
 </style></head><body>
 <div class="hd"><span class="lg">BFT <i>Trade Lab</i> Pro</span><span class="demo">DEMO</span>
 <button class="mt on" data-m="bt">Backtest</button><button class="mt" data-m="fw">Forward Test</button>
@@ -422,4 +450,7 @@ function setOLv(id,w,v){if(document.activeElement)document.activeElement.blur();
  save();refresh()}
 document.addEventListener('pointerdown',e=>{if(!e.target.closest('.dd'))$('#ixm').classList.remove('on')});
 dtbUI();
-</script><script>if('serviceWorker'in navigator&&location.protocol.indexOf('http')===0)addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})</script></body></html>
+</script><script>/* mobile quick bar: show live prices on the BUY / SELL buttons */
+(function(){var mq=matchMedia('(max-width:700px)'),ps=document.getElementById('ps'),pb=document.getElementById('pb'),ms=document.getElementById('mS'),mb=document.getElementById('mB');
+if(!ps||!pb||!ms||!mb)return;function s(){if(!mq.matches)return;ms.innerHTML='SELL<small>'+ps.textContent+'</small>';mb.innerHTML='BUY<small>'+pb.textContent+'</small>'}
+var o=new MutationObserver(s);[ps,pb].forEach(function(e){o.observe(e,{childList:true,characterData:true,subtree:true})});s()})();</script><script>if('serviceWorker'in navigator&&location.protocol.indexOf('http')===0)addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})</script></body></html>
