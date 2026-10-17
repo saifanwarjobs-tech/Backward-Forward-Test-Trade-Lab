@@ -53,6 +53,7 @@ button,input,select,textarea{font:inherit;color:var(--tx)}button{cursor:pointer}
 .fbs{position:absolute;top:84px;right:76px;width:262px;max-height:calc(100% - 110px);overflow:auto;display:none;background:var(--pn);border:1px solid var(--ln);border-radius:12px;padding:10px;z-index:6;box-shadow:0 8px 30px #0008}.fbs.on{display:block}
 .fbs .fh{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}.fbs .lr{display:flex;align-items:center;gap:6px;padding:3px 0;font-size:12px}.fbs .lr input[type=number]{width:84px;background:var(--bg);border:1px solid var(--ln);border-radius:6px;padding:3px 6px}.fbs .lr input[type=color]{width:26px;height:22px;padding:0;border:0;background:none}.fbs button{background:none;border:1px solid var(--ln);border-radius:6px;padding:2px 8px}.fbs h5{font-size:10px;color:var(--mu);text-transform:uppercase;margin:8px 0 3px}
 
+#ixt{display:none}#fwh{display:none}body.fwu #fwh{display:block}
 /* ===== Mobile layout (phones only; desktop unchanged) ===== */
 @media(max-width:700px){
 body{padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))}
@@ -65,12 +66,12 @@ input,select,textarea{font-size:16px}
 .app,.app.noR{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;padding:6px;height:auto}
 .app .lf,.app .rt{display:contents}
 .lf>.cb{order:1;height:60vh;height:60svh;min-height:320px;max-height:520px;flex:none;flex-direction:column}
-.lf>.rc{order:2;padding:8px;gap:8px}.rt>:nth-child(2),.rt>:nth-child(3){order:3}.lf>.tm{order:4}.rt>:nth-child(4){order:5}.rt>:nth-child(5){order:6}
+.lf>.rc{order:2;padding:8px;gap:8px}.lf>.tm{order:3}.rt>:nth-child(2),.rt>:nth-child(3){order:4}.rt>:nth-child(4){order:5}.rt>:nth-child(5){order:6}body.fwu .rt>:nth-child(3){order:0;border-color:var(--ac)}#fwb textarea{min-height:110px}body:not(.fwu) #fwh{display:none}.mini{flex-wrap:wrap}#pst{flex:1 1 100%;display:none;align-items:center;justify-content:space-between;gap:8px;font-size:13px}#pst.show{display:flex}#pst span{flex:1;cursor:pointer}#pst b{font-size:14px}.mini #pst button{flex:none;min-height:34px;font-size:13px;padding:0 12px;background:var(--bg);color:var(--tx);border:1px solid var(--ln)}body.hasp{padding-bottom:calc(124px + env(safe-area-inset-bottom,0px))}
 .rh{display:none}.rt .bs{display:none}
 .tl{flex-direction:row;overflow-x:auto;overflow-y:hidden;border-right:0;border-bottom:1px solid var(--ln);padding:5px;flex:none;gap:6px}
 .tl button,.tl select{flex:none;width:42px;height:42px;font-size:16px}
 .ctl{right:8px;top:8px}.ctl #cCen,.ctl #cAuto{display:none}.ctl button{min-height:36px}
-.ixb{top:46px;max-width:70%}.pbar{max-width:96%;flex-wrap:wrap;justify-content:center}.pbar input{width:64px}
+#ixt{display:block;position:absolute;top:30px;left:8px;z-index:3;background:var(--pn);border:1px solid var(--ln);border-radius:8px;padding:6px 12px;font-weight:700;font-size:12px;min-height:34px}.ixb{top:70px;max-width:92%}.ixb:not(.open){display:none}.pbar{max-width:96%;flex-wrap:wrap;justify-content:center}.pbar input{width:64px}
 .mini{display:flex!important;position:fixed;left:0;right:0;bottom:0;top:auto;gap:10px;padding:8px 12px calc(8px + env(safe-area-inset-bottom,0px));background:var(--pn);border-top:1px solid var(--ln);z-index:30}
 .mini button{flex:1;min-height:52px;font-size:17px;border-radius:12px}.mini button small{display:block;font-size:11px;font-weight:500;opacity:.9}
 #toast{bottom:92px}
@@ -91,7 +92,7 @@ input,select,textarea{font-size:16px}
 <div class="bx tm"><div class="tb"><button class="on" data-tb="pos">Positions</button><button data-tb="his">History</button><button data-tb="cmp">Backtest vs Forward</button><button id="exp" style="margin-left:auto;color:var(--mu)" title="Download closed trades as CSV">⬇ Export trades</button><button id="tgT" title="Hide / show terminal">▾ Terminal</button></div><div class="tc" id="tc"></div></div></div>
 <div class="rt"><div class="rh"><button id="tgR" title="Hide / show order panel">▾ Panel</button></div><div class="bx tk"><h4>New order · <span id="ins">BANKNIFTY</span></h4><div class="bs"><button id="bs">SELL<small id="ps">-</small></button><button id="bb">BUY<small id="pb">-</small></button></div>
 <div class="fr"><div><label>Lots</label><input id="lots" type="number" min="1" value="1"></div><div><label>SL (pts)</label><input id="sl" type="number" min="0" placeholder="0"></div><div><label>TP (pts)</label><input id="tp" type="number" min="0" placeholder="0"></div></div><div class="fr"><div><label>Trail (pts)</label><input id="tr" type="number" min="0" placeholder="0"></div><div><label>Order</label><select id="ot"><option value="">Market</option><option value="L">Limit</option><option value="S">Stop</option></select></div><div><label>@ Price</label><input id="pp" type="number" step="0.5" placeholder="price"></div></div><button class="pri" id="ca" style="background:var(--bg);color:var(--tx);border:1px solid var(--ln)">Close all positions</button></div>
-<div class="bx tk" id="fwb" style="display:none"><h4>🔒 Strategy lock</h4><textarea id="rules" placeholder="Write your exact rules (entry, SL, target, risk). Lock them BEFORE the forward test."></textarea><button class="pri" id="lk">Lock rules &amp; start</button><div class="m" id="lki" style="margin-top:6px;font-size:11px"></div></div>
+<div class="bx tk" id="fwb" style="display:none"><h4>🔒 Strategy lock</h4><p class="m" id="fwh" style="font-size:12px;margin-bottom:6px">Step 1: write your rules below (entry, stop-loss, target, risk) and tap <b>Lock rules &amp; start</b>. Next, Play, BUY and SELL stay off until you lock. After locking, the rules cannot be edited. That is what makes the forward test honest.</p><textarea id="rules" placeholder="Example: Buy when a candle closes above EMA 20. SL 50 pts, TP 100 pts. 1 lot. Maximum 3 trades a day."></textarea><button class="pri" id="lk">Lock rules &amp; start</button><div class="m" id="lki" style="margin-top:6px;font-size:11px"></div></div>
 <div class="bx tk"><h4>Equity after every trade</h4><canvas id="eq"></canvas><div class="sg" style="margin-top:8px" id="sg"></div></div>
 <div class="m" style="font-size:10px;padding:0 4px">Educational simulation with demo money. Not investment advice. Charges are approximate.</div></div></div>
 <div class="ov on" id="ld"><div class="md"><b>Loading market data…</b><p class="m" style="margin-top:8px">If this does not finish, open the site via GitHub Pages / a local server, or choose the CSV / JSON file:</p><input type="file" id="fin" accept=".csv,.json,.txt" style="margin-top:10px"></div></div>
@@ -134,7 +135,7 @@ function fresh(m){const pool=ds.filter(x=>x<FWS-3000),i=m==='fw'?FWS+12:pool[Mat
  return{idx:i,bal:PF.start,start:PF.start,pos:[],ord:[],hist:[],dr:[],nid:1,locked:false,rules:'',lockedAt:0,blind:false}}
 const save=()=>{if(mode!=='sc')localStorage.setItem(K[mode],JSON.stringify(S))};
 function setMode(m){if(S)save();pause();mode=m;S=ld(K[m],null)||fresh(m);S.ord=S.ord||[];off=0;SEL=null;PEND=null;dtbUI();$$('.mt').forEach(b=>b.classList.toggle('on',b.dataset.m===m));
- $('#fwb').style.display=m==='fw'?'block':'none';$('#btc').style.display=m==='bt'?'inline':'none';$('#bl').checked=!!S.blind;$('#rules').value=S.rules;$('#rules').readOnly=S.locked;$('#lk').style.display=S.locked?'none':'block';
+ $('#fwb').style.display=m==='fw'?'block':'none';$('#btc').style.display=m==='bt'?'inline':'none';$('#bl').checked=!!S.blind;$('#rules').value=S.rules;$('#rules').readOnly=S.locked;$('#lk').style.display=S.locked?'none':'block';document.body.classList.toggle('fwu',m==='fw'&&!S.locked);
  $('#lki').textContent=S.locked?'Locked on '+new Date(S.lockedAt).toLocaleString('en-IN')+'. Rules cannot be changed. Reset the demo account to start a new version.':'Forward mode stays locked until you lock your rules.';refresh()}
 /* ---------- candles ---------- */
 function build(){const cap=zoom+off+70,key=j=>{const b=Math.floor((D.mm[j]-SO)/tf);return D.dk[j]*10000+(tf>=1440?Math.max(0,b):b)},out=[];let i=S.idx;
@@ -453,4 +454,12 @@ dtbUI();
 </script><script>/* mobile quick bar: show live prices on the BUY / SELL buttons */
 (function(){var mq=matchMedia('(max-width:700px)'),ps=document.getElementById('ps'),pb=document.getElementById('pb'),ms=document.getElementById('mS'),mb=document.getElementById('mB');
 if(!ps||!pb||!ms||!mb)return;function s(){if(!mq.matches)return;ms.innerHTML='SELL<small>'+ps.textContent+'</small>';mb.innerHTML='BUY<small>'+pb.textContent+'</small>'}
-var o=new MutationObserver(s);[ps,pb].forEach(function(e){o.observe(e,{childList:true,characterData:true,subtree:true})});s()})();</script><script>if('serviceWorker'in navigator&&location.protocol.indexOf('http')===0)addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})</script></body></html>
+var o=new MutationObserver(s);[ps,pb].forEach(function(e){o.observe(e,{childList:true,characterData:true,subtree:true})});s()})();</script><script>/* mobile: trade summary above BUY/SELL, and a tap-to-open indicator list */
+(function(){var mini=document.querySelector('.mini'),cw=document.querySelector('.cw'),ixb=document.getElementById('ixb'),tg=document.getElementById('tgT'),cP=document.getElementById('cP');if(!mini||!cw||!ixb||!tg||!cP)return;
+var b=document.createElement('button');b.id='ixt';b.textContent='ƒx Indicators';b.onclick=function(){ixb.classList.toggle('open')};cw.appendChild(b);
+var d=document.createElement('div');d.id='pst';d.innerHTML='<span id="pstx"></span><button id="pstc">Close all</button>';mini.insertBefore(d,mini.firstChild);
+d.querySelector('span').onclick=function(){var tm=document.querySelector('.tm');if(tm)tm.scrollIntoView({behavior:'smooth',block:'center'})};
+d.querySelector('button').onclick=function(){document.getElementById('ca').click()};
+function u(){var m=/\((\d+)\)/.exec(tg.textContent),n=m?+m[1]:0,pl=cP.textContent.trim();d.classList.toggle('show',n>0);document.body.classList.toggle('hasp',n>0);
+if(n>0)document.getElementById('pstx').innerHTML='<b>'+n+' open</b> · P/L <b style="color:var(--'+(pl.charAt(0)==='-'?'dn':'up')+')">'+pl+'</b> · tap to view'}
+var o=new MutationObserver(u);[tg,cP].forEach(function(e){o.observe(e,{childList:true,characterData:true,subtree:true})});u()})();</script><script>if('serviceWorker'in navigator&&location.protocol.indexOf('http')===0)addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})</script></body></html>
