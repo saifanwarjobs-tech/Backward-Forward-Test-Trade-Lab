@@ -9,7 +9,7 @@ button{background:var(--ac);color:#fff;border:0;border-radius:8px;padding:9px 16
 label{font-size:13px;color:var(--mu)}.k{font-size:11px;padding:2px 8px;border-radius:99px;border:1px solid var(--ln);color:var(--mu)}.hid{display:none}.ck{width:auto;margin-right:6px}</style></head><body><div class="w">
 <h1>BFT Academy Admin</h1>
 <div class="c" id="cfg" hidden>Set <b>SB_URL</b> and <b>SB_KEY</b> (anon key) at the top of this file's script, then reload.</div>
-<div class="c" id="login"><h3>Admin sign in</h3><label>Email</label><input id="em" type="email"><button id="send">Email me a sign-in link</button> <span id="lm" style="color:var(--mu)"></span></div>
+<div class="c" id="login"><h3>Admin sign in</h3><label>Email</label><input id="em" type="email"><label>Password</label><input id="pw" type="password"><button id="send">Sign in</button> <span id="lm" style="color:var(--mu)"></span></div>
 <div id="app" class="hid">
 <div class="c"><span id="who"></span> <button class="o" id="out" style="float:right">Sign out</button></div>
 <div class="c"><h3 id="ft">Add item</h3><div class="g">
@@ -28,7 +28,7 @@ const SB_URL='https://ytdipdzzwuzdnzrabpwx.supabase.co',SB_KEY='sb_publishable_T
 if(!SB_URL||!SB_KEY){$('#cfg').hidden=false;$('#login').hidden=true}else{
 const sb=supabase.createClient(SB_URL,SB_KEY);let edit=null,items=[];
 const msg=(id,t)=>{$(id).textContent=t};
-$('#send').onclick=async()=>{const{error}=await sb.auth.signInWithOtp({email:$('#em').value.trim(),options:{emailRedirectTo:location.href.split('#')[0]}});msg('#lm',error?error.message:'Check your email.')};
+$('#send').onclick=async()=>{const{error}=await sb.auth.signInWithPassword({email:$('#em').value.trim(),password:$('#pw').value});if(error)msg('#lm',error.message);else init()};
 $('#out').onclick=async()=>{await sb.auth.signOut();location.reload()};
 const types=()=>{const k=$('#kind').value;$('#f_video').classList.toggle('hid',k!=='course');$('#f_pdf').classList.toggle('hid',k!=='pdf');$('#f_code').classList.toggle('hid',k!=='indicator')};$('#kind').onchange=types;
 async function init(){const{data:{session}}=await sb.auth.getSession();if(!session)return;
