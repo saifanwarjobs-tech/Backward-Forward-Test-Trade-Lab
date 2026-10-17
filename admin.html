@@ -28,11 +28,12 @@ const SB_URL='https://ytdipdzzwuzdnzrabpwx.supabase.co',SB_KEY='sb_publishable_T
 if(!SB_URL||!SB_KEY){$('#cfg').hidden=false;$('#login').hidden=true}else{
 const sb=supabase.createClient(SB_URL,SB_KEY);let edit=null,items=[];
 const msg=(id,t)=>{$(id).textContent=t};
-$('#send').onclick=async()=>{const{error}=await sb.auth.signInWithPassword({email:$('#em').value.trim(),password:$('#pw').value});if(error)msg('#lm',error.message);else init()};
+$('#send').onclick=async()=>{msg('#lm','Signing in...');try{const{error}=await sb.auth.signInWithPassword({email:$('#em').value.trim(),password:$('#pw').value});if(error)return msg('#lm','Error: '+error.message);msg('#lm','Signed in. Checking admin...');await init();if(!$('#app').classList.contains('hid')==false)msg('#lm','Signed in, but admin check failed. See console (F12).')}catch(e){console.error(e);msg('#lm','Error: '+e.message)}};
+$('#pw').addEventListener('keydown',e=>{if(e.key==='Enter')$('#send').click()});
 $('#out').onclick=async()=>{await sb.auth.signOut();location.reload()};
 const types=()=>{const k=$('#kind').value;$('#f_video').classList.toggle('hid',k!=='course');$('#f_pdf').classList.toggle('hid',k!=='pdf');$('#f_code').classList.toggle('hid',k!=='indicator')};$('#kind').onchange=types;
 async function init(){const{data:{session}}=await sb.auth.getSession();if(!session)return;
- const{data}=await sb.from('admins').select('email');if(!data||!data.length){$('#login').innerHTML='<h3>Not an admin</h3>'+esc(session.user.email)+' is not in the admins table.';return}
+ const{data,error:ae}=await sb.from('admins').select('email');if(ae){console.error(ae);msg('#lm','Admin check error: '+ae.message);return}if(!data||!data.length){$('#login').innerHTML='<h3>Not an admin</h3>'+esc(session.user.email)+' is not in the admins table.';return}
  $('#login').hidden=true;$('#app').classList.remove('hid');$('#who').textContent='Signed in: '+session.user.email;load()}
 async function load(){const[a,b,c]=await Promise.all([sb.from('items').select('*').order('sort').order('created_at'),sb.from('item_secrets').select('*'),sb.from('students').select('*').order('created_at',{ascending:false})]);
  const sec=Object.fromEntries((b.data||[]).map(x=>[x.item_id,x]));items=(a.data||[]).map(i=>({...i,...sec[i.id]}));
