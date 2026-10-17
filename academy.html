@@ -125,7 +125,7 @@ footer{border-top:1px solid var(--ln);padding:30px 0 50px;color:var(--mu);font-s
 <script>
 /* ===================== EDIT THIS SECTION: brand, price, content ===================== */
 const CFG={brand:'BFT Academy',price:4999,mrp:14999,payUrl:'https://rzp.io/l/your-payment-link',pixelId:'',codes:[],
- contact:'https://wa.me/91XXXXXXXXXX',refund:'',terms:'',privacy:''};
+ contact:'https://wa.me/916350566010',refund:'',terms:'',privacy:''};
 /* COURSES: video = YouTube/Vimeo EMBED link (https://www.youtube.com/embed/ID) or .mp4 link.  lab = page to practise on.  free:1 = open to everyone. */
 const COURSES=[
 {title:'Price Action Foundations',level:'BEGINNER',desc:'From candles to breakouts: the core of reading the market.',c:'#3b6cff,#7c3aed',modules:[
@@ -367,6 +367,18 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden&&tab==='ho
 all();hero();go(location.hash.slice(1)||'home');window.scrollTo(0,0);
 const io=new IntersectionObserver(a=>a.forEach(x=>{if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}}),{threshold:.12});$$('.rv:not(.in)').forEach(x=>io.observe(x));
 
+
+/* ===== PAY BY UPI (manual, until a payment gateway is approved) ===== */
+window.buy=()=>{fb('InitiateCheckout');const UPI='6350566010@axl',WA='916350566010',amt=CFG.price,link='upi://pay?pa='+UPI+'&pn='+encodeURIComponent('BFT Academy')+'&am='+amt+'&cu=INR&tn='+encodeURIComponent('BFT Academy');
+open(`<div style="text-align:center;padding:6px"><h3 style="padding:0">Get lifetime access: ${CFG.price?'\u20b9'+rs(CFG.price):''}</h3>
+<p class="m"><b>Step 1.</b> Pay by UPI. On mobile tap the button; on a computer scan the QR with any UPI app.</p>
+<a class="btn s" href="${link}">Pay \u20b9${rs(amt)} in my UPI app</a>
+<div style="margin:12px 0"><img src="upi-qr.jpg" alt="UPI QR code" style="width:200px;max-width:70%;border-radius:10px;background:#fff"></div>
+<p class="m">UPI ID: <b>${UPI}</b></p>
+<p class="m"><b>Step 2.</b> Enter the email you will use to sign in, then send us the payment screenshot on WhatsApp.</p>
+<input type="email" id="pe" placeholder="your@email.com" aria-label="Your email"><button class="btn s g" id="pw">Send screenshot on WhatsApp</button>
+<p class="m" style="font-size:13px">We check the payment and unlock your account, usually within a few hours. Then press Unlock and sign in.</p></div>`);
+setTimeout(()=>{const b=$('#pw');if(b)b.onclick=()=>{const e=$('#pe').value.trim();if(!/\S+@\S+\.\S+/.test(e))return toast('Enter a valid email');fb('Lead');window.open('https://wa.me/'+WA+'?text='+encodeURIComponent('Hi, I paid \u20b9'+amt+' for BFT Academy. My email: '+e+' (screenshot attached)'),'_blank','noopener')}},0)};
 /* ===== LIVE CONTENT + BUYER LOGIN (Supabase). Content is managed in admin.html ===== */
 (async()=>{const SB_URL='https://ytdipdzzwuzdnzrabpwx.supabase.co',SB_KEY='sb_publishable_TZWfmoKVdyeuoBpmOvllUA_Cj7atACi';
 if(!window.supabase)return;const sb=supabase.createClient(SB_URL,SB_KEY);
