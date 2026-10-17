@@ -1,0 +1,181 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>BFT Tools – Risk, Options, Monte Carlo and Daily Discipline</title>
+<meta name="theme-color" content="#070b14">
+<style>
+:root{--bg:#070b14;--pn:#0f1626;--tx:#e8eefb;--mu:#8e9bb8;--ln:rgba(255,255,255,.1);--ac:#6aa5ff;--ok:#3ddc97;--no:#ff6b7a;--wa:#f5c76b;--in:#0a1020}
+@media(prefers-color-scheme:light){:root{--bg:#f5f7fc;--pn:#fff;--tx:#0f172a;--mu:#55617a;--ln:rgba(15,23,42,.12);--ac:#2f6fe4;--ok:#0f9d63;--no:#d6334a;--wa:#b7791f;--in:#eef2fa}}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--tx);font:15px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding-bottom:calc(76px + env(safe-area-inset-bottom,0px));padding-top:env(safe-area-inset-top,0px)}
+a{color:inherit}.w{max-width:760px;margin:0 auto;padding:0 16px}
+header{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
+header b{font-size:17px}header a{color:var(--mu);font-size:14px;text-decoration:none}
+h1{font-size:22px;letter-spacing:-.01em;margin:6px 0 2px}.sub{color:var(--mu);font-size:14px;margin-bottom:16px}
+nav{position:fixed;left:0;right:0;bottom:0;z-index:10;display:flex;background:var(--pn);border-top:1px solid var(--ln);padding-bottom:env(safe-area-inset-bottom,0px)}
+nav button{flex:1;background:none;border:0;color:var(--mu);padding:10px 2px;font:600 12px/1.2 inherit;min-height:56px;cursor:pointer}
+nav button i{display:block;font-style:normal;font-size:20px}nav button.on{color:var(--ac)}
+@media(min-width:700px){nav{position:static;border:1px solid var(--ln);border-radius:14px;margin-bottom:18px}body{padding-bottom:30px}}
+section{display:none}section.on{display:block}
+.card{background:var(--pn);border:1px solid var(--ln);border-radius:16px;padding:16px;margin-bottom:14px}
+.card h2{font-size:16px;margin-bottom:10px}
+.g{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+label{display:block;font-size:12.5px;color:var(--mu);margin-bottom:3px}
+input,select,textarea{width:100%;min-height:44px;background:var(--in);border:1px solid var(--ln);border-radius:10px;color:var(--tx);padding:9px 11px;font:inherit}
+textarea{min-height:70px;resize:vertical}
+:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+.btn{min-height:46px;border:0;border-radius:12px;padding:10px 18px;font-weight:700;background:var(--ac);color:#06101f;cursor:pointer;width:100%;margin-top:12px}
+.btn.o{background:none;border:1px solid var(--ln);color:var(--tx)}
+.res{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.res div{background:var(--in);border-radius:10px;padding:9px 11px;font-size:12.5px;color:var(--mu)}
+.res b{display:block;font-size:17px;color:var(--tx)}.res .big{grid-column:1/-1}
+.ok{color:var(--ok)!important}.no{color:var(--no)!important}.wa{color:var(--wa)!important}
+canvas{width:100%;height:210px;display:block;margin-top:12px;border-radius:10px;background:var(--in)}
+.note{font-size:13px;color:var(--mu);margin-top:10px}
+.seg{display:flex;gap:6px;margin-bottom:10px}.seg button{flex:1;min-height:44px;border:1px solid var(--ln);background:none;color:var(--tx);border-radius:10px;font-weight:700;cursor:pointer}.seg button.on{background:var(--ac);color:#06101f;border-color:var(--ac)}
+.ck{display:flex;gap:10px;align-items:center;min-height:46px;border-bottom:1px solid var(--ln);cursor:pointer;color:var(--tx);font-size:15px;margin:0}
+.ck input{width:22px;min-height:22px;height:22px;flex:none}
+.alert{display:none;border:1px solid var(--wa);background:rgba(245,199,107,.12);border-radius:12px;padding:12px 14px;margin-bottom:14px}.alert.on{display:block}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0}.chips button{min-height:40px;border:1px solid var(--ln);background:none;color:var(--tx);border-radius:99px;padding:0 14px;cursor:pointer}.chips button.on{background:var(--ac);color:#06101f;border-color:var(--ac)}
+.disc{font-size:12.5px;color:var(--mu);margin:20px 0}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style></head><body>
+<div class="w">
+<header><b>BFT Tools</b><a href="index.html">Back to home</a></header>
+<nav id="tabs">
+<button data-t="rk" class="on"><i>🎯</i>Risk</button><button data-t="op"><i>📈</i>Options</button><button data-t="mc"><i>🎲</i>Monte Carlo</button><button data-t="dl"><i>🧘</i>Daily loop</button>
+</nav>
+
+<section id="rk" class="on"><h1>Position size calculator</h1><p class="sub">Decide your lots from the money you can afford to lose, not from how confident you feel.</p>
+<div class="card"><div class="g">
+<div><label for="rkC">Capital (₹)</label><input id="rkC" type="number" inputmode="decimal" value="200000"></div>
+<div><label for="rkP">Risk per trade (%)</label><input id="rkP" type="number" inputmode="decimal" step="0.1" value="1"></div>
+<div><label for="rkE">Entry price</label><input id="rkE" type="number" inputmode="decimal" value="52000"></div>
+<div><label for="rkS">Stop-loss price</label><input id="rkS" type="number" inputmode="decimal" value="51800"></div>
+<div><label for="rkL">Lot size (qty per lot)</label><input id="rkL" type="number" inputmode="numeric" value="30"></div>
+<div><label for="rkR">Target reward : risk</label><input id="rkR" type="number" inputmode="decimal" step="0.5" value="2"></div></div>
+<div class="res" id="rkO"></div>
+<p class="note">Lot sizes change from time to time. Check the current lot size for your instrument and enter it above.</p></div></section>
+
+<section id="op"><h1>Option payoff and Greeks</h1><p class="sub">Black-Scholes estimate for a single option. Real prices differ because of liquidity and skew.</p>
+<div class="card"><div class="seg" id="opT"><button data-v="CE" class="on">Call (CE)</button><button data-v="PE">Put (PE)</button></div>
+<div class="seg" id="opD"><button data-v="1" class="on">Buy</button><button data-v="-1">Sell</button></div>
+<div class="g">
+<div><label for="opS">Spot price</label><input id="opS" type="number" inputmode="decimal" value="52000"></div>
+<div><label for="opK">Strike</label><input id="opK" type="number" inputmode="decimal" value="52000"></div>
+<div><label for="opN">Days to expiry</label><input id="opN" type="number" inputmode="decimal" value="5"></div>
+<div><label for="opV">Implied volatility (%)</label><input id="opV" type="number" inputmode="decimal" value="14"></div>
+<div><label for="opI">Interest rate (%)</label><input id="opI" type="number" inputmode="decimal" value="6.5"></div>
+<div><label for="opQ">Quantity (per lot × lots)</label><input id="opQ" type="number" inputmode="numeric" value="30"></div>
+<div><label for="opP">Premium you paid or got (blank = model price)</label><input id="opP" type="number" inputmode="decimal" placeholder="model price"></div></div>
+<div class="res" id="opO"></div>
+<canvas id="opC" aria-label="Payoff chart"></canvas>
+<p class="note">Solid line is profit or loss at expiry. Dashed line is the estimated profit or loss today.</p></div></section>
+
+<section id="mc"><h1>Monte Carlo risk check</h1><p class="sub">Even a good strategy has bad streaks. See how bad yours can get before real money finds out.</p>
+<div class="card"><div class="g">
+<div><label for="mW">Win rate (%)</label><input id="mW" type="number" inputmode="decimal" value="45"></div>
+<div><label for="mA">Average win (in R)</label><input id="mA" type="number" inputmode="decimal" step="0.1" value="2"></div>
+<div><label for="mL">Average loss (in R)</label><input id="mL" type="number" inputmode="decimal" step="0.1" value="1"></div>
+<div><label for="mP">Risk per trade (% of equity)</label><input id="mP" type="number" inputmode="decimal" step="0.1" value="1"></div>
+<div><label for="mT">Trades per run</label><input id="mT" type="number" inputmode="numeric" value="100"></div>
+<div><label for="mD">Danger drawdown (%)</label><input id="mD" type="number" inputmode="decimal" value="20"></div></div>
+<label for="mR" style="margin-top:10px">Optional: your real results in R, comma separated (replaces the three inputs above)</label>
+<textarea id="mR" placeholder="e.g. 2, -1, -1, 3.5, -1, 1.2"></textarea>
+<button class="btn" id="mGo">Run 3,000 simulations</button>
+<div class="res" id="mO"></div><canvas id="mC" aria-label="Sample equity paths" style="display:none"></canvas>
+<p class="note">Each run replays your edge in a random order. This is a stress test, not a prediction. It assumes your future trades look like the numbers you entered.</p></div></section>
+
+<section id="dl"><h1>Daily loop</h1><p class="sub">Plan before the market, log honestly during it, review after it.</p>
+<div class="alert" id="dlA"><b>Cooling-off time.</b> Two losses in a row. Step away until the timer ends.<div style="font-size:26px;font-weight:800;margin:4px 0" id="dlT">15:00</div><button class="btn o" id="dlX" style="margin-top:4px">End timer early</button></div>
+<div class="card"><h2>Before the market</h2><div id="dlK"></div><div class="res"><div>Checklist streak<b id="dlS">0 days</b></div><div>Today<b id="dlD">0 of 5</b></div></div></div>
+<div class="card"><h2>Log a trade</h2>
+<label>Result</label><div class="seg" id="dlRs"><button data-v="W">Win</button><button data-v="L">Loss</button></div>
+<label>How did you feel?</label><div class="chips" id="dlE"></div>
+<label class="ck" style="border:0"><input type="checkbox" id="dlB"> I broke one of my own rules</label>
+<button class="btn" id="dlAdd">Save trade</button></div>
+<div class="card"><h2>Today’s discipline</h2><div class="res" id="dlO"></div><div id="dlL" class="note"></div></div>
+<div class="card"><h2>After the market</h2><label for="dlN">One lesson from today</label><textarea id="dlN" placeholder="What would I repeat? What would I change?"></textarea><button class="btn o" id="dlSv">Save note</button></div></section>
+
+<p class="disc">Education only. These tools use your own inputs and simple models. They do not give tips, signals or investment advice, and they cannot promise any result.</p>
+</div>
+<script>
+const $=s=>document.querySelector(s),fx=(n,d=0)=>(+n).toLocaleString('en-IN',{maximumFractionDigits:d}),num=id=>parseFloat($('#'+id).value);
+const store={get(k,d){try{return JSON.parse(localStorage.getItem(k))||d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+/* tabs */
+$('#tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;document.querySelectorAll('nav button,section').forEach(x=>x.classList.remove('on'));b.classList.add('on');$('#'+b.dataset.t).classList.add('on');if(b.dataset.t==='op')opt();scrollTo(0,0)};
+const seg=(id,fn)=>$(id).onclick=e=>{const b=e.target.closest('button');if(!b)return;[...$(id).children].forEach(x=>x.classList.remove('on'));b.classList.add('on');fn&&fn(b.dataset.v)};
+/* 1. risk */
+function risk(){const C=num('rkC'),p=num('rkP'),E=num('rkE'),S=num('rkS'),L=num('rkL'),R=num('rkR'),o=$('#rkO'),pts=Math.abs(E-S);
+ if(!(C>0&&p>0&&L>0&&pts>0)){o.innerHTML='<div class="big">Enter capital, risk %, lot size and different entry and stop-loss prices.</div>';return}
+ const amt=C*p/100,lots=Math.floor(amt/(pts*L)),real=lots*pts*L,long=S<E,tg=long?E+pts*R:E-pts*R;
+ o.innerHTML=`<div class="big">Maximum lots<b class="${lots?'ok':'no'}">${lots}</b>${lots?'':'Your stop-loss is too wide for this risk. Reduce the stop distance or raise the risk limit consciously.'}</div>
+ <div>Money you accept to lose<b>₹${fx(amt)}</b></div><div>Actual risk at ${lots} lots<b>₹${fx(real)}</b></div>
+ <div>Stop distance<b>${fx(pts,2)} pts</b></div><div>Direction<b>${long?'Long':'Short'}</b></div>
+ <div>Target at ${R}R<b>${fx(tg,2)}</b></div><div>Reward if hit<b class="ok">₹${fx(real*R)}</b></div>`}
+['rkC','rkP','rkE','rkS','rkL','rkR'].forEach(i=>$('#'+i).oninput=risk);risk();
+/* 2. options */
+const N=x=>{const t=1/(1+.2316419*Math.abs(x)),d=.3989423*Math.exp(-x*x/2),p=d*t*(.3193815+t*(-.3565638+t*(1.781478+t*(-1.821256+t*1.330274))));return x>0?1-p:p},phi=x=>Math.exp(-x*x/2)/Math.sqrt(2*Math.PI);
+function bs(S,K,T,v,r,call){if(T<=0||v<=0){const i=call?Math.max(S-K,0):Math.max(K-S,0);return{p:i,d:call?(S>K?1:0):(S<K?-1:0),g:0,t:0,v:0}}
+ const sq=v*Math.sqrt(T),d1=(Math.log(S/K)+(r+v*v/2)*T)/sq,d2=d1-sq,e=Math.exp(-r*T);
+ return{p:call?S*N(d1)-K*e*N(d2):K*e*N(-d2)-S*N(-d1),d:call?N(d1):N(d1)-1,g:phi(d1)/(S*sq),
+  t:(-S*phi(d1)*v/(2*Math.sqrt(T))+(call?-r*K*e*N(d2):r*K*e*N(-d2)))/365,v:S*phi(d1)*Math.sqrt(T)/100}}
+let oT='CE',oD=1;seg('#opT',v=>{oT=v;opt()});seg('#opD',v=>{oD=+v;opt()});
+function canvas(c){const r=c.getBoundingClientRect(),dp=devicePixelRatio||1;c.width=r.width*dp;c.height=r.height*dp;const g=c.getContext('2d');g.setTransform(dp,0,0,dp,0,0);return[g,r.width,r.height]}
+function opt(){const S=num('opS'),K=num('opK'),T=num('opN')/365,v=num('opV')/100,r=num('opI')/100,q=num('opQ'),call=oT==='CE',o=$('#opO');
+ if(!(S>0&&K>0&&v>0&&q>0)){o.innerHTML='<div class="big">Fill spot, strike, volatility and quantity.</div>';return}
+ const m=bs(S,K,T,v,r,call),pi=$('#opP').value,prem=pi===''?m.p:+pi,be=call?K+prem:K-prem;
+ o.innerHTML=`<div>Model premium<b>₹${fx(m.p,2)}</b></div><div>Break-even at expiry<b>${fx(be,0)}</b></div>
+ <div>Delta<b>${fx(m.d,3)}</b></div><div>Gamma<b>${m.g.toFixed(5)}</b></div>
+ <div>Theta (per day)<b class="${oD>0?'no':'ok'}">₹${fx(m.t*q*oD,0)}</b></div><div>Vega (per 1% IV)<b>₹${fx(m.v*q*oD,0)}</b></div>
+ <div class="big">${oD>0?'Maximum loss':'Maximum profit'}<b>₹${fx(prem*q,0)}</b>${oD>0?(call?'Profit is unlimited if the market keeps rising.':'Profit is large if the market falls a lot.'):(call?'Loss can be unlimited if the market rises. Size very carefully.':'Loss can be very large if the market falls. Size very carefully.')}</div>`;
+ const c=$('#opC'),[g,W,H]=canvas(c),lo=S*.9,hi=S*1.1,n=80,xs=[],a=[],b=[];
+ for(let i=0;i<=n;i++){const s=lo+(hi-lo)*i/n;xs.push(s);a.push(((call?Math.max(s-K,0):Math.max(K-s,0))-prem)*q*oD);b.push((bs(s,K,T,v,r,call).p-prem)*q*oD)}
+ const all=a.concat(b),mn=Math.min(...all),mx=Math.max(...all),pd=(mx-mn)*.1||1,y=z=>H-18-(z-(mn-pd))/(mx-mn+2*pd)*(H-30),x=s=>6+(s-lo)/(hi-lo)*(W-12),cs=getComputedStyle(document.documentElement);
+ g.strokeStyle=cs.getPropertyValue('--ln');g.beginPath();g.moveTo(0,y(0));g.lineTo(W,y(0));g.stroke();
+ g.strokeStyle=cs.getPropertyValue('--mu');g.setLineDash([4,4]);g.beginPath();xs.forEach((s,i)=>i?g.lineTo(x(s),y(b[i])):g.moveTo(x(s),y(b[i])));g.stroke();
+ g.setLineDash([]);g.strokeStyle=cs.getPropertyValue('--ac');g.lineWidth=2.5;g.beginPath();xs.forEach((s,i)=>i?g.lineTo(x(s),y(a[i])):g.moveTo(x(s),y(a[i])));g.stroke();
+ g.lineWidth=1;g.strokeStyle=cs.getPropertyValue('--wa');g.beginPath();g.moveTo(x(S),0);g.lineTo(x(S),H-18);g.stroke();
+ g.fillStyle=cs.getPropertyValue('--mu');g.font='11px system-ui';g.fillText(fx(lo),6,H-4);g.textAlign='right';g.fillText(fx(hi),W-6,H-4);g.textAlign='center';g.fillText('spot '+fx(S),x(S),11)}
+['opS','opK','opN','opV','opI','opQ','opP'].forEach(i=>$('#'+i).oninput=opt);addEventListener('resize',()=>{if($('#op').classList.contains('on'))opt()});
+/* 3. monte carlo */
+const pc=(a,p)=>a[Math.min(a.length-1,Math.floor(a.length*p))];
+$('#mGo').onclick=()=>{const raw=$('#mR').value.split(/[,\s;]+/).map(parseFloat).filter(x=>!isNaN(x)),boot=raw.length>=10,wr=num('mW')/100,aw=num('mA'),al=num('mL'),rp=num('mP')/100,T=Math.round(num('mT')),dd=num('mD')/100,o=$('#mO');
+ if(!boot&&raw.length>0){o.innerHTML='<div class="big wa">Paste at least 10 results to use your own data, or clear the box to use the inputs above.</div>';return}
+ if(!(T>0&&rp>0&&(boot||(wr>=0&&wr<=1&&aw>0&&al>0)))){o.innerHTML='<div class="big wa">Check your inputs. Win rate must be between 0 and 100.</div>';return}
+ const RUNS=3000,fin=[],mdd=[],stk=[],paths=[];let ruin=0,prof=0;
+ for(let k=0;k<RUNS;k++){let e=1,pk=1,md=0,ls=0,ms=0;const p=k<40?[1]:null;
+  for(let t=0;t<T;t++){const R=boot?raw[Math.floor(Math.random()*raw.length)]:(Math.random()<wr?aw:-al);e*=Math.max(0,1+rp*R);if(R<0){ls++;if(ls>ms)ms=ls}else ls=0;
+   if(e>pk)pk=e;const d=1-e/pk;if(d>md)md=d;if(p)p.push(e)}
+  fin.push(e-1);mdd.push(md);stk.push(ms);if(md>=dd)ruin++;if(e>1)prof++;if(p)paths.push(p)}
+ fin.sort((a,b)=>a-b);mdd.sort((a,b)=>a-b);stk.sort((a,b)=>a-b);
+ const pct=x=>(x*100).toFixed(1)+'%',ex=boot?raw.reduce((a,b)=>a+b,0)/raw.length:wr*aw-(1-wr)*al;
+ o.innerHTML=`<div class="big">Chance you hit a ${fx(dd*100)}% drawdown<b class="${ruin/RUNS>.25?'no':ruin/RUNS>.08?'wa':'ok'}">${pct(ruin/RUNS)}</b></div>
+ <div>Expectancy per trade<b class="${ex>0?'ok':'no'}">${ex.toFixed(2)} R</b></div><div>Runs that end in profit<b>${pct(prof/RUNS)}</b></div>
+ <div>Typical result<b>${pct(pc(fin,.5))}</b></div><div>Bad case (1 in 20)<b class="no">${pct(pc(fin,.05))}</b></div>
+ <div>Typical worst drawdown<b>${pct(pc(mdd,.5))}</b></div><div>Bad case drawdown (1 in 20)<b class="no">${pct(pc(mdd,.95))}</b></div>
+ <div>Typical longest losing streak<b>${pc(stk,.5)} trades</b></div><div>Bad case streak (1 in 20)<b class="no">${pc(stk,.95)} trades</b></div>
+ <div class="big">${ex<=0?'This edge loses money on average. More trades will not fix it.':pc(stk,.95)>=8?'Plan for a long losing streak. Make sure you can follow your rules through '+pc(stk,.95)+' losses in a row.':'Your numbers look survivable if you stick to the same risk on every trade.'}</div>`;
+ const c=$('#mC');c.style.display='block';const[g,W,H]=canvas(c),all=paths.flat(),mn=Math.min(...all,.5),mx=Math.max(...all),y=z=>H-8-(z-mn)/(mx-mn)*(H-16),cs=getComputedStyle(document.documentElement);
+ g.strokeStyle=cs.getPropertyValue('--ln');g.beginPath();g.moveTo(0,y(1));g.lineTo(W,y(1));g.stroke();g.globalAlpha=.45;g.strokeStyle=cs.getPropertyValue('--ac');
+ paths.forEach(p=>{g.beginPath();p.forEach((v,i)=>{const px=i/(p.length-1)*W;i?g.lineTo(px,y(v)):g.moveTo(px,y(v))});g.stroke()})};
+/* 4. daily loop */
+const KEY='bft_tools_loop_v1',EM=['Calm','Confident','FOMO','Revenge','Fear','Greed','Bored'],CK=['I set today’s maximum loss','I checked the event and news calendar','I marked my levels','I wrote my setup rules','I slept well and feel steady'];
+let st=store.get(KEY,{days:{},cool:0}),res='',emo='Calm';const day=()=>new Date().toLocaleDateString('en-CA'),td=()=>st.days[day()]=st.days[day()]||{c:[0,0,0,0,0],t:[],n:''},save=()=>store.set(KEY,st);
+seg('#dlRs',v=>res=v);
+$('#dlE').innerHTML=EM.map(e=>`<button data-v="${e}"${e==='Calm'?' class="on"':''}>${e}</button>`).join('');seg('#dlE',v=>emo=v);
+$('#dlK').innerHTML=CK.map((t,i)=>`<label class="ck"><input type="checkbox" data-i="${i}">${t}</label>`).join('');
+$('#dlK').onchange=e=>{td().c[e.target.dataset.i]=e.target.checked?1:0;save();dl()};
+function streak(){let s=0,d=new Date();const full=x=>{const r=st.days[x.toLocaleDateString('en-CA')];return r&&r.c.every(Boolean)};if(!full(d))d.setDate(d.getDate()-1);while(full(d)){s++;d.setDate(d.getDate()-1)}return s}
+function dl(){const d=td(),n=d.t.length,br=d.t.filter(t=>t.b).length,w=d.t.filter(t=>t.r==='W').length,ec={};d.t.forEach(t=>ec[t.e]=(ec[t.e]||0)+1);
+ document.querySelectorAll('#dlK input').forEach((b,i)=>b.checked=!!d.c[i]);$('#dlS').textContent=streak()+' days';$('#dlD').textContent=d.c.reduce((a,b)=>a+b,0)+' of 5';
+ const sc=n?Math.round((n-br)/n*100):null;
+ $('#dlO').innerHTML=`<div class="big">Rule score<b class="${sc===null?'':sc>=80?'ok':sc>=50?'wa':'no'}">${sc===null?'No trades yet':sc+' / 100'}</b>Share of trades where you followed your own rules.</div><div>Trades<b>${n}</b></div><div>Rules broken<b class="${br?'no':''}">${br}</b></div><div>Wins<b>${w}</b></div><div>Losses<b>${n-w}</b></div>`;
+ $('#dlL').textContent=n?'Feelings today: '+Object.entries(ec).map(([k,v])=>k+' '+v).join(', ')+'.':'Log each trade right after it closes. Honest logs are the whole point.';
+ $('#dlN').value=d.n;tick()}
+$('#dlAdd').onclick=()=>{if(!res){alert('Choose Win or Loss first.');return}const d=td();d.t.push({r:res,e:emo,b:$('#dlB').checked});$('#dlB').checked=false;
+ const l=d.t.slice(-2);if(l.length===2&&l.every(t=>t.r==='L')&&st.cool<Date.now())st.cool=Date.now()+15*60000;save();dl()};
+$('#dlSv').onclick=()=>{td().n=$('#dlN').value;save();$('#dlSv').textContent='Saved';setTimeout(()=>$('#dlSv').textContent='Save note',1500)};
+$('#dlX').onclick=()=>{st.cool=0;save();tick()};
+function tick(){const l=st.cool-Date.now(),a=$('#dlA');if(l>0){a.classList.add('on');const s=Math.ceil(l/1000);$('#dlT').textContent=Math.floor(s/60)+':'+String(s%60).padStart(2,'0')}else a.classList.remove('on')}
+setInterval(tick,1000);dl();
+</script></body></html>
