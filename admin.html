@@ -24,7 +24,7 @@ label{font-size:13px;color:var(--mu)}.k{font-size:11px;padding:2px 8px;border-ra
 <div class="c"><h3>Content</h3><div id="list"></div></div>
 <div class="c"><h3>Students with access</h3><div class="g"><div><input id="se" type="email" placeholder="buyer@email.com"></div><div><input id="sn" placeholder="Note (e.g. UPI, 18 Oct)"></div></div><button id="sadd">Grant access</button><div id="slist"></div></div>
 </div></div><script>
-const SB_URL='',SB_KEY='';const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const SB_URL='https://ytdipdzzwuzdnzrabpwx.supabase.co',SB_KEY='sb_publishable_TZWfmoKVdyeuoBpmOvllUA_Cj7atACi';const $=s=>document.querySelector(s),esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 if(!SB_URL||!SB_KEY){$('#cfg').hidden=false;$('#login').hidden=true}else{
 const sb=supabase.createClient(SB_URL,SB_KEY);let edit=null,items=[];
 const msg=(id,t)=>{$(id).textContent=t};
