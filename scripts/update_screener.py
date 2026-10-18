@@ -140,7 +140,8 @@ def build(hist, universe, missing):
                      'w': ch(5), 'm': ch(21), 'q': ch(63),
                      'h52': round(h52, 2), 'l52': round(l52, 2),
                      'fh': round((c / h52 - 1) * 100, 2), 'fl': round((c / l52 - 1) * 100, 2),
-                     'v': int(a[-1][1]), 'vx': vx, 't': tags})
+                     'v': int(a[-1][1]), 'vx': vx, 't': tags,
+                     'sp': [round(x[0], 2) for x in a[-30:]]})
     return rows
 
 
