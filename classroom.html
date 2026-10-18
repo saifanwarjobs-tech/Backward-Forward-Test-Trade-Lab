@@ -420,7 +420,7 @@ function liveSetup(){try{Object.assign(LV.opt,JSON.parse(localStorage.getItem('c
  $('#lvcat').innerHTML='<option value="All">All lessons ('+LS.length+')</option>'+CATS.map(c=>'<option value="'+c+'">'+CI[c]+' '+c+'</option>').join('');
  $('#lvcat').value=LV.opt.cat;$('#lvord').value=LV.opt.shuffle;$('#lvgap').value=LV.opt.gap;$('#lvspd').value=LV.opt.spd;$('#lvvo').value=LV.opt.voice;$('#lvfm').value=LV.opt.fmt||(innerHeight>innerWidth?'v':'h');fillVoices();$('#lvo').classList.add('on')}
 function liveOrder(){const a=LS.filter(L=>LV.opt.cat==='All'||L.cat===LV.opt.cat).map(L=>L.id);if(LV.opt.shuffle)for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
-function setFmt(v){VERT=v;VK=v?1.6:1;LF=v?1.6:1.3;W=v?1080:1280;H=v?Math.max(1920,Math.min(2600,Math.round(1080*Math.max(screen.width,screen.height)/Math.min(screen.width,screen.height)))):720;WH=v?H-SAFE_T-SAFE_B-430:720;cv.width=W;cv.height=H;cv.style.aspectRatio=v?W+'/'+H:'16/9'}
+function setFmt(v){VERT=v;VK=v?1.6:1;LF=v?1.6:1.3;W=v?1080:1280;H=v?Math.max(1920,Math.min(2600,Math.round(1080*(r=>Math.abs(r-16/9)<.02?16/9:r)(Math.max(screen.width,screen.height)/Math.min(screen.width,screen.height))))):720;WH=v?H-SAFE_T-SAFE_B-430:720;cv.width=W;cv.height=H;cv.style.aspectRatio=v?W+'/'+H:'16/9'}
 function liveStart(){LV.opt={cat:$('#lvcat').value,shuffle:+$('#lvord').value,gap:+$('#lvgap').value,spd:+$('#lvspd').value,voice:+$('#lvvo').value,vname:$('#lvvn').value,fmt:$('#lvfm').value};
  try{localStorage.setItem('cls_live',JSON.stringify(LV.opt))}catch(e){}
  $('#lvo').classList.remove('on');LV.order=liveOrder();if(!LV.order.length)return;LV.i=-1;LV.on=true;document.body.classList.add('live');setFmt(LV.opt.fmt==='v');try{const de=document.documentElement;de.requestFullscreen&&de.requestFullscreen().catch(()=>{})}catch(e){}
@@ -496,4 +496,7 @@ if(MOB){document.body.classList.add('m');
  document.addEventListener('keydown',e=>{if(e.key==='Escape')shut()});
  lay();
 }
-</script><script>if('serviceWorker'in navigator&&location.protocol.indexOf('http')===0)addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})</script></body></html>
+</script><script>if('serviceWorker'in navigator&&location.protocol.indexOf('http')===0)addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})
+/* auto-start for OBS Browser Source: classroom.html?live=v (vertical) or ?live=h, optional &cat=Breakouts */
+;(()=>{const q=new URLSearchParams(location.search);if(!q.get('live'))return;setTimeout(()=>{try{const h=$('#hgo');h&&h.click();$('#lvb').click();$('#lvfm').value=q.get('live')==='h'?'h':'v';if(q.get('cat'))$('#lvcat').value=q.get('cat');$('#lvgo').click()}catch(e){}},700)})();
+</script></body></html>
