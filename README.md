@@ -10,7 +10,8 @@ Static site (plain HTML/JS, no build step). Open `index.html` or serve the folde
 | `admin.html` | Admin 2.0: dashboard, course/module/lesson builder, video/PDF/cover upload, indicators, students (expiry, amount, WhatsApp) |
 | `trade-lab-pro.html` | Pro replay lab, backtest + locked forward test |
 | `classroom.html` | Teaching board |
-| `backtest.html` | Classic lab (Supabase login/sync) |
+| `tools.html` | Trading tools (calculators, checklists) |
+| `legal.html` | Terms, privacy and refund policy |
 
 Data (pick in the Pro Lab header dropdown):
 - `bank-nifty-5m-data.csv` (Jan 2015 to Apr 2024)
@@ -20,5 +21,7 @@ Academy setup (once):
 1. Supabase > SQL Editor: run `schema.sql` (safe to re-run; migrates v1 data). First time also: `insert into admins values ('you@email.com');`
 2. Supabase > Authentication > Providers > Email: turn ON "Confirm email" (the admin dashboard warns if it is off).
 3. Open `admin.html`, sign in, add content. Students: add their email after payment.
+
+Before charging: confirm the data licence for the CSV files, set up custom SMTP in Supabase (the default sender is heavily rate-limited), and add a support email in `legal.html` (`B.email`).
 
 Payment is still manual UPI + WhatsApp (temporary). See DECISIONS.md.

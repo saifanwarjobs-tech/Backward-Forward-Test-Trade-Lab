@@ -135,7 +135,7 @@ main{transition:opacity .35s}.ld main{opacity:0}
 
 <script>
 /* ===================== EDIT THIS SECTION: brand, price, content ===================== */
-const CFG={brand:'BFT Academy',price:4999,mrp:14999,payUrl:'https://rzp.io/l/your-payment-link',pixelId:'',codes:[],
+const CFG={brand:'BFT Academy',price:4999,mrp:14999,payUrl:'',pixelId:'',codes:[],
  contact:'https://wa.me/916350566010',refund:'7 days from payment, if you have completed less than 20% of the lessons. Ask on WhatsApp with your registered email. Full details are on the Terms page.',terms:'legal.html#terms',privacy:'legal.html#privacy'};
 /* COURSES: video = YouTube/Vimeo EMBED link (https://www.youtube.com/embed/ID) or .mp4 link.  lab = page to practise on.  free:1 = open to everyone. */
 const COURSES=[
@@ -358,7 +358,7 @@ function authBox(mode){mode=mode||'in';
  <p class="m" style="font-size:12px;margin-top:8px">Need help? <a href="${esc(CFG.contact)}" target="_blank" rel="noopener" style="text-decoration:underline">Contact us</a></p></div>`,'n');
  $('#md').querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>authBox(b.dataset.m));
  const go=async()=>{const e=$('#ae').value.trim(),p=$('#ap')?$('#ap').value:'';if(!/\S+@\S+\.\S+/.test(e))return toast('Enter a valid email');
-  if(mode!=='reset'&&p.length<6)return toast('Password must be at least 6 characters');
+  if(mode!=='reset'&&p.length<8)return toast('Password must be at least 8 characters');
   const b=$('#ab');b.disabled=true;
   try{
    if(mode==='reset'){const r=await sb.auth.resetPasswordForEmail(e,{redirectTo:here});toast(r.error?r.error.message:'Reset link sent. Check your email.')}
@@ -370,8 +370,8 @@ function authBox(mode){mode=mode||'in';
   b.disabled=false};
  $('#ab').onclick=go;$('#md').onkeydown=e=>{if(e.key==='Enter'&&e.target.tagName==='INPUT')go()};setTimeout(()=>$('#ae')&&$('#ae').focus(),60)}
 window.codeBox=()=>authBox('in');
-function newPass(){open(`<div style="text-align:center;padding:6px"><h3 style="padding:0">Set a new password</h3><p class="m">Choose a password with at least 6 characters.</p><input type="password" id="np" placeholder="New password" autocomplete="new-password" aria-label="New password"><button class="btn" id="nb" style="width:100%;margin-top:6px">Save password</button></div>`,'n');
- $('#nb').onclick=async()=>{const p=$('#np').value;if(p.length<6)return toast('Password must be at least 6 characters');const r=await sb.auth.updateUser({password:p});if(r.error)return toast(r.error.message);toast('Password updated ✓');history.replaceState(null,'',here);setTimeout(()=>location.reload(),800)}}
+function newPass(){open(`<div style="text-align:center;padding:6px"><h3 style="padding:0">Set a new password</h3><p class="m">Choose a password with at least 8 characters.</p><input type="password" id="np" placeholder="New password" autocomplete="new-password" aria-label="New password"><button class="btn" id="nb" style="width:100%;margin-top:6px">Save password</button></div>`,'n');
+ $('#nb').onclick=async()=>{const p=$('#np').value;if(p.length<8)return toast('Password must be at least 8 characters');const r=await sb.auth.updateUser({password:p});if(r.error)return toast(r.error.message);toast('Password updated ✓');history.replaceState(null,'',here);setTimeout(()=>location.reload(),800)}}
 sb.auth.onAuthStateChange(ev=>{if(ev==='PASSWORD_RECOVERY')setTimeout(newPass,50)});
 /* ---- account ---- */
 window.acct=()=>{if(!session)return authBox('in');
