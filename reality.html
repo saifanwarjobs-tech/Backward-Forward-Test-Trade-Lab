@@ -1,0 +1,139 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg" type="image/svg+xml"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Reality Check – Tip, return and cost checks for Indian traders | BFT Trade Lab</title>
+<meta name="description" content="Three free checks before you trust a tip or a strategy: a scam red-flag checklist, a compounding reality check for return claims, and what trading costs do to your profit.">
+<meta name="theme-color" content="#070b14">
+<script>try{var t=localStorage.getItem('bft_scr_th');if(t)document.documentElement.dataset.th=t}catch(e){}</script>
+<style>
+:root{--bg:#060a14;--pn:rgba(255,255,255,.035);--tx:#e8eefb;--mu:#8e9bb8;--ln:rgba(255,255,255,.09);--ac:#6aa5ff;--gold:#f5c76b;--up:#2fe0a0;--dn:#ff6477;--ink:#06101f;--glow:rgba(106,165,255,.16)}
+@media(prefers-color-scheme:light){:root:not([data-th=dark]){--bg:#f4f6fb;--pn:#fff;--tx:#0f172a;--mu:#55617a;--ln:rgba(15,23,42,.11);--ac:#2f6fe4;--gold:#b7791f;--up:#0b9a63;--dn:#d6334d;--ink:#fff;--glow:rgba(47,111,228,.12)}}
+:root[data-th=light]{--bg:#f4f6fb;--pn:#fff;--tx:#0f172a;--mu:#55617a;--ln:rgba(15,23,42,.11);--ac:#2f6fe4;--gold:#b7791f;--up:#0b9a63;--dn:#d6334d;--ink:#fff;--glow:rgba(47,111,228,.12)}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--tx);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overflow-x:hidden;min-height:100vh}
+body:before{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradient(1000px 520px at 8% -10%,var(--glow),transparent 60%),radial-gradient(700px 480px at 105% 4%,rgba(167,139,250,.1),transparent 60%)}
+a{color:inherit}button,input{font:inherit;color:inherit}:focus-visible{outline:2px solid var(--ac);outline-offset:2px;border-radius:8px}
+.w{max-width:760px;margin:0 auto;padding:0 18px}
+nav{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--ln)}
+nav .w{display:flex;align-items:center;gap:16px;height:54px;max-width:980px}nav b i{font-style:normal;color:var(--ac)}nav .sp{flex:1}nav a.l{font-size:14px;color:var(--mu);text-decoration:none}
+@media(max-width:640px){nav a.l{display:none}}
+h1{font-size:clamp(30px,7vw,44px);line-height:1.08;letter-spacing:-.025em;font-weight:800;margin:30px 0 8px}
+.sub{color:var(--mu);max-width:50ch}
+.tabs{display:flex;gap:22px;overflow-x:auto;scrollbar-width:none;margin:22px -18px 0;padding:0 18px;border-bottom:1px solid var(--ln);position:sticky;top:54px;z-index:10;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(12px)}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:none;background:none;border:0;border-bottom:2px solid transparent;padding:13px 0 11px;color:var(--mu);font-weight:600;font-size:15px;cursor:pointer;min-height:46px}
+.tab[aria-selected=true]{color:var(--tx);border-color:var(--ac)}
+section{display:none;padding:22px 0 8px}section.on{display:block}
+h2{font-size:22px;letter-spacing:-.01em;margin-bottom:4px}.hint{color:var(--mu);font-size:14.5px;margin-bottom:16px;max-width:56ch}
+.ck{display:grid;gap:0;background:var(--pn);border:1px solid var(--ln);border-radius:16px;overflow:hidden}
+.ck label{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border-bottom:1px solid var(--ln);cursor:pointer}.ck label:last-child{border-bottom:0}
+.ck label:hover{background:color-mix(in srgb,var(--ac) 5%,transparent)}
+.ck input{width:22px;height:22px;margin-top:2px;accent-color:var(--dn);flex:none}
+.ck small{display:block;color:var(--mu);font-size:13px;margin-top:1px}
+.res{margin-top:16px;border:1px solid var(--ln);border-left-width:4px;border-radius:14px;padding:16px 18px;background:var(--pn)}
+.res h3{font-size:19px;margin-bottom:4px}.res p{color:var(--mu);font-size:14.5px}.res p+p{margin-top:8px}.res b{color:var(--tx)}
+.res.ok{border-left-color:var(--up)}.res.mid{border-left-color:var(--gold)}.res.bad{border-left-color:var(--dn)}
+.fm{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;background:var(--pn);border:1px solid var(--ln);border-radius:16px;padding:16px}
+.fm label{display:block;font-size:13px;color:var(--mu);margin-bottom:5px}
+.fm input{width:100%;background:transparent;border:1px solid var(--ln);border-radius:10px;padding:10px 12px;font-size:16px;min-height:44px}
+table{width:100%;border-collapse:collapse;margin-top:14px;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:10px 4px;border-bottom:1px solid var(--ln);font-size:15px}th{color:var(--mu);font-weight:600;font-size:13px}td:last-child,th:last-child{text-align:right}
+.big{font-size:clamp(26px,6vw,34px);font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums;margin:4px 0}
+.up{color:var(--up)}.dn{color:var(--dn)}
+.act{margin-top:12px;padding:12px 14px;border-radius:12px;background:color-mix(in srgb,var(--dn) 10%,transparent);font-size:14px}
+.cta{margin:28px 0 8px;padding:20px 0;border-top:1px solid var(--ln);display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center;justify-content:space-between}
+.cta h2{font-size:19px}.cta p{color:var(--mu);font-size:14.5px;max-width:44ch}
+.btn{display:inline-block;background:var(--ac);color:var(--ink);border-radius:12px;padding:12px 18px;font-weight:700;font-size:15px;min-height:46px;text-decoration:none}
+.dis{font-size:12.5px;color:var(--mu);padding:6px 0 40px;max-width:80ch}
+</style></head><body>
+<nav><div class="w"><a href="index.html" style="text-decoration:none"><b>BFT <i>Trade Lab</i></b></a><a class="l" href="journal.html">Journal</a><a class="l" href="trade-lab-pro.html">Testing Lab</a><a class="l" href="tools.html">Tools</a><span class="sp"></span><a class="l" href="index.html">Home</a></div></nav>
+<main class="w">
+<h1>Reality Check</h1>
+<p class="sub">Three quick checks to run before you trust a tip, a return claim or your own numbers. Nothing you type leaves your phone.</p>
+<div class="tabs" role="tablist" aria-label="Checks">
+<button class="tab" role="tab" id="t-scam" aria-selected="true" aria-controls="p-scam">Tip or scam?</button>
+<button class="tab" role="tab" id="t-claim" aria-selected="false" aria-controls="p-claim">Can this return be real?</button>
+<button class="tab" role="tab" id="t-cost" aria-selected="false" aria-controls="p-cost">What costs take</button></div>
+
+<section id="p-scam" class="on" role="tabpanel" aria-labelledby="t-scam">
+<h2>Is this tip group or advisor safe?</h2>
+<p class="hint">Tick everything that matches what you were told or shown. Be honest, it only works if you do.</p>
+<div class="ck" id="ck"></div>
+<div class="res ok" id="sr" role="status"></div>
+</section>
+
+<section id="p-claim" role="tabpanel" aria-labelledby="t-claim">
+<h2>Can this return be real?</h2>
+<p class="hint">Someone says they make a fixed percentage every month. See what that would mean if it were true and repeated.</p>
+<div class="fm">
+<div><label for="c0">Starting amount (₹)</label><input id="c0" type="number" inputmode="decimal" value="100000" min="0"></div>
+<div><label for="c1">Claimed return per month (%)</label><input id="c1" type="number" inputmode="decimal" value="10" min="0" step="0.5"></div></div>
+<div class="res mid" id="cr" role="status"></div>
+</section>
+
+<section id="p-cost" role="tabpanel" aria-labelledby="t-cost">
+<h2>What do charges take from your profit?</h2>
+<p class="hint">Brokerage, STT, exchange charges, GST and stamp duty are paid on every trade, win or lose. Use the total round-trip charge from one of your own contract notes.</p>
+<div class="fm">
+<div><label for="k0">Trades per day</label><input id="k0" type="number" inputmode="decimal" value="4" min="0"></div>
+<div><label for="k1">Trading days per year</label><input id="k1" type="number" inputmode="decimal" value="240" min="0"></div>
+<div><label for="k2">Charges per trade, buy and sell (₹)</label><input id="k2" type="number" inputmode="decimal" value="100" min="0"></div>
+<div><label for="k3">Average profit per trade before charges (₹)</label><input id="k3" type="number" inputmode="decimal" value="150"></div></div>
+<div class="res mid" id="kr" role="status"></div>
+</section>
+
+<div class="cta"><div><h2>Test your own numbers</h2><p>Practise on real BANKNIFTY history with demo money and see what your rules actually earn after charges.</p></div><a class="btn" href="trade-lab-pro.html">Open Testing Lab</a></div>
+<p class="dis"><b>Education only.</b> These are simple calculators, not advice. A clear checklist result does not prove a tip is safe, and a high score does not prove fraud. Always check whether a person is registered on SEBI's official website before paying anyone for trading advice. Example numbers are only starting values; replace them with your own.</p>
+</main>
+<script>
+(function(){
+const $=s=>document.querySelector(s),num=id=>{const v=parseFloat($('#'+id).value);return isFinite(v)?v:0};
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function inr(n){const a=Math.abs(n),s=n<0?'−':'';
+ if(a>=1e12)return s+'over ₹1 lakh crore';
+ if(a>=1e7)return s+'₹'+(a/1e7).toLocaleString('en-IN',{maximumFractionDigits:2})+' crore';
+ if(a>=1e5)return s+'₹'+(a/1e5).toLocaleString('en-IN',{maximumFractionDigits:2})+' lakh';
+ return s+'₹'+Math.round(a).toLocaleString('en-IN')}
+/* tabs */
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.setAttribute('aria-selected',x===b));
+ document.querySelectorAll('section').forEach(s=>s.classList.toggle('on',s.id===b.getAttribute('aria-controls')));window.scrollTo({top:0})});
+/* 1. scam checklist. w = weight, k = critical (stop at once) */
+const FL=[
+ ['They promise guaranteed, fixed or "sure shot" returns','No honest trader can guarantee profit in the market.',3,1],
+ ['They claim very high returns, like 5% or more every month','Compare with the next tab to see what that would mean.',2,0],
+ ['You must pay first, before seeing any tip or record','Joining fees, "VIP" plans, and "refundable" deposits.',2,0],
+ ['They ask you to send money to a person’s personal UPI or bank account','Real brokers and advisers use business accounts and give a proper receipt.',3,1],
+ ['They ask for your broker login, OTP, PIN or remote screen access','Nobody legitimate needs this. Anyone with it can empty your account.',3,1],
+ ['They tell you to invest through an unknown app or website','Check that your money goes to a SEBI-registered broker, in your own name.',3,1],
+ ['They claim insider information, operator tips or "big player" news','Trading on inside information is illegal.',3,0],
+ ['They push you to act now, with limited seats or a deadline','Pressure is used so you do not stop to check.',2,0],
+ ['Their proof is only profit screenshots, never a full verified record','Screenshots are easy to fake and easy to cherry-pick.',2,0],
+ ['The tips come in a private Telegram or WhatsApp group','Many scam groups add you without asking and show fake members.',1,0],
+ ['They will not share a SEBI registration number, or you could not find it on SEBI’s site','Look the name up yourself on the official SEBI website.',3,0]];
+$('#ck').innerHTML=FL.map((f,i)=>'<label><input type="checkbox" data-i="'+i+'"><span>'+esc(f[0])+'<small>'+esc(f[1])+'</small></span></label>').join('');
+function scam(){const on=[...document.querySelectorAll('#ck input:checked')].map(x=>FL[+x.dataset.i]);
+ const score=on.reduce((s,f)=>s+f[2],0),crit=on.some(f=>f[3]),r=$('#sr');
+ if(!on.length){r.className='res ok';r.innerHTML='<h3>No red flags ticked</h3><p>That is a good start, but it does not make a tip safe. Check the person’s registration on SEBI’s official website, and never share your OTP or login.</p>';return}
+ if(crit||score>=7){r.className='res bad';r.innerHTML='<h3>Very likely a scam. Do not send money.</h3><p>You ticked <b>'+on.length+'</b> red flag'+(on.length>1?'s':'')+', at least one of them a serious one. Stop talking to them, do not pay anything and do not share any code or password.</p><div class="act">If you already paid or shared details, call <b>1930</b> (cyber crime helpline) right away and report on <b>cybercrime.gov.in</b>. Tell your bank and broker too.</div>';return}
+ if(score>=4){r.className='res bad';r.innerHTML='<h3>High risk. Do not pay yet.</h3><p>Several warning signs match. Ask for a SEBI registration number and a full, verifiable track record. If they refuse or get angry, walk away.</p>';return}
+ r.className='res mid';r.innerHTML='<h3>Some warning signs</h3><p>Not conclusive, but be careful. Ask for a SEBI registration number, check it yourself, and never pay before you can verify who they are.</p>'}
+$('#ck').addEventListener('change',scam);scam();
+/* 2. compounding claim */
+function claim(){const p=num('c0'),r=num('c1')/100,x=Math.pow(1+r,12)-1,box=$('#cr');
+ const row=(m,l)=>{const v=p*Math.pow(1+r,m);return '<tr><td>'+l+'</td><td>'+inr(v)+'</td><td>'+(p>0?(v/p).toLocaleString('en-IN',{maximumFractionDigits:1})+'×':'–')+'</td></tr>'};
+ const tone=r*100>=8?'bad':r*100>=4?'mid':'ok';box.className='res '+tone;
+ let msg;
+ if(r*100>=8)msg='If this were real and repeatable, this person would be managing huge sums, not selling tips. Be very careful.';
+ else if(r*100>=4)msg='Not impossible for a short while, but very hard to repeat for years. Ask for a full, verified record covering bad months too.';
+ else msg='A claim like this is more believable, but still ask for a verified record that includes losing months.';
+ box.innerHTML='<p>'+(r>0?'Earning '+(r*100).toLocaleString('en-IN',{maximumFractionDigits:2})+'% every month adds up to':'Enter a monthly return to see the result.')+'</p>'+
+ (r>0?'<div class="big '+(tone==='bad'?'dn':'')+'">'+(x*100).toLocaleString('en-IN',{maximumFractionDigits:0})+'% a year</div><p>That is more than <b>'+(1+x).toLocaleString('en-IN',{maximumFractionDigits:1})+' times</b> your money each year, because gains compound.</p>'+
+ '<table><tr><th>After</th><th>Your '+inr(p)+' becomes</th><th>Growth</th></tr>'+row(12,'1 year')+row(36,'3 years')+row(60,'5 years')+'</table><p style="margin-top:12px">'+msg+'</p>':'')}
+['c0','c1'].forEach(id=>$('#'+id).addEventListener('input',claim));claim();
+/* 3. cost drag */
+function cost(){const n=num('k0'),d=num('k1'),c=num('k2'),g=num('k3'),trades=n*d,paid=trades*c,gross=trades*g,net=gross-paid,box=$('#kr');
+ const tone=g<=c?'bad':(c/g>=.4?'mid':'ok');box.className='res '+tone;
+ box.innerHTML='<p>You place about <b>'+Math.round(trades).toLocaleString('en-IN')+'</b> trades a year and pay</p><div class="big dn">'+inr(paid)+'</div><p>in charges, whether you win or lose.</p>'+
+ '<table><tr><th>Per year</th><th>Amount</th></tr><tr><td>Profit before charges</td><td>'+inr(gross)+'</td></tr><tr><td>Charges</td><td class="dn">'+inr(-paid)+'</td></tr><tr><td><b>Profit after charges</b></td><td class="'+(net>=0?'up':'dn')+'"><b>'+inr(net)+'</b></td></tr></table>'+
+ '<p style="margin-top:12px">'+(g<=0?'Your average trade loses money before charges, so charges only make it worse.':g<=c?'Charges are as big as your average profit. You need more than <b>'+inr(c)+'</b> per trade just to break even.':'Charges take <b>'+Math.round(c/g*100)+'%</b> of your profit. You break even only if your average trade earns more than <b>'+inr(c)+'</b>.')+'</p>'}
+['k0','k1','k2','k3'].forEach(id=>$('#'+id).addEventListener('input',cost));cost();
+})();
+</script></body></html>
