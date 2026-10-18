@@ -1,0 +1,18 @@
+{
+ "_note": "Edit this list to add or remove stocks. Use exact NSE symbols. Symbols NSE does not list on a given day are skipped and shown in data/screener.json under meta.missing. Tags: nifty50, bank.",
+ "symbols": {
+  "ADANIENT":["nifty50"],"ADANIPORTS":["nifty50"],"APOLLOHOSP":["nifty50"],"ASIANPAINT":["nifty50"],
+  "AXISBANK":["nifty50","bank"],"BAJAJ-AUTO":["nifty50"],"BAJFINANCE":["nifty50"],"BAJAJFINSV":["nifty50"],
+  "BEL":["nifty50"],"BHARTIARTL":["nifty50"],"CIPLA":["nifty50"],"COALINDIA":["nifty50"],"DRREDDY":["nifty50"],
+  "EICHERMOT":["nifty50"],"ETERNAL":["nifty50"],"GRASIM":["nifty50"],"HCLTECH":["nifty50"],
+  "HDFCBANK":["nifty50","bank"],"HDFCLIFE":["nifty50"],"HINDALCO":["nifty50"],"HINDUNILVR":["nifty50"],
+  "ICICIBANK":["nifty50","bank"],"INDIGO":["nifty50"],"INFY":["nifty50"],"ITC":["nifty50"],"JIOFIN":["nifty50"],
+  "JSWSTEEL":["nifty50"],"KOTAKBANK":["nifty50","bank"],"LT":["nifty50"],"M&M":["nifty50"],"MARUTI":["nifty50"],
+  "MAXHEALTH":["nifty50"],"NESTLEIND":["nifty50"],"NTPC":["nifty50"],"ONGC":["nifty50"],"POWERGRID":["nifty50"],
+  "RELIANCE":["nifty50"],"SBILIFE":["nifty50"],"SBIN":["nifty50","bank"],"SHRIRAMFIN":["nifty50"],
+  "SUNPHARMA":["nifty50"],"TATACONSUM":["nifty50"],"TATASTEEL":["nifty50"],"TCS":["nifty50"],"TECHM":["nifty50"],
+  "TITAN":["nifty50"],"TRENT":["nifty50"],"ULTRACEMCO":["nifty50"],"WIPRO":["nifty50"],
+  "BANKBARODA":["bank"],"PNB":["bank"],"FEDERALBNK":["bank"],"IDFCFIRSTB":["bank"],"AUBANK":["bank"],
+  "CANBK":["bank"],"BANDHANBNK":["bank"],"INDUSINDBK":["nifty50","bank"]
+ }
+}

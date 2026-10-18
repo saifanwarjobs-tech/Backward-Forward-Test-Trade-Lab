@@ -10,6 +10,7 @@ Static site (plain HTML/JS, no build step). Open `index.html` or serve the folde
 | `admin.html` | Admin 2.0: dashboard, course/module/lesson builder, video/PDF/cover upload, indicators, students (expiry, amount, WhatsApp) |
 | `trade-lab-pro.html` | Pro replay lab, backtest + locked forward test |
 | `classroom.html` | Teaching board |
+| `screener.html` | Market Movers: end-of-day top gainers/losers, 52-week highs/lows, volume spikes (data in `data/screener.json`) |
 | `tools.html` | Trading tools (calculators, checklists) |
 | `legal.html` | Terms, privacy and refund policy |
 
@@ -25,3 +26,11 @@ Academy setup (once):
 Before charging: confirm the data licence for the CSV files, set up custom SMTP in Supabase (the default sender is heavily rate-limited), and add a support email in `legal.html` (`B.email`).
 
 Payment is still manual UPI + WhatsApp (temporary). See DECISIONS.md.
+
+## Market Movers (screener) setup
+Data is end-of-day (not live) and refreshes itself every weekday evening. You never upload anything.
+1. GitHub repo > Settings > Actions > General > Workflow permissions: choose **Read and write permissions**.
+2. Actions tab > **Update screener data** > Run workflow (once). The first run downloads about a year of history and takes a few minutes. After that it runs by itself at 19:00 and 21:00 IST on weekdays.
+3. Add or remove stocks in `universe.json` (exact NSE symbols). Symbols NSE does not return are listed in `data/screener.json` under `meta.missing`.
+4. If NSE blocks or changes the file, the run turns red (GitHub emails you) and the page keeps showing the last data with its "As of" date.
+5. Check NSE's terms for using their end-of-day files in a paid product before charging for this.

@@ -1,0 +1,93 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg" type="image/svg+xml"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Market Movers – Top and bottom NSE stocks | BFT Trade Lab</title>
+<meta name="description" content="End-of-day top gainers, top losers, 52-week highs and lows and volume spikes for large-cap NSE stocks. Education only, no tips.">
+<meta name="theme-color" content="#070b14">
+<style>
+:root{--bg:#070b14;--tx:#e8eefb;--mu:#8e9bb8;--ln:rgba(255,255,255,.1);--gl:rgba(255,255,255,.05);--ac:#6aa5ff;--gold:#f5c76b;--up:#3ddc97;--dn:#ff6b7a;--ink:#06101f}
+@media(prefers-color-scheme:light){:root{--bg:#f5f7fc;--tx:#0f172a;--mu:#55617a;--ln:rgba(15,23,42,.12);--gl:#fff;--ac:#2f6fe4;--gold:#b7791f;--up:#0f9d63;--dn:#d6334d;--ink:#fff}}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--tx);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overflow-x:hidden;min-height:100vh}
+body:before{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradient(900px 500px at 10% -8%,rgba(106,165,255,.18),transparent 60%),radial-gradient(700px 500px at 100% 10%,rgba(167,139,250,.12),transparent 60%)}
+a{color:inherit;text-decoration:none}:focus-visible{outline:2px solid var(--ac);outline-offset:2px;border-radius:8px}
+.w{max-width:860px;margin:0 auto;padding:0 16px}
+nav{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--ln)}
+nav .w{display:flex;align-items:center;gap:14px;height:54px}nav b i{font-style:normal;color:var(--ac)}nav .sp{flex:1}nav a.l{font-size:14px;color:var(--mu)}
+@media(max-width:620px){nav a.l{display:none}}
+h1{font-size:clamp(26px,5vw,36px);line-height:1.15;margin:26px 0 6px}.sub{color:var(--mu);font-size:15px}
+.st{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:14px 0 4px;font-size:13px;color:var(--mu)}
+.chip{display:inline-block;border:1px solid var(--ln);background:var(--gl);border-radius:999px;padding:3px 10px;font-size:12.5px}
+.chip.warn{border-color:var(--gold);color:var(--gold)}
+.bar{display:flex;gap:8px;overflow-x:auto;padding:12px 0 4px;scrollbar-width:none}.bar::-webkit-scrollbar{display:none}
+.tb{flex:none;border:1px solid var(--ln);background:var(--gl);color:var(--tx);border-radius:12px;padding:10px 14px;font:inherit;font-size:14.5px;font-weight:600;cursor:pointer;min-height:44px}
+.tb[aria-pressed=true]{background:var(--ac);border-color:var(--ac);color:var(--ink)}
+.sm{padding:7px 12px;font-size:13px;min-height:36px;border-radius:999px;font-weight:500}
+.row2{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:6px 0}
+input[type=search]{flex:1;min-width:140px;background:var(--gl);border:1px solid var(--ln);border-radius:12px;padding:9px 12px;color:var(--tx);font:inherit;font-size:16px}
+.lst{margin:10px 0;display:grid;gap:8px}
+.it{display:grid;grid-template-columns:28px 1fr auto;gap:10px;align-items:center;background:var(--gl);border:1px solid var(--ln);border-radius:14px;padding:12px 14px}
+.rk{color:var(--mu);font-size:13px;text-align:center}.sy{font-weight:700;letter-spacing:.2px}.px{font-size:13px;color:var(--mu)}
+.sd{font-size:12.5px;color:var(--mu);margin-top:2px}
+.pc{font-weight:800;font-size:17px;text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}.up{color:var(--up)}.dn{color:var(--dn)}.nu{color:var(--mu)}
+.rg{height:5px;border-radius:3px;background:var(--ln);position:relative;margin-top:7px}.rg i{position:absolute;top:-3px;width:3px;height:11px;border-radius:2px;background:var(--ac)}
+.more{width:100%;margin:2px 0 8px}
+.msg{background:var(--gl);border:1px dashed var(--ln);border-radius:14px;padding:22px;text-align:center;color:var(--mu);margin:14px 0}
+.cta{background:var(--gl);border:1px solid var(--ln);border-radius:16px;padding:18px;margin:18px 0}.cta h2{font-size:18px;margin-bottom:4px}.cta p{color:var(--mu);font-size:14.5px;margin-bottom:12px}
+.btn{display:inline-block;background:var(--ac);color:var(--ink);border-radius:12px;padding:11px 16px;font-weight:700;font-size:15px;min-height:44px}
+.dis{font-size:12.5px;color:var(--mu);border-top:1px solid var(--ln);padding:14px 0 36px;margin-top:18px}
+</style></head><body>
+<nav><div class="w"><a href="index.html"><b>BFT <i>Trade Lab</i></b></a><a class="l" href="journal.html">📒 Journal</a><a class="l" href="trade-lab-pro.html">🧪 Testing Lab</a><a class="l" href="academy.html">🎓 Academy</a><span class="sp"></span><a class="l" href="index.html">← Home</a></div></nav>
+<main class="w">
+<h1>Market Movers</h1>
+<p class="sub">Top and bottom large-cap NSE stocks, updated after market close.</p>
+<div class="st" id="st" role="status"><span class="chip">Loading…</span></div>
+<div class="bar" id="tabs" role="group" aria-label="List type"></div>
+<div class="row2" id="opts"></div>
+<div class="lst" id="lst"></div>
+<button class="tb sm more" id="more" hidden></button>
+<div class="cta"><h2>Spot a big move? Practise trading it.</h2><p>Replay real BANKNIFTY history with demo money, test your rules, then see if your edge holds on unseen data.</p><a class="btn" href="trade-lab-pro.html">Open Testing Lab →</a></div>
+<p class="dis"><b>Education only.</b> This is end-of-day data, not live prices, and it may be delayed or contain errors. It is not a recommendation to buy or sell anything. Past moves do not predict future moves. Multi-day changes are adjusted for splits and bonus issues on a best-effort basis. Source: NSE end-of-day files. <a href="legal.html#terms" style="text-decoration:underline">Terms</a></p>
+</main>
+<script>
+(function(){
+const $=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const TABS=[['gain','🟢 Top gainers'],['lose','🔴 Top losers'],['hi','52-week highs'],['lo','52-week lows'],['vol','Volume spikes']];
+const PER=[['ch','Today'],['w','1 week'],['m','1 month'],['q','3 months']];
+const S={tab:'gain',per:'ch',uni:'all',q:'',all:false};let D=null;
+try{const x=JSON.parse(localStorage.getItem('bft_scr')||'{}');if(x.tab)S.tab=x.tab;if(x.per)S.per=x.per;if(x.uni)S.uni=x.uni}catch(e){}
+const save=()=>{try{localStorage.setItem('bft_scr',JSON.stringify({tab:S.tab,per:S.per,uni:S.uni}))}catch(e){}};
+const f=(n,d=2)=>n==null?'–':(n>0?'+':n<0?'−':'')+Math.abs(n).toFixed(d)+'%';
+const cl=n=>n==null?'nu':n>0?'up':n<0?'dn':'nu';
+const price=n=>'₹'+n.toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2});
+const vol=n=>n>=1e7?(n/1e7).toFixed(2)+' Cr':n>=1e5?(n/1e5).toFixed(2)+' L':n.toLocaleString('en-IN');
+function status(){const m=D.meta,d=new Date(m.asof+'T00:00:00+05:30'),days=Math.floor((Date.now()-d)/864e5),
+ stale=days>4,txt=d.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric',timeZone:'Asia/Kolkata'});
+ $('#st').innerHTML='<span class="chip'+(stale?' warn':'')+'">'+(stale?'⚠ Data is old: ':'')+'As of '+esc(txt)+' close</span><span class="chip">End-of-day, not live</span><span class="chip">'+esc(m.count)+' stocks</span>'}
+function tabs(){$('#tabs').innerHTML=TABS.map(t=>'<button class="tb" data-t="'+t[0]+'" aria-pressed="'+(S.tab===t[0])+'">'+t[1]+'</button>').join('');
+ let o='';if(S.tab==='gain'||S.tab==='lose')o+=PER.map(p=>'<button class="tb sm" data-p="'+p[0]+'" aria-pressed="'+(S.per===p[0])+'">'+p[1]+'</button>').join('')+'<span style="width:6px"></span>';
+ o+=[['all','All'],['nifty50','Nifty 50'],['bank','Banking']].map(u=>'<button class="tb sm" data-u="'+u[0]+'" aria-pressed="'+(S.uni===u[0])+'">'+u[1]+'</button>').join('');
+ o+='<input type="search" id="q" placeholder="Search" aria-label="Search symbol" value="'+esc(S.q)+'">';$('#opts').innerHTML=o}
+function rows(){let r=D.rows.filter(x=>(S.uni==='all'||x.t.indexOf(S.uni)>-1)&&(!S.q||x.s.indexOf(S.q.toUpperCase())>-1));
+ const by=(k,dir)=>r.filter(x=>x[k]!=null).sort((a,b)=>dir*(b[k]-a[k]));
+ if(S.tab==='gain')return by(S.per,1);if(S.tab==='lose')return by(S.per,-1);
+ if(S.tab==='hi')return by('fh',1);if(S.tab==='lo')return by('fl',-1);return by('vx',1)}
+function item(x,i){let main,side='';
+ if(S.tab==='gain'||S.tab==='lose'){main='<span class="pc '+cl(x[S.per])+'">'+(x[S.per]>0?'▲ ':x[S.per]<0?'▼ ':'')+f(x[S.per])+'</span>';
+  side='Today '+f(x.ch)+' · 1W '+f(x.w)+' · 1M '+f(x.m)}
+ else if(S.tab==='hi'||S.tab==='lo'){main='<span class="pc '+cl(S.tab==='hi'?x.fh:-x.fl)+'">'+(S.tab==='hi'?f(x.fh):f(x.fl))+'</span>';
+  side=(S.tab==='hi'?'Below 52W high':'Above 52W low')+' · High '+price(x.h52)+' · Low '+price(x.l52)}
+ else{main='<span class="pc">'+x.vx.toFixed(1)+'×</span>';side='Volume '+vol(x.v)+' vs 20-day average · Today '+f(x.ch)}
+ const pos=x.h52>x.l52?Math.max(0,Math.min(100,(x.c-x.l52)/(x.h52-x.l52)*100)):50;
+ return '<div class="it"><span class="rk">'+(i+1)+'</span><div><div><span class="sy">'+esc(x.s)+'</span> <span class="px">'+price(x.c)+'</span></div><div class="sd">'+side+'</div><div class="rg" title="Position in 52-week range"><i style="left:calc('+pos.toFixed(1)+'% - 1px)"></i></div></div>'+main+'</div>'}
+function draw(){const r=rows(),n=S.all?r.length:10;
+ $('#lst').innerHTML=r.length?r.slice(0,n).map(item).join(''):'<div class="msg">No stocks match.</div>';
+ const b=$('#more');b.hidden=r.length<=10;b.textContent=S.all?'Show top 10 only':'Show all '+r.length}
+function render(){tabs();draw()}
+document.addEventListener('click',e=>{const b=e.target.closest('button');if(!b||!D)return;
+ if(b.dataset.t){S.tab=b.dataset.t;S.all=false}else if(b.dataset.p)S.per=b.dataset.p;else if(b.dataset.u){S.uni=b.dataset.u;S.all=false}else if(b.id==='more')S.all=!S.all;else return;
+ save();const y=window.scrollY;render();window.scrollTo(0,y)});
+document.addEventListener('input',e=>{if(e.target.id==='q'){S.q=e.target.value.trim();draw()}});
+function fail(t){$('#st').innerHTML='';$('#tabs').innerHTML='';$('#lst').innerHTML='<div class="msg">'+t+'</div>'}
+fetch('data/screener.json',{cache:'no-cache'}).then(r=>{if(!r.ok)throw 0;return r.json()}).then(j=>{
+ if(!j||!j.rows||!j.rows.length)throw 0;D=j;status();render()}).catch(()=>fail('Market data is not available yet. It is created automatically after market close. Please check back later.'));
+})();
+</script></body></html>
