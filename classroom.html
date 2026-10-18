@@ -96,7 +96,7 @@ button,.b,.sw,.chip,.li{touch-action:manipulation;-webkit-tap-highlight-color:tr
 <div id="toast"></div>
 <script>
 const LS_=.92;const MOB=matchMedia('(max-width:900px),(max-height:520px)').matches;let pl_s='';const LV={on:false,order:[],i:0,state:'',hold:0,spoken:new Set(),cur:null,wl:null,opt:{shuffle:1,cat:'All',gap:5,spd:3,voice:1,vname:''}};
-let W=1280,H=720,WH=720,VERT=false,VK=1,LF=1.3;const SAFE_T=150,SAFE_B=380; /* vertical live: YouTube overlays top/bottom, keep text clear */const $=s=>document.querySelector(s),cv=$('#cv'),g=cv.getContext('2d');cv.width=W;cv.height=H;
+let W=1280,H=720,WH=720,VERT=false,VK=1,LF=1.3;const SAFE_T=110,SAFE_B=150; /* vertical live: YouTube overlays top/bottom, keep text clear */const $=s=>document.querySelector(s),cv=$('#cv'),g=cv.getContext('2d');cv.width=W;cv.height=H;
 const TH={black:{bg:'#0b0f14',gr:'#18222f',ink:'#ffffff'},white:{bg:'#ffffff',gr:'#e5e7eb',ink:'#111827'},chalk:{bg:'#1f3d2b',gr:'#2c553c',ink:'#f1f5f9'}};
 let th='black',tool='k',col='#facc15',I=[],cur=null,rev=0,play=false,laser=[],mr=null,chunks=[],mic=null,rt=0,rti=null,sd=Date.now()>>>0;
 const C=c=>c==='ink'?TH[th].ink:c,tot=()=>I.reduce((n,i)=>n+(i.cs?i.cs.length:0),0),rnd=()=>{sd=(sd+0x6D2B79F5)>>>0;let z=sd;z=Math.imul(z^z>>>15,z|1);z^=z+Math.imul(z^z>>>7,z|61);return((z^z>>>14)>>>0)/4294967296};
@@ -186,6 +186,19 @@ D('Expiry Day: Theta Decay',null,'Bank Nifty','edu','options expiry theta premiu
 D('Option Lot & Risk (Bank Nifty)',null,'Bank Nifty','edu','lot size options premium risk position capital',{p:[[.08,.30],[.14,.38],[.20,.34],[.26,.44],[.32,.40],[.38,.50],[.46,.58],[.54,.54],[.62,.64],[.72,.72],[.82,.78],[.92,.84]],l:[[.06,.60,'Premium x lot size = total risk',cY],[.36,.24,'Max loss pehle se tay karo',cR],[.60,.40,'Lot kam, sabr zyada',cG]]});
 D('London Open Breakout','London Open Breakdown','Gold','bull','xauusd session asian london range breakout open',{p:[[.06,.50],[.10,.55],[.14,.50],[.18,.55],[.22,.51],[.26,.55],[.30,.52],[.36,.62],[.42,.72],[.50,.70],[.58,.78],[.68,.84],[.80,.88],[.92,.92]],z:[[.50,.56,.06,.30,cB]],l:[[.06,.34,'Asian session: dheeli range',cB],[.28,.82,'London open: volume aata hai',cY],[.54,.56,'Range ke Above close = Buy',cG]]});
 D('News Spike (NFP / CPI)',null,'Gold','edu','gold news nfp cpi fomc volatility spread spike',{p:[[.08,.50],[.14,.52],[.20,.50],[.26,.52],[.30,.50],[.34,.80],[.38,.30],[.42,.70],[.46,.40],[.50,.58],[.56,.50],[.64,.54],[.74,.52],[.86,.53]],l:[[.06,.72,'Badi news aane wali hai',cY],[.30,.94,'Spike: spread bhi badhta hai',cR],[.46,.12,'Dono taraf stop hit',cR],[.58,.30,'News ke baad 15 minute ruko',cG]]});
+
+D('Liquidity Sweep + Inducement',null,'Long Class','bull','long class liquidity sweep inducement order block smc stop hunt equal lows bos',{p:[[0,.70],[.08,.58],[.14,.64],[.22,.46],[.30,.58],[.36,.54],[.44,.465],[.50,.56],[.54,.52],[.60,.40],[.64,.50],[.70,.62],[.76,.55],[.84,.72],[.92,.80],[1,.88]],ln:[[.20,.46,.62,.46,cB]],z:[[.38,.455,.20,.66,cR],[.50,.57,.62,.84,cG]],l:[[.10,.36,'Equal Lows = Liquidity',cB],[.40,.30,'Retail SL yahan',cR],[.40,.68,'Inducement',cO],[.52,.24,'Liquidity Sweep ✔',cG],[.62,.74,'BOS ✔',cG],[.64,.44,'Order Block',cB],[.62,.95,'Target: upar ki Liquidity',cG]],story:[
+[.12,'Aaj ek bahut zaroori concept samjhenge. Liquidity sweep aur inducement. Isi se bade players retail traders ko phasaate hain.'],
+[.26,'Pehle samjho liquidity kya hai. Jahan bahut saare logon ke stop-loss ikatthe hote hain, wahi liquidity hai.'],
+[.38,'Dekho, price ne ek low banaya. Retail traders ise support maante hain, aur apna stop-loss isi ke neeche lagate hain.'],
+[.50,'Phir price wapas aaya aur lagbhag usi jagah doosra low banaya. Ise equal lows kehte hain. Ab neeche stop-lossen ka dher lag chuka hai.'],
+[.56,'Beech me ek chhota sa high bana. Ye inducement hai. Ye breakout jaisa dikhta hai, taaki log jaldi khareed kar phans jayein.'],
+[.64,'Ab asli khel dekho. Price tezi se equal lows ke neeche gaya. Stop-loss hit hue, aur bade players ko sasta maal mil gaya. Yahi liquidity sweep hai.'],
+[.72,'Sweep ke turant baad price wapas aaya aur pichla high tod diya. Ye break of structure hai. Ab pata chalta hai ki bade players khareed rahe hain.'],
+[.80,'Ab jaldi mat karo. Price us zone me wapas aata hai jahan se tezi shuru hui thi. Ye order block hai. Yahan hum entry dhundhte hain.'],
+[.90,'Entry order block par rejection candle ke baad. Stop-loss sweep ke sabse low ke neeche, kyunki wahan tootne par poora idea galat ho jaata hai.'],
+[1,'Target upar ki agli liquidity, yaani pichla swing high. Risk reward kam se kam ek ratio do rakhiye.'],
+[1,'Yaad rakho. Pehle liquidity pehchano. Phir sweep ka intezaar karo. Phir structure break aur order block par entry. Jaldi nahi, sabr se.']]});
 const SCR={
 'Opening Range Breakout (ORB)':{h:'Market khulte hi pehle pandrah minute me din ka mood dikh jaata hai. Us range ko yaad rakho.',e:'Entry: pehle pandrah minute ki High ke Above candle close par Buy.',s:'Stop-loss: opening range ke beech me ya uske Low ke Below.',t:'Target: opening range ki height ya 1 ratio 2.',m:'Galti: range banne se pehle hi entry. Pandrah minute poore hone do.',r:'Pandrah minute ki range, close ke baad entry.'},
 'Inverse Head & Shoulders':{h:'Teen Low, beech wala sabse gehra. Sellers ki taakat har baar kam hoti gayi.',e:'Entry: neckline ke Above close par Buy.',s:'Stop-loss: right shoulder ke Low ke Below.',t:'Target: head se neckline tak ki height, neckline ke Above jod do.',m:'Galti: right shoulder poora hone se pehle entry.',r:'Teen Low, ek neckline, close ke baad Buy.'},
@@ -222,12 +235,12 @@ const SCR={
 const SWP=[['Resistance','Support'],['Breakout','Breakdown'],['Buyers','Sellers'],['Bullish','Bearish'],['Bull','Bear'],['Higher','Lower'],['Highs','Lows'],['High','Low'],['Rally','Drop'],['Demand','Supply'],['Uptrend','Downtrend'],['Top','Bottom'],['Above','Below'],['Buy','Sell'],['Up','Down'],['HH','LL'],['HL','LH'],['↑','↓'],['▲','▼']],SM={};
 SWP.forEach(([a,b])=>[[a,b],[b,a],[a.toLowerCase(),b.toLowerCase()],[b.toLowerCase(),a.toLowerCase()]].forEach(([x,y])=>{if(!(x in SM))SM[x]=y}));
 const SRE=new RegExp('(?<![A-Za-z])('+Object.keys(SM).sort((a,b)=>b.length-a.length).map(k=>k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|')+')(?![A-Za-z])','g'),swap=s=>s.replace(SRE,m=>SM[m]);
-const CATS=['Breakouts','Traps','Reversals','Continuation','Structure','Candlesticks','Risk','Psychology','Indicators','Bank Nifty','Gold'],CI={Indicators:'📈','Bank Nifty':'🏦',Gold:'🥇',Risk:'🛡',Psychology:'🧠',Breakouts:'🚀',Traps:'🪤',Reversals:'🔄',Continuation:'➡️',Structure:'🏗',Candlesticks:'🕯'};
+const CATS=['Breakouts','Traps','Reversals','Continuation','Structure','Candlesticks','Risk','Psychology','Indicators','Bank Nifty','Gold','Long Class'],CI={'Long Class':'🎓',Indicators:'📈','Bank Nifty':'🏦',Gold:'🥇',Risk:'🛡',Psychology:'🧠',Breakouts:'🚀',Traps:'🪤',Reversals:'🔄',Continuation:'➡️',Structure:'🏗',Candlesticks:'🕯'};
 const LS=[];DEF.forEach(d=>{const dw={bull:'bullish buy long up tezi',bear:'bearish sell short down mandi',neu:'neutral',edu:'rule risk psychology'};
  LS.push({id:LS.length,n:d.n,cat:d.cat,dir:d.d,d:d.o,mir:0,hay:(d.n+' '+(d.n2||'')+' '+d.cat+' '+d.tags+' '+dw[d.d]).toLowerCase()});
  if(d.n2){const dd=d.d==='bull'?'bear':d.d==='bear'?'bull':'neu';LS.push({id:LS.length,n:d.n2,cat:d.cat,dir:dd,d:d.o,mir:1,hay:(d.n2+' '+d.n+' '+d.cat+' '+d.tags+' '+dw[dd]).toLowerCase()})}});
-function mkR(d){if(!VERT)return p=>p;const v=[].concat(d.p.map(q=>q[1]),(d.z||[]).flatMap(z=>[z[0],z[1]]),(d.ln||[]).flatMap(l=>[l[1],l[3]]),d.pl?d.pl[0].map(q=>q[1]):[],d.a?d.a.map(q=>q[1]):[],d.k?d.k.c.flatMap(q=>q.slice(0,4)):[],(d.l||[]).map(l=>l[1]));let lo=Math.min(...v),hi=Math.max(...v);if(hi-lo<.25){const c=(hi+lo)/2;lo=c-.125;hi=c+.125}return p=>.07+.86*(p-lo)/(hi-lo)}
-function build(L){const d=L.d,M=L.mir,R=mkR(d),Y=p=>(M?R(p):1-R(p))*WH,X=x=>x*W,cw=d.k?36:+$('#cw').value,sw=c=>M&&(c===cR||c===cG)?(c===cR?cG:cR):c;
+function mkR(d){if(!VERT)return p=>p;const v=[].concat(d.p.map(q=>q[1]),(d.z||[]).flatMap(z=>[z[0],z[1]]),(d.ln||[]).flatMap(l=>[l[1],l[3]]),d.pl?d.pl[0].map(q=>q[1]):[],d.a?d.a.map(q=>q[1]):[],d.k?d.k.c.flatMap(q=>q.slice(0,4)):[]);let lo=Math.min(...v),hi=Math.max(...v);if(hi-lo<.25){const c=(hi+lo)/2;lo=c-.125;hi=c+.125}const l0=lo,h0=hi;(d.l||[]).forEach(l=>{const y=Math.max(l0-.14,Math.min(h0+.14,l[1]));lo=Math.min(lo,y);hi=Math.max(hi,y)});return p=>.07+.86*(p-lo)/(hi-lo)}
+function build(L){if(VERT)WH=H-SAFE_T-SAFE_B-(L.d.story?130:430);const d=L.d,M=L.mir,R=mkR(d),Y=p=>(M?R(p):1-R(p))*WH,X=x=>x*W,cw=d.k?36:+$('#cw').value,sw=c=>M&&(c===cR||c===cG)?(c===cR?cG:cR):c;
  I=[];rev=0;play=false;SP=new Set();HOLD=0;
  (d.z||[]).forEach(z=>I.push({t:'z',a:[X(z[2]),Y(z[0])],b:[X(z[3]),Y(z[1])],c:sw(z[4]),w:2}));
  (d.ln||[]).forEach(l=>I.push({t:'ln',a:[X(l[0]),Y(l[1])],b:[X(l[2]),Y(l[3])],c:sw(l[4]),w:3}));
@@ -276,7 +289,7 @@ function markers(){const m=TM;if(!m)return;const now=performance.now(),cur=LV.st
  if(cur>=0&&cur<3&&m.t[cur]!=null){const e=now-m.t[cur];arrowTo(cur===2?m.xa+w*.14:m.ex,[m.ey,m.sl,m.tg][cur],e)}}
 function draw(){g.fillStyle=TH[th].bg;g.fillRect(0,0,W,H);
  if($('#gr').checked){g.strokeStyle=TH[th].gr;g.lineWidth=1;g.beginPath();for(let x=0;x<W;x+=40){g.moveTo(x,0);g.lineTo(x,H)}for(let y=0;y<H;y+=40){g.moveTo(0,y);g.lineTo(W,y)}g.stroke()}
- let base=0;if(LV.on){g.save();if(VERT)g.translate(0,SAFE_T+110);else{g.translate(W*(1-LS_)/2,62);g.scale(LS_,LS_)}}I.forEach(it=>{if(it.cs){it.cs.forEach((c,i)=>candle(c,rev-(base+i)));base+=it.cs.length}else item(it)});if(LV.on&&(LV.state==='teach'||LV.state==='hold'))markers();if(LV.on)g.restore();
+ let base=0;if(LV.on){g.save();if(VERT)g.translate(0,SAFE_T+100);else{g.translate(W*(1-LS_)/2,62);g.scale(LS_,LS_)}}I.forEach(it=>{if(it.cs){it.cs.forEach((c,i)=>candle(c,rev-(base+i)));base+=it.cs.length}else item(it)});if(LV.on&&(LV.state==='teach'||LV.state==='hold'))markers();if(LV.on)g.restore();
  if(cur&&cur.t!=='laser'&&cur.t!=='erase')item(cur.t==='g'?{...cur,at:null}:cur);
  const now=performance.now();laser=laser.filter(p=>now-p[2]<700);
  for(let i=1;i<laser.length;i++){g.strokeStyle='rgba(255,40,40,'+(1-(now-laser[i][2])/700)+')';g.lineWidth=6;g.lineCap='round';g.beginPath();g.moveTo(laser[i-1][0],laser[i-1][1]);g.lineTo(laser[i][0],laser[i][1]);g.stroke()}
@@ -330,7 +343,7 @@ $('#rec').onclick=async()=>{
  mr.start(500);rt=0;$('#rec').textContent=MOB?'■ Stop':'■ Stop & Download';rti=setInterval(()=>{rt++;$('#tm').textContent='● '+String(rt/60|0).padStart(2,'0')+':'+String(rt%60).padStart(2,'0')},1000);toast('Recording started. Hide the toolbar (☰) for a clean video')};
 $('#hpb').onclick=()=>$('#hov').classList.add('on');$('#hgo').onclick=()=>{$('#hov').classList.remove('on');try{localStorage.setItem('cls_seen',1)}catch(e){}};try{if(!localStorage.getItem('cls_seen'))$('#hov').classList.add('on')}catch(e){}
 /* ---------- loop ---------- */
-let TM=null,HOLD=0,SP=new Set();let last=performance.now();(function loop(now){const dt=(now-last)/1e3;last=now;if(LV.on)liveTick(now);const n=tot();if(play&&rev<n&&now>=HOLD){rev=Math.min(n,rev+dt*+$('#spd').value);const nl=I.find(i=>i.t==='x'&&i.at!=null&&!SP.has(i)&&rev>=i.at);if(nl)labelHit(nl,now);if(rev>=n)play=false}{const s=play?'⏸ Pause':'▶ Play';if(pl_s!==s){pl_s=s;const a=s.split(' ');$('#pl').innerHTML=MOB?'<i>'+a[0]+'</i><small>'+a[1]+'</small>':s}}draw();requestAnimationFrame(loop)})(last);
+let TM=null,HOLD=0,SP=new Set();let last=performance.now();(function loop(now){const dt=(now-last)/1e3;last=now;if(LV.on)liveTick(now);const n=tot();if(play&&rev<n&&now>=HOLD){rev=Math.min(n,LV.lim==null?n:LV.lim,rev+dt*(LV.sp2||+$('#spd').value));const nl=I.find(i=>i.t==='x'&&i.at!=null&&!SP.has(i)&&rev>=i.at);if(nl)labelHit(nl,now);if(rev>=n)play=false}{const s=play?'⏸ Pause':'▶ Play';if(pl_s!==s){pl_s=s;const a=s.split(' ');$('#pl').innerHTML=MOB?'<i>'+a[0]+'</i><small>'+a[1]+'</small>':s}}draw();requestAnimationFrame(loop)})(last);
 /* ---------- Lessons dropdown (search + filters) ---------- */
 let rec_=[],fCat='All',fDir='all';try{rec_=JSON.parse(localStorage.getItem('cls_recent')||'[]').filter(i=>LS[i])}catch(e){}
 const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;'),pop=$('#pop'),isOpen=()=>pop.classList.contains('on');
@@ -384,18 +397,18 @@ function duck(d){if(A)A.mg.gain.setTargetAtTime(d?.2:.6,A.ctx.currentTime,.25)}
 const slug=t=>t.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,80);
 async function vbuf(t){const k=slug(t);if(k in VC)return VC[k];VC[k]=null;try{const r=await fetch('voice/'+k+'.mp3');if(r.ok)VC[k]=await AU().ctx.decodeAudioData(await r.arrayBuffer())}catch(e){}return VC[k]}
 function tts(t,fin){const ss=window.speechSynthesis;if(!ss){setTimeout(fin,1500+t.length*70);return}try{const u=new SpeechSynthesisUtterance(t),v=voices().find(x=>x.name===LV.opt.vname);if(v){u.voice=v;u.lang=v.lang}else u.lang='en-IN';u.rate=1.1;u.onend=u.onerror=fin;ss.speak(u);setTimeout(fin,2500+t.length*110)}catch(e){fin()}}
-function say(t,cb){if(!LV.opt.voice||!t){cb&&cb();return}const g0=VG;LV.tk=(LV.tk||0)+1;duck(1);let d=0;const fin=()=>{if(d||g0!==VG)return;d=1;LV.tk--;if(!LV.tk)duck(0);cb&&cb()};
- vbuf(t).then(b=>{if(g0!==VG)return;if(b){const a=AU(),n=a.ctx.createBufferSource();n.buffer=b;n.playbackRate.value=VR;n.connect(a.vg);n.onended=fin;VS=n;n.start()}else tts(t,fin)})}
+function say(t,cb,ons){if(!LV.opt.voice||!t){cb&&cb();return}const g0=VG;LV.tk=(LV.tk||0)+1;duck(1);let d=0;const fin=()=>{if(d||g0!==VG)return;d=1;LV.tk--;if(!LV.tk)duck(0);cb&&cb()};
+ vbuf(t).then(b=>{if(g0!==VG)return;if(b){const a=AU(),n=a.ctx.createBufferSource();n.buffer=b;n.playbackRate.value=VR;n.connect(a.vg);n.onended=fin;VS=n;ons&&ons(b.duration/VR);n.start()}else{ons&&ons(t.length*.075);tts(t,fin)}})}
 function vstop(){VG++;LV.tk=0;try{if(VS){VS.onended=null;VS.stop()}}catch(e){}VS=null;try{speechSynthesis.cancel()}catch(e){}duck(0)}
-function labelHit(it,now){SP.add(it);it.t0=now;const ok=/✔|✓/.test(it.s),bad=/✗|✘|✕/.test(it.s);sfxSwoosh();setTimeout(()=>{ok?sfxBreak():bad?sfxNo():sfxPop()},550);
+function labelHit(it,now){SP.add(it);it.t0=now;const ok=/✔|✓/.test(it.s),bad=/✗|✘|✕/.test(it.s);sfxSwoosh();setTimeout(()=>{ok?sfxBreak():bad?sfxNo():sfxPop()},550);if(LV.on&&LV.cur&&LV.cur.d.story)return;
  if(!LV.on){if($('#ap').checked)HOLD=now+1500;return}
  if(LV.opt.voice){HOLD=Infinity;LV.pend=it.s;LV.pt=now+1350}else HOLD=now+2200}
 const spkS=t=>t.split(/(?<=\.)\s/)[0];
 const scH=L=>{const c=SCR[L.d.nm];return c&&spkS(L.mir?swap(c.h):c.h)};
 const GEN=[['Entry','Entry: setup confirm hone par, candle close ke baad Buy. Pehle close, phir entry.'],['Stop-loss','Stop-loss: setup ke sabse Low ke Below. Wahan tootne par idea galat.'],['Target','Target: pichla swing High, ya kam se kam 1 ratio 2.'],['Galti','Galti: confirmation ke bina jaldi entry, aur SL baad me tay karna.'],['Yaad rakho','Setup pehchano, confirmation lo, risk pehle tay karo.']];
-const scSteps=L=>{const c=SCR[L.d.nm];if(!c){if(L.dir!=='bull'&&L.dir!=='bear')return[];return GEN.map(([a,b])=>[a,L.dir==='bear'?swap(b):b])}return[['Entry',c.e],['Stop-loss',c.s],['Target',c.t],['Galti',c.m],['Yaad rakho',c.r]].map(([a,b])=>[a,L.mir?swap(b):b])};
+const scSteps=L=>{if(L.d.story)return[];const c=SCR[L.d.nm];if(!c){if(L.dir!=='bull'&&L.dir!=='bear')return[];return GEN.map(([a,b])=>[a,L.dir==='bear'?swap(b):b])}return[['Entry',c.e],['Stop-loss',c.s],['Target',c.t],['Galti',c.m],['Yaad rakho',c.r]].map(([a,b])=>[a,L.mir?swap(b):b])};
 window.downloadVoiceList=()=>{const u=URL.createObjectURL(new Blob([voiceList()],{type:'text/tab-separated-values'})),x=document.createElement('a');x.href=u;x.download='voices.tsv';document.body.appendChild(x);x.click();x.remove()};
-window.voiceList=()=>{const q=new Set();LS.forEach(L=>{q.add(L.n+'. '+DIRW[L.dir]+'.');(L.d.l||[]).forEach(l=>q.add(clean(L.mir?(l[4]||swap(l[2])):l[2])));const h=scH(L);if(h)q.add(h);scSteps(L).slice(0,3).forEach(x=>q.add(spkS(x[1])))});q.add('Comment karo. Buy ya sell?');Object.values(DIRW).forEach(v=>q.add(v+'.'));const o=[...q].map(t=>slug(t)+'.mp3\t'+t).join('\n');console.log(o);return o};
+window.voiceList=()=>{const q=new Set();LS.forEach(L=>{q.add(L.n+'. '+DIRW[L.dir]+'.');if(!L.d.story)(L.d.l||[]).forEach(l=>q.add(clean(L.mir?(l[4]||swap(l[2])):l[2])));(L.d.story||[]).forEach(x=>q.add(x[1]));const h=scH(L);if(h)q.add(h);scSteps(L).slice(0,3).forEach(x=>q.add(spkS(x[1])))});q.add('Comment karo. Buy ya sell?');Object.values(DIRW).forEach(v=>q.add(v+'.'));const o=[...q].map(t=>slug(t)+'.mp3\t'+t).join('\n');console.log(o);return o};
 function chime(f1,f2,vol){try{const a=AU(),t=a.ctx.currentTime;[[f1,0],[f2,.16]].forEach(([f,d])=>{const o=a.ctx.createOscillator(),gn=a.ctx.createGain();o.type='sine';o.frequency.value=f;gn.gain.setValueAtTime(0,t+d);gn.gain.linearRampToValueAtTime(vol||.07,t+d+.02);gn.gain.exponentialRampToValueAtTime(.0001,t+d+.3);o.connect(gn).connect(a.bus);o.start(t+d);o.stop(t+d+.32)})}catch(e){}}
 function voices(){return(window.speechSynthesis?speechSynthesis.getVoices():[]).filter(v=>/^(en|hi)/i.test(v.lang))}
 function fillVoices(){const sel=$('#lvvn'),vs=voices();if(!vs.length){sel.innerHTML='<option value="">Default voice</option>';return}
@@ -407,7 +420,7 @@ function liveSetup(){try{Object.assign(LV.opt,JSON.parse(localStorage.getItem('c
  $('#lvcat').innerHTML='<option value="All">All lessons ('+LS.length+')</option>'+CATS.map(c=>'<option value="'+c+'">'+CI[c]+' '+c+'</option>').join('');
  $('#lvcat').value=LV.opt.cat;$('#lvord').value=LV.opt.shuffle;$('#lvgap').value=LV.opt.gap;$('#lvspd').value=LV.opt.spd;$('#lvvo').value=LV.opt.voice;$('#lvfm').value=LV.opt.fmt||(innerHeight>innerWidth?'v':'h');fillVoices();$('#lvo').classList.add('on')}
 function liveOrder(){const a=LS.filter(L=>LV.opt.cat==='All'||L.cat===LV.opt.cat).map(L=>L.id);if(LV.opt.shuffle)for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
-function setFmt(v){VERT=v;VK=v?1.6:1;LF=v?1.6:1.3;W=v?1080:1280;H=v?1920:720;WH=v?1050:720;cv.width=W;cv.height=H;cv.style.aspectRatio=v?'9/16':'16/9'}
+function setFmt(v){VERT=v;VK=v?1.6:1;LF=v?1.6:1.3;W=v?1080:1280;H=v?Math.max(1920,Math.min(2600,Math.round(1080*Math.max(screen.width,screen.height)/Math.min(screen.width,screen.height)))):720;WH=v?H-SAFE_T-SAFE_B-430:720;cv.width=W;cv.height=H;cv.style.aspectRatio=v?W+'/'+H:'16/9'}
 function liveStart(){LV.opt={cat:$('#lvcat').value,shuffle:+$('#lvord').value,gap:+$('#lvgap').value,spd:+$('#lvspd').value,voice:+$('#lvvo').value,vname:$('#lvvn').value,fmt:$('#lvfm').value};
  try{localStorage.setItem('cls_live',JSON.stringify(LV.opt))}catch(e){}
  $('#lvo').classList.remove('on');LV.order=liveOrder();if(!LV.order.length)return;LV.i=-1;LV.on=true;document.body.classList.add('live');setFmt(LV.opt.fmt==='v');try{const de=document.documentElement;de.requestFullscreen&&de.requestFullscreen().catch(()=>{})}catch(e){}
@@ -416,7 +429,7 @@ function liveStart(){LV.opt={cat:$('#lvcat').value,shuffle:+$('#lvord').value,ga
  try{navigator.wakeLock&&navigator.wakeLock.request('screen').then(l=>LV.wl=l).catch(()=>{})}catch(e){}
  lay();liveNext()}
 function liveNext(){LV.i++;if(LV.i>=LV.order.length){LV.order=liveOrder();LV.i=0}
- const L=LS[LV.order[LV.i]];LV.cur=L;LV.spoken=new Set();$('#spd').value=LV.opt.spd;build(L);LV.state='run';LV.hold=0;
+ const L=LS[LV.order[LV.i]];LV.cur=L;LV.spoken=new Set();$('#spd').value=LV.opt.spd;build(L);LV.state=L.d.story?'story':'run';LV.si=0;LV.sn=0;LV.lim=L.d.story?0:null;LV.sp2=0;LV.hold=0;
  vstop();LV.pend=null;LV.rv=0;LV.cap=null;LV.intro=performance.now();LV.t1=0;
  if(L.dir==='bear')chime(660,440);else chime(523,784);
  HOLD=Infinity;const hk=scH(L);say(L.n+'. '+DIRW[L.dir]+'.',()=>{if(hk){const g1=VG;setTimeout(()=>{if(g1===VG)say(hk,()=>{HOLD=performance.now()+1000})},1000)}else HOLD=performance.now()+1000})}
@@ -425,6 +438,10 @@ function holdStart(now,L){LV.state='hold';LV.hold=now+LV.opt.gap*1000;LV.rv=0;LV
 function liveTick(now){const L=LV.cur;if(!L)return;
  if(LV.state==='run'){if(LV.pend&&now>=LV.pt){const q=clean(LV.pend);LV.pend=null;say(q,()=>{HOLD=performance.now()+1000})}
   if(!play&&rev>=tot()-.001&&!LV.pend&&HOLD!==Infinity){const st=scSteps(L);if(st.length){LV.state='teach';LV.tq=st;LV.ti=0;LV.tn=now+1000}else holdStart(now,L)}}
+ else if(LV.state==='story'){const ST=L.d.story;
+  if(LV.si<ST.length){if(now>=LV.sn&&!LV.tk&&HOLD!==Infinity){const[to,tx]=ST[LV.si++],n=tot();LV.lim=Math.min(n,to*n);LV.sn=Infinity;const go=d=>{LV.sp2=Math.max(.3,(LV.lim-rev)/Math.max(1,d))};
+   if(LV.opt.voice)say(tx,()=>{LV.sn=performance.now()+350},go);else{const d=tx.length*.075;go(d);LV.sn=now+d*1000}}}
+  else if(!LV.tk&&now>=LV.sn){LV.lim=null;LV.sp2=0;if(!play&&rev>=tot()-.001)holdStart(now,L)}}
  else if(LV.state==='teach'){if(now>=LV.tn&&!LV.tk){if(LV.ti<LV.tq.length){const i=LV.ti++,[a,b]=LV.tq[i];LV.cap=[a,b];if(TM&&i<3)TM.t[i]=performance.now();LV.tn=Infinity;if(LV.opt.voice&&i<3)say(spkS(b),()=>{LV.tn=performance.now()+1200});else LV.tn=now+(LV.opt.voice?3800:4500)}else holdStart(now,L)}}
  else if(LV.state==='hold'){if(!LV.rv&&now>LV.hold-1500){LV.rv=1;if(BS(L))say(DIRW[L.dir]+'.')}
   const busy=LV.opt.voice&&(LV.tk>0||LV.pend);if(now>LV.hold&&(!busy||now>LV.hold+9000))liveNext()}}
@@ -434,13 +451,13 @@ let lvxT=0;function liveX(){$('#lvx').classList.add('show');clearTimeout(lvxT);l
 function liveHUD(){const L=LV.cur;if(!L)return;g.save();g.textBaseline='alphabetic';
  const gr=g.createLinearGradient(0,0,0,72);gr.addColorStop(0,'rgba(8,13,22,.96)');gr.addColorStop(1,'rgba(8,13,22,.0)');g.fillStyle=gr;g.fillRect(0,0,W,80);
  const col=L.dir==='bull'?'#22c55e':L.dir==='bear'?'#ef4444':'#94a3b8';
- g.fillStyle=TH[th].ink;g.font='800 34px system-ui';g.textAlign='left';g.fillText(L.n,24,40);
+ g.fillStyle=TH[th].ink;g.textAlign='left';{let fz=34;g.font='800 '+fz+'px system-ui';const mx=W-24-190;while(g.measureText(L.n).width>mx&&fz>18){fz-=2;g.font='800 '+fz+'px system-ui'}}g.fillText(L.n,24,40);
  g.font='600 16px system-ui';g.fillStyle='#9fb0d0';g.fillText(CI[L.cat]+' '+L.cat+'  ·  '+(LV.i+1)+' / '+LV.order.length,24,64);
  const dt=L.dir==='bull'?'▲ BULLISH':L.dir==='bear'?'▼ BEARISH':L.dir==='edu'?'📘 RULE':'■ NEUTRAL';g.font='800 22px system-ui';const w=g.measureText(dt).width;
  g.fillStyle=col;g.beginPath();g.roundRect(W-w-52,14,w+28,38,19);g.fill();g.fillStyle='#07120b';g.textAlign='center';g.fillText(dt,W-w/2-38,41);
  const t=tot()||1,pr=Math.min(1,rev/t);g.fillStyle='rgba(148,163,184,.25)';g.fillRect(0,H-6,W,6);g.fillStyle=col;g.fillRect(0,H-6,W*pr,6);
  const nx=LS[LV.order[(LV.i+1)%LV.order.length]];g.textAlign='left';g.font='600 16px system-ui';g.fillStyle='#9fb0d0';g.globalAlpha=.9;if(nx)g.fillText('Up next: '+nx.n,24,H-30);
- if(LV.state==='run'){const n0=performance.now();if(!LV.t1&&rev>.05)LV.t1=n0;const al=LV.t1?Math.max(0,1-(n0-LV.t1)/700):Math.min(1,(n0-(LV.intro||n0))/450);if(al>.01){const dd=L.dir==='bull'?'▲ BULLISH':L.dir==='bear'?'▼ BEARISH':L.dir==='edu'?'📘 RULE':'■ NEUTRAL';g.save();{const sc=Math.min(1,(W-30)/780);g.translate(W/2,H/2);g.scale(sc,sc);g.translate(-W/2,-H/2)}g.globalAlpha=al;g.fillStyle='#0b1220e6';g.beginPath();g.roundRect(W/2-380,H/2-130,760,230,28);g.fill();g.strokeStyle='#facc15';g.lineWidth=3;g.stroke();g.textAlign='center';g.fillStyle='#facc15';g.font='800 28px system-ui';g.fillText('AAJ KA LESSON',W/2,H/2-80);g.fillStyle='#fff';g.font='800 '+(L.n.length>20?58:72)+'px system-ui';g.fillText(L.n,W/2,H/2-10);g.fillStyle=L.dir==='bear'?'#ef4444':L.dir==='bull'?'#22c55e':'#94a3b8';g.font='800 34px system-ui';g.fillText(dd,W/2,H/2+60);g.restore()}}
+ if(LV.state==='run'||LV.state==='story'){const n0=performance.now();if(!LV.t1&&rev>.05)LV.t1=n0;const al=LV.t1?Math.max(0,1-(n0-LV.t1)/700):Math.min(1,(n0-(LV.intro||n0))/450);if(al>.01){const dd=L.dir==='bull'?'▲ BULLISH':L.dir==='bear'?'▼ BEARISH':L.dir==='edu'?'📘 RULE':'■ NEUTRAL';g.save();{const sc=Math.min(1,(W-30)/780);g.translate(W/2,H/2);g.scale(sc,sc);g.translate(-W/2,-H/2)}g.globalAlpha=al;g.fillStyle='#0b1220e6';g.beginPath();g.roundRect(W/2-380,H/2-130,760,230,28);g.fill();g.strokeStyle='#facc15';g.lineWidth=3;g.stroke();g.textAlign='center';g.fillStyle='#facc15';g.font='800 28px system-ui';g.fillText('AAJ KA LESSON',W/2,H/2-80);g.fillStyle='#fff';g.font='800 '+(L.n.length>20?58:72)+'px system-ui';g.fillText(L.n,W/2,H/2-10);g.fillStyle=L.dir==='bear'?'#ef4444':L.dir==='bull'?'#22c55e':'#94a3b8';g.font='800 34px system-ui';g.fillText(dd,W/2,H/2+60);g.restore()}}
  if(LV.cap){const[ca,cb2]=LV.cap;g.globalAlpha=1;g.font='700 26px system-ui';const mw=W-120,ln=[];let cu='';cb2.split(' ').forEach(x=>{const tt=cu?cu+' '+x:x;if(g.measureText(tt).width>mw&&cu){ln.push(cu);cu=x}else cu=tt});ln.push(cu);const bh=ln.length*34+56,by=H-bh-40;g.fillStyle='#0b1220ee';g.beginPath();g.roundRect(50,by,W-100,bh,16);g.fill();g.strokeStyle='#facc15';g.lineWidth=2;g.stroke();g.fillStyle='#facc15';g.font='800 20px system-ui';g.fillText(ca.toUpperCase(),72,by+30);g.fillStyle='#fff';g.font='700 26px system-ui';ln.forEach((x,i)=>g.fillText(x,72,by+62+i*34))}
  if(LV.state==='hold'&&BS(L)){const r=Math.max(0,Math.ceil((LV.hold-performance.now())/1000)),tx=r<=1?'✅ Answer: '+DIRW[L.dir]:'💬 Comment karo: Buy ya Sell?   ⏱ '+r;g.globalAlpha=1;g.font='800 26px system-ui';const w2=g.measureText(tx).width;g.fillStyle='#000c';g.beginPath();g.roundRect(W/2-w2/2-20,H-84,w2+40,46,23);g.fill();g.fillStyle='#facc15';g.textAlign='center';g.fillText(tx,W/2,H-52);g.textAlign='left'}
  g.globalAlpha=1;g.strokeStyle='#7c4a1e';g.lineWidth=12;g.strokeRect(6,6,W-12,H-12);
