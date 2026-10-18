@@ -66,7 +66,7 @@ button,.b,.sw,.chip,.li{touch-action:manipulation;-webkit-tap-highlight-color:tr
 </style></head><body>
 <div class="bar" id="bar">
 <div class="row">
-<div class="g"><a class="b" href="index.html" title="Home">⌂</a><button class="b" id="hpb" title="How to use">? Help</button><button class="b" id="hide" title="Hide toolbar (video me toolbar record nahi hota)">☰</button><button class="b" id="fs" title="Fullscreen + landscape">⛶</button><button class="b" id="lvb" title="Auto-play lessons like Reels (YouTube Live mode)">📺 Live</button></div>
+<div class="g"><a class="b" href="index.html" title="Home">⌂</a><button class="b" id="hpb" title="How to use">? Help</button><button class="b" id="hide" title="Hide toolbar (video me toolbar record nahi hota)">☰</button><button class="b" id="fs" title="Fullscreen + landscape">⛶</button><button class="b" id="lvb" title="Auto-play lessons like Reels (YouTube Live mode)">📺 Live</button><button class="b" id="exb" title="Har lesson ki alag video file (Reels ya Video)">⬇ Export all</button></div>
 <div class="g" id="tools"><button class="b hero on" data-t="k" title="Draw a path: candles will follow it">🕯 Candle Path</button><button class="b" data-t="p" title="Pen">✏️ Pen</button><button class="b" data-t="h" title="Highlighter">🖍 Highlight</button><button class="b" data-t="a" title="Arrow">➚ Arrow</button><button class="b" data-t="z" title="Zone box">▭ Zone</button><button class="b" data-t="x" title="Text">T Text</button><button class="b" data-t="l" title="Laser pointer">🔴 Laser</button><button class="b" data-t="e" title="Eraser: click or drag over a drawing">⌫ Eraser</button></div>
 <div class="g"><button class="b menu" id="lsb" title="Search and pick a ready-made lesson (shortcut: / or Ctrl+K)">📚 Lessons <span id="lsn"></span> ▾</button></div>
 <div class="g" id="cols"></div><div class="g"><label>Size<input type="range" id="lw" min="2" max="14" value="4"></label></div>
@@ -86,6 +86,12 @@ button,.b,.sw,.chip,.li{touch-action:manipulation;-webkit-tap-highlight-color:tr
 <p class="m">Made a mistake? ↶ Undo, ⌫ Eraser, or 🗑 <b>Reset</b> to start fresh.</p><button class="b on" id="hgo" style="width:100%;margin-top:14px;padding:10px">Start teaching →</button></div></div>
 <div class="ov" id="cov"><div class="card"><h2>🗑 Reset the board?</h2><p class="m">Every drawing, candle and lesson will be erased. You can still press Undo right after to bring it back.</p><div class="btns"><button class="b" id="cno">Cancel</button><button class="b reset" id="cyes">Yes, reset</button></div></div></div>
 <div class="ov" id="tov"><div class="card" style="width:min(420px,94vw)"><b>T Text likhiye</b><input id="tin" type="text" maxlength="80" placeholder="e.g. Buy above high, SL below low" autocomplete="off" style="width:100%;margin-top:10px;background:#0b1220;border:1px solid #33456b;border-radius:10px;padding:10px 12px;font-size:16px"><div class="btns"><button class="b" id="tcan">Cancel</button><button class="b on" id="tadd">Add on board</button></div></div></div>
+<div class="ov" id="exo"><div class="card" style="width:min(480px,94vw)"><h2>⬇ Export all lessons</h2><p class="m" style="margin:4px 0 10px">Har lesson ki alag video file banegi (naam: 001-lesson-name). Chalte waqt tab khula rakhein aur doosre tab me na jaayein. Lagbhag 30-60 sec per lesson.</p>
+<div class="lvg"><label>Video type<select id="exfm"><option value="v">Reels / Shorts (9:16 vertical)</option><option value="h">Video (16:9 landscape)</option></select></label><label>Category<select id="excat"></select></label>
+<label>End me "Comment karo Buy ya Sell"<select id="excta"><option value="0">Nahi (Shorts ke liye)</option><option value="1">Haan</option></select></label><label>Candle speed<select id="exspd"><option value="2">Slow</option><option value="3" selected>Normal</option><option value="4">Fast</option></select></label>
+<label>Background music<select id="exmu"><option value="1">On</option><option value="0">Off</option></select></label><label>Pehle kitne lessons (test)<select id="exn"><option value="3">Sirf 3 (test)</option><option value="10">10</option><option value="0" selected>Sabhi</option></select></label></div>
+<div class="btns"><button class="b" id="excancel">Cancel</button><button class="b on" id="exgo">⬇ Start export</button></div></div></div>
+<div id="exp" style="position:fixed;left:8px;bottom:8px;z-index:70;background:#111a2e;color:#e6edf7;border:1px solid #26324d;border-radius:10px;padding:8px 12px;font:600 13px system-ui;display:none"></div>
 <div class="ov" id="lvo"><div class="card" style="width:min(480px,94vw)"><h2>📺 Live / Reels mode</h2><p class="m" style="margin:4px 0 10px">Lessons ek ke baad ek apne aap chalenge: upar strategy ka naam, awaaz me explain, aur loop me. YouTube Live ke liye chhod dein.</p>
 <div class="lvg"><label>Category<select id="lvcat"></select></label><label>Order<select id="lvord"><option value="1">Shuffle (random)</option><option value="0">In order</option></select></label>
 <label>Gap between lessons<select id="lvgap"><option>3</option><option selected>5</option><option>8</option><option>12</option></select></label><label>Format<select id="lvfm"><option value="h">16:9 Landscape (PC)</option><option value="v">9:16 Vertical (Mobile Live)</option></select></label><label>Candle speed<select id="lvspd"><option value="2">Slow</option><option value="3" selected>Normal</option><option value="5">Fast</option></select></label>
@@ -499,4 +505,43 @@ if(MOB){document.body.classList.add('m');
 </script><script>if('serviceWorker'in navigator&&location.protocol.indexOf('http')===0)addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})
 /* auto-start for OBS Browser Source: classroom.html?live=v (vertical) or ?live=h, optional &cat=Breakouts */
 ;(()=>{const q=new URLSearchParams(location.search);if(!q.get('live'))return;setTimeout(()=>{try{const h=$('#hgo');h&&h.click();$('#lvb').click();$('#lvfm').value=q.get('live')==='h'?'h':'v';if(q.get('cat'))$('#lvcat').value=q.get('cat');$('#lvgo').click()}catch(e){}},700)})();
+</script><script>
+/* ===== Export all lessons: har lesson ki alag mp4/webm (Reels ya Video) ===== */
+(()=>{
+const X={on:false,rec:null,dir:null,pend:0,n:0,name:''};
+const pick=()=>['video/mp4;codecs=avc1.42E01E,mp4a.40.2','video/mp4;codecs=avc1,mp4a.40.2','video/mp4','video/webm;codecs=vp9,opus','video/webm;codecs=vp8,opus','video/webm'].find(t=>MediaRecorder.isTypeSupported(t));
+const info=t=>{const e=$('#exp');e.style.display=t?'block':'none';e.textContent=t||''};
+async function save(blob,name){
+ if(X.dir){try{const fh=await X.dir.getFileHandle(name,{create:true}),w=await fh.createWritable();await w.write(blob);await w.close();return}catch(e){X.dir=null}}
+ const u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{a.remove();URL.revokeObjectURL(u)},4000)}
+function recStart(L){
+ const a=AU(),cs=cv.captureStream(30);a.dest.stream.getAudioTracks().forEach(t=>cs.addTrack(t));
+ const mt=pick(),ext=mt&&mt.indexOf('mp4')>-1?'mp4':'webm',ch=[],name=String(LV.i+1).padStart(3,'0')+'-'+slug(L.n+' '+(L.dir||''))+'.'+ext;
+ const r=new MediaRecorder(cs,mt?{mimeType:mt,videoBitsPerSecond:5e6}:{videoBitsPerSecond:5e6});
+ r.ondataavailable=e=>{if(e.data.size)ch.push(e.data)};
+ r.onstop=async()=>{if(!r.keep){X.pend--;return}await save(new Blob(ch,{type:ext==='mp4'?'video/mp4':'video/webm'}),name);X.pend--;X.n++};
+ r.start(500);X.rec=r;X.pend++;info('⬇ Exporting '+(LV.i+1)+'/'+LV.order.length+': '+L.n+'  ('+X.n+' saved)')}
+function recStop(keep){const r=X.rec;X.rec=null;if(r&&r.state!=='inactive'){r.keep=keep;r.stop()}}
+async function finish(){recStop(true);info('Saving last files...');while(X.pend>0)await new Promise(r=>setTimeout(r,300));
+ const n=X.n;X.on=false;LV.exp=null;liveStop();info('✅ Export complete: '+n+' videos'+(X.dir?' (folder me save)':' (Downloads me)'));setTimeout(()=>info(''),9000)}
+const _ln=liveNext;liveNext=function(){
+ if(LV.exp){const had=!!X.rec;recStop(true);if(had&&LV.i+1>=LV.order.length){finish();return}}
+ _ln();if(LV.exp&&LV.cur)recStart(LV.cur)};
+const _hs=holdStart;holdStart=function(now,L){
+ if(LV.exp&&!LV.exp.cta){LV.state='hold';LV.hold=now+LV.opt.gap*1000;LV.rv=0;LV.cap=null;return}_hs(now,L)};
+const _ls=liveStop;liveStop=function(){if(LV.exp){recStop(false);LV.exp=null;X.on=false;info('Export roka gaya (adhuri file save nahi hui). Ho chuki files: '+X.n);setTimeout(()=>info(''),9000)}_ls()};
+$('#exb').onclick=()=>{if(!window.MediaRecorder){toast('Chrome ya Edge use karein');return}
+ $('#excat').innerHTML=$('#lvcat').innerHTML||'<option value="All">All</option>';$('#excat').value='All';$('#exo').classList.add('on')};
+$('#excancel').onclick=()=>$('#exo').classList.remove('on');
+$('#exgo').onclick=async()=>{
+ const cat=$('#excat').value,n=+$('#exn').value;$('#exo').classList.remove('on');
+ X.dir=null;X.n=0;X.pend=0;
+ if(window.showDirectoryPicker){try{X.dir=await showDirectoryPicker({mode:'readwrite'})}catch(e){X.dir=null}}
+ LV.opt={cat,shuffle:0,gap:3,spd:+$('#exspd').value,voice:1,vname:$('#lvvn').value||'',fmt:$('#exfm').value};
+ LV.exp={cta:+$('#excta').value};
+ $('#mu').checked=$('#exmu').value==='1';
+ LV.order=liveOrder();if(n)LV.order=LV.order.slice(0,n);if(!LV.order.length){LV.exp=null;return}
+ X.on=true;LV.i=-1;LV.on=true;document.body.classList.add('live');setFmt(LV.opt.fmt==='v');
+ try{AU()}catch(e){}if($('#mu').checked)musicOn();vstop();lay();liveNext()};
+})();
 </script></body></html>
