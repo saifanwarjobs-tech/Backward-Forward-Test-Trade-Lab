@@ -88,7 +88,7 @@ button,.b,.sw,.chip,.li{touch-action:manipulation;-webkit-tap-highlight-color:tr
 <div class="ov" id="tov"><div class="card" style="width:min(420px,94vw)"><b>T Text likhiye</b><input id="tin" type="text" maxlength="80" placeholder="e.g. Buy above high, SL below low" autocomplete="off" style="width:100%;margin-top:10px;background:#0b1220;border:1px solid #33456b;border-radius:10px;padding:10px 12px;font-size:16px"><div class="btns"><button class="b" id="tcan">Cancel</button><button class="b on" id="tadd">Add on board</button></div></div></div>
 <div class="ov" id="exo"><div class="card" style="width:min(480px,94vw)"><h2>⬇ Export all lessons</h2><p class="m" style="margin:4px 0 10px">Har lesson ki alag video file banegi (naam: 001-lesson-name). Chalte waqt tab khula rakhein aur doosre tab me na jaayein. Lagbhag 30-60 sec per lesson.</p>
 <div class="lvg"><label>Video type<select id="exfm"><option value="v">Reels / Shorts (9:16 vertical)</option><option value="h">Video (16:9 landscape)</option></select></label><label>Category<select id="excat"></select></label>
-<label>End me "Comment karo Buy ya Sell"<select id="excta"><option value="0">Nahi (Shorts ke liye)</option><option value="1">Haan</option></select></label><label>Candle speed<select id="exspd"><option value="2">Slow</option><option value="3" selected>Normal</option><option value="4">Fast</option></select></label>
+<label>Explanation<select id="exfull"><option value="1">Poori (Entry, SL, Target, Galti, Yaad rakho)</option><option value="0">Chhoti (sirf pehla vaakya)</option></select></label><label>End me "Comment karo Buy ya Sell"<select id="excta"><option value="0">Nahi (Shorts ke liye)</option><option value="1">Haan</option></select></label><label>Candle speed<select id="exspd"><option value="2">Slow</option><option value="3" selected>Normal</option><option value="4">Fast</option></select></label>
 <label>Background music<select id="exmu"><option value="1">On</option><option value="0">Off</option></select></label><label>Pehle kitne lessons (test)<select id="exn"><option value="3">Sirf 3 (test)</option><option value="10">10</option><option value="0" selected>Sabhi</option></select></label></div>
 <div class="btns"><button class="b" id="excancel">Cancel</button><button class="b on" id="exgo">⬇ Start export</button></div></div></div>
 <div id="exp" style="position:fixed;left:8px;bottom:8px;z-index:70;background:#111a2e;color:#e6edf7;border:1px solid #26324d;border-radius:10px;padding:8px 12px;font:600 13px system-ui;display:none"></div>
@@ -409,7 +409,7 @@ function vstop(){VG++;LV.tk=0;try{if(VS){VS.onended=null;VS.stop()}}catch(e){}VS
 function labelHit(it,now){SP.add(it);it.t0=now;const ok=/✔|✓/.test(it.s),bad=/✗|✘|✕/.test(it.s);sfxSwoosh();setTimeout(()=>{ok?sfxBreak():bad?sfxNo():sfxPop()},550);if(LV.on&&LV.cur&&LV.cur.d.story)return;
  if(!LV.on){if($('#ap').checked)HOLD=now+1500;return}
  if(LV.opt.voice){HOLD=Infinity;LV.pend=it.s;LV.pt=now+1350}else HOLD=now+2200}
-const spkS=t=>t.split(/(?<=\.)\s/)[0];
+var FULLX=0;const spkS=t=>FULLX?t:t.split(/(?<=\.)\s/)[0];
 const scH=L=>{const c=SCR[L.d.nm];return c&&spkS(L.mir?swap(c.h):c.h)};
 const GEN=[['Entry','Entry: setup confirm hone par, candle close ke baad Buy. Pehle close, phir entry.'],['Stop-loss','Stop-loss: setup ke sabse Low ke Below. Wahan tootne par idea galat.'],['Target','Target: pichla swing High, ya kam se kam 1 ratio 2.'],['Galti','Galti: confirmation ke bina jaldi entry, aur SL baad me tay karna.'],['Yaad rakho','Setup pehchano, confirmation lo, risk pehle tay karo.']];
 const scSteps=L=>{if(L.d.story)return[];const c=SCR[L.d.nm];if(!c){if(L.dir!=='bull'&&L.dir!=='bear')return[];return GEN.map(([a,b])=>[a,L.dir==='bear'?swap(b):b])}return[['Entry',c.e],['Stop-loss',c.s],['Target',c.t],['Galti',c.m],['Yaad rakho',c.r]].map(([a,b])=>[a,L.mir?swap(b):b])};
@@ -438,7 +438,7 @@ function liveNext(){LV.i++;if(LV.i>=LV.order.length){LV.order=liveOrder();LV.i=0
  const L=LS[LV.order[LV.i]];LV.cur=L;LV.spoken=new Set();$('#spd').value=LV.opt.spd;build(L);LV.state=L.d.story?'story':'run';LV.si=0;LV.sn=0;LV.lim=L.d.story?0:null;LV.sp2=0;LV.hold=0;
  vstop();LV.pend=null;LV.rv=0;LV.cap=null;LV.intro=performance.now();LV.t1=0;
  if(L.dir==='bear')chime(660,440);else chime(523,784);
- HOLD=Infinity;const hk=scH(L);say(L.n+'. '+DIRW[L.dir]+'.',()=>{if(hk){const g1=VG;setTimeout(()=>{if(g1===VG)say(hk,()=>{HOLD=performance.now()+1000})},1000)}else HOLD=performance.now()+1000})}
+ HOLD=Infinity;const hk=scH(L);say((FULLX?'Namaste. Aaj ka lesson: ':'')+L.n+'. '+DIRW[L.dir]+'.',()=>{if(hk){const g1=VG;setTimeout(()=>{if(g1===VG)say(hk,()=>{HOLD=performance.now()+1000})},1000)}else HOLD=performance.now()+1000})}
 const BS=L=>L.dir==='bull'||L.dir==='bear';
 function holdStart(now,L){LV.state='hold';LV.hold=now+LV.opt.gap*1000;LV.rv=0;LV.cap=null;if(BS(L))say('Comment karo. Buy ya sell?')}
 function liveTick(now){const L=LV.cur;if(!L)return;
@@ -448,7 +448,7 @@ function liveTick(now){const L=LV.cur;if(!L)return;
   if(LV.si<ST.length){if(now>=LV.sn&&!LV.tk&&HOLD!==Infinity){const[to,tx]=ST[LV.si++],n=tot();LV.lim=Math.min(n,to*n);LV.sn=Infinity;const go=d=>{LV.sp2=Math.max(.3,(LV.lim-rev)/Math.max(1,d))};
    if(LV.opt.voice)say(tx,()=>{LV.sn=performance.now()+350},go);else{const d=tx.length*.075;go(d);LV.sn=now+d*1000}}}
   else if(!LV.tk&&now>=LV.sn){LV.lim=null;LV.sp2=0;if(!play&&rev>=tot()-.001)holdStart(now,L)}}
- else if(LV.state==='teach'){if(now>=LV.tn&&!LV.tk){if(LV.ti<LV.tq.length){const i=LV.ti++,[a,b]=LV.tq[i];LV.cap=[a,b];if(TM&&i<3)TM.t[i]=performance.now();LV.tn=Infinity;if(LV.opt.voice&&i<3)say(spkS(b),()=>{LV.tn=performance.now()+1200});else LV.tn=now+(LV.opt.voice?3800:4500)}else holdStart(now,L)}}
+ else if(LV.state==='teach'){if(now>=LV.tn&&!LV.tk){if(LV.ti<LV.tq.length){const i=LV.ti++,[a,b]=LV.tq[i];LV.cap=[a,b];if(TM&&i<3)TM.t[i]=performance.now();LV.tn=Infinity;if(LV.opt.voice&&i<(FULLX?5:3))say(spkS(b),()=>{LV.tn=performance.now()+1200});else LV.tn=now+(LV.opt.voice?3800:4500)}else holdStart(now,L)}}
  else if(LV.state==='hold'){if(!LV.rv&&now>LV.hold-1500){LV.rv=1;if(BS(L))say(DIRW[L.dir]+'.')}
   const busy=LV.opt.voice&&(LV.tk>0||LV.pend);if(now>LV.hold&&(!busy||now>LV.hold+9000))liveNext()}}
 function liveStop(){const lc=LV.cur;vstop();if(!(mr&&mr.state==='recording'))musicOff();HOLD=0;LV.on=false;LV.cur=null;document.body.classList.remove('live');try{speechSynthesis.cancel()}catch(e){}try{LV.wl&&LV.wl.release()}catch(e){}LV.wl=null;try{document.fullscreenElement&&document.exitFullscreen().catch(()=>{})}catch(e){}setFmt(false);if(lc){build(lc);play=false}lay();toast('Live mode stopped')}
@@ -508,7 +508,7 @@ if(MOB){document.body.classList.add('m');
 </script><script>
 /* ===== Export all lessons: har lesson ki alag mp4/webm (Reels ya Video) ===== */
 (()=>{
-const X={on:false,rec:null,dir:null,pend:0,n:0,name:''};
+const X={on:false,rec:null,dir:null,pend:0,n:0,name:'',miss:new Set()};
 const pick=()=>['video/mp4;codecs=avc1.42E01E,mp4a.40.2','video/mp4;codecs=avc1,mp4a.40.2','video/mp4','video/webm;codecs=vp9,opus','video/webm;codecs=vp8,opus','video/webm'].find(t=>MediaRecorder.isTypeSupported(t));
 const info=t=>{const e=$('#exp');e.style.display=t?'block':'none';e.textContent=t||''};
 async function save(blob,name){
@@ -523,19 +523,21 @@ function recStart(L){
  r.start(500);X.rec=r;X.pend++;info('⬇ Exporting '+(LV.i+1)+'/'+LV.order.length+': '+L.n+'  ('+X.n+' saved)')}
 function recStop(keep){const r=X.rec;X.rec=null;if(r&&r.state!=='inactive'){r.keep=keep;r.stop()}}
 async function finish(){recStop(true);info('Saving last files...');while(X.pend>0)await new Promise(r=>setTimeout(r,300));
- const n=X.n;X.on=false;LV.exp=null;liveStop();info('✅ Export complete: '+n+' videos'+(X.dir?' (folder me save)':' (Downloads me)'));setTimeout(()=>info(''),9000)}
+ const n=X.n;X.on=false;LV.exp=null;FULLX=0;liveStop();X.fin=0;let ms='';if(X.miss.size){const tx=[...X.miss].map(t=>slug(t)+'.mp3\t'+t).join('\n');await save(new Blob([tx],{type:'text/tab-separated-values'}),'voices_missing.tsv');ms=' | '+X.miss.size+' lines ki mp3 nahi mili (silent): voices_missing.tsv se banao'}info('✅ Export complete: '+n+' videos'+(X.dir?' (folder me save)':' (Downloads me)')+ms);setTimeout(()=>info(''),20000)}
+const _tt=tts;tts=function(t,fin){if(LV.exp)X.miss.add(t);_tt(t,fin)};
 const _ln=liveNext;liveNext=function(){
- if(LV.exp){const had=!!X.rec;recStop(true);if(had&&LV.i+1>=LV.order.length){finish();return}}
+ if(X.fin)return;
+ if(LV.exp){const had=!!X.rec;recStop(true);if(had&&LV.i+1>=LV.order.length){X.fin=1;LV.state='done';finish();return}}
  _ln();if(LV.exp&&LV.cur)recStart(LV.cur)};
 const _hs=holdStart;holdStart=function(now,L){
  if(LV.exp&&!LV.exp.cta){LV.state='hold';LV.hold=now+LV.opt.gap*1000;LV.rv=0;LV.cap=null;return}_hs(now,L)};
-const _ls=liveStop;liveStop=function(){if(LV.exp){recStop(false);LV.exp=null;X.on=false;info('Export roka gaya (adhuri file save nahi hui). Ho chuki files: '+X.n);setTimeout(()=>info(''),9000)}_ls()};
+const _ls=liveStop;liveStop=function(){if(LV.exp){recStop(false);LV.exp=null;FULLX=0;X.on=false;info('Export roka gaya (adhuri file save nahi hui). Ho chuki files: '+X.n);setTimeout(()=>info(''),9000)}_ls()};
 $('#exb').onclick=()=>{if(!window.MediaRecorder){toast('Chrome ya Edge use karein');return}
  $('#excat').innerHTML=$('#lvcat').innerHTML||'<option value="All">All</option>';$('#excat').value='All';$('#exo').classList.add('on')};
 $('#excancel').onclick=()=>$('#exo').classList.remove('on');
 $('#exgo').onclick=async()=>{
  const cat=$('#excat').value,n=+$('#exn').value;$('#exo').classList.remove('on');
- X.dir=null;X.n=0;X.pend=0;
+ X.dir=null;X.n=0;X.pend=0;X.fin=0;X.miss=new Set();FULLX=+$('#exfull').value;
  if(window.showDirectoryPicker){try{X.dir=await showDirectoryPicker({mode:'readwrite'})}catch(e){X.dir=null}}
  LV.opt={cat,shuffle:0,gap:3,spd:+$('#exspd').value,voice:1,vname:$('#lvvn').value||'',fmt:$('#exfm').value};
  LV.exp={cta:+$('#excta').value};
