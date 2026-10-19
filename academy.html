@@ -395,7 +395,7 @@ const io=new IntersectionObserver(a=>a.forEach(x=>{if(x.isIntersecting){x.target
 
 
 /* ===== PAY BY UPI (manual, until a payment gateway is approved) ===== */
-window.buy=()=>{fb('InitiateCheckout');const UPI='6350566010@axl',WA='916350566010',amt=CFG.price,link='upi://pay?pa='+UPI+'&pn='+encodeURIComponent('BFT Academy')+'&am='+amt+'&cu=INR&tn='+encodeURIComponent('BFT Academy');
+window.buy=()=>{fb('InitiateCheckout');const UPI=CFG.upi||'6350566010@axl',WA=CFG.wa||'916350566010',amt=CFG.price,link='upi://pay?pa='+UPI+'&pn='+encodeURIComponent('BFT Academy')+'&am='+amt+'&cu=INR&tn='+encodeURIComponent('BFT Academy');
 open(`<div style="text-align:center;padding:6px"><h3 style="padding:0">Get lifetime access: ${CFG.price?'\u20b9'+rs(CFG.price):''}</h3>
 <p class="m"><b>Step 1.</b> Pay by UPI. On mobile tap the button; on a computer scan the QR with any UPI app.</p>
 <a class="btn s" href="${link}">Pay \u20b9${rs(amt)} in my UPI app</a>
@@ -450,6 +450,11 @@ if(session){window.WM=session.user.email;
  member=m.data||null;isAdmin=!!(a.data&&a.data.length);
  paid=isAdmin||!!(member&&(!member.expires_at||new Date(member.expires_at)>new Date()));
  if(!paid)toast(member?'Your access has expired.':'No purchase found for '+session.user.email)}
+/* ---- site settings from admin (price, YouTube, instructor, reviews, contact). Falls back to the CFG defaults above. ---- */
+try{const g=await sb.from('site_settings').select('data').eq('id',1).maybeSingle(),d=g.data&&g.data.data;
+ if(d&&typeof d==='object'){if(Number.isFinite(d.price))CFG.price=d.price;if(Number.isFinite(d.mrp))CFG.mrp=d.mrp;if(typeof d.offer==='boolean')CFG.offer=d.offer;
+  if(typeof d.youtube==='string')CFG.youtube=d.youtube;if(d.instructor&&typeof d.instructor==='object')CFG.instructor=d.instructor;if(Array.isArray(d.reviews))CFG.reviews=d.reviews;
+  if(d.refund)CFG.refund=d.refund;if(d.upi)CFG.upi=d.upi;if(/^\d{10,15}$/.test(d.wa||'')){CFG.wa=d.wa;CFG.contact='https://wa.me/'+d.wa}}}catch(e){}
 /* ---- content ---- */
 const[ri,rl]=await Promise.all([sb.from('items').select('*').eq('published',true).order('sort').order('created_at'),sb.from('lessons').select('*').order('sort').order('created_at')]);
 if(ri.error||!ri.data){toast('Could not load the latest content. Please refresh.');ready();all();return}

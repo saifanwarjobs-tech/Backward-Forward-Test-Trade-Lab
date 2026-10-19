@@ -58,10 +58,11 @@ input[type=checkbox]{width:20px;height:20px;accent-color:var(--ac);flex:none}.ch
 
 <div id="app" class="hid">
 <header class="top"><div class="w"><span class="logo">BFT <i>Admin</i></span><span class="sp"></span><span class="who" id="who"></span><a class="btn s o" href="academy.html" target="_blank" rel="noopener" style="text-decoration:none">View Academy ↗</a><button class="btn s o" id="out">Sign out</button></div></header>
-<nav class="nav" id="nav"><button data-v="dash" class="on"><i>📊</i>Dashboard</button><button data-v="content"><i>🎬</i>Content</button><button data-v="students"><i>👥</i>Students</button></nav>
+<nav class="nav" id="nav"><button data-v="dash" class="on"><i>📊</i>Dashboard</button><button data-v="content"><i>🎬</i>Content</button><button data-v="students"><i>👥</i>Students</button><button data-v="settings"><i>⚙️</i>Settings</button></nav>
 <main class="w">
  <section id="v-dash"></section>
  <section id="v-content" class="hid"><div class="tools"><input id="q" type="search" placeholder="Search content…" aria-label="Search content"></div><div class="chips" id="kf" style="margin-bottom:14px"></div><div id="list"></div><button class="btn fab" id="new">＋ New</button></section>
+ <section id="v-settings" class="hid"></section>
  <section id="v-students" class="hid"><div class="tools"><input id="sq" type="search" placeholder="Search students…" aria-label="Search students"><button class="btn" id="sadd">＋ Add</button><button class="btn o" id="scsv">Export CSV</button></div><div class="row" id="ssum" style="margin-bottom:12px"></div><div id="slist"></div></section>
 </main></div>
 <div id="s1" class="sheet hid"></div><div id="s2" class="sheet l2 hid"></div><div id="dlg" class="dlg hid"></div><div id="toast" role="status"></div>
@@ -79,7 +80,7 @@ function toast(t){const e=$('#toast');e.textContent=t;e.style.display='block';cl
 function ask(title,text,okLabel,danger){return new Promise(r=>{const d=$('#dlg');d.classList.remove('hid');d.innerHTML=`<div class="box" role="alertdialog" aria-modal="true"><h2>${esc(title)}</h2><p>${esc(text||'')}</p><div class="row" style="justify-content:flex-end"><button class="btn o" id="dn">Cancel</button><button class="btn ${danger?'d':''}" id="dy">${esc(okLabel||'OK')}</button></div></div>`;const f=v=>{d.classList.add('hid');d.innerHTML='';r(v)};$('#dn').onclick=()=>f(false);$('#dy').onclick=()=>f(true);$('#dy').focus()})}
 if(!window.supabase){$('#boot').textContent='Could not load the Supabase library. Check your internet connection and reload.'}else{
 const sb=supabase.createClient(SB_URL,SB_KEY);
-const S={items:[],lessons:[],lsec:{},isec:{},students:[],user:null,view:'dash',kind:'all'};
+const S={items:[],lessons:[],lsec:{},isec:{},students:[],user:null,view:'dash',kind:'all',settings:null,setErr:'',rv:[]};
 let E=null,authWarn=null;
 
 /* ---------- auth ---------- */
@@ -102,14 +103,15 @@ async function load(){
  const[a,b,c,d,e]=await Promise.all([sb.from('items').select('*').order('sort').order('created_at'),sb.from('lessons').select('*').order('sort').order('created_at'),sb.from('lesson_secrets').select('lesson_id,video_url,video_path'),sb.from('students').select('*').order('created_at',{ascending:false}),sb.from('item_secrets').select('item_id,pdf_path,code,video_url')]);
  const er=[a,b,c,d,e].find(x=>x.error);S.err=er?er.error.message:'';
  S.items=a.data||[];S.lessons=b.data||[];S.lsec=Object.fromEntries((c.data||[]).map(x=>[x.lesson_id,x]));S.students=d.data||[];S.isec=Object.fromEntries((e.data||[]).map(x=>[x.item_id,x]));
+ const g=await sb.from('site_settings').select('data').eq('id',1).maybeSingle();S.setErr=g.error?g.error.message:'';if(!g.error){S.settings=(g.data&&g.data.data)||{};if(S.view!=='settings'||!S.rv.length)S.rv=JSON.parse(JSON.stringify(S.settings.reviews||[]))}
  renderAll()}
 const ofKind=k=>S.items.filter(i=>i.kind===k).sort((a,b)=>a.sort-b.sort||new Date(a.created_at)-new Date(b.created_at));
 const lessonsOf=id=>S.lessons.filter(l=>l.item_id===id).sort((a,b)=>a.sort-b.sort||new Date(a.created_at)-new Date(b.created_at));
 const stat=s=>{if(!s.expires_at)return{t:'Lifetime',c:'ok',on:1};const d=new Date(s.expires_at),left=(d-Date.now())/864e5;return left<0?{t:'Expired '+fmtD(d),c:'dn',on:0}:{t:'Until '+fmtD(d),c:left<=7?'wn':'ok',on:1,soon:left<=7}};
-function renderAll(){renderDash();renderContent();renderStudents()}
+function renderAll(){renderDash();renderContent();renderStudents();if(S.view==='settings'&&!document.activeElement.closest('#v-settings'))renderSettings()}
 
 /* ---------- navigation ---------- */
-function view(v){S.view=v;$$('.nav button').forEach(b=>b.classList.toggle('on',b.dataset.v===v));['dash','content','students'].forEach(x=>$('#v-'+x).classList.toggle('hid',x!==v));scrollTo(0,0)}
+function view(v){S.view=v;$$('.nav button').forEach(b=>b.classList.toggle('on',b.dataset.v===v));['dash','content','students','settings'].forEach(x=>$('#v-'+x).classList.toggle('hid',x!==v));if(v==='settings')renderSettings();scrollTo(0,0)}
 $('#nav').onclick=e=>{const b=e.target.closest('button');if(b)view(b.dataset.v)};
 
 /* ---------- dashboard ---------- */
@@ -186,7 +188,7 @@ function editor(id,kind){
   <div id="m_inv" class="${x.delivery==='invite'?'':'hid'}"><label for="f_inv">TradingView script link</label><input id="f_inv" type="url" inputmode="url" value="${esc(sec.video_url||'')}" placeholder="https://www.tradingview.com/script/…"><p class="mu" style="font-size:12.5px;margin-top:6px">Publish the script on TradingView as invite-only; students send their username on WhatsApp.</p></div>`;
  if(k!=='indicator')f+=`<label>Cover image <span style="font-weight:500">(optional)</span></label><div class="cover" id="cv" ${th?`style="background-image:url('${esc(th)}')"`:''}>${th?'':'No cover'}</div><div class="file" style="margin-top:8px">Choose image<br><input type="file" id="f_i" accept="image/*"></div>${th?'<button class="btn o s" id="rmcv" type="button" style="margin-top:8px">Remove cover</button>':''}`;
  f+=`<label class="chk"><input type="checkbox" id="f_fr" ${x.free?'checked':''}> Free for everyone (no payment needed)</label><label class="chk"><input type="checkbox" id="f_pb" ${x.published?'checked':''}> Published (visible on the Academy)</label>`;
- if(k==='course')f+=`<div class="card" style="margin-top:22px"><div class="row spb"><h2>Lessons</h2><button class="btn s" id="addl" type="button">＋ Add lesson</button></div><div id="lsn"></div></div>`;
+ if(k==='course')f+=`<div class="card" style="margin-top:22px"><div class="row spb"><h2>Lessons</h2><div class="row" style="gap:6px"><button class="btn s o" id="ytimp" type="button">▶ Import YouTube</button><button class="btn s" id="addl" type="button">＋ Add lesson</button></div></div><div id="lsn"></div></div>`;
  if(it)f+=`<button class="btn d" id="del" type="button" style="margin-top:26px;width:100%">Delete this ${KIND[k][1].toLowerCase()}</button>`;
  sheet(1,(it?'Edit ':'New ')+KIND[k][1],f,'Save');
  if(k==='course')renderLessons();
@@ -196,6 +198,7 @@ function editor(id,kind){
  const ff=$('#f_f');if(ff)ff.onchange=()=>{E.file=ff.files[0]||null;$('#cf').textContent=E.file?'Selected: '+E.file.name+' ('+(E.file.size/1048576).toFixed(1)+' MB)':''};
  $('#sv1').onclick=()=>saveItem();
  const al=$('#addl');if(al)al.onclick=async()=>{if(!E.saved){const ok=await saveItem(true);if(!ok)return}lessonSheet(null)};
+ const yi=$('#ytimp');if(yi)yi.onclick=async()=>{if(!E.saved){const ok=await saveItem(true);if(!ok)return}ytSheet()};
  const dd=$('#del');if(dd)dd.onclick=()=>delItem()}
 function readItem(){const x=E.it;x.title=$('#f_t').value.trim();x.descr=$('#f_d').value.trim();x.free=$('#f_fr').checked;x.published=$('#f_pb').checked;if(E.kind==='course')x.level=$('#f_lv').value;if(E.kind==='pdf'){x.category=$('#f_c').value.trim()||'Notes';x.pages=parseInt($('#f_p').value)||null}if(E.kind==='indicator'){x.tf=$('#f_tf').value.trim();x.mk=$('#f_mk').value.trim()}}
 async function saveItem(keepOpen){
@@ -248,6 +251,91 @@ function lessonSheet(id){
    const i=S.lessons.findIndex(q=>q.id===st.id);const full={...row,created_at:l?l.created_at:new Date().toISOString()};if(i<0)S.lessons.push(full);else S.lessons[i]=full;S.lsec[st.id]=sec;
    closeSheet(2);renderLessons();renderContent();renderDash();toast('Lesson saved ✓')}catch(e){toast(e.message||String(e));b.disabled=false;b.textContent='Save'}};
  const ld=$('#l_del');if(ld)ld.onclick=async()=>{if(!await ask('Delete this lesson?','The lesson and its uploaded video will be removed.','Delete',true))return;try{if(z.video_path)await rm('academy-videos',[z.video_path]);const r=await sb.from('lessons').delete().eq('id',l.id);if(r.error)throw r.error;S.lessons=S.lessons.filter(q=>q.id!==l.id);delete S.lsec[l.id];closeSheet(2);renderLessons();renderContent();renderDash();toast('Lesson deleted')}catch(e){toast(e.message)}}}
+
+
+/* ---------- settings (price, YouTube, instructor, reviews, contact) ---------- */
+const ytKey=()=>{try{return localStorage.getItem('bft_yt_key')||''}catch(_){return ''}};
+function renderSettings(){
+ const el=$('#v-settings');
+ if(S.setErr){el.innerHTML=`<h1 style="margin:4px 0 14px">Settings</h1><div class="alert dn"><span>⛔</span><div><b>Settings table not found</b><span class="mu">Run the latest schema.sql once in Supabase → SQL Editor, then reload. (${esc(S.setErr)})</span></div></div>`;return}
+ const d=S.settings||{},I=d.instructor||{};
+ el.innerHTML=`<div class="row spb" style="margin:4px 0 14px"><h1>Settings</h1><button class="btn" id="st_save">Save settings</button></div>
+ <div class="card"><h2>Price</h2><div class="g2 keep"><div><label for="st_price" style="margin-top:12px">Price (₹)</label><input id="st_price" type="number" min="0" inputmode="numeric" value="${d.price??4999}"></div><div><label for="st_mrp" style="margin-top:12px">MRP / cut price (₹)</label><input id="st_mrp" type="number" min="0" inputmode="numeric" value="${d.mrp??14999}"></div></div>
+ <label class="chk"><input type="checkbox" id="st_offer" ${d.offer?'checked':''}> Show MRP struck through (only for a real, limited offer)</label></div>
+ <div class="card"><h2>Contact and payment</h2><label for="st_wa" style="margin-top:12px">WhatsApp number (with country code)</label><input id="st_wa" type="tel" inputmode="tel" value="${esc(d.wa||'')}" placeholder="916350566010"><label for="st_upi">UPI ID</label><input id="st_upi" value="${esc(d.upi||'')}" placeholder="name@bank" autocapitalize="off"><p class="mu" style="font-size:12.5px;margin-top:6px">Leave empty to keep the current values already in academy.html. If you change the UPI ID, also replace upi-qr.jpg with the new QR.</p>
+ <label for="st_ref">Refund policy line (shown in FAQ)</label><textarea id="st_ref" rows="3" maxlength="500">${esc(d.refund||'')}</textarea></div>
+ <div class="card"><h2>YouTube channel</h2><label for="st_yt" style="margin-top:12px">Channel link</label><input id="st_yt" type="url" inputmode="url" value="${esc(d.youtube||'')}" placeholder="https://youtube.com/@yourchannel"><p class="mu" style="font-size:12.5px;margin-top:6px">Shows a “Watch on YouTube” button on the Academy. Empty = hidden.</p></div>
+ <div class="card"><h2>Instructor</h2><p class="mu" style="font-size:12.5px">Name filled = the “Meet your instructor” section appears.</p><label for="st_in">Name</label><input id="st_in" value="${esc(I.name||'')}" maxlength="80"><label for="st_ir">Role / tagline</label><input id="st_ir" value="${esc(I.role||'')}" maxlength="100" placeholder="e.g. Price action trader, 8 years"><label for="st_ib">Short bio</label><textarea id="st_ib" rows="4" maxlength="600">${esc(I.bio||'')}</textarea><label for="st_ip">Photo link (https, optional)</label><input id="st_ip" type="url" inputmode="url" value="${esc(I.photo||'')}"><label for="st_ipt">Credentials (one per line)</label><textarea id="st_ipt" rows="3" maxlength="400" placeholder="NISM certified&#10;10,000+ chart hours">${esc((I.points||[]).join('\n'))}</textarea></div>
+ <div class="card"><div class="row spb"><h2>Student reviews</h2><button class="btn s" id="rv_add" type="button">＋ Add review</button></div><p class="mu" style="font-size:12.5px;margin-top:4px">Only real feedback. No reviews = section hidden.</p><div id="rv_list"></div></div>
+ <div class="card"><h2>YouTube API key <span class="k">this browser only</span></h2><p class="mu" style="font-size:13px;margin:6px 0 0">Needed only for “Import from YouTube playlist”. It is stored in this browser, never in the database. Get one free: Google Cloud Console → enable “YouTube Data API v3” → Credentials → API key.</p><label for="st_key">API key</label><input id="st_key" value="${esc(ytKey())}" autocomplete="off" spellcheck="false" placeholder="AIza…"><button class="btn o s" id="st_keysave" type="button" style="margin-top:10px">Save key on this device</button></div>`;
+ drawReviews();
+ $('#st_save').onclick=saveSettings;
+ $('#rv_add').onclick=()=>{S.rv.push({name:'',role:'',text:''});drawReviews();const t=$$('#rv_list textarea');t[t.length-1].focus()};
+ $('#st_keysave').onclick=()=>{try{const v=$('#st_key').value.trim();if(v)localStorage.setItem('bft_yt_key',v);else localStorage.removeItem('bft_yt_key');toast(v?'Key saved on this device ✓':'Key removed')}catch(_){toast('Could not save in this browser')}}}
+function drawReviews(){const b=$('#rv_list');if(!b)return;
+ b.innerHTML=S.rv.map((r,i)=>`<div class="ls" style="display:block"><div class="g2 keep"><div><label style="margin-top:8px">Name</label><input data-ri="${i}" data-f="name" value="${esc(r.name||'')}" maxlength="60" placeholder="Rahul, Jaipur"></div><div><label style="margin-top:8px">Role (optional)</label><input data-ri="${i}" data-f="role" value="${esc(r.role||'')}" maxlength="60" placeholder="Intraday trader"></div></div><label>Review</label><textarea data-ri="${i}" data-f="text" rows="3" maxlength="400">${esc(r.text||'')}</textarea><button class="btn d s" data-rd="${i}" type="button" style="margin-top:8px">Remove</button></div>`).join('')||'<p class="mu" style="margin-top:10px">No reviews yet.</p>';
+ b.oninput=e=>{const t=e.target;if(t.dataset.ri!==undefined)S.rv[+t.dataset.ri][t.dataset.f]=t.value};
+ b.onclick=e=>{const t=e.target.closest('[data-rd]');if(t){S.rv.splice(+t.dataset.rd,1);drawReviews()}}}
+async function saveSettings(){
+ const n=v=>{const x=parseInt(v);return isNaN(x)||x<0?null:x},u=v=>String(v||'').trim(),btn=$('#st_save');
+ const price=n($('#st_price').value),mrp=n($('#st_mrp').value);if(price===null)return toast('Enter a valid price');
+ const yt=u($('#st_yt').value),ph=u($('#st_ip').value),wa=u($('#st_wa').value).replace(/\D/g,''),upi=u($('#st_upi').value);
+ if(yt&&!/^https:\/\//i.test(yt))return toast('YouTube link must start with https://');
+ if(ph&&!/^https:\/\//i.test(ph))return toast('Photo link must start with https://');
+ if(wa&&(wa.length<10||wa.length>15))return toast('WhatsApp number looks wrong. Use country code, e.g. 916350566010');
+ if(upi&&!/^[\w.\-]{2,}@[\w.\-]{2,}$/.test(upi))return toast('UPI ID looks wrong (name@bank)');
+ const data={price,mrp:mrp??14999,offer:$('#st_offer').checked,youtube:yt,wa,upi,refund:u($('#st_ref').value),
+  instructor:{name:u($('#st_in').value),role:u($('#st_ir').value),bio:u($('#st_ib').value),photo:ph,points:$('#st_ipt').value.split('\n').map(u).filter(Boolean)},
+  reviews:S.rv.map(r=>({name:u(r.name),role:u(r.role),text:u(r.text)})).filter(r=>r.text)};
+ btn.disabled=true;btn.textContent='Saving…';
+ const{error}=await sb.from('site_settings').upsert({id:1,data,updated_at:new Date().toISOString()});
+ btn.disabled=false;btn.textContent='Save settings';
+ if(error)return toast(error.message);S.settings=data;S.rv=JSON.parse(JSON.stringify(data.reviews));drawReviews();toast('Saved ✓ Live on the Academy now')}
+
+
+/* ---------- bulk import lessons from a YouTube playlist ---------- */
+const ytId=u=>{u=String(u||'').trim();const m=u.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/))([\w-]{11})/);return m?m[1]:(/^[\w-]{11}$/.test(u)?u:'')};
+const ytIso=s=>{const m=String(s||'').match(/^P(?:(\d+)D)?T?(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?$/);if(!m)return '';return fmtDur((+m[1]||0)*86400+(+m[2]||0)*3600+(+m[3]||0)*60+(+m[4]||0))};
+async function ytApi(path,key){const r=await fetch('https://www.googleapis.com/youtube/v3/'+path+(path.includes('?')?'&':'?')+'key='+encodeURIComponent(key));const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error((j.error&&j.error.message)||('YouTube API error '+r.status));return j}
+async function ytDetails(ids,key){const out={};for(let i=0;i<ids.length;i+=50){const j=await ytApi('videos?part=contentDetails,snippet,status&maxResults=50&id='+ids.slice(i,i+50).join(','),key);(j.items||[]).forEach(v=>out[v.id]={dur:ytIso(v.contentDetails&&v.contentDetails.duration),title:v.snippet&&v.snippet.title,priv:v.status&&v.status.privacyStatus==='private'})}return out}
+async function ytCollect(text,key){
+ const lines=text.split('\n').map(x=>x.trim()).filter(Boolean),found=[],seen=new Set();
+ const add=(id,title)=>{if(id&&!seen.has(id)){seen.add(id);found.push({id,title:title||'',dur:''})}};
+ for(const ln of lines){const pl=ln.match(/[?&]list=([\w-]+)/);
+  if(pl){if(!key)throw new Error('A playlist needs a YouTube API key. Add it in Settings, or paste the video links one per line instead.');
+   let tok='',n=0;do{const j=await ytApi('playlistItems?part=snippet,status&maxResults=50&playlistId='+pl[1]+(tok?'&pageToken='+tok:''),key);(j.items||[]).forEach(it=>{const t=(it.snippet&&it.snippet.title)||'',id=it.snippet&&it.snippet.resourceId&&it.snippet.resourceId.videoId;if(/^(private|deleted) video$/i.test(t))return;add(id,t)});tok=j.nextPageToken||'';n++}while(tok&&n<20)}
+  else add(ytId(ln.split(/[ \t|]/)[0]),ln.includes('|')?ln.split('|').slice(1).join('|').trim():'')}
+ if(!found.length)throw new Error('No YouTube links found. Paste a playlist link or video links.');
+ if(key){try{const d=await ytDetails(found.map(x=>x.id),key);for(let i=found.length-1;i>=0;i--){const v=d[found[i].id];if(!v){found.splice(i,1);continue}if(v.priv){found.splice(i,1);continue}found[i].dur=v.dur||'';if(!found[i].title)found[i].title=v.title||''}}catch(e){if(!/quota/i.test(e.message))throw e}}
+ else for(const f of found){if(f.title)continue;try{const r=await fetch('https://www.youtube.com/oembed?format=json&url='+encodeURIComponent('https://youtu.be/'+f.id));if(r.ok)f.title=(await r.json()).title||''}catch(_){}}
+ found.forEach((f,i)=>{if(!f.title)f.title='Lesson '+(i+1)});return found}
+function ytSheet(){
+ const L=lessonsOf(E.id),mods=[...new Set(L.map(x=>x.module).filter(Boolean))],lastMod=L.length?L[L.length-1].module:'Module 1',st={vids:[]};
+ const have=new Set(L.map(l=>ytId((S.lsec[l.id]||{}).video_url)).filter(Boolean));
+ sheet(2,'Import from YouTube',`<p class="mu" style="font-size:13.5px">Paste a <b>playlist link</b> (needs the API key from Settings) or <b>video links, one per line</b>. Optional: <code>link | custom title</code>.</p>
+ <label for="y_m">Add into module</label><input id="y_m" list="ymods" value="${esc(lastMod||'Module 1')}" maxlength="80"><datalist id="ymods">${mods.map(m=>`<option value="${esc(m)}">`).join('')}</datalist>
+ <label for="y_t">Playlist or video links</label><textarea id="y_t" rows="4" class="code" spellcheck="false" placeholder="https://www.youtube.com/playlist?list=PL…"></textarea>
+ <label for="y_k">YouTube API key <span style="font-weight:500">(saved on this device)</span></label><input id="y_k" value="${esc(ytKey())}" autocomplete="off" spellcheck="false" placeholder="Only needed for playlists">
+ <label for="y_f">First how many lessons are free previews?</label><input id="y_f" type="number" min="0" value="0" inputmode="numeric">
+ <button class="btn o" id="y_go" type="button" style="margin-top:14px;width:100%">Fetch videos</button><div id="y_res" style="margin-top:14px"></div>`,'Import');
+ $('#sv2').disabled=true;
+ const draw=()=>{const ok=st.vids.filter(v=>v.on).length;$('#y_res').innerHTML=st.vids.length?`<div class="row spb" style="margin-bottom:6px"><b>${st.vids.length} video${st.vids.length>1?'s':''} found</b><label class="chk" style="margin:0"><input type="checkbox" id="y_all" ${ok===st.vids.length?'checked':''}> Select all</label></div>`+st.vids.map((v,i)=>`<div class="ls"><input type="checkbox" data-yc="${i}" ${v.on?'checked':''} aria-label="Import"><div class="t" style="cursor:default;min-width:0"><input data-yt="${i}" value="${esc(v.title)}" maxlength="120" style="padding:8px 10px;font-size:14.5px">${v.dup?'<span class="k wn" style="margin-top:4px">Already in this course</span>':''}</div><span class="k">${esc(v.dur||'—')}</span></div>`).join(''):'';$('#sv2').disabled=!ok;$('#sv2').textContent=ok?'Import '+ok:'Import'};
+ $('#y_res').oninput=e=>{const t=e.target;if(t.dataset.yt!==undefined)st.vids[+t.dataset.yt].title=t.value};
+ $('#y_res').onchange=e=>{const t=e.target;if(t.dataset.yc!==undefined)st.vids[+t.dataset.yc].on=t.checked;if(t.id==='y_all')st.vids.forEach(v=>v.on=t.checked);draw()};
+ $('#y_go').onclick=async()=>{const b=$('#y_go'),key=$('#y_k').value.trim();b.disabled=true;b.textContent='Fetching…';
+  try{if(key)try{localStorage.setItem('bft_yt_key',key)}catch(_){}
+   st.vids=(await ytCollect($('#y_t').value,key)).map(v=>({...v,dup:have.has(v.id),on:!have.has(v.id)}));draw()}catch(e){st.vids=[];draw();toast(e.message||String(e))}
+  b.disabled=false;b.textContent='Fetch again'};
+ $('#sv2').onclick=async()=>{const pick=st.vids.filter(v=>v.on);if(!pick.length)return toast('Fetch videos first');
+  const b=$('#sv2');b.disabled=true;b.textContent='Importing…';
+  const mod=$('#y_m').value.trim()||'Module 1',nf=Math.max(0,parseInt($('#y_f').value)||0),base=Math.max(-10,...lessonsOf(E.id).map(x=>x.sort))+10;
+  const rows=pick.map((v,i)=>({id:uid(),item_id:E.id,module:mod,title:(v.title||'').trim()||'Lesson '+(i+1),duration:v.dur||null,free:i<nf,lab:null,sort:base+i*10}));
+  const sec=rows.map((r,i)=>({lesson_id:r.id,video_url:'https://youtu.be/'+pick[i].id,video_path:null}));
+  try{const r1=await sb.from('lessons').insert(rows);if(r1.error)throw r1.error;
+   const r2=await sb.from('lesson_secrets').insert(sec);if(r2.error){await sb.from('lessons').delete().in('id',rows.map(r=>r.id));throw r2.error}
+   const now=new Date().toISOString();rows.forEach(r=>S.lessons.push({...r,created_at:now}));sec.forEach(x=>S.lsec[x.lesson_id]=x);
+   closeSheet(2);renderLessons();renderContent();renderDash();toast(rows.length+' lessons imported ✓')}
+  catch(e){toast(e.message||String(e));b.disabled=false;b.textContent='Import '+pick.length}}}
 
 /* ---------- students ---------- */
 const academyUrl=()=>location.href.replace(/admin\.html.*$/,'academy.html');

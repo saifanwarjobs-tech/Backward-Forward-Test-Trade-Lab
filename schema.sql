@@ -162,3 +162,18 @@ create policy journal_cloud_ins on journal_cloud for insert to authenticated wit
 create policy journal_cloud_upd on journal_cloud for update to authenticated using (auth.uid() = user_id) with check (auth.uid() = user_id);
 create policy journal_cloud_del on journal_cloud for delete to authenticated using (auth.uid() = user_id);
 grant select, insert, update, delete on journal_cloud to authenticated;
+
+-- Site settings (price, YouTube, instructor, reviews, contact). One row, editable from admin.html > Settings.
+-- Anyone can read it (it is shown on the public Academy page); only admins can change it.
+create table if not exists site_settings(
+  id int primary key default 1 check (id = 1),
+  data jsonb not null default '{}'::jsonb,
+  updated_at timestamptz default now());
+alter table site_settings enable row level security;
+drop policy if exists ss_read on site_settings;
+drop policy if exists ss_admin on site_settings;
+create policy ss_read on site_settings for select using(true);
+create policy ss_admin on site_settings for all using(is_admin()) with check(is_admin());
+grant select on site_settings to anon, authenticated;
+grant insert, update on site_settings to authenticated;
+insert into site_settings(id, data) values (1, '{}'::jsonb) on conflict (id) do nothing;
