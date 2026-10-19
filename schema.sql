@@ -146,3 +146,19 @@ begin
       and not exists(select 1 from item_secrets s where s.item_id = items.id and coalesce(s.code, '') <> '');
   end if;
 end $$;
+
+-- Journal cloud backup (optional, per user). Safe to re-run.
+create table if not exists journal_cloud(
+  user_id uuid primary key references auth.users on delete cascade,
+  data jsonb not null,
+  updated_at timestamptz default now());
+alter table journal_cloud enable row level security;
+drop policy if exists journal_cloud_sel on journal_cloud;
+drop policy if exists journal_cloud_ins on journal_cloud;
+drop policy if exists journal_cloud_upd on journal_cloud;
+drop policy if exists journal_cloud_del on journal_cloud;
+create policy journal_cloud_sel on journal_cloud for select to authenticated using (auth.uid() = user_id);
+create policy journal_cloud_ins on journal_cloud for insert to authenticated with check (auth.uid() = user_id);
+create policy journal_cloud_upd on journal_cloud for update to authenticated using (auth.uid() = user_id) with check (auth.uid() = user_id);
+create policy journal_cloud_del on journal_cloud for delete to authenticated using (auth.uid() = user_id);
+grant select, insert, update, delete on journal_cloud to authenticated;

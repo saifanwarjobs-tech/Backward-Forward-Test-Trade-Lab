@@ -34,3 +34,8 @@ Data is end-of-day (not live) and refreshes itself every weekday evening. You ne
 3. Add or remove stocks in `universe.json` (exact NSE symbols). Symbols NSE does not return are listed in `data/screener.json` under `meta.missing`.
 4. If NSE blocks or changes the file, the run turns red (GitHub emails you) and the page keeps showing the last data with its "As of" date.
 5. Check NSE's terms for using their end-of-day files in a paid product before charging for this.
+
+## Journal extras
+- Import trades: accepts your own CSV (one row per completed trade) or a broker tradebook CSV (symbol, buy/sell, quantity, price, time). Fills are merged by order and paired first-in-first-out into completed trades. Charges are not in a tradebook, so they import as 0.
+- Report (Menu > Report): weekly / monthly summary, print or save as PDF, copy for WhatsApp.
+- Cloud backup (Menu > Cloud backup): optional. Run the latest `schema.sql` once in Supabase (it adds the `journal_cloud` table with row-level security). Sync merges trades across devices; it never deletes.
