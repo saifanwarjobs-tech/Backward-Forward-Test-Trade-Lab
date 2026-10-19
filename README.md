@@ -17,6 +17,7 @@ Static site (plain HTML/JS, no build step). Open `index.html` or serve the folde
 Data (pick in the Pro Lab header dropdown):
 - `bank-nifty-5m-data.csv` (Jan 2015 to Apr 2024)
 - `xauusd-m15-data.csv` (Jul 2022 to Oct 2026), `xauusd-m30-data.csv` (May 2018 to Oct 2026), `xauusd-h1-data.csv` (Jan 2010 to Oct 2026): Gold XAUUSD, broker server time, Sunday bars merged into Monday. Gold profile: 1 lot = 10 oz, $10,000 demo, 1:100 margin, 0.40 spread.
+- Added Oct 2026 (stored as `.csv.gz`, loaded in the browser): Bitcoin BTCUSD M1/M5/M15/M30/H1/H4/D1 (2017 to Oct 2026, shorter ranges on the small timeframes) and Gold XAUUSD M1/M5/H4/D1. MT5 broker export (1 lot = 0.01 BTC for Bitcoin).
 
 Academy setup (once):
 1. Supabase > SQL Editor: run `schema.sql` (safe to re-run; migrates v1 data). First time also: `insert into admins values ('you@email.com');`
