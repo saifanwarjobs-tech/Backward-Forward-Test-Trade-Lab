@@ -237,3 +237,14 @@ revoke all on function admin_student_progress() from public, anon;
 revoke all on function admin_lesson_progress() from public, anon;
 grant execute on function admin_student_progress() to authenticated;
 grant execute on function admin_lesson_progress() to authenticated;
+
+
+-- ===== Razorpay payments (v3). Written only by the server-side webhook (service role), readable by admin =====
+create table if not exists payments(
+  payment_id text primary key,            -- Razorpay payment id (unique => webhook retries are harmless)
+  order_id text, email text not null, phone text,
+  amount int,                              -- in rupees
+  status text, created_at timestamptz default now());
+alter table payments enable row level security;
+drop policy if exists a_payments_all on payments;
+create policy a_payments_all on payments for all using(is_admin()) with check(is_admin());
