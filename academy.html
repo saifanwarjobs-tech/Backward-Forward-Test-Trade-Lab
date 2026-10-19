@@ -396,9 +396,9 @@ const io=new IntersectionObserver(a=>a.forEach(x=>{if(x.isIntersecting){x.target
 
 /* ===== PAY BY UPI (manual, until a payment gateway is approved) ===== */
 window.buy=()=>{fb('InitiateCheckout');const UPI=CFG.upi||'6350566010@axl',WA=CFG.wa||'916350566010',amt=CFG.price,link='upi://pay?pa='+UPI+'&pn='+encodeURIComponent('BFT Academy')+'&am='+amt+'&cu=INR&tn='+encodeURIComponent('BFT Academy');
-open(`<div style="text-align:center;padding:6px"><h3 style="padding:0">Get lifetime access: ${CFG.price?'\u20b9'+rs(CFG.price):''}</h3>
+open(`<div style="text-align:center;padding:6px"><h3 style="padding:0">Get lifetime access: ${CFG.price?rs(CFG.price):''}</h3>
 <p class="m"><b>Step 1.</b> Pay by UPI. On mobile tap the button; on a computer scan the QR with any UPI app.</p>
-<a class="btn s" href="${link}">Pay \u20b9${rs(amt)} in my UPI app</a>
+<a class="btn s" href="${link}">Pay ${rs(amt)} in my UPI app</a>
 <div style="margin:12px 0"><img src="upi-qr.jpg" alt="UPI QR code" style="width:200px;max-width:70%;border-radius:10px;background:#fff"></div>
 <p class="m">UPI ID: <b>${UPI}</b></p>
 <p class="m"><b>Step 2.</b> Enter the email you will use to sign in, then send us the payment screenshot on WhatsApp.</p>
