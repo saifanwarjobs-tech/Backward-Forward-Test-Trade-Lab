@@ -5,8 +5,8 @@ Pages are plain HTML (no JavaScript needed to read them), so payment-gateway rev
 import html, pathlib
 B = dict(
     name="BFT Trade Lab", updated="19 October 2026", city="Jaipur", state="Rajasthan",
-    address="Jaipur, Rajasthan, India",   # <-- put your FULL postal address here (Razorpay asks for it)
-    owner="",                              # <-- optional: your legal / proprietor name, shown on Contact and About
+    address="58A, Udyog Nagar, Jhotwara, Jaipur 302012, Rajasthan, India",   # full postal address (Razorpay asks for it)
+    owner="Saif Anwar",                    # legal / proprietor name, shown on Contact page
     days=7, pct=20, price="4,999",
     email="saif.anwar.jobs@gmail.com",     # <-- better: support@your-own-domain
     phone="+91 63505 66010", wa="https://wa.me/916350566010",
