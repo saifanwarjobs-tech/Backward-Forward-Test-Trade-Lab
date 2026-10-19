@@ -332,8 +332,11 @@ const idb=(m,f)=>IDB().then(db=>new Promise((res,rej)=>{const t=db.transaction('
 const idbKeys=()=>idb('readonly',o=>o.getAllKeys()).then(k=>k||[]).catch(()=>[]);
 let INK='b';
 function buildSel(keys){const e=x=>String(x).replace(/[&<>"]/g,c=>'&#'+c.charCodeAt(0)+';');$('#isel').innerHTML=Object.keys(INSL).map(k=>`<option value="${k}">${e(INSL[k].l)}</option>`).join('')+(keys.length?'<optgroup label="Your uploads">'+keys.map(k=>`<option value="u:${e(k)}">${e(k)}</option>`).join('')+'</optgroup>':'');$('#isel').value=INK;if($('#isel').value!==INK)$('#isel').selectedIndex=-1}
+/* Built-in data loads as a small .gz file (about 4x smaller); falls back to the plain .csv if that fails */
+async function fetchData(f){try{const r=await fetch(f+'.gz');if(r.ok){const b=new Uint8Array(await r.arrayBuffer());if(b[0]===0x1f&&b[1]===0x8b&&window.DecompressionStream){return await new Response(new Blob([b]).stream().pipeThrough(new DecompressionStream('gzip'))).text()}if(b.length&&b[0]!==0x1f)return new TextDecoder().decode(b)}}catch(e){}
+ const r=await fetch(f);if(!r.ok)throw 0;return r.text()}
 function loadIns(k,first){const up=k.startsWith('u:'),c=up?{u:k.slice(2)}:INSL[k];if(!c)return Promise.resolve();if(!first){if(mode==='sc')exitSc();if(S){pause();save()}$('#ld').classList.add('on')}
- const src=up?idb('readonly',o=>o.get(c.u)).then(t=>{if(!t)throw 0;return t}):fetch(c.f).then(r=>{if(!r.ok)throw 0;return r.text()});
+ const src=up?idb('readonly',o=>o.get(c.u)).then(t=>{if(!t)throw 0;return t}):fetchData(c.f);
  return src.then(t=>{if(boot(t,up?c.u:c.n,c.t)){INK=k;$('#isel').value=k;try{localStorage.setItem('bftp_ins',k)}catch(e){}}else if(!first){$('#ld').classList.remove('on');$('#isel').value=INK}}).catch(()=>{if(!first){$('#ld').classList.remove('on');$('#isel').value=INK;toast('Could not load this data. If it is a built-in file, open the site via GitHub Pages / a local server')}})}
 $('#isel').onchange=e=>loadIns(e.target.value);
 try{INK=localStorage.getItem('bftp_ins')||'b'}catch(e){}
