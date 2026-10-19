@@ -271,18 +271,18 @@ function codeBox(){open(`<div style="text-align:center;padding:6px"><h3 style="p
 const TABS=[['home','Overview'],['courses','Courses'],['pdfs','PDF notes'],['ind','Indicators']];
 function go(t){if(!TABS.some(x=>x[0]===t))t='home';tab=t;history.replaceState(null,'','#'+t);$$('.panel').forEach(p=>p.classList.toggle('on',p.id==='p-'+t));$$('.tab,.bn[data-t]').forEach(b=>{const on=b.dataset.t===t;b.classList.toggle('on',on);b.setAttribute('aria-selected',on)});window.scrollTo({top:0,behavior:'smooth'});if(t==='ind')setTimeout(previews,30)}
 /* ---- lessons ---- */
-function lesson(id){const i=flat.findIndex(x=>x.id===id),it=flat[i];if(!it)return;if(!(paid||it.l.free))return wall(it.l.t);last=id;SS('bftA_last',id);
+function lesson(id){const i=flat.findIndex(x=>x.id===id),it=flat[i];if(!it)return;if(!(paid||it.l.free))return wall(it.l.t);last=id;SS('bftA_last',id);window.cloudLast&&cloudLast(id);
  const l=it.l,sib=flat.filter(x=>x.ci===it.ci),nx=sib[sib.findIndex(x=>x.id===id)+1];
  const v='<span>Loading video…</span>',pv=sib[sib.findIndex(x=>x.id===id)-1];
  let list='<h4>'+esc(it.c.title)+'</h4>';it.c.modules.forEach((m,mi)=>{list+=`<div class="mh">${esc(m.t)}</div>`+m.lessons.map((x,li)=>{const k=x.id||(it.ci+'-'+mi+'-'+li),ok=paid||x.free;return`<button class="ls ${k===id?'cur':''}" onclick="lesson('${k}')"><span class="ic ${done[k]?'d':ok?'':'k'}">${done[k]?'✓':ok?'▶':'🔒'}</span><span class="t">${esc(x.t)}</span><span class="d">${esc(x.d)}</span></button>`}).join('')});
  open(`<div class="pl"><div class="main"><p class="m" style="margin:0 44px 4px 0">${esc(it.c.title)} · Lesson ${sib.findIndex(x=>x.id===id)+1} of ${sib.length}</p><h3>${esc(l.t)}</h3><div class="vid" id="vd" style="margin:14px 0">${v}</div>
  <div class="row"><button class="btn s ${done[id]?'o':''}" onclick="mark('${id}')">${done[id]?'✓ Completed':'Mark as complete'}</button>${l.lab?`<a class="btn s o" href="${esc(l.lab)}" target="_blank" rel="noopener">🧪 Practise this</a>`:''}${pv?`<button class="btn s o" onclick="lesson('${pv.id}')">← Previous</button>`:''}${nx?`<button class="btn s o" onclick="lesson('${nx.id}')">Next lesson →</button>`:''}</div>
- <p class="m" style="margin-top:20px;font-size:13px;font-weight:700">MY NOTES</p><textarea class="nt" id="nt" placeholder="Write what you learned. Saved on this device." aria-label="Lesson notes">${esc(notes[id]||'')}</textarea></div><div class="list">${list}</div></div>`,'p');
- $('#nt').oninput=e=>{notes[id]=e.target.value;SS('bftA_notes',notes)};
+ <p class="m" style="margin-top:20px;font-size:13px;font-weight:700">MY NOTES</p><textarea class="nt" id="nt" placeholder="Write what you learned. Saved automatically (to your account when signed in)." aria-label="Lesson notes">${esc(notes[id]||'')}</textarea></div><div class="list">${list}</div></div>`,'p');
+ $('#nt').oninput=e=>{notes[id]=e.target.value;SS('bftA_notes',notes);window.cloudNote&&cloudNote(id,notes[id])};
  Promise.resolve(window.getVid&&l.live?getVid(l):l.video).then(u=>{const e=$('#vd');if(e&&last===id)e.innerHTML=vidHTML(u,l.t)+(window.WM?`<div class="wm">${esc(window.WM)}</div>`:'')}).catch(()=>{const e=$('#vd');if(e)e.innerHTML='<span>Could not load this video. Refresh and try again.</span>'})}
 function embedUrl(u){u=String(u||'').trim();if(!/^https:\/\//i.test(u))return'';let m=u.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/))([\w-]{11})/);if(m)return'https://www.youtube-nocookie.com/embed/'+m[1]+'?rel=0&modestbranding=1';m=u.match(/vimeo\.com\/(?:video\/)?(\d+)(?:\/(\w+))?/);if(m)return'https://player.vimeo.com/video/'+m[1]+(m[2]?'?h='+m[2]:'');return u}
 function vidHTML(u,t){if(!u)return'<span>🎬 Video coming soon.</span>';return/\.(mp4|webm|mov|m4v)(\?|$)/i.test(u)?`<video controls playsinline controlsList="nodownload" disablePictureInPicture oncontextmenu="return false" src="${esc(u)}"></video>`:`<iframe src="${esc(embedUrl(u))}" title="${esc(t)}" allow="autoplay;fullscreen;picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`}
-function mark(id){done[id]=!done[id];SS('bftA_done',done);lesson(id)}
+function mark(id){done[id]=!done[id];SS('bftA_done',done);window.cloudDone&&cloudDone(id,done[id]);lesson(id)}
 function startCourse(ci){const f=flat.find(x=>x.ci===ci&&(paid||x.l.free))||flat.find(x=>x.ci===ci);const nx=flat.find(x=>x.ci===ci&&!done[x.id]&&(paid||x.l.free));lesson((nx||f).id)}
 
 function course(ci){const c=COURSES[ci];if(!c)return;const ids=flat.filter(x=>x.ci===ci),h=ids.reduce((n,x)=>n+mins(x.l.d),0)/60,fl=ids.filter(x=>x.l.free).length,d=ids.filter(x=>done[x.id]).length;
@@ -450,6 +450,24 @@ if(session){window.WM=session.user.email;
  member=m.data||null;isAdmin=!!(a.data&&a.data.length);
  paid=isAdmin||!!(member&&(!member.expires_at||new Date(member.expires_at)>new Date()));
  if(!paid)toast(member?'Your access has expired.':'No purchase found for '+session.user.email)}
+
+/* ---- progress sync: lessons done, notes, last lesson. Saved to the account; this device is the fallback ---- */
+const UU=/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;let pend={},pt=null,lastSent=null;
+const lpUp=(row)=>sb.from('lesson_progress').upsert({user_id:session.user.id,updated_at:new Date().toISOString(),...row},{onConflict:'user_id,lesson_id'});
+window.cloudDone=(id,v)=>{if(!session||!UU.test(id))return;lpUp({lesson_id:id,done:!!v}).then(r=>{if(r.error)toast('Could not save progress online. It is kept on this device.')})};
+function flushNotes(){const p=pend;pend={};Object.keys(p).forEach(id=>lpUp({lesson_id:id,note:p[id]||null}).then(()=>{}))}
+window.cloudNote=(id,t)=>{if(!session||!UU.test(id))return;pend[id]=t;clearTimeout(pt);pt=setTimeout(flushNotes,1200)};
+window.cloudLast=id=>{if(!session||!UU.test(id)||id===lastSent)return;lastSent=id;sb.from('member_state').upsert({user_id:session.user.id,last_lesson:id,last_seen:new Date().toISOString()},{onConflict:'user_id'}).then(()=>{})};
+addEventListener('pagehide',()=>{if(session&&Object.keys(pend).length)flushNotes()});
+if(session){try{const uid=session.user.id,own=LS('bftA_owner');
+ if(own&&own!==uid){done={};notes={};last=null}
+ const[pr,ms]=await Promise.all([sb.from('lesson_progress').select('lesson_id,done,note').eq('user_id',uid),sb.from('member_state').select('last_lesson').eq('user_id',uid).maybeSingle()]);
+ if(!pr.error){const cloud={};(pr.data||[]).forEach(r=>{cloud[r.lesson_id]=1;done[r.lesson_id]=!!r.done;if(r.note)notes[r.lesson_id]=r.note});
+  const ids=[...new Set([...Object.keys(done),...Object.keys(notes)])].filter(id=>UU.test(id)&&!cloud[id]&&(done[id]||notes[id]));
+  if(ids.length)sb.from('lesson_progress').upsert(ids.map(id=>({user_id:uid,lesson_id:id,done:!!done[id],note:notes[id]||null})),{onConflict:'user_id,lesson_id'}).then(()=>{});
+  if(!ms.error&&ms.data&&ms.data.last_lesson)last=ms.data.last_lesson;
+  SS('bftA_done',done);SS('bftA_notes',notes);SS('bftA_last',last||'');SS('bftA_owner',uid)}
+}catch(e){}}
 /* ---- site settings from admin (price, YouTube, instructor, reviews, contact). Falls back to the CFG defaults above. ---- */
 try{const g=await sb.from('site_settings').select('data').eq('id',1).maybeSingle(),d=g.data&&g.data.data;
  if(d&&typeof d==='object'){if(Number.isFinite(d.price))CFG.price=d.price;if(Number.isFinite(d.mrp))CFG.mrp=d.mrp;if(typeof d.offer==='boolean')CFG.offer=d.offer;

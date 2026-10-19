@@ -177,3 +177,63 @@ create policy ss_admin on site_settings for all using(is_admin()) with check(is_
 grant select on site_settings to anon, authenticated;
 grant insert, update on site_settings to authenticated;
 insert into site_settings(id, data) values (1, '{}'::jsonb) on conflict (id) do nothing;
+
+-- Student progress (per user, synced across devices). Safe to re-run.
+-- A student can only read and write their own rows. Admins see totals through the two functions below,
+-- never the students' private notes.
+create table if not exists lesson_progress(
+  user_id uuid not null references auth.users on delete cascade,
+  lesson_id uuid not null references lessons on delete cascade,
+  email text default lower(coalesce(auth.jwt()->>'email','')),
+  done boolean not null default false,
+  note text,
+  updated_at timestamptz default now(),
+  primary key (user_id, lesson_id));
+create index if not exists lesson_progress_lesson_idx on lesson_progress(lesson_id);
+
+create table if not exists member_state(
+  user_id uuid primary key references auth.users on delete cascade,
+  email text default lower(coalesce(auth.jwt()->>'email','')),
+  last_lesson uuid references lessons on delete set null,
+  last_seen timestamptz default now());
+
+alter table lesson_progress enable row level security;
+alter table member_state enable row level security;
+drop policy if exists lp_sel on lesson_progress;
+drop policy if exists lp_ins on lesson_progress;
+drop policy if exists lp_upd on lesson_progress;
+drop policy if exists lp_del on lesson_progress;
+create policy lp_sel on lesson_progress for select to authenticated using (user_id = auth.uid());
+create policy lp_ins on lesson_progress for insert to authenticated with check (user_id = auth.uid());
+create policy lp_upd on lesson_progress for update to authenticated using (user_id = auth.uid()) with check (user_id = auth.uid());
+create policy lp_del on lesson_progress for delete to authenticated using (user_id = auth.uid());
+drop policy if exists ms_sel on member_state;
+drop policy if exists ms_ins on member_state;
+drop policy if exists ms_upd on member_state;
+create policy ms_sel on member_state for select to authenticated using (user_id = auth.uid());
+create policy ms_ins on member_state for insert to authenticated with check (user_id = auth.uid());
+create policy ms_upd on member_state for update to authenticated using (user_id = auth.uid()) with check (user_id = auth.uid());
+grant select, insert, update, delete on lesson_progress to authenticated;
+grant select, insert, update on member_state to authenticated;
+
+create or replace function admin_student_progress()
+returns table(stu_email text, lessons_done int, last_seen timestamptz, last_lesson uuid)
+language sql security definer stable set search_path = public as
+$$select m.email, coalesce(d.n, 0)::int, m.last_seen, m.last_lesson
+  from member_state m
+  left join (select p.user_id, count(*) filter (where p.done) as n from lesson_progress p group by p.user_id) d
+    on d.user_id = m.user_id
+  where is_admin()$$;
+
+create or replace function admin_lesson_progress()
+returns table(lesson_id uuid, done_count int)
+language sql security definer stable set search_path = public as
+$$select p.lesson_id, count(*) filter (where p.done)::int
+  from lesson_progress p
+  where is_admin()
+  group by p.lesson_id$$;
+
+revoke all on function admin_student_progress() from public, anon;
+revoke all on function admin_lesson_progress() from public, anon;
+grant execute on function admin_student_progress() to authenticated;
+grant execute on function admin_lesson_progress() to authenticated;

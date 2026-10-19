@@ -80,7 +80,7 @@ function toast(t){const e=$('#toast');e.textContent=t;e.style.display='block';cl
 function ask(title,text,okLabel,danger){return new Promise(r=>{const d=$('#dlg');d.classList.remove('hid');d.innerHTML=`<div class="box" role="alertdialog" aria-modal="true"><h2>${esc(title)}</h2><p>${esc(text||'')}</p><div class="row" style="justify-content:flex-end"><button class="btn o" id="dn">Cancel</button><button class="btn ${danger?'d':''}" id="dy">${esc(okLabel||'OK')}</button></div></div>`;const f=v=>{d.classList.add('hid');d.innerHTML='';r(v)};$('#dn').onclick=()=>f(false);$('#dy').onclick=()=>f(true);$('#dy').focus()})}
 if(!window.supabase){$('#boot').textContent='Could not load the Supabase library. Check your internet connection and reload.'}else{
 const sb=supabase.createClient(SB_URL,SB_KEY);
-const S={items:[],lessons:[],lsec:{},isec:{},students:[],user:null,view:'dash',kind:'all',settings:null,setErr:'',rv:[]};
+const S={items:[],lessons:[],lsec:{},isec:{},students:[],user:null,view:'dash',kind:'all',settings:null,setErr:'',rv:[],sp:{},lp:{},progErr:'',pc:null};
 let E=null,authWarn=null;
 
 /* ---------- auth ---------- */
@@ -104,6 +104,7 @@ async function load(){
  const er=[a,b,c,d,e].find(x=>x.error);S.err=er?er.error.message:'';
  S.items=a.data||[];S.lessons=b.data||[];S.lsec=Object.fromEntries((c.data||[]).map(x=>[x.lesson_id,x]));S.students=d.data||[];S.isec=Object.fromEntries((e.data||[]).map(x=>[x.item_id,x]));
  const g=await sb.from('site_settings').select('data').eq('id',1).maybeSingle();S.setErr=g.error?g.error.message:'';if(!g.error){S.settings=(g.data&&g.data.data)||{};if(S.view!=='settings'||!S.rv.length)S.rv=JSON.parse(JSON.stringify(S.settings.reviews||[]))}
+ const[sp,lp]=await Promise.all([sb.rpc('admin_student_progress'),sb.rpc('admin_lesson_progress')]);const pe=sp.error||lp.error;S.progErr=pe?pe.message:'';S.sp=Object.fromEntries((sp.data||[]).map(x=>[x.stu_email,x]));S.lp=Object.fromEntries((lp.data||[]).map(x=>[x.lesson_id,x.done_count]));
  renderAll()}
 const ofKind=k=>S.items.filter(i=>i.kind===k).sort((a,b)=>a.sort-b.sort||new Date(a.created_at)-new Date(b.created_at));
 const lessonsOf=id=>S.lessons.filter(l=>l.item_id===id).sort((a,b)=>a.sort-b.sort||new Date(a.created_at)-new Date(b.created_at));
@@ -131,7 +132,9 @@ function renderDash(){
  <div class="kpis"><div class="kpi"><b>${act.length}</b><span>Active students</span></div><div class="kpi"><b>${rs(rev)}</b><span>Collected so far</span></div><div class="kpi"><b>${ofKind('course').length} <small style="font-size:14px;color:var(--mu)">/ ${S.lessons.length}</small></b><span>Courses / lessons</span></div><div class="kpi"><b>${ofKind('pdf').length} · ${ofKind('indicator').length}</b><span>PDFs · Indicators</span></div></div>
  <div class="card"><h2>Students added per month</h2><div class="bars">${months.map(m=>`<div><em>${m.n||''}</em><i style="height:${Math.round((m.r||m.n)/mx*100)}%"></i><span>${m.l}</span></div>`).join('')}</div><p class="mu" style="font-size:12.5px;margin-top:8px">Bar height follows ${rev?'amount collected':'student count'}.</p></div>
  ${soon.length?`<div class="card"><h2>Expiring within 7 days</h2>${soon.map(s=>`<div class="ls"><div class="t" style="cursor:default"><b>${esc(s.email)}</b><span class="mu" style="font-size:13px">${stat(s).t}</span></div>${s.phone?`<a class="btn s o" target="_blank" rel="noopener" href="${wa(s,'renew')}">WhatsApp</a>`:''}<button class="btn s" data-ext="${esc(s.email)}">+1 year</button></div>`).join('')}</div>`:''}
+ ${progCard()}
  <div class="card"><h2>Recently added</h2>${S.students.slice(0,5).map(s=>`<div class="ls"><div class="t" data-stu="${esc(s.email)}"><b>${esc(s.email)}</b><span class="mu" style="font-size:13px">${fmtD(s.created_at)}${s.amount?' · '+rs(s.amount):''}</span></div><span class="k ${stat(s).c}">${stat(s).t}</span></div>`).join('')||'<p class="mu">No students yet.</p>'}</div>`}
+$('#v-dash').onchange=e=>{if(e.target.id==='pc_sel'){S.pc=e.target.value;renderDash()}};
 $('#v-dash').onclick=async e=>{const x=e.target.closest('[data-ext]');if(x){const s=S.students.find(z=>z.email===x.dataset.ext),b=Math.max(Date.now(),s.expires_at?+new Date(s.expires_at):0),d=new Date(b);d.setFullYear(d.getFullYear()+1);const{error}=await sb.from('students').update({expires_at:d.toISOString()}).eq('email',s.email);if(error)return toast(error.message);toast('Extended to '+fmtD(d));load()}const y=e.target.closest('[data-stu]');if(y)stuSheet(y.dataset.stu)};
 
 /* ---------- content list ---------- */
@@ -337,6 +340,18 @@ function ytSheet(){
    closeSheet(2);renderLessons();renderContent();renderDash();toast(rows.length+' lessons imported ✓')}
   catch(e){toast(e.message||String(e));b.disabled=false;b.textContent='Import '+pick.length}}}
 
+/* ---------- student progress (from the academy) ---------- */
+const ago=d=>{const m=(Date.now()-new Date(d))/6e4;return m<60?Math.max(1,Math.round(m))+'m ago':m<1440?Math.round(m/60)+'h ago':Math.round(m/1440)+'d ago'};
+function progCard(){
+ if(S.progErr)return/function|schema cache|does not exist/i.test(S.progErr)?'<div class="alert wn"><span>⚠️</span><div><b>Progress tracking is not set up</b><span class="mu">Run the latest schema.sql once in Supabase → SQL Editor, then reload.</span></div></div>':'';
+ const cs=ofKind('course').filter(c=>lessonsOf(c.id).length);if(!cs.length)return'';
+ const cid=cs.some(c=>c.id===S.pc)?S.pc:cs[0].id,L=lessonsOf(cid),mx=Math.max(1,...L.map(l=>S.lp[l.id]||0)),seen=Object.keys(S.sp).length;
+ return`<div class="card"><div class="row spb"><h2>Lesson completion</h2><select id="pc_sel" style="width:auto;max-width:62%" aria-label="Course">${cs.map(c=>`<option value="${c.id}" ${c.id===cid?'selected':''}>${esc(c.title)}</option>`).join('')}</select></div><p class="mu" style="font-size:12.5px;margin:6px 0 4px">Students who marked each lesson complete (${seen} student${seen===1?' has':'s have'} opened a lesson). A sharp drop shows where students leave.</p>${L.map((l,i)=>{const n=S.lp[l.id]||0;return`<div style="padding:7px 0;border-top:1px solid var(--ln)"><div class="row spb" style="gap:8px;flex-wrap:nowrap"><span style="font-size:13.5px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${i+1}. ${esc(l.title)}</span><b>${n}</b></div><div class="prog" style="margin-top:4px;height:6px"><i style="width:${Math.round(n/mx*100)}%"></i></div></div>`}).join('')}</div>`}
+function progBox(s){
+ const p=S.sp[s.email];if(!p)return'<div class="card" style="margin-top:16px"><b>Progress</b><p class="mu" style="margin-top:4px;font-size:14px">Has not opened a lesson yet.</p></div>';
+ const l=S.lessons.find(x=>x.id===p.last_lesson);
+ return`<div class="card" style="margin-top:16px"><b>Progress</b><p class="mu" style="margin-top:4px;font-size:14px">Completed ${p.lessons_done} of ${S.lessons.length} lessons<br>Last active ${fmtD(p.last_seen)} (${ago(p.last_seen)})${l?'<br>Last lesson: '+esc(l.title):''}</p></div>`}
+
 /* ---------- students ---------- */
 const academyUrl=()=>location.href.replace(/admin\.html.*$/,'academy.html');
 function wa(s,kind){let p=String(s.phone||'').replace(/\D/g,'');if(p.length===10)p='91'+p;const t=kind==='renew'?`Hi! Your BFT Academy access (${s.email}) ends soon. Reply here to renew.`:`Hi! Your BFT Academy access is active. Sign in with ${s.email} here: ${academyUrl()}`;return'https://wa.me/'+p+'?text='+encodeURIComponent(t)}
@@ -345,7 +360,7 @@ function renderStudents(){
  const q=($('#sq').value||'').toLowerCase().trim(),A=S.students,on=A.filter(s=>stat(s).on).length,ex=A.length-on,soon=A.filter(s=>stat(s).soon).length;
  $('#ssum').innerHTML=[['all','All '+A.length],['act','Active '+on],['soon','Expiring '+soon],['exp','Expired '+ex]].map(k=>`<button class="chip ${sFilter===k[0]?'on':''}" data-f="${k[0]}">${k[1]}</button>`).join('');
  const L=A.filter(s=>(!q||(s.email+' '+(s.note||'')+' '+(s.phone||'')).toLowerCase().includes(q))&&(sFilter==='all'||(sFilter==='act'&&stat(s).on)||(sFilter==='soon'&&stat(s).soon)||(sFilter==='exp'&&!stat(s).on)));
- $('#slist').innerHTML=L.map(s=>{const t=stat(s);return`<div class="it"><div class="t" data-stu="${esc(s.email)}"><b>${esc(s.email)}</b><div class="row"><span class="k ${t.c}">${t.t}</span>${s.amount?`<span class="k">${rs(s.amount)}</span>`:''}${s.note?`<span class="k">${esc(s.note)}</span>`:''}</div></div><div class="a">${s.phone?`<a class="btn o ic" target="_blank" rel="noopener" href="${wa(s)}" aria-label="WhatsApp" title="WhatsApp">💬</a>`:''}<button class="btn o ic" data-stu="${esc(s.email)}" aria-label="Edit">✎</button></div></div>`}).join('')||`<div class="empty">${A.length?'No students match.':'No students yet. Tap “＋ Add” after a payment arrives.'}</div>`}
+ $('#slist').innerHTML=L.map(s=>{const t=stat(s);return`<div class="it"><div class="t" data-stu="${esc(s.email)}"><b>${esc(s.email)}</b><div class="row"><span class="k ${t.c}">${t.t}</span>${s.amount?`<span class="k">${rs(s.amount)}</span>`:''}${s.note?`<span class="k">${esc(s.note)}</span>`:''}${S.progErr?'':(S.sp[s.email]?`<span class="k ac">✓ ${S.sp[s.email].lessons_done}/${S.lessons.length}</span><span class="k">seen ${ago(S.sp[s.email].last_seen)}</span>`:(t.on?'<span class="k wn">Not started</span>':''))}</div></div><div class="a">${s.phone?`<a class="btn o ic" target="_blank" rel="noopener" href="${wa(s)}" aria-label="WhatsApp" title="WhatsApp">💬</a>`:''}<button class="btn o ic" data-stu="${esc(s.email)}" aria-label="Edit">✎</button></div></div>`}).join('')||`<div class="empty">${A.length?'No students match.':'No students yet. Tap “＋ Add” after a payment arrives.'}</div>`}
 $('#sq').oninput=renderStudents;
 $('#ssum').onclick=e=>{const b=e.target.closest('[data-f]');if(b){sFilter=b.dataset.f;renderStudents()}};
 $('#slist').onclick=e=>{const t=e.target.closest('[data-stu]');if(t)stuSheet(t.dataset.stu)};
@@ -358,6 +373,7 @@ function stuSheet(email){
  <label for="s_pl">Access</label><select id="s_pl"><option value="life" ${!exp?'selected':''}>Lifetime</option><option value="1y">1 year from today</option><option value="6m">6 months from today</option><option value="3m">3 months from today</option><option value="c" ${exp?'selected':''}>Custom date</option></select>
  <div id="s_dw" class="${exp?'':'hid'}"><label for="s_x">Access ends on</label><input id="s_x" type="date" value="${exp}"></div>
  <label for="s_n">Note</label><input id="s_n" value="${esc(s&&s.note||'')}" placeholder="e.g. UPI, 18 Oct">
+ ${s&&!S.progErr?progBox(s):''}
  ${s?`<a class="btn o" id="s_wa" style="margin-top:16px;width:100%;text-decoration:none;${s.phone?'':'display:none'}" target="_blank" rel="noopener" href="${s.phone?wa(s):'#'}">💬 Send “access active” on WhatsApp</a><button class="btn d" id="s_del" type="button" style="margin-top:14px;width:100%">Remove access</button>`:''}`,'Save');
  $('#s_pl').onchange=e=>{const v=e.target.value;$('#s_dw').classList.toggle('hid',v==='life');if(v!=='life'&&v!=='c')$('#s_x').value=addPlan(v);if(v==='c'&&!$('#s_x').value)$('#s_x').value=addPlan('1y')};
  $('#sv2').onclick=async()=>{const em=$('#s_e').value.trim().toLowerCase();if(!/\S+@\S+\.\S+/.test(em))return toast('Enter a valid email');
