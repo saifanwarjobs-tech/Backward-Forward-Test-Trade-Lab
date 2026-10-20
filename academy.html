@@ -144,6 +144,34 @@ body:before{background:radial-gradient(900px 460px at 50% -12%,rgba(91,156,255,.
 .g3>.card>.bd:has(>.cf){display:flex;flex-direction:column;flex:1}.g3>.card:has(>.bd>.cf){display:flex;flex-direction:column}.g3>.card>.bd>.cf{margin-top:auto}.g3>.card>.bd:has(>.cf)>.meta,.g3>.card>.bd:has(>.cf)>.chips2{margin-bottom:14px}
 .md input[type=tel]{width:100%;background:var(--gl);border:1px solid var(--ln);border-radius:12px;padding:13px;color:var(--tx);font:inherit;font-size:16px;margin:8px 0}
 .ofr .op>div:first-of-type{flex:1 1 210px;min-width:0}.ofr .op>div:last-of-type{flex:0 0 auto;min-width:150px;text-align:right}.ofr .op .btn{width:100%}
+
+/* v4: dashboard front */
+.dsh{position:relative;overflow:hidden;isolation:isolate;padding:22px 0 8px}
+.dsh:before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(800px 260px at 50% 0,rgba(91,156,255,.16),transparent 70%)}
+.dsh>canvas{position:absolute;inset:0;width:100%;height:100%;z-index:-1;opacity:.14;-webkit-mask-image:linear-gradient(#000,transparent 85%);mask-image:linear-gradient(#000,transparent 85%)}
+.kpis{display:flex;gap:14px;align-items:stretch;flex-wrap:wrap}
+.kpis .stats{flex:1 1 560px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:0;justify-content:stretch}
+.kpis .stats div{min-width:0;padding:12px 16px;border-radius:12px;border-left:3px solid var(--ac);position:relative}
+.kpis .stats div:nth-child(2){border-left-color:var(--gold)}.kpis .stats div:nth-child(3){border-left-color:var(--ok)}.kpis .stats div:nth-child(4){border-left-color:#a78bfa}
+.kpis .stats b{font-size:26px;line-height:1.1;letter-spacing:-.02em}.kpis .stats span{text-transform:uppercase;letter-spacing:.06em;font-size:11px;font-weight:600}
+.kpis .bt{flex:0 0 auto;align-items:center;margin:0}
+#resume{margin:14px 0 0;max-width:none}
+.pnls{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px}
+.pn{background:var(--gl);border:1px solid var(--ln);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.pn .ph{display:flex;align-items:center;gap:10px;padding:13px 16px;border-bottom:1px solid var(--ln)}
+.pn .ph .ico{width:32px;height:32px;border-radius:9px;display:grid;place-items:center;background:var(--gl2);border:1px solid var(--ln);font-size:16px}
+.pn .ph b{font-size:15px;letter-spacing:-.01em}.pn .ph .nn{font-size:11.5px;font-weight:700;background:var(--gl2);border-radius:99px;padding:1px 9px;color:var(--mu)}
+.pn .ph .sp{flex:1}.pn .ph .va{background:none;border:0;color:var(--ac);font-weight:600;font-size:13px;padding:4px 2px}.pn .ph .va:hover{text-decoration:underline}
+.pf{cursor:pointer;display:block;position:relative}.pf:focus-visible{outline-offset:-3px}
+.pf .pb{padding:13px 16px 15px}.pf .pb h3{font-size:16px;margin:0 0 4px;letter-spacing:-.01em}.pf .pb .meta{display:flex;gap:12px;flex-wrap:wrap;color:var(--mu);font-size:13px}
+.pf canvas{display:block;width:100%;height:132px;background:var(--code)}
+.pf:hover .cv,.pf:hover canvas{filter:brightness(1.12)}
+.pf .cf{margin-top:12px;padding-top:12px}
+.lr2{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:none;border:0;border-top:1px solid var(--ln);padding:11px 16px;transition:background .15s}
+.lr2:hover{background:var(--gl2)}.lr2 i{font-style:normal;font-size:14px;opacity:.9}.lr2 .t{flex:1;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lr2 .pt{font-size:13px}.lr2 .pt small{display:none}.lr2 .pt.i{font-size:12px}
+.pn .soon3{padding:34px 16px;text-align:center;color:var(--mu);font-size:14px}.pn .soon3 div{font-size:28px;margin-bottom:6px}
+@media(max-width:900px){.pnls{grid-template-columns:1fr}.kpis .stats{grid-template-columns:repeat(2,1fr);flex-basis:100%}.kpis .bt{width:100%}.kpis .bt .btn{flex:1}}
 @media(max-width:640px){.ofr .op{flex-direction:column;align-items:stretch;text-align:left}.ofr .op>div:last-child{text-align:left!important}.shr{margin-bottom:48px}.sh .sa{width:100%}}
 </style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"></head><body class="ld"><script>window._wo=window.open.bind(window);setTimeout(function(){document.body.classList.remove('ld')},5000)</script>
 <header class="top"><div class="w"><a class="logo" href="index.html"><span id="brand"></span></a><span class="sp"></span><a class="nl" href="index.html">Home</a><a class="nl" href="journal.html">Journal</a><a class="nl" href="trade-lab-pro.html">Testing Lab</a><a class="nl" href="classroom.html">Classroom</a><span id="st"></span></div>
@@ -151,20 +179,16 @@ body:before{background:radial-gradient(900px 460px at 50% -12%,rgba(91,156,255,.
 
 <main>
 <section class="panel on" id="p-home" role="tabpanel">
- <div class="hero"><canvas id="hc" aria-hidden="true"></canvas><div class="w">
-  <span class="pill">Video courses, PDF playbooks and TradingView indicators</span>
-  <h1>Learn price action the <span>structured way</span>. Then trade it with an edge.</h1>
-  <p class="lead">Video courses, PDF playbooks and Pine Script indicators in one place. Every lesson links to a practice board in the Lab.</p>
-  <div class="bt"><button class="btn l g" data-buy>Get lifetime access →</button><button class="btn l o" id="hFree">▶ Watch a free lesson</button><a class="btn l o" id="hYt" target="_blank" rel="noopener" style="display:none">▶ Free on YouTube</a></div>
-  <div class="trust"><span><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Free lessons included</span><span><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>One-time payment</span><span><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Lifetime access</span></div>
-  <div class="stats" id="stats"></div>
-  <div class="card" id="resume"></div></div></div>
+ <div class="dsh"><canvas id="hc" aria-hidden="true"></canvas><div class="w">
+  <div class="kpis"><div class="stats" id="stats"></div><div class="bt"><button class="btn g" data-buy>Get lifetime access →</button><button class="btn o" id="hFree">▶ Free lesson</button><a class="btn o" id="hYt" target="_blank" rel="noopener" style="display:none">▶ YouTube</a></div></div>
+  <div class="card" id="resume"></div>
+  <div class="pnls" id="pnls"></div></div></div>
 
 <div class="sec" style="padding:30px 0 0"><div class="w"><div class="gs"><input id="gs" type="search" placeholder="Search any course, lesson, PDF or indicator…" aria-label="Search the Academy" autocomplete="off"><div id="gsr" aria-live="polite"></div></div></div></div>
 
  <div class="sec" id="fsec" style="display:none"><div class="w"><h2 class="rv">Start free. No payment needed.</h2><p class="sub rv">Try the teaching first. Upgrade only if it helps you.</p><div class="g3" id="free"></div></div></div>
 
- <div class="sec" id="show"><div class="w"><div class="shr" id="sh-c"></div><div class="shr" id="sh-p"></div><div class="shr" id="sh-i"></div></div></div>
+
 
  <div class="sec" id="about" style="display:none"><div class="w"><h2 class="rv">Meet your instructor</h2><p class="sub rv">Who is teaching you, and why you can trust the method.</p><div class="card ab rv in" id="abc"></div></div></div>
 
@@ -413,7 +437,7 @@ function all(){
  $('#tabs').innerHTML=TABS.map(t=>`<button class="tab ${t[0]===tab?'on':''}" role="tab" data-t="${t[0]}" aria-selected="${t[0]===tab}">${t[1]}${t[0]==='courses'?`${COURSES.length?'<em>'+COURSES.length+'</em>':''}`:t[0]==='pdfs'?`${PDFS.length?'<em>'+PDFS.length+'</em>':''}`:t[0]==='ind'?`${INDICATORS.length?'<em>'+INDICATORS.length+'</em>':''}`:''}</button>`).join('');
  $('#stats').innerHTML=[[tot,'video lessons'],[hrs.toFixed(1)+'h','of content'],[PDFS.length,'PDFs & notes'],[INDICATORS.length,'Pine indicators']].filter(a=>parseFloat(a[0])>0).map(a=>`<div><b>${a[0]}</b><span>${a[1]}</span></div>`).join('');
  const L=flat.find(x=>x.id===last);const r=$('#resume');if(L&&(paid||L.l.free)){r.className='card on';r.innerHTML=`<span class="ic">▶</span><div class="t"><span class="mu" style="font-size:12px">CONTINUE WHERE YOU LEFT</span><b>${esc(L.l.t)}</b></div><button class="btn s" onclick="lesson('${L.id}')">Resume →</button>`}else r.className='card';
- showcase();
+ dash();
  $('#crs').innerHTML=COURSES.map((c,ci)=>(lv!=='All'&&String(c.level).toUpperCase()!==lv)?'':courseCard(c,ci)).join('');
  const cs=['All',...(PDFS.some(b=>b.free)?['Free']:[]),...new Set(PDFS.map(b=>b.cat))];$('#cats').innerHTML=cs.map(c=>`<button class="chip ${c===cat?'on':''}" data-cat="${c}">${c}</button>`).join('');pdfs();
  $('#ind').innerHTML=INDICATORS.filter(x=>ifl==='All'||(ifl==='Free'?!!x.free:!x.free)).map(indCard).join('');
@@ -453,6 +477,18 @@ function pdfCard(b,i){const ok=own(b);return`<div class="card hov" data-pdf="${i
 function indCard(x){const ok=own(x),code=(x.live?x.mode==='code':!!x.pine);return`<div class="card ind hov" data-ind="${x.id}" tabindex="0" role="button"><canvas data-ty="${x.type}" data-s="${String(x.id).length*7919+String(x.id).charCodeAt(0)}" aria-hidden="true"></canvas><div class="bd"><div class="row" style="gap:8px"><span class="tag ${x.free?'f':''}">${x.free?'FREE':ok?'UNLOCKED':'🔒 PREMIUM'}</span><span class="tag b">${code?'PINE CODE':'INVITE-ONLY'}</span></div><h3 style="font-size:19px;margin:10px 0 4px">${esc(x.name)}</h3><p>${esc(x.d)}</p><div class="chips2"><span>⏱ ${esc(x.tf)}</span><span>📊 ${esc(x.mk)}</span></div><div class="cf">${ptag(x)}<span class="btn s ${ok?'':'o'}">${ok?(code?'View code →':'Open →'):'Preview →'}</span></div></div></div>`}
 function shRow(id,go,ico,title,sub,cards,soonTxt){const el=$('#'+id);if(!el)return;
  el.innerHTML=`<div class="sh"><div class="kk"><span class="ico">${ico}</span><div><h2>${title}</h2><p>${sub}</p></div></div>${cards.length?`<button class="btn s o sa" data-go="${go}">${cards.length>3?'See all '+cards.length+' →':'Open section →'}</button>`:''}</div>${cards.length?`<div class="g3">${cards.slice(0,3).join('')}</div>`:`<div class="card soon2"><div style="font-size:30px">🚧</div><h3>Coming soon</h3><p>${soonTxt}</p></div>`}`}
+
+function pnl(go,ico,title,n,feat,rows,soon){return`<div class="pn"><div class="ph"><span class="ico">${ico}</span><b>${title}</b>${n?`<span class="nn">${n}</span>`:''}<span class="sp"></span>${n?`<button class="va" data-go="${go}">View all →</button>`:''}</div>${n?feat+rows:`<div class="soon3"><div>🚧</div>${soon}</div>`}</div>`}
+function lrow(attr,ic,t,x){return`<button class="lr2" ${attr}><i>${ic}</i><span class="t">${esc(t)}</span>${ptag(x)}</button>`}
+function dash(){const el=$('#pnls');if(!el)return;let h='';
+ {const c=COURSES[0],f=c?(()=>{const ids=flat.filter(x=>x.ci===0),hh=ids.reduce((n,x)=>n+mins(x.l.d),0)/60,fl=ids.filter(x=>x.l.free).length;
+  return`<div class="pf" data-course="0" tabindex="0" role="button">${cover(c.c,[c.level,c.title],c.img?'':'1',132,c.img)}<div class="pb"><div class="meta"><span>🎬 ${ids.length} lessons</span><span>⏱ ${hh.toFixed(1)}h</span>${fl&&!c.free?`<span class="tag f">${fl} FREE</span>`:''}</div><div class="cf">${ptag(c)}<span class="btn s">${own(c)?'Start →':fl?'Try free →':'View →'}</span></div></div></div>`})():'';
+  h+=pnl('courses','🎬','Courses',COURSES.length,f,COURSES.slice(1,5).map((x,i)=>lrow(`data-course="${i+1}"`,'▶',x.title,x)).join(''),'Courses are being added')}
+ {const b=PDFS[0],f=b?`<div class="pf" data-pdf="0" tabindex="0" role="button"><span class="lk">${own(b)?(b.free&&!paid?'FREE':'📖 Read'):'🔒 Locked'}</span>${cover(b.c,[b.cat.toUpperCase(),b.t],b.img?'':'PDF',132,b.img)}<div class="pb"><div class="meta"><span>📄 ${b.p?b.p+' pages':'PDF'}</span><span>${esc(b.cat)}</span></div><div class="cf">${ptag(b)}<span class="btn s ${own(b)?'':'o'}">${own(b)?'Read →':'Preview →'}</span></div></div></div>`:'';
+  h+=pnl('pdfs','📄','PDF notes',PDFS.length,f,PDFS.slice(1,5).map((x,i)=>lrow(`data-pdf="${i+1}"`,'📄',x.t,x)).join(''),'PDF notes are being added')}
+ {const x=INDICATORS[0],f=x?`<div class="pf" data-ind="${x.id}" tabindex="0" role="button"><canvas data-ty="${x.type}" data-s="${String(x.id).length*7919+String(x.id).charCodeAt(0)}" aria-hidden="true"></canvas><div class="pb"><h3>${esc(x.name)}</h3><div class="meta"><span>⏱ ${esc(x.tf)}</span><span>📊 ${esc(x.mk)}</span></div><div class="cf">${ptag(x)}<span class="btn s ${own(x)?'':'o'}">${own(x)?'Open →':'Preview →'}</span></div></div></div>`:'';
+  h+=pnl('ind','📈','Indicators',INDICATORS.length,f,INDICATORS.slice(1,5).map(y=>lrow(`data-ind="${y.id}"`,'📈',y.name,y)).join(''),'Indicators are being added')}
+ el.innerHTML=h}
 function showcase(){
  shRow('sh-c','courses','🎬','Video courses','Learn in order. Progress, notes and a practice link on every lesson.',COURSES.map((c,ci)=>courseCard(c,ci)),'Video courses are being added. Start with the free lessons above.');
  shRow('sh-p','pdfs','📄','PDF notes &amp; playbooks','Read inside the app. Playbooks and one-page cheat sheets.',PDFS.map((b,i)=>pdfCard(b,i)),'PDF notes are being added.');
