@@ -2,9 +2,9 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>BFT Tools – Risk, Options, Monte Carlo and Daily Discipline</title><meta property="og:title" content="BFT Tools – Risk, Options, Monte Carlo and Daily Discipline"><meta property="og:type" content="website"><meta property="og:image" content="icon-512.png">
 <meta name="theme-color" content="#070b14">
-<style>
+<script src="bft-ui.js"></script><style>
 :root{--bg:#070b14;--pn:#0f1626;--tx:#e8eefb;--mu:#8e9bb8;--ln:rgba(255,255,255,.1);--ac:#6aa5ff;--ok:#3ddc97;--no:#ff6b7a;--wa:#f5c76b;--in:#0a1020}
-@media(prefers-color-scheme:light){:root{--bg:#f5f7fc;--pn:#fff;--tx:#0f172a;--mu:#55617a;--ln:rgba(15,23,42,.12);--ac:#2f6fe4;--ok:#0f9d63;--no:#d6334a;--wa:#b7791f;--in:#eef2fa}}
+:root[data-ui=light]{--bg:#f5f7fc;--pn:#fff;--tx:#0f172a;--mu:#55617a;--ln:rgba(15,23,42,.12);--ac:#2f6fe4;--ok:#0f9d63;--no:#d6334a;--wa:#b7791f;--in:#eef2fa;color-scheme:light} @media(prefers-color-scheme:light){:root:not([data-ui=dark]){--bg:#f5f7fc;--pn:#fff;--tx:#0f172a;--mu:#55617a;--ln:rgba(15,23,42,.12);--ac:#2f6fe4;--ok:#0f9d63;--no:#d6334a;--wa:#b7791f;--in:#eef2fa;color-scheme:light}}
 *{box-sizing:border-box;margin:0}
 body{background:var(--bg);color:var(--tx);font:15px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding-bottom:calc(76px + env(safe-area-inset-bottom,0px));padding-top:env(safe-area-inset-top,0px)}
 a{color:inherit}.w{max-width:760px;margin:0 auto;padding:0 16px}
@@ -40,7 +40,7 @@ canvas{width:100%;height:210px;display:block;margin-top:12px;border-radius:10px;
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 </style></head><body>
 <div class="w">
-<header><b>BFT Tools</b><a href="index.html">Back to home</a></header>
+<header><b>BFT Tools</b><span class="bftx"><span id="lgslot"></span><span id="thslot"></span><a href="index.html">Back to home</a></span></header>
 <nav id="tabs">
 <button data-t="rk" class="on"><i>🎯</i>Risk</button><button data-t="op"><i>📈</i>Options</button><button data-t="mc"><i>🎲</i>Monte Carlo</button><button data-t="dl"><i>🧘</i>Daily loop</button>
 </nav>
@@ -178,4 +178,4 @@ $('#dlSv').onclick=()=>{td().n=$('#dlN').value;save();$('#dlSv').textContent='Sa
 $('#dlX').onclick=()=>{st.cool=0;save();tick()};
 function tick(){const l=st.cool-Date.now(),a=$('#dlA');if(l>0){a.classList.add('on');const s=Math.ceil(l/1000);$('#dlT').textContent=Math.floor(s/60)+':'+String(s%60).padStart(2,'0')}else a.classList.remove('on')}
 setInterval(tick,1000);dl();
-</script><script>if('serviceWorker'in navigator&&location.protocol.indexOf('http')===0)addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})</script><script src="bft-analytics.js" defer></script></body></html>
+</script><script>if('serviceWorker'in navigator&&location.protocol.indexOf('http')===0)addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})</script><script src="i18n.js" defer></script><script src="i18n-pages.js" defer></script><script src="bft-analytics.js" defer></script></body></html>

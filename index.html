@@ -2,8 +2,15 @@
 <title>BFT Trade Lab – Learn, Practise, Prove and Journal your trading</title><meta property="og:title" content="BFT Trade Lab – Learn, Practise, Prove and Journal your trading"><meta property="og:type" content="website"><meta property="og:image" content="icon-512.png"><meta property="og:description" content="Learn price action in the Academy, practise on real BANKNIFTY history, prove your edge on unseen data and find your costly habits in the Premium Journal.">
 <meta name="description" content="Learn price action in the Academy, practise on real BANKNIFTY history, prove your edge on unseen data and find your costly habits in the Premium Journal.">
 <meta name="theme-color" content="#070b12">
-<style>
+<script src="bft-ui.js" data-default="dark"></script><style>
 :root{--bg:#070b12;--bg2:#0c121d;--tx:#e8eefb;--mu:#8e9bb8;--ln:rgba(255,255,255,.08);--gl:#0d1420;--gl2:#131c2c;--ac:#5b9cff;--gold:#f5c76b;--ok:#3ddc97;--dn:#ff7a59;--ink:#04101f;color-scheme:dark}
+:root[data-ui=light]{--bg:#f4f6fb;--bg2:#fff;--tx:#0f172a;--mu:#55617a;--ln:rgba(15,23,42,.12);--gl:#fff;--gl2:#eef2fa;--ac:#2f6fe4;--gold:#b7791f;--ok:#0b9a63;--dn:#d6334d;--ink:#fff;color-scheme:light}
+:root[data-ui=light] body:before{opacity:.45}
+:root[data-ui=light] .btn.g{background:#f5c76b;color:#241800}
+:root[data-ui=light] nav .dd{box-shadow:0 20px 50px rgba(15,23,42,.16)}
+:root[data-ui=light] .viz{box-shadow:0 30px 80px -40px rgba(47,111,228,.35)}
+:root[data-ui=light] .tag{background:rgba(183,121,31,.14)}:root[data-ui=light] .tag.f{background:rgba(11,154,99,.14)}
+nav .bft-b{color:var(--mu);border:0;padding:8px 10px;font-size:14.5px}nav .bft-b:hover{color:var(--tx);background:var(--gl2)}
 *{box-sizing:border-box;margin:0}html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--tx);font:16px/1.6 Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased}
 body:before{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradient(900px 460px at 50% -12%,rgba(91,156,255,.14),transparent 65%),radial-gradient(600px 400px at 100% 40%,rgba(245,199,107,.05),transparent 70%)}
@@ -44,6 +51,7 @@ a.card:hover{border-color:rgba(91,156,255,.6);box-shadow:0 22px 50px -22px rgba(
 footer{border-top:1px solid var(--ln);padding:26px 0 40px;color:var(--mu);font-size:13px;text-align:center}footer a{margin:0 8px}footer a:hover{color:var(--tx)}
 .rv{opacity:0;transform:translateY(12px);transition:opacity .6s,transform .6s}.rv.in{opacity:1;transform:none}
 @media(max-width:900px){.hg,.acad{grid-template-columns:1fr}.bento{grid-template-columns:1fr 1fr}.path{grid-template-columns:1fr 1fr}.feat{grid-template-columns:1fr 1fr}.kpis{grid-template-columns:1fr 1fr}nav .l.h{display:none}}
+@media(max-width:700px){nav .w{overflow-x:auto;scrollbar-width:none}nav .w::-webkit-scrollbar{display:none}nav .w>.btn.s,nav .w>.sp{display:none}nav #lgslot,nav #thslot{position:sticky;background:var(--bg);z-index:2}nav #lgslot{right:46px;margin-left:auto}nav #thslot{right:0}}
 @media(max-width:620px){.bento,.path,.feat{grid-template-columns:1fr}.bento .c2{grid-column:auto}.hero{padding-top:34px}.viz canvas{height:230px}.sec{padding:44px 0}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}.rv{opacity:1;transform:none}}
 </style></head><body>
@@ -62,7 +70,7 @@ footer{border-top:1px solid var(--ln);padding:26px 0 40px;color:var(--mu);font-s
 
 <nav><div class="w"><a class="lg" href="index.html">BFT <i>Trade Lab</i></a><a class="l" href="academy.html">Academy</a><a class="l" href="trade-lab-pro.html">Testing Lab</a><a class="l" href="classroom.html">Classroom</a><a class="l" href="journal.html">Journal</a>
 <details><summary class="l">More ▾</summary><div class="dd"><a href="tools.html"><svg class="i"><use href="#tls"/></svg>Tools</a><a href="screener.html"><svg class="i"><use href="#mov"/></svg>Market Movers</a><a href="reality.html"><svg class="i"><use href="#rea"/></svg>Reality Check</a></div></details>
-<span class="sp"></span><a class="btn g s" href="academy.html">Academy dekho</a></div></nav>
+<span class="sp"></span><span id="lgslot"></span><span id="thslot"></span><a class="btn g s" href="academy.html">Academy dekho</a></div></nav>
 
 <header class="hero"><div class="w"><div class="hg"><div>
 <h1>Seekho. Practise karo. <em>Prove karo.</em> Journal likho.</h1>
@@ -120,4 +128,4 @@ if(d)p.push('🎓 <b>'+d+'</b> Academy lesson'+(d>1?'s':'')+' done · <a href="a
 let t=0;for(let i=0;i<localStorage.length;i++){try{const o=JSON.parse(localStorage.getItem(localStorage.key(i)));if(o&&Array.isArray(o.tr)&&!o.demo)t=Math.max(t,o.tr.length)}catch(e){}}
 if(t)p.push('📒 <b>'+t+'</b> trade'+(t>1?'s':'')+' in your Journal · <a href="journal.html">Review</a>');
 if(p.length){const c=document.getElementById('cont');c.innerHTML=p.join('<span>·</span>');c.style.display='flex'}}catch(e){}})();
-</script><script>if('serviceWorker'in navigator&&location.protocol.indexOf('http')===0)addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})</script><script src="bft-analytics.js" defer></script></body></html>
+</script><script>if('serviceWorker'in navigator&&location.protocol.indexOf('http')===0)addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})</script><script src="i18n.js" defer></script><script src="i18n-pages.js" defer></script><script src="bft-analytics.js" defer></script></body></html>

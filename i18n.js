@@ -1,4 +1,5 @@
-/* BFT language switch: English | हिंदी. Page text stays the source of truth (English, some Hinglish).
+/* BFT language switch (English | हिंदी) and theme button (light | dark), shared by every page.
+   Extra page dictionaries are loaded from i18n-pages.js via BFTL.add({HI:{},HB:{}}). Page text stays the source of truth (English, some Hinglish).
    Hindi is applied on top by exact-text lookup, so nothing breaks if a string has no translation. */
 (function(){
 const HI={
@@ -48,23 +49,48 @@ const RULES=[
 [/^or press \/ to pick one of (\d+) ready lessons$/,m=>'या / दबाकर '+m[1]+' तैयार लेसन में से चुनें']];
 let lang='en';try{lang=localStorage.getItem('bft_lang')==='hi'?'hi':'en'}catch(e){}
 const RX=/^([^A-Za-z\u0900-\u097F]*)([\s\S]*?)([^A-Za-z\u0900-\u097F]*)$/;
-function tr(s,l){const m=RX.exec(s);if(!m||!m[2])return s;const c=m[2],d=l==='hi'?HI:EN;let v=d[c];
+function tr(s,l){const m=RX.exec(s);if(!m||!m[2])return s;const c=m[2].replace(/\s+/g,' '),d=l==='hi'?HI:EN;let v=d[c];
  if(v==null&&l==='hi')for(const r of RULES){const x=r[0].exec(c);if(x){v=r[1](x);break}}return v==null?s:m[1]+v+m[3]}
 const NS=new WeakMap(),AS=new WeakMap();let busy=false;
-const okText=n=>{const p=n.parentElement;return !p||(!/^(SCRIPT|STYLE|TEXTAREA|CANVAS|NOSCRIPT)$/.test(p.tagName)&&!p.closest('[data-k],[data-nox]'))};
+const okText=n=>{const p=n.parentElement;return !p||(!/^(SCRIPT|STYLE|TEXTAREA|CANVAS|NOSCRIPT)$/.test(p.tagName)&&!p.closest('[data-k],[data-nox],[data-hb]'))};
 function doText(n){let r=NS.get(n);if(!r||n.nodeValue!==r.t){r={o:n.nodeValue,t:n.nodeValue};NS.set(n,r)}const out=tr(r.o,lang);if(out!==n.nodeValue)n.nodeValue=out;r.t=out}
 function doEl(e){if(e.closest&&e.closest('[data-nox]'))return;
  ['title','placeholder'].forEach(a=>{if(!e.hasAttribute(a))return;let m=AS.get(e);if(!m){m={};AS.set(e,m)}let r=m[a];const cur=e.getAttribute(a);if(!r||cur!==r.t){r={o:cur,t:cur};m[a]=r}const out=tr(r.o,lang);if(out!==cur)e.setAttribute(a,out);r.t=out});
  const k=e.getAttribute&&e.getAttribute('data-k');if(k){if(e._o===undefined)e._o=e.innerHTML;const want=lang==='hi'&&HK[k]?HK[k]:e._o;if(e.innerHTML!==want)e.innerHTML=want}}
+const HB={},NB=new WeakMap();let hbOn=false;
+const hkey=h=>h.replace(/\s+/g,' ').trim();
+function doBlk(e){if(!e.children||!e.children.length||e.closest('[data-nox],[data-k]'))return;
+ if(/^(HTML|BODY|HEAD|SCRIPT|STYLE|SVG|CANVAS|TEXTAREA|SELECT|NOSCRIPT)$/i.test(e.tagName)||e.textContent.length>1800)return;
+ const cur=e.innerHTML;let r=NB.get(e);if(!r||cur!==r.t){r={raw:cur,key:hkey(cur),t:cur};NB.set(e,r)}
+ const hi=HB[r.key];if(hi==null)return;e.setAttribute('data-hb','1');
+ const want=lang==='hi'?hi:r.raw;if(e.innerHTML!==want)e.innerHTML=want;r.t=e.innerHTML}
 function walk(root){if(root.nodeType===3){if(okText(root))doText(root);return}if(root.nodeType!==1)return;
  doEl(root);root.querySelectorAll('[title],[placeholder],[data-k]').forEach(doEl);
+ if(hbOn){doBlk(root);root.querySelectorAll('*').forEach(doBlk)}
  const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:n=>okText(n)?1:2});let n;while(n=w.nextNode())doText(n)}
 const mo=new MutationObserver(recs=>{if(busy)return;busy=true;try{recs.forEach(r=>{if(r.type==='characterData')walk(r.target);else r.addedNodes.forEach(walk)})}finally{mo.takeRecords();busy=false}});
 function all(){busy=true;try{walk(document.body)}finally{mo.takeRecords();busy=false}}
-function label(){document.querySelectorAll('.bft-lg').forEach(b=>{b.textContent=lang==='hi'?'🌐 हिं':'🌐 EN';b.title=lang==='hi'?'Switch to English':'हिंदी में बदलें'})}
+function thLabel(){const l=window.BFTT&&BFTT.get()==='light';document.querySelectorAll('.bft-th').forEach(b=>{b.textContent=l?'🌙':'☀️';
+ const t=lang==='hi'?(l?'डार्क थीम पर जाएं':'लाइट थीम पर जाएं'):(l?'Switch to dark theme':'Switch to light theme');b.title=t;b.setAttribute('aria-label',t)})}
+function label(){thLabel();document.querySelectorAll('.bft-lg').forEach(b=>{b.textContent=lang==='hi'?'🌐 हिं':'🌐 EN';b.title=lang==='hi'?'Switch to English':'हिंदी में बदलें'})}
 function set(l){lang=l==='hi'?'hi':'en';try{localStorage.setItem('bft_lang',lang)}catch(e){}document.documentElement.lang=lang;all();label();window.dispatchEvent(new Event('resize'))}
-function mount(){document.querySelectorAll('#lgslot').forEach(s=>{if(s.firstChild)return;const b=document.createElement('button');b.className='bft-lg '+(s.dataset.cls||'');b.setAttribute('data-nox','');b.onclick=()=>set(lang==='hi'?'en':'hi');s.appendChild(b)})}
-function init(){mount();document.documentElement.lang=lang;all();label();mo.observe(document.body,{childList:true,subtree:true,characterData:true})}
-window.BFTL={t:s=>tr(s,lang),set,get:()=>lang};
+function mkL(c){const b=document.createElement('button');b.className='bft-lg bft-b '+(c||'');b.type='button';b.setAttribute('data-nox','');b.onclick=()=>set(lang==='hi'?'en':'hi');return b}
+function mkT(c){const b=document.createElement('button');b.className='bft-th bft-b '+(c||'');b.type='button';b.setAttribute('data-nox','');b.onclick=()=>{window.BFTT&&BFTT.toggle()};return b}
+function mount(){
+ if(!document.getElementById('bft-ui-css')){const st=document.createElement('style');st.id='bft-ui-css';
+  st.textContent=':where(.bft-b){font:inherit;font-size:13px;line-height:1;color:var(--tx,inherit);background:transparent;border:1px solid var(--ln,rgba(128,128,128,.35));border-radius:10px;padding:8px 10px;cursor:pointer;white-space:nowrap}:where(.bft-b):hover{border-color:var(--ac,#6aa5ff)}'+
+  '.bftx{display:flex;align-items:center;gap:8px}.bft-fab{position:fixed;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:9999;display:flex;gap:6px;padding:6px;border-radius:14px;background:var(--pn,#0f1626);border:1px solid var(--ln,rgba(128,128,128,.35));box-shadow:0 8px 24px rgba(0,0,0,.25)}';
+  document.head.appendChild(st)}
+ let any=false;
+ document.querySelectorAll('#lgslot').forEach(s=>{any=true;if(s.firstChild)return;s.appendChild(mkL(s.dataset.cls))});
+ document.querySelectorAll('#thslot').forEach(s=>{if(s.firstChild)return;s.appendChild(mkT(s.dataset.cls))});
+ if(!any&&!document.querySelector('.bft-fab')){const f=document.createElement('div');f.className='bft-fab';f.setAttribute('data-nox','');f.appendChild(mkL());
+  if(!document.querySelector('#thb,#th,.bft-th'))f.appendChild(mkT());document.body.appendChild(f)}}
+function init(){ready=true;mount();document.documentElement.lang=lang;all();label();mo.observe(document.body,{childList:true,subtree:true,characterData:true})}
+function add(o){if(!o)return;if(o.RULES)o.RULES.forEach(r=>RULES.push(r));if(o.HI)Object.assign(HI,o.HI);if(o.HK)Object.assign(HK,o.HK);
+ if(o.HB){Object.keys(o.HB).forEach(k=>{HB[hkey(k)]=o.HB[k]});hbOn=true}if(ready)all()}
+let ready=false;
+window.BFTL={t:s=>tr(s,lang),set,get:()=>lang,add};
+if(window.BFTT)BFTT.on(thLabel);
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();

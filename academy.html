@@ -3,7 +3,7 @@
 <meta name="description" content="Structured price-action courses, PDF notes and Pine Script indicators for TradingView. Learn it, then practise it in the Lab.">
 <meta name="theme-color" content="#070b14">
 <meta property="og:title" content="BFT Academy – Courses, Notes and TradingView Indicators"><meta property="og:description" content="Video courses, PDF notes and Pine indicators in one place. One-time payment, lifetime access.">
-<style>
+<script src="bft-ui.js" data-default="dark"></script><style>
 :root{--bg:#060a13;--bg2:#0b1222;--tx:#e8eefb;--mu:#8e9bb8;--ln:rgba(255,255,255,.09);--gl:rgba(255,255,255,.05);--gl2:rgba(255,255,255,.085);--ac:#6aa5ff;--ac2:#a78bfa;--gold:#f5c76b;--ok:#3ddc97;--dn:#ff7a59;--ink:#06101f;--code:#0a0f1d;--sh:0 20px 60px rgba(0,0,0,.45)}
 *{box-sizing:border-box;margin:0}html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 body{background:var(--bg);color:var(--tx);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overflow-x:hidden;padding-bottom:env(safe-area-inset-bottom)}
@@ -173,8 +173,16 @@ body:before{background:radial-gradient(900px 460px at 50% -12%,rgba(91,156,255,.
 .pn .soon3{padding:34px 16px;text-align:center;color:var(--mu);font-size:14px}.pn .soon3 div{font-size:28px;margin-bottom:6px}
 @media(max-width:900px){.pnls{grid-template-columns:1fr}.kpis .stats{grid-template-columns:repeat(2,1fr);flex-basis:100%}.kpis .bt{width:100%}.kpis .bt .btn{flex:1}}
 @media(max-width:640px){.ofr .op{flex-direction:column;align-items:stretch;text-align:left}.ofr .op>div:last-child{text-align:left!important}.shr{margin-bottom:48px}.sh .sa{width:100%}}
+/* light theme (shared bft_ui choice) */
+:root[data-ui=light]{--bg:#f4f6fb;--bg2:#fff;--tx:#0f172a;--mu:#55617a;--ln:rgba(15,23,42,.12);--gl:#fff;--gl2:#eef2fa;--ac:#2f6fe4;--ac2:#6d4fe0;--gold:#b7791f;--ok:#0b9a63;--dn:#d6334d;--ink:#fff;--code:#eef2fa;--sh:0 20px 60px rgba(15,23,42,.14);color-scheme:light}
+:root[data-ui=light] body:before{opacity:.35}
+:root[data-ui=light] .btn.g{background:#f5c76b;color:#241800}
+:root[data-ui=light] .code .bar2{border-bottom-color:rgba(15,23,42,.1);background:rgba(15,23,42,.04);color:#475569}
+:root[data-ui=light] .code .cta{background:linear-gradient(transparent,rgba(244,246,251,.9));color:var(--tx)}
+:root[data-ui=light] .wm{color:rgba(15,23,42,.22);text-shadow:none}
+.top .bft-b{border:0;color:var(--mu);padding:8px 10px}.top .bft-b:hover{color:var(--tx);background:var(--gl2)}
 </style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"></head><body class="ld"><script>window._wo=window.open.bind(window);setTimeout(function(){document.body.classList.remove('ld')},5000)</script>
-<header class="top"><div class="w"><a class="logo" href="index.html"><span id="brand"></span></a><span class="sp"></span><a class="nl" href="index.html">Home</a><a class="nl" href="journal.html">Journal</a><a class="nl" href="trade-lab-pro.html">Testing Lab</a><a class="nl" href="classroom.html">Classroom</a><span id="st"></span></div>
+<header class="top"><div class="w"><a class="logo" href="index.html"><span id="brand"></span></a><span class="sp"></span><a class="nl" href="index.html">Home</a><a class="nl" href="journal.html">Journal</a><a class="nl" href="trade-lab-pro.html">Testing Lab</a><a class="nl" href="classroom.html">Classroom</a><span id="lgslot"></span><span id="thslot"></span><span id="st"></span></div>
 <div class="w"><nav class="tabs" role="tablist" id="tabs"></nav></div></header>
 
 <main>
@@ -619,4 +627,4 @@ const _re=()=>window.BFTX&&BFTX.ready&&BFTX.ready().then(all).catch(()=>{});_re(
 const want=(location.hash||'').slice(1);if(want)go(want);
 })();
 
-</script><script>if('serviceWorker'in navigator&&location.protocol.indexOf('http')===0)addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})</script><script>new MutationObserver(m=>{document.querySelectorAll("img:not([loading])").forEach(i=>{i.loading="lazy";i.decoding="async";if(!i.hasAttribute("alt"))i.alt=""})}).observe(document.body,{childList:true,subtree:true})</script><script src="bft-analytics.js" defer></script><script src="access.js" defer></script></body></html>
+</script><script>if('serviceWorker'in navigator&&location.protocol.indexOf('http')===0)addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})</script><script>new MutationObserver(m=>{document.querySelectorAll("img:not([loading])").forEach(i=>{i.loading="lazy";i.decoding="async";if(!i.hasAttribute("alt"))i.alt=""})}).observe(document.body,{childList:true,subtree:true})</script><script src="i18n.js" defer></script><script src="i18n-pages.js" defer></script><script src="bft-analytics.js" defer></script><script src="access.js" defer></script></body></html>

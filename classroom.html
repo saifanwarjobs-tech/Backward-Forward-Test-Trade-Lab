@@ -1,5 +1,5 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="apple-touch-icon.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BFT Classroom Board</title><meta property="og:title" content="BFT Classroom Board"><meta property="og:type" content="website"><meta property="og:image" content="icon-512.png">
-<script>try{if(localStorage.getItem("bft_ui")==="light")document.documentElement.dataset.ui="light"}catch(e){}</script><style>
+<script src="bft-ui.js" data-default="dark"></script><style>
 :root{--pn:#111a2e;--ln:#26324d;--tx:#e6edf7;--ac:#3b82f6;--b0:#0b1220;--b1:#0f1729;--b2:#13203a;--b3:#070b12;--ln2:#33456b;--mu:#8a98b3;--mu2:#9fb0d0;--mu3:#64748b;--bg0:#05080d}
 html[data-ui=light]{--pn:#ffffff;--ln:#cbd5e1;--tx:#0f172a;--b0:#f1f5f9;--b1:#ffffff;--b2:#e2e8f0;--b3:#e2e8f0;--ln2:#cbd5e1;--mu:#475569;--mu2:#334155;--mu3:#64748b;--bg0:#e8edf3;color-scheme:light}
 .b.wr,.b.ok,.b.reset,.b.rec,.b.menu{color:#fff}html[data-ui=light] .sw.on{border-color:#0f172a}
@@ -364,7 +364,7 @@ $('#brd').onclick=()=>{if(!isPro())return upsell();const v=prompt('Your brand na
 $('#wm').addEventListener('change',()=>{if(!isPro()){$('#wm').checked=true;toast('Removing the logo is a Pro feature');upsell()}});
 document.addEventListener('click',e=>{if(e.target.closest('#exb')&&!isPro()){e.stopPropagation();e.preventDefault();toast('Bulk export is a Pro feature');upsell()}},true);
 setInterval(syncBrand,1500);syncBrand();
-(function(){const b=$('#thb'),sy=()=>{b.textContent=document.documentElement.dataset.ui==='light'?'🌙':'◐'};b.onclick=()=>{const l=document.documentElement.dataset.ui==='light';if(l)delete document.documentElement.dataset.ui;else document.documentElement.dataset.ui='light';try{localStorage.setItem('bft_ui',l?'':'light')}catch(e){}sy()};sy()})();
+(function(){const b=$('#thb'),sy=()=>{b.textContent=document.documentElement.dataset.ui==='light'?'🌙':'◐'};b.onclick=()=>BFTT.toggle();BFTT.on(sy);sy()})();
 function draw(){g.fillStyle=TH[th].bg;g.fillRect(0,0,W,H);
  if($('#gr').checked){g.strokeStyle=TH[th].gr;g.lineWidth=1;g.beginPath();for(let x=0;x<W;x+=40){g.moveTo(x,0);g.lineTo(x,H)}for(let y=0;y<H;y+=40){g.moveTo(0,y);g.lineTo(W,y)}g.stroke()}
  let base=0;if(LV.on){g.save();if(VERT)g.translate(0,SAFE_T+100);else{g.translate(W*(1-LS_)/2,62);g.scale(LS_,LS_)}}I.forEach(it=>{if(it.cs){it.cs.forEach((c,i)=>candle(c,rev-(base+i)));base+=it.cs.length}else item(it)});if(LV.on&&(LV.state==='teach'||LV.state==='hold'))markers();if(LV.on)g.restore();

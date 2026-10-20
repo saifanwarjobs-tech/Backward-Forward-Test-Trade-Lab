@@ -2,11 +2,12 @@
 <title>Reality Check – Tip, return and cost checks for Indian traders | BFT Trade Lab</title><meta property="og:title" content="Reality Check – Tip, return and cost checks for Indian traders | BFT Trade Lab"><meta property="og:type" content="website"><meta property="og:image" content="icon-512.png"><meta property="og:description" content="Three free checks before you trust a tip or a strategy: a scam red-flag checklist, a compounding reality check for return claims, and what trading costs do to your profit.">
 <meta name="description" content="Three free checks before you trust a tip or a strategy: a scam red-flag checklist, a compounding reality check for return claims, and what trading costs do to your profit.">
 <meta name="theme-color" content="#070b14">
-<script>try{var t=localStorage.getItem('bft_scr_th');if(t)document.documentElement.dataset.th=t}catch(e){}</script>
+<script src="bft-ui.js" data-attr-th></script>
 <style>
 :root{--bg:#060a14;--pn:rgba(255,255,255,.035);--tx:#e8eefb;--mu:#8e9bb8;--ln:rgba(255,255,255,.09);--ac:#6aa5ff;--gold:#f5c76b;--up:#2fe0a0;--dn:#ff6477;--ink:#06101f;--glow:rgba(106,165,255,.16)}
 @media(prefers-color-scheme:light){:root:not([data-th=dark]){--bg:#f4f6fb;--pn:#fff;--tx:#0f172a;--mu:#55617a;--ln:rgba(15,23,42,.11);--ac:#2f6fe4;--gold:#b7791f;--up:#0b9a63;--dn:#d6334d;--ink:#fff;--glow:rgba(47,111,228,.12)}}
 :root[data-th=light]{--bg:#f4f6fb;--pn:#fff;--tx:#0f172a;--mu:#55617a;--ln:rgba(15,23,42,.11);--ac:#2f6fe4;--gold:#b7791f;--up:#0b9a63;--dn:#d6334d;--ink:#fff;--glow:rgba(47,111,228,.12)}
+nav .bft-b{width:auto;height:34px;padding:0 10px;font-size:13px;color:var(--mu)}nav .bft-b:hover{color:var(--tx)}
 *{box-sizing:border-box;margin:0}
 body{background:var(--bg);color:var(--tx);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overflow-x:hidden;min-height:100vh}
 body:before{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradient(1000px 520px at 8% -10%,var(--glow),transparent 60%),radial-gradient(700px 480px at 105% 4%,rgba(167,139,250,.1),transparent 60%)}
@@ -44,7 +45,7 @@ th,td{text-align:left;padding:10px 4px;border-bottom:1px solid var(--ln);font-si
 .btn{display:inline-block;background:var(--ac);color:var(--ink);border-radius:12px;padding:12px 18px;font-weight:700;font-size:15px;min-height:46px;text-decoration:none}
 .dis{font-size:12.5px;color:var(--mu);padding:6px 0 40px;max-width:80ch}
 </style></head><body>
-<nav><div class="w"><a href="index.html" style="text-decoration:none"><b>BFT <i>Trade Lab</i></b></a><a class="l" href="journal.html">Journal</a><a class="l" href="trade-lab-pro.html">Testing Lab</a><a class="l" href="tools.html">Tools</a><span class="sp"></span><a class="l" href="index.html">Home</a></div></nav>
+<nav><div class="w"><a href="index.html" style="text-decoration:none"><b>BFT <i>Trade Lab</i></b></a><a class="l" href="journal.html">Journal</a><a class="l" href="trade-lab-pro.html">Testing Lab</a><a class="l" href="tools.html">Tools</a><span class="sp"></span><span id="lgslot"></span><span id="thslot"></span><a class="l" href="index.html">Home</a></div></nav>
 <main class="w">
 <h1>Reality Check</h1>
 <p class="sub">Three quick checks to run before you trust a tip, a return claim or your own numbers. Nothing you type leaves your phone.</p>
@@ -136,4 +137,4 @@ function cost(){const n=num('k0'),d=num('k1'),c=num('k2'),g=num('k3'),trades=n*d
  '<p style="margin-top:12px">'+(g<=0?'Your average trade loses money before charges, so charges only make it worse.':g<=c?'Charges are as big as your average profit. You need more than <b>'+inr(c)+'</b> per trade just to break even.':'Charges take <b>'+Math.round(c/g*100)+'%</b> of your profit. You break even only if your average trade earns more than <b>'+inr(c)+'</b>.')+'</p>'}
 ['k0','k1','k2','k3'].forEach(id=>$('#'+id).addEventListener('input',cost));cost();
 })();
-</script><script src="bft-analytics.js" defer></script></body></html>
+</script><script src="i18n.js" defer></script><script src="i18n-pages.js" defer></script><script src="bft-analytics.js" defer></script></body></html>

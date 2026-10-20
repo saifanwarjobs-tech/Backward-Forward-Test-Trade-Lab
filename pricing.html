@@ -2,8 +2,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Pricing – BFT Trade Lab</title><meta name="description" content="BFT Trade Lab Academy pricing: one payment of Rs 4,999, lifetime access.">
 <meta name="theme-color" content="#070b14"><link rel="icon" href="icon.svg">
-<style>:root{--bg:#070b14;--pn:#0f1626;--tx:#e8eefb;--mu:#8e9bb8;--ln:rgba(255,255,255,.1);--ac:#6aa5ff}
-@media(prefers-color-scheme:light){:root{--bg:#f5f7fc;--pn:#fff;--tx:#0f172a;--mu:#55617a;--ln:rgba(15,23,42,.12);--ac:#2f6fe4}}
+<script src="bft-ui.js"></script><style>:root{--bg:#070b14;--pn:#0f1626;--tx:#e8eefb;--mu:#8e9bb8;--ln:rgba(255,255,255,.1);--ac:#6aa5ff}
+:root[data-ui=light]{--bg:#f5f7fc;--pn:#fff;--tx:#0f172a;--mu:#55617a;--ln:rgba(15,23,42,.12);--ac:#2f6fe4;color-scheme:light} @media(prefers-color-scheme:light){:root:not([data-ui=dark]){--bg:#f5f7fc;--pn:#fff;--tx:#0f172a;--mu:#55617a;--ln:rgba(15,23,42,.12);--ac:#2f6fe4;color-scheme:light}}
 *{box-sizing:border-box;margin:0}
 body{background:var(--bg);color:var(--tx);font:16px/1.7 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding:env(safe-area-inset-top,0) 0 40px}
 .w{max-width:720px;margin:0 auto;padding:0 18px}
@@ -16,7 +16,7 @@ article{background:var(--pn);border:1px solid var(--ln);border-radius:16px;paddi
 .btn{display:inline-flex;align-items:center;min-height:48px;padding:0 22px;border-radius:12px;background:var(--ac);color:#fff;font-weight:700;text-decoration:none;margin-top:8px}
 nav.f{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:26px;font-size:14px}nav.f a{color:var(--mu)}
 :focus-visible{outline:2px solid var(--ac);outline-offset:2px}a{color:var(--ac)}</style></head><body><div class="w">
-<header><b>BFT Trade Lab</b><a href="index.html">Back to home</a></header>
+<header><b>BFT Trade Lab</b><span class="bftx"><span id="lgslot"></span><span id="thslot"></span><a href="index.html">Back to home</a></span></header>
 
 <h1>Pricing</h1><p class="lead">One simple plan. No subscription, no auto-renewal.</p>
 <article>
@@ -30,4 +30,4 @@ nav.f{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:26px;font-size:14px}na
 <p style="font-size:13px"><b>Education only.</b> No tips, signals or investment advice. Trading involves risk of loss. We do not promise profit.</p>
 <nav class="f" aria-label="Policies"><a href="terms.html">Terms</a><a href="privacy.html">Privacy</a><a href="refund.html">Refund</a><a href="pricing.html">Pricing</a><a href="contact.html">Contact</a><a href="about.html">About</a></nav>
 <p style="font-size:13px;margin-top:14px">© BFT Trade Lab. Education and practice platform. No tips, signals or investment advice.</p>
-</div><script src="bft-analytics.js" defer></script></body></html>
+</div><script src="i18n.js" defer></script><script src="i18n-pages.js" defer></script><script src="bft-analytics.js" defer></script></body></html>

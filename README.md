@@ -52,3 +52,12 @@ Campaign links: `index.html?utm_source=whatsapp&utm_medium=social&utm_campaign=d
 Custom event from your own code: `BFTTrack('Started replay','XAUUSD')`. Mark any element `data-bft-private` to be ignored, or `data-track="Name"` to force a named event.
 Free-plan note: each page view is about 2-4 small writes. Use Admin > Analytics > Data > Delete to remove old rows (or all test data) when needed.
 
+
+## Language and theme (all pages)
+
+Every page now has a language button (English | हिंदी) and a light / dark button, and both choices are shared across the whole site.
+
+- `bft-ui.js`: the theme. One saved choice (`bft_ui`) for every page. Loaded in `<head>` so there is no flash.
+- `i18n.js`: the language engine and the buttons. The Lab and Classroom keep their own Hindi words in this file.
+- `i18n-pages.js`: Hindi for all other pages. Text that is not listed here simply stays in English. To add or fix a Hindi line, add it to `HI` (plain text) or `HB` (a whole block that contains `<b>`, `<a>` etc.).
+- To put the buttons on a new page add `<script src="bft-ui.js"></script>` in `<head>`, `<span id="lgslot"></span><span id="thslot"></span>` in the header, and `i18n.js` + `i18n-pages.js` before the closing `</body>`.
