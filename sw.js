@@ -1,5 +1,5 @@
 // Bump V when you want every user to drop old cached pages.
-const V='bft-v6',SHELL=['index.html','tools.html','screener.html','reality.html','journal.html','access.js','bft-analytics.js','academy.html','trade-lab-pro.html','classroom.html','legal.html','terms.html','privacy.html','refund.html','pricing.html','contact.html','about.html','icon.svg','icon-192.png','icon-512.png','manifest.webmanifest'];
+const V='bft-v7',SHELL=['index.html','tools.html','screener.html','reality.html','journal.html','access.js','bft-analytics.js','academy.html','trade-lab-pro.html','classroom.html','legal.html','terms.html','privacy.html','refund.html','pricing.html','contact.html','about.html','icon.svg','icon-192.png','icon-512.png','manifest.webmanifest'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(V).then(c=>c.addAll(SHELL)).then(()=>self.skipWaiting()))});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==V).map(x=>caches.delete(x)))).then(()=>self.clients.claim()))});
 // Network first so updates show at once; cache is only the offline fallback.
