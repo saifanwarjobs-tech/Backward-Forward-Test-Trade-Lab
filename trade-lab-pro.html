@@ -170,7 +170,7 @@ function build(){const cap=zoom+off+70,key=j=>{const b=Math.floor((D.mm[j]-SO)/t
  return out.reverse()}
 const fl=p=>((p.side==='B'?D.c[S.idx]-PF.spread/2-p.entry:p.entry-(D.c[S.idx]+PF.spread/2))*p.qty),flt=()=>sum(S.pos.map(fl)),um=()=>sum(S.pos.map(p=>p.mg)),eqt=()=>S.bal+flt();
 /* ---------- chart ---------- */
-function draw(){if(!D)return;if(MAN&&MR&&S&&(D.c[S.idx]>MR.hi||D.c[S.idx]<MR.lo)){MAN=false;MR=null}const cv=$('#cv'),r=cv.getBoundingClientRect(),dp=devicePixelRatio||1;if(!r.width)return;
+function draw(){if(!D)return;if(MAN&&MR&&!MR.p&&S&&(D.c[S.idx]>MR.hi||D.c[S.idx]<MR.lo)){MAN=false;MR=null}const cv=$('#cv'),r=cv.getBoundingClientRect(),dp=devicePixelRatio||1;if(!r.width)return;
  if(cv.width!==Math.round(r.width*dp)||cv.height!==Math.round(r.height*dp)){cv.width=Math.round(r.width*dp);cv.height=Math.round(r.height*dp)}
  const g=cv.getContext('2d');g.setTransform(dp,0,0,dp,0,0);const W=r.width,H=r.height,AX=64,AY=20,pw=W-AX,RH=(PF.ix&&PF.ix.rsi)?Math.round((H-AY)*.24):0,ph=H-AY-RH,mu=css('--mu'),nb=tf/BM;PAD=tool==='p'?46:6;
  g.fillStyle=css('--cb');g.fillRect(0,0,W,H);HX=[];C=build();off=Math.max(-Math.round(zoom*.8),Math.min(off,Math.max(0,C.length-10)));
@@ -227,7 +227,7 @@ cv.addEventListener('pointermove',e=>{[mx,my]=pt(e);if(drag&&drag.pen&&mx>0)PP.p
  if(drag&&drag.ax){const f=Math.exp((my-drag.y)/140),mid=(drag.hi+drag.lo)/2,hf=Math.max((drag.hi-drag.lo)/2*f,D.c[S.idx]*5e-6);MR={hi:mid+hf,lo:mid-hf}}
  else if(drag&&drag.tx){zoom=Math.max(15,Math.min(400,Math.round(drag.z0*Math.exp((drag.x-mx)/220))))}
  else if(drag&&drag.mv)dragMove();
- else if(drag&&drag.pan){off=drag.o+Math.round((mx-drag.x)/T.slot);if(MAN){const dp=(my-drag.y)/T.ph*(drag.hi-drag.lo);MR={hi:drag.hi+dp,lo:drag.lo+dp}}}
+ else if(drag&&drag.pan){off=drag.o+Math.round((mx-drag.x)/T.slot);const dy=my-drag.y;if(!MAN&&Math.abs(dy)>6)MAN=true;/* drag up/down anywhere on the chart; Auto / A / double-click the price axis goes back to auto */if(MAN){const dp=dy/T.ph*(drag.hi-drag.lo);MR={hi:drag.hi+dp,lo:drag.lo+dp,p:1}}}
  if(!drag){const h=probe(mx,my,tool);cv.style.cursor=mx>T.pw?'ns-resize':my>T.ph?'ew-resize':(h?h.cur:'crosshair')}
  draw()});
 cv.addEventListener('pointerup',e=>{[mx,my]=pt(e);const d=drag;drag=null;if(d&&d.pen){finishPath();draw();return}
