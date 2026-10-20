@@ -64,7 +64,7 @@ function upBadge(){let b=document.getElementById('bftx-badge');if(!TOOL||entitle
 function openTool(blocking){const p=P[TOOL]||{};show({title:blocking?'Free trial finished':'Unlock '+p.name,text:blocking?`Your free ${p.trial_minutes} minutes in ${p.name} are over. Pick a plan to continue. Your data stays saved.`:'Choose a plan.',options:toolOptions(),blocking,owned:entitled})}
 async function tick(){if(document.hidden||entitled())return;const p=P[TOOL];if(!p||p.trial_minutes==null)return;secs+=5;try{localStorage.setItem(TK,secs)}catch(e){}upBadge();if(secs>=p.trial_minutes*60&&!box)openTool(true)}
 /* ---------- public API ---------- */
-window.BFTX={owns,
+window.BFTX={owns,ready:()=>init(),
  entry(count){const p=P[TOOL];if(!p||p.free_entries==null||entitled()||count<p.free_entries)return true;
   show({title:'Free entries used',text:`You have used your ${p.free_entries} free journal entries. Unlock to keep logging.`,options:toolOptions(),blocking:false,owned:entitled});return false},
  async sell(x){await init();const pid='item:'+x.id;let pr=x.price;if(pr==null){const r=await rest('items?select=price&id=eq.'+encodeURIComponent(x.id));pr=r[0]&&r[0].price}
