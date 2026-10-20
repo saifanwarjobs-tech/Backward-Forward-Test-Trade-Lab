@@ -107,6 +107,26 @@ body.hdc .ch,body.hdc #isel,body.hdc #datb,body.hdc #setb{display:none}
 #btc[style*="inline"]{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
 #btc>*{margin:0}#btc input:not([type=checkbox]){flex:1 1 100%;width:auto}#btc button{flex:1 1 40%;width:auto}#btc label{flex:1 1 100%}
 }
+
+/* ===== Mobile polish: compact 3-row header, tidy chart controls ===== */
+@media(max-width:700px){
+.hd{gap:6px;padding:8px 10px 6px;align-items:center}
+.hd .bt{display:none}
+.lg{order:1;flex:1 1 auto;min-width:0;font-size:15px;letter-spacing:-.01em}
+#bftx-badge{order:2}
+#recb{order:3;width:38px;min-height:34px;padding:0;font-size:18px;line-height:1;color:#ff5a5a}
+#hdt{order:4;width:38px;min-height:34px}
+.mt{order:5;flex:1 1 0;min-height:38px;padding:0 8px;font-size:13px;font-weight:700;border-radius:10px}
+.ch{order:6;gap:6px}
+.ch div{padding:5px 9px;font-size:10px;line-height:1.25}.ch b{font-size:13px;display:block}
+#isel{order:7;flex:1 1 0;min-width:0;min-height:40px;font-size:16px;padding-left:8px;padding-right:4px}
+#lgslot{order:8;display:flex}#lgslot>*{min-height:40px;padding:0 7px;font-size:12px}
+#thb{order:9;min-height:40px;width:38px;padding:0}
+#datb{order:10}#setb{order:11}#datb,#setb{min-height:40px;width:38px;padding:0;font-size:16px}
+body.hdc #lgslot,body.hdc #thb{display:none}
+.ctl{top:34px;right:64px;gap:5px}.ctl button{min-height:30px;padding:3px 8px;font-size:11px}
+.cb .cw .ixb{top:70px}
+}
 </style></head><body>
 <div class="hd"><span class="lg">BFT <i>Trade Lab</i> Pro</span><span class="demo" id="plan">FREE</span>
 <button class="mt on" data-m="bt">Backtest</button><button class="mt" data-m="fw">Forward Test</button>
