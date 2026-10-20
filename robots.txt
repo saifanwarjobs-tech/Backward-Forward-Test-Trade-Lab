@@ -1,3 +1,4 @@
 User-agent: *
 Allow: /
 Disallow: /admin.html
+Sitemap: https://saifanwarjobs-tech.github.io/Backward-Forward-Test-Trade-Lab/sitemap.xml
