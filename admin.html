@@ -62,6 +62,18 @@ body{font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-web
 .wd{margin-bottom:14px}.wd summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:8px;padding:12px 14px;border-radius:12px;font-weight:600;border:1px solid color-mix(in srgb,var(--wn) 40%,transparent);background:color-mix(in srgb,var(--wn) 10%,transparent)}
 .wd summary::-webkit-details-marker{display:none}.wd summary:after{content:"Show";margin-left:auto;font-size:13px;color:var(--mu)}.wd[open] summary:after{content:"Hide"}.wd[open] summary{margin-bottom:10px}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* analytics tab */
+.an-top{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:space-between;margin:4px 0 14px}.an-top h1{margin-right:auto}
+.an-d{display:block;font-size:11.5px;font-weight:700;color:var(--mu);margin-top:2px}.an-d.up{color:var(--ok)}.an-d.dn{color:var(--dn)}
+.an-g{display:grid;grid-template-columns:1fr;gap:14px}@media(min-width:760px){.an-g{grid-template-columns:1fr 1fr}}.an-g .card{margin:0}
+.an-ch{display:flex;align-items:flex-end;gap:2px;height:140px;margin-top:12px}.an-col{position:relative;flex:1;height:100%;display:flex;align-items:flex-end;min-width:0}.an-col i{position:absolute;left:8%;right:8%;bottom:0;border-radius:3px 3px 1px 1px;min-height:2px}.an-col i.v{background:var(--ac);opacity:.28}.an-col i.u{background:var(--ac)}
+.an-ax{display:flex;justify-content:space-between;font-size:11px;color:var(--mu);margin-top:6px}
+.an-r{position:relative;display:flex;justify-content:space-between;gap:10px;align-items:center;padding:7px 9px;margin:3px 0;border-radius:8px;overflow:hidden;font-size:14px}
+.an-rb{position:absolute;left:0;top:0;bottom:0;background:color-mix(in srgb,var(--ac) 15%,transparent);border-radius:8px}
+.an-rn{position:relative;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.an-rv{position:relative;flex:none;color:var(--mu);font-size:12.5px}.an-rv b{color:var(--tx);font-size:14px;margin-left:8px;font-variant-numeric:tabular-nums}
+.an-feed{display:flex;gap:10px;padding:8px 0;border-top:1px solid var(--ln);font-size:13.5px}.an-feed:first-of-type{border-top:0}.an-feed time{flex:none;width:58px;color:var(--mu);font-size:12px}.an-feed div{min-width:0}.an-feed small{display:block;color:var(--mu);font-size:12px}
+.an-live{display:inline-flex;align-items:center;gap:6px}.an-live:before{content:"";width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 0 var(--ok);animation:anp 1.8s infinite}@keyframes anp{70%{box-shadow:0 0 0 7px transparent}}
 </style><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"></head><body>
 <div id="boot" class="empty" style="padding-top:30vh">Loading…</div>
 
@@ -70,11 +82,12 @@ body{font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-web
 
 <div id="app" class="hid">
 <header class="top"><div class="w"><span class="logo">BFT <i>Admin</i></span><span class="sp"></span><span class="who" id="who"></span><a class="btn s o" href="academy.html" target="_blank" rel="noopener" style="text-decoration:none">View Academy ↗</a><button class="btn s o" id="out">Sign out</button></div></header>
-<nav class="nav" id="nav"><button data-v="dash" class="on"><i><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg></i>Dashboard</button><button data-v="content"><i><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="m10 9 5 3-5 3z"/></svg></i>Content</button><button data-v="students"><i><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14.3c2 .7 3.5 2.6 3.5 5.7"/></svg></i>Students</button><button data-v="settings"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg></i>Settings</button></nav>
+<nav class="nav" id="nav"><button data-v="dash" class="on"><i><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg></i>Dashboard</button><button data-v="content"><i><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="m10 9 5 3-5 3z"/></svg></i>Content</button><button data-v="students"><i><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14.3c2 .7 3.5 2.6 3.5 5.7"/></svg></i>Students</button><button data-v="analytics"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V11M10 20V4M16 20v-6M22 20H2"/></svg></i>Analytics</button><button data-v="settings"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg></i>Settings</button></nav>
 <main class="w">
  <section id="v-dash"></section>
  <section id="v-content" class="hid"><div class="tools"><input id="q" type="search" placeholder="Search content…" aria-label="Search content"></div><div class="chips" id="kf" style="margin-bottom:14px"></div><div id="list"></div><button class="btn fab" id="new">＋ New</button></section>
  <section id="v-settings" class="hid"></section>
+ <section id="v-analytics" class="hid"></section>
  <section id="v-students" class="hid"><div class="tools"><input id="sq" type="search" placeholder="Search students…" aria-label="Search students"><button class="btn" id="sadd">＋ Add</button><button class="btn o" id="scsv">Export CSV</button></div><div class="row" id="ssum" style="margin-bottom:12px"></div><div id="slist"></div></section>
 </main></div>
 <div id="s1" class="sheet hid"></div><div id="s2" class="sheet l2 hid"></div><div id="dlg" class="dlg hid"></div><div id="toast" role="status"></div>
@@ -106,7 +119,7 @@ async function init(){const{data:{session}}=await sb.auth.getSession();if(!sessi
  const{data,error}=await sb.from('admins').select('email');
  if(error){await sb.auth.signOut();return showLogin('Admin check failed: '+error.message)}
  if(!data||!data.length){await sb.auth.signOut();return showLogin(session.user.email+' is not an admin. Add it to the admins table, and make sure the email is confirmed.')}
- S.user=session.user;$('#who').textContent=session.user.email;$('#login').classList.add('hid');$('#boot').classList.add('hid');$('#app').classList.remove('hid');
+ S.user=session.user;try{localStorage.setItem('bft_no_track','1')}catch(_){}$('#who').textContent=session.user.email;$('#login').classList.add('hid');$('#boot').classList.add('hid');$('#app').classList.remove('hid');
  fetch(SB_URL+'/auth/v1/settings',{headers:{apikey:SB_KEY}}).then(r=>r.json()).then(j=>{authWarn=j&&j.mailer_autoconfirm===true;renderDash()}).catch(()=>{});
  await load()}
 
@@ -124,7 +137,7 @@ const stat=s=>{if(!s.expires_at)return{t:'Lifetime',c:'ok',on:1};const d=new Dat
 function renderAll(){renderDash();renderContent();renderStudents();if(S.view==='settings'&&!document.activeElement.closest('#v-settings'))renderSettings()}
 
 /* ---------- navigation ---------- */
-function view(v){S.view=v;$$('.nav button').forEach(b=>b.classList.toggle('on',b.dataset.v===v));['dash','content','students','settings'].forEach(x=>$('#v-'+x).classList.toggle('hid',x!==v));if(v==='settings')renderSettings();scrollTo(0,0)}
+function view(v){S.view=v;$$('.nav button').forEach(b=>b.classList.toggle('on',b.dataset.v===v));['dash','content','students','analytics','settings'].forEach(x=>$('#v-'+x).classList.toggle('hid',x!==v));if(v==='settings')renderSettings();if(v==='analytics')loadAnalytics();scrollTo(0,0)}
 $('#nav').onclick=e=>{const b=e.target.closest('button');if(b)view(b.dataset.v)};
 
 /* ---------- dashboard ---------- */
@@ -395,6 +408,59 @@ function stuSheet(email){
   const b=$('#sv2');b.disabled=true;const{error}=await sb.from('students').upsert(row);b.disabled=false;if(error)return toast(error.message);closeSheet(2);toast('Saved ✓');await load()};
  const dl=$('#s_del');if(dl)dl.onclick=async()=>{if(!await ask('Remove access?',s.email+' will no longer be able to open paid content.','Remove',true))return;const{error}=await sb.from('students').delete().eq('email',s.email);if(error)return toast(error.message);closeSheet(2);toast('Removed');await load()}}
 $('#scsv').onclick=()=>{const q=v=>'"'+String(v??'').replace(/"/g,'""')+'"',rows=[['email','phone','amount','access_until','note','added']].concat(S.students.map(s=>[s.email,s.phone,s.amount,s.expires_at?new Date(s.expires_at).toISOString().slice(0,10):'lifetime',s.note,new Date(s.created_at).toISOString().slice(0,10)]));const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([rows.map(r=>r.map(q).join(',')).join('\n')],{type:'text/csv'}));a.download='bft-students-'+new Date().toISOString().slice(0,10)+'.csv';a.click()};
+
+/* ---------- analytics (visitors, sources, devices, actions) ---------- */
+S.an={days:7,data:null,err:'',tok:0};
+const IST_MS=5.5*3600e3,num=n=>Number(n||0).toLocaleString('en-IN'),dur=s=>{s=Math.round(s||0);return s>=60?Math.floor(s/60)+'m '+(s%60)+'s':s+'s'};
+const PAGE_NAME={'index.html':'Home','journal.html':'Premium Journal','trade-lab-pro.html':'Pro Lab','classroom.html':'Classroom','academy.html':'Academy','screener.html':'Market Movers','tools.html':'Tools','reality.html':'Reality Check','pricing.html':'Pricing','about.html':'About','contact.html':'Contact','legal.html':'Legal','terms.html':'Terms','privacy.html':'Privacy','refund.html':'Refund'};
+const EVT_NAME={cta_click:'Page-to-page link clicks',button_click:'Button clicks',whatsapp_click:'WhatsApp clicks',call_click:'Phone calls',telegram_click:'Telegram clicks',email_click:'Email clicks',outbound_click:'Outbound links',download_click:'Downloads',search:'Searches',form_start:'Forms started',form_submit:'Forms submitted',custom:'Custom'};
+const pgName=p=>PAGE_NAME[p]||p;
+function anRange(days){const m=new Date(Date.now()+IST_MS);m.setUTCHours(0,0,0,0);const from=new Date(m.getTime()-IST_MS-(days-1)*864e5);return{from,to:new Date(from.getTime()+days*864e5)}}
+async function loadAnalytics(quiet){const tok=++S.an.tok,r=anRange(S.an.days);if(!quiet&&!S.an.data)renderAnalytics();
+ const{data,error}=await sb.rpc('admin_analytics',{p_from:r.from.toISOString(),p_to:r.to.toISOString()});
+ if(tok!==S.an.tok)return;S.an.err=error?error.message:'';if(!error)S.an.data=data;if(S.view==='analytics')renderAnalytics()}
+setInterval(()=>{if(S.view==='analytics'&&!document.hidden)loadAnalytics(true)},60000);
+const anDelta=(c,p,inv)=>{if(S.an.days===1)return'';if(!p)return c?'<small class="an-d">new</small>':'';const d=Math.round((c-p)/p*100),good=inv?d<=0:d>=0;return`<small class="an-d ${d===0?'':good?'up':'dn'}">${d>0?'▲':d<0?'▼':'•'} ${Math.abs(d)}% vs previous</small>`};
+const anRank=(rows,name,val,sub)=>rows&&rows.length?(()=>{const mx=Math.max(1,...rows.map(val));return rows.map(r=>`<div class="an-r"><div class="an-rb" style="width:${Math.max(2,val(r)/mx*100)}%"></div><span class="an-rn" title="${esc(name(r))}">${esc(name(r))}</span><span class="an-rv">${sub?sub(r):''}<b>${num(val(r))}</b></span></div>`).join('')})():'<p class="mu" style="font-size:13.5px;margin-top:8px">No data yet.</p>';
+const anAgo=t=>{const s=Math.max(0,(Date.now()-new Date(t))/1000);return s<60?'just now':s<3600?Math.floor(s/60)+'m ago':s<86400?Math.floor(s/3600)+'h ago':Math.floor(s/86400)+'d ago'};
+function anChart(a){const d=a.data;let rows,tip,ax;
+ if(S.an.days===1){const hm=Object.fromEntries((d.hours||[]).map(x=>[x.h,x.n]));rows=Array.from({length:24},(_,h)=>({u:hm[h]||0,v:hm[h]||0,k:h}));tip=r=>`${r.k}:00–${r.k}:59 · ${r.v} views`;ax=['12 am','6 am','12 pm','6 pm','11 pm']}
+ else{rows=(d.daily||[]).map(x=>({u:x.visitors,v:x.views,k:x.d}));tip=r=>`${fmtD(r.k+'T00:00:00')} · ${r.u} visitors · ${r.v} views`;const f=i=>rows[i]?fmtD(rows[i].k+'T00:00:00').replace(/ \d{4}$/,''):'';ax=[f(0),f(Math.floor(rows.length/2)),f(rows.length-1)]}
+ const mx=Math.max(1,...rows.map(r=>r.v));
+ return`<div class="an-ch" role="img" aria-label="Traffic chart">${rows.map(r=>`<div class="an-col" title="${esc(tip(r))}"><i class="v" style="height:${r.v/mx*100}%"></i>${S.an.days===1?'':`<i class="u" style="height:${r.u/mx*100}%"></i>`}</div>`).join('')}</div><div class="an-ax">${ax.map(x=>`<span>${x}</span>`).join('')}</div>`}
+function renderAnalytics(){const el=$('#v-analytics'),a=S.an,d=a.data;
+ const head=`<div class="an-top"><h1>Analytics</h1>${d?`<span class="k ok an-live">${num(d.live)} online now</span>`:''}<div class="chips" id="an_rng">${[[1,'Today'],[7,'7 days'],[30,'30 days'],[90,'90 days']].map(r=>`<button class="chip ${a.days===r[0]?'on':''}" data-d="${r[0]}">${r[1]}</button>`).join('')}</div><button class="btn s o" id="an_ref">↻ Refresh</button></div>`;
+ if(a.err){const miss=/function|schema cache|does not exist|relation/i.test(a.err);el.innerHTML=head+`<div class="alert dn"><span>⛔</span><div><b>${miss?'Analytics is not set up yet':'Could not load analytics'}</b><span class="mu">${miss?'Run analytics.sql once in Supabase → SQL Editor, then reload this page. ':''}(${esc(a.err)})</span></div></div>`;return}
+ if(!d){el.innerHTML=head+'<p class="empty">Loading…</p>';return}
+ const c=d.cur,p=d.prev,ppv=c.sessions?(c.views/c.sessions).toFixed(1):'0';
+ const K=[[num(c.visitors),'Visitors',anDelta(c.visitors,p.visitors)],[num(c.views),'Page views',anDelta(c.views,p.views)],[num(c.sessions),'Sessions',anDelta(c.sessions,p.sessions)],[dur(c.avg_sec),'Avg time on page',anDelta(c.avg_sec,p.avg_sec)],
+  [num(d.ret.new),'New visitors',c.visitors?Math.round(d.ret.new/c.visitors*100)+'% of visitors':''],[num(d.ret.returning),'Returning visitors',''],[c.bounce_pct+'%','Bounce rate',anDelta(c.bounce_pct,p.bounce_pct,1)],[ppv,'Pages / session','']].map(k=>`<div class="kpi"><b>${k[0]}</b><span>${k[1]}</span>${k[2]&&k[2].startsWith('<')?k[2]:k[2]?`<small class="an-d">${k[2]}</small>`:''}</div>`).join('');
+ const empty=!c.views?`<div class="alert wn"><span>ℹ️</span><div><b>No visits recorded in this period</b><span class="mu">Your own browser is excluded on purpose. To test, open the live site from another phone or a private window. If it stays empty after real visits, check that analytics.sql was run.</span></div></div>`:'';
+ const ev=d.event_types||[],top=t=>(d.event_top||[]).filter(x=>x.type===t);
+ const evCard=ev.length?`<div class="card"><h2>Actions</h2><p class="mu" style="font-size:12.5px">What visitors clicked or used.</p>${anRank(ev,r=>EVT_NAME[r.type]||r.type,r=>r.n,r=>num(r.visitors)+' people · ')}</div>
+  <div class="card"><h2>Most clicked</h2>${(['button_click','cta_click','whatsapp_click','outbound_click','search','download_click','call_click','telegram_click','email_click','custom'].map(t=>{const L=top(t);return L.length?`<div class="mh">${EVT_NAME[t]}</div>`+anRank(L,r=>r.label,r=>r.n):''}).join(''))||'<p class="mu">No data yet.</p>'}</div>`:'';
+ el.innerHTML=head+empty+`<div class="kpis">${K}</div>
+ <div class="card"><div class="row spb"><h2>${a.days===1?'Today by hour (IST)':'Traffic'}</h2><span class="mu" style="font-size:12px">${a.days===1?'Page views':'Light bars = views · dark = visitors'}</span></div>${anChart(a)}</div>
+ <div class="an-g">
+ <div class="card"><h2>Top pages</h2>${anRank(d.pages,r=>pgName(r.page),r=>r.views,r=>`${num(r.visitors)} people · ${dur(r.avg_sec)} · ${r.avg_scroll}% scroll`)}</div>
+ <div class="card"><h2>Where visitors land</h2>${anRank(d.entries,r=>pgName(r.page),r=>r.n)}</div>
+ <div class="card"><h2>Traffic sources</h2>${anRank(d.sources,r=>r.source,r=>r.sessions,r=>esc(r.channel)+' · ')}</div>
+ <div class="card"><h2>Channels</h2>${anRank(d.channels,r=>r.name,r=>r.n)}${(d.campaigns||[]).length?`<div class="mh">Campaigns (utm_campaign)</div>${anRank(d.campaigns,r=>r.name,r=>r.n)}`:''}</div>
+ <div class="card"><h2>Cities</h2>${anRank(d.cities,r=>r.name,r=>r.n)}</div>
+ <div class="card"><h2>States</h2>${anRank(d.regions,r=>r.name,r=>r.n)}<div class="mh">Countries</div>${anRank(d.countries,r=>r.name,r=>r.n)}</div>
+ <div class="card"><h2>Devices</h2>${anRank(d.devices,r=>r.name,r=>r.n)}<div class="mh">Operating system</div>${anRank(d.oses,r=>r.name,r=>r.n)}</div>
+ <div class="card"><h2>Browsers</h2>${anRank(d.browsers,r=>r.name,r=>r.n)}<div class="mh">Busiest hours (IST)</div>${anRank([...(d.hours||[])].sort((x,y)=>y.n-x.n).slice(0,5),r=>r.h+':00 – '+r.h+':59',r=>r.n)}</div>
+ ${evCard}
+ </div>
+ <div class="card" style="margin-top:14px"><h2>Recent activity</h2>${(d.recent||[]).length?d.recent.map(r=>`<div class="an-feed"><time>${anAgo(r.at_)}</time><div><b>${r.kind==='view'?'Viewed '+esc(pgName(r.what)):esc(EVT_NAME[r.what]||r.what)+(r.label?': '+esc(r.label):'')}</b><small>${[r.city||r.country,r.device,r.source].filter(Boolean).map(esc).join(' · ')||'—'}</small></div></div>`).join(''):'<p class="mu">Nothing yet.</p>'}</div>
+ <div class="card"><h2>Data</h2><div class="row"><button class="btn o" id="an_csv">Export CSV</button><select id="an_pd" style="width:auto"><option value="365">Older than 1 year</option><option value="90">Older than 90 days</option><option value="30">Older than 30 days</option><option value="0">Everything (clear test data)</option></select><button class="btn d" id="an_purge">Delete</button></div>
+ <p class="mu" style="font-size:12.5px;margin-top:10px">Counts are per browser (a person on 2 devices counts twice). Times are IST. Your own browser is not tracked; to exclude another device, open the site once with <b>?notrack=1</b> added to the address. No IP address, name, email or phone is stored. Bots are ignored.</p></div>`}
+$('#v-analytics').onclick=async e=>{const b=e.target.closest('[data-d]');if(b){S.an.days=+b.dataset.d;S.an.data=null;loadAnalytics();renderAnalytics();return}
+ if(e.target.closest('#an_ref')){loadAnalytics();return}
+ if(e.target.closest('#an_csv')){const d=S.an.data;if(!d)return;const q=v=>'"'+String(v??'').replace(/"/g,'""')+'"',rows=[['section','name','visitors','sessions','views']].concat((d.daily||[]).map(x=>['day',x.d,x.visitors,x.sessions,x.views]),(d.pages||[]).map(x=>['page',x.page,x.visitors,'',x.views]),(d.sources||[]).map(x=>['source',x.source+' ('+x.channel+')',x.visitors,x.sessions,'']),(d.cities||[]).map(x=>['city',x.name,x.n,'','']));
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([rows.map(r=>r.map(q).join(',')).join('\n')],{type:'text/csv'}));a.download='bft-analytics-'+new Date().toISOString().slice(0,10)+'.csv';a.click();return}
+ if(e.target.closest('#an_purge')){const days=+$('#an_pd').value;if(!await ask(days?'Delete old analytics?':'Delete ALL analytics?',days?'Visits and actions older than '+days+' days will be removed. This cannot be undone.':'Every recorded visit and action will be removed. This cannot be undone.','Delete',true))return;
+  const{data,error}=await sb.rpc('admin_purge_analytics',{p_days:days});if(error)return toast(error.message);toast(num(data)+' rows deleted');S.an.data=null;loadAnalytics()}};
 
 sb.auth.onAuthStateChange(ev=>{if(ev==='SIGNED_OUT')showLogin()});
 init().catch(e=>showLogin(e.message));

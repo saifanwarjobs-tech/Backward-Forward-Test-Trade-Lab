@@ -89,4 +89,4 @@ if(d)p.push('🎓 <b>'+d+'</b> Academy lesson'+(d>1?'s':'')+' done · <a href="a
 let t=0;for(let i=0;i<localStorage.length;i++){try{const o=JSON.parse(localStorage.getItem(localStorage.key(i)));if(o&&Array.isArray(o.tr)&&!o.demo)t=Math.max(t,o.tr.length)}catch(e){}}
 if(t)p.push('📒 <b>'+t+'</b> trade'+(t>1?'s':'')+' in your Journal · <a href="journal.html">Review</a>');
 if(p.length){const c=document.getElementById('cont');c.innerHTML=p.join('<span>·</span>');c.style.display='flex'}}catch(e){}})();
-</script><script>if('serviceWorker'in navigator&&location.protocol.indexOf('http')===0)addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})</script></body></html>
+</script><script>if('serviceWorker'in navigator&&location.protocol.indexOf('http')===0)addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})</script><script src="bft-analytics.js" defer></script></body></html>

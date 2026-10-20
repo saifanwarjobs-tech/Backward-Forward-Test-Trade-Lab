@@ -7,7 +7,7 @@ Static site (plain HTML/JS, no build step). Open `index.html` or serve the folde
 | `index.html` | Home: Premium Journal, Academy, Pro Lab, Classroom |
 | `journal.html` | Premium Journal (localStorage; CSV import/export) |
 | `academy.html` | Academy (courses, PDFs, indicators). Content comes from the database; manage it in `admin.html` |
-| `admin.html` | Admin 2.0: dashboard, course/module/lesson builder, video/PDF/cover upload, indicators, students (expiry, amount, WhatsApp) |
+| `admin.html` | Admin 2.0: dashboard, course/module/lesson builder, video/PDF/cover upload, indicators, students (expiry, amount, WhatsApp), **Analytics** (visitors, sources, cities, devices, top pages, actions) |
 | `trade-lab-pro.html` | Pro replay lab, backtest + locked forward test |
 | `classroom.html` | Teaching board |
 | `screener.html` | Market Movers: end-of-day top gainers/losers, 52-week highs/lows, volume spikes (data in `data/screener.json`) |
@@ -40,3 +40,15 @@ Data is end-of-day (not live) and refreshes itself every weekday evening. You ne
 - Import trades: accepts your own CSV (one row per completed trade) or a broker tradebook CSV (symbol, buy/sell, quantity, price, time). Fills are merged by order and paired first-in-first-out into completed trades. Charges are not in a tradebook, so they import as 0.
 - Report (Menu > Report): weekly / monthly summary, print or save as PDF, copy for WhatsApp.
 - Cloud backup (Menu > Cloud backup): optional. Run the latest `schema.sql` once in Supabase (it adds the `journal_cloud` table with row-level security). Sync merges trades across devices; it never deletes.
+
+## Website analytics (visitors)
+Own, privacy-friendly analytics on Supabase. `bft-analytics.js` is loaded on every public page (not on `admin.html`); the numbers show in **admin.html > Analytics**.
+1. Supabase > SQL Editor: run `analytics.sql` once (safe to re-run; the same block is also at the end of `schema.sql`).
+2. Deploy the changed files (all `*.html` + `bft-analytics.js`).
+3. Visit the live site from another phone or a private window, then open Admin > Analytics. Your own admin browser is never counted (admin.html sets a flag). To exclude another device, open any page once with `?notrack=1`.
+
+What it records: page, source / UTM, device, OS, browser, approximate country / state / city (via ipwho.is, set `window.BFT_ANALYTICS={geo:false}` before the script to turn off), time on page, scroll depth, button / link / WhatsApp / call / outbound clicks, searches on public pages. Never: IP, name, email, phone, typed text, or anything in Journal / Lab / Classroom (those pages record only the page view and time).
+Campaign links: `index.html?utm_source=whatsapp&utm_medium=social&utm_campaign=diwali`.
+Custom event from your own code: `BFTTrack('Started replay','XAUUSD')`. Mark any element `data-bft-private` to be ignored, or `data-track="Name"` to force a named event.
+Free-plan note: each page view is about 2-4 small writes. Use Admin > Analytics > Data > Delete to remove old rows (or all test data) when needed.
+

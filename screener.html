@@ -161,4 +161,4 @@ function fail(t){$('#mood').textContent='Market data is not ready yet';$('#cnt')
 fetch('data/screener.json',{cache:'no-cache'}).then(r=>{if(!r.ok)throw 0;return r.json()}).then(j=>{
  if(!j||!j.rows||!j.rows.length)throw 0;D=j;status();ribbon();render()}).catch(()=>fail('The first update runs after market close. Check back this evening, or open the Actions tab on GitHub and run "Update screener data".'));
 })();
-</script></body></html>
+</script><script src="bft-analytics.js" defer></script></body></html>

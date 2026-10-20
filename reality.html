@@ -136,4 +136,4 @@ function cost(){const n=num('k0'),d=num('k1'),c=num('k2'),g=num('k3'),trades=n*d
  '<p style="margin-top:12px">'+(g<=0?'Your average trade loses money before charges, so charges only make it worse.':g<=c?'Charges are as big as your average profit. You need more than <b>'+inr(c)+'</b> per trade just to break even.':'Charges take <b>'+Math.round(c/g*100)+'%</b> of your profit. You break even only if your average trade earns more than <b>'+inr(c)+'</b>.')+'</p>'}
 ['k0','k1','k2','k3'].forEach(id=>$('#'+id).addEventListener('input',cost));cost();
 })();
-</script></body></html>
+</script><script src="bft-analytics.js" defer></script></body></html>
