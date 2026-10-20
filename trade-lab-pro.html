@@ -189,7 +189,7 @@ function draw(){if(!D)return;if(MAN&&MR&&!MR.p&&S&&(D.c[S.idx]>MR.hi||D.c[S.idx]
  const xi=i=>{let a=0,b=C.length-1;while(a<b){const m=(a+b+1)>>1;if(C[m].s<=i)a=m;else b=m-1}return(a-left+(i-C[a].s)/nb+.5)*slot};
  T.xi=xi;S.dr.forEach(d=>{if(d.c>S.idx)return;const sel=SEL===d;g.lineWidth=sel?2.4:1.5;
   if(d.k==='h'){lineSty(g,d,sel,mu,1.5,[5,4]);g.beginPath();g.moveTo(0,Y(d.p));g.lineTo(pw,Y(d.p));g.stroke();g.setLineDash([]);g.fillStyle=d.lc||mu;g.textAlign='left';g.fillText(d.p.toFixed(1),pw+6,Y(d.p)+4);if(sel)hnd(g,40,Y(d.p))}
-  if(d.k==='z'){const x1=xi(d.i1),y1=Y(d.hi),y2=Y(d.lo);g.fillStyle=d.col+'33';g.fillRect(x1,y1,pw-x1,y2-y1);g.strokeStyle=d.col;g.strokeRect(x1,y1,pw-x1,y2-y1);g.fillStyle=d.col;g.textAlign='left';g.fillText(d.n+' · '+touches(d)+' touch',x1+4,y1+12);if(sel){const mx2=(Math.max(x1,0)+pw)/2;hnd(g,mx2,y1);hnd(g,mx2,y2)}}
+  if(d.k==='z'){const x1=xi(d.i1),xr=d.ex===false?Math.max(xi(d.i2),x1+6):pw,y1=Y(d.hi),y2=Y(d.lo),zw=d.lw==null?1.5:d.lw;g.save();g.beginPath();g.rect(0,0,pw,ph);g.clip();g.globalAlpha=d.fo==null?.2:d.fo;g.fillStyle=d.col;g.fillRect(x1,y1,xr-x1,y2-y1);g.globalAlpha=1;if(zw>0){g.strokeStyle=d.col;g.lineWidth=zw+(sel?.9:0);g.setLineDash(LSD[d.ls||'s']);g.strokeRect(x1,y1,xr-x1,y2-y1);g.setLineDash([])}if(d.lb!==false){g.fillStyle=d.col;g.textAlign='left';g.fillText(d.n+' · '+touches(d)+' touch',x1+4,y1+12)}g.restore();if(sel){const mx2=(Math.max(x1,0)+Math.min(xr,pw))/2;hnd(g,mx2,y1);hnd(g,mx2,y2);if(d.ex===false&&xr<=pw)hnd(g,xr,(y1+y2)/2)}}
   if(d.k==='t'){const ax=xi(d.i1),ay=Y(d.p1),e=trEnd(d,xi,Y,pw);lineSty(g,d,sel,PF.theme==='light'?'#2563eb':'#facc15',1.5,[]);g.beginPath();g.moveTo(ax,ay);g.lineTo(e[0],e[1]);g.stroke();g.setLineDash([]);if(sel){hnd(g,ax,ay);hnd(g,xi(d.i2),Y(d.p2))}}
   if(d.k==='f')drawFib(g,d,Y,xi,pw,ph,sel);
   g.lineWidth=1});
@@ -220,7 +220,7 @@ cv.addEventListener('pointerdown',e=>{if(!D)return;[mx,my]=pt(e);cv.setPointerCa
  if(tool==='c'){clearSel();drag={pan:1,x:mx,o:off,y:my,hi:T.hi,lo:T.lo}}
  else if(tool==='lg'||tool==='sh'){const L=tool==='lg',en=q05(yp(my)),r=q05((T.hi-T.lo)*.05);PL={side:L?'B':'S',en,sl:L?en-r:en+r,tp:L?en+2*r:en-2*r,i:xidx2(mx),w:24,act:true};SEL=null;dtbUI();setTool('c');plUI();draw()}
  else if(tool==='p'&&mode!=='sc'){drag={pen:1};PP=[[mx,my]];PATH=null;$('#pbar').style.display='none'}
- else if(tool==='h'){const n=Object.assign({k:'h',p:q05(yp(my)),c:S.idx},LDn());S.dr.push(n);save();selectDr(n)}
+ else if(tool==='h'){const n=Object.assign({k:'h',p:q05(yp(my)),c:S.idx},LDn());S.dr.push(n);save();setTool('c');selectDr(n)}
  else if(tool==='z'||tool==='t'||tool==='f')drag={k:tool,x:mx,y:my,i:xidx2(mx),p:pxp(mx,my)};
  else if(tool==='x'){const q=S.dr.findIndex(d=>d.c<=S.idx&&hitDr(d,mx,my,1));if(q>=0){if(SEL===S.dr[q]){SEL=null;dtbUI()}S.dr.splice(q,1);save();draw()}else if(plProbe(mx,my)){PL=null;plUI();draw()}}});
 cv.addEventListener('pointermove',e=>{[mx,my]=pt(e);if(drag&&drag.pen&&mx>0)PP.push([mx,my]);
@@ -400,6 +400,7 @@ const LSD={s:[],d:[6,4],o:[1.5,3.5]};
 function lineSty(g,d,sel,defc,defw,defdash){g.strokeStyle=d.lc||defc;g.lineWidth=(d.lw||defw)+(sel?.9:0);g.setLineDash(d.ls?LSD[d.ls]:defdash)}
 const LDn=()=>Object.assign({lc:'',lw:2,ls:'s'},PF.ld||{});
 function setLine(o){if(!SEL)return;Object.assign(SEL,o);PF.ld=Object.assign(LDn(),o);applyPF();save();draw()}
+function setZone(o){if(!SEL||SEL.k!=='z')return;Object.assign(SEL,o);const m=Object.assign({},o);delete m.col;PF.zd=Object.assign(PF.zd||{},m);applyPF();save();draw()}
 function setTool(t){tool=t;PEND=null;$$('[data-tl]').forEach(x=>x.classList.toggle('on',x.dataset.tl===t))}
 function trEnd(d,xi,Y,pw){const ax=xi(d.i1),ay=Y(d.p1),bx=xi(d.i2),by=Y(d.p2);if(d.ex&&bx!==ax){const k=(by-ay)/(bx-ax),tx=bx>ax?pw:0;return[tx,ay+k*(tx-ax)]}return[bx,by]}
 function segD(x,y,a,b){const dx=b[0]-a[0],dy=b[1]-a[1],L=dx*dx+dy*dy||1,u=Math.max(0,Math.min(1,((x-a[0])*dx+(y-a[1])*dy)/L));return Math.hypot(x-a[0]-u*dx,y-a[1]-u*dy)}
@@ -408,20 +409,20 @@ function drawFib(g,d,Y,xi,pw,ph,sel){const o=d.o||fibDef(),x1=xi(d.i1),x2=xi(d.i
  g.save();g.beginPath();g.rect(0,0,pw,ph);g.clip();
  if(o.tl){g.setLineDash([4,4]);g.strokeStyle='#94a3b8';g.lineWidth=1;g.beginPath();g.moveTo(x1,Y(d.p1));g.lineTo(x2,Y(d.p2));g.stroke();g.setLineDash([])}
  if(XR>XL){if(o.fill)lv.forEach((l,j)=>{if(!j)return;const y1=Y(P(lv[j-1][0])),y2=Y(P(l[0]));g.fillStyle=l[2]+'22';g.fillRect(XL,Math.min(y1,y2),XR-XL,Math.abs(y2-y1))});
-  lv.forEach(l=>{const y=Y(P(l[0]));g.strokeStyle=l[2];g.lineWidth=sel?1.8:1.3;g.beginPath();g.moveTo(XL,y);g.lineTo(XR,y);g.stroke();g.fillStyle=l[2];g.textAlign='left';g.fillText((o.pc?(l[0]*100).toFixed(1)+'%':String(l[0]))+(o.px?' ('+P(l[0]).toFixed(2)+')':''),XL+4,y-3)})}
+  lv.forEach(l=>{const y=Y(P(l[0]));g.strokeStyle=l[2];g.lineWidth=(o.lw||1.3)+(sel?.5:0);g.setLineDash(LSD[o.ls||'s']);g.beginPath();g.moveTo(XL,y);g.lineTo(XR,y);g.stroke();g.setLineDash([]);g.fillStyle=l[2];g.textAlign='left';g.fillText((o.pc?(l[0]*100).toFixed(1)+'%':String(l[0]))+(o.px?' ('+P(l[0]).toFixed(2)+')':''),XL+4,y-3)})}
  g.restore();
  if(sel){lv.forEach(l=>{const y=Y(P(l[0]));if(y<0||y>ph)return;g.fillStyle=l[2];rrect(g,pw+1,y-8,62,16,3);g.fill();g.fillStyle='#0b1220';g.textAlign='left';g.fillText(P(l[0]).toFixed(2),pw+5,y+4)});hnd(g,x1,Y(d.p1));hnd(g,x2,Y(d.p2))}
  g.lineWidth=1.5}
 function hitDr(d,x,y,any){
  if(d.k==='h')return Math.abs(Yf(d.p)-y)<7?'body':null;
- if(d.k==='z'){const x1=T.xi(d.i1),yt=Yf(d.hi),yb=Yf(d.lo);if(x<x1-6)return null;if(Math.abs(y-yt)<6)return'top';if(Math.abs(y-yb)<6)return'bot';if(Math.abs(x-x1)<6&&y>yt&&y<yb)return'body';return(y>yt&&y<yb&&(any||SEL===d))?'body':null}
+ if(d.k==='z'){const x1=T.xi(d.i1),yt=Yf(d.hi),yb=Yf(d.lo),xr=d.ex===false?Math.max(T.xi(d.i2),x1+6):1e9;if(x<x1-6||x>xr+6)return null;if(d.ex===false&&Math.abs(x-xr)<6&&y>yt-6&&y<yb+6)return'r';if(Math.abs(y-yt)<6)return'top';if(Math.abs(y-yb)<6)return'bot';if(Math.abs(x-x1)<6&&y>yt&&y<yb)return'body';return(y>yt&&y<yb&&(any||SEL===d))?'body':null}
  const ax=T.xi(d.i1),ay=Yf(d.p1),bx=T.xi(d.i2),by=Yf(d.p2);if(Math.hypot(x-ax,y-ay)<9)return'a1';if(Math.hypot(x-bx,y-by)<9)return'a2';
  if(d.k==='t'){const e=trEnd(d,T.xi,Yf,T.pw);return segD(x,y,[ax,ay],e)<7?'body':null}
  if(d.k==='f'){const o=d.o||fibDef(),xa=Math.min(ax,bx),xb=Math.max(ax,bx);if(x<((o.ext==='l'||o.ext==='b')?-1e9:xa-4)||x>((o.ext==='r'||o.ext==='b')?1e9:xb+4))return null;
   if(o.tl&&segD(x,y,[ax,ay],[bx,by])<6)return'body';for(const l of o.lv)if(l[1]&&Math.abs(Yf(d.p2+(d.p1-d.p2)*l[0])-y)<6)return'body'}
  return null}
 function finishDraw(d0,x,y){const i2=xidx2(x),p2=pxp(x,y);let n;
- if(d0.k==='z'){const zt=$('#zt').value,col={d:'#16c784',s:'#ea3943',c:'#3b82f6'}[zt];n={k:'z',i1:Math.min(d0.i,i2),i2:Math.max(d0.i,i2),hi:Math.max(d0.p,p2),lo:Math.min(d0.p,p2),col,n:{d:'Demand',s:'Supply',c:'Zone'}[zt],c:S.idx}}
+ if(d0.k==='z'){const zt=$('#zt').value,col={d:'#16c784',s:'#ea3943',c:'#3b82f6'}[zt];n=Object.assign({k:'z',i1:Math.min(d0.i,i2),i2:Math.max(d0.i,i2),hi:Math.max(d0.p,p2),lo:Math.min(d0.p,p2),col,n:{d:'Demand',s:'Supply',c:'Zone'}[zt],c:S.idx},PF.zd||{})}
  else if(d0.k==='f')n={k:'f',i1:d0.i,p1:d0.p,i2,p2,c:S.idx,o:JSON.parse(JSON.stringify(fibDef()))};
  else n=Object.assign({k:'t',i1:d0.i,p1:d0.p,i2,p2,c:S.idx},LDn());
  S.dr.push(n);save();setTool('c');selectDr(n)}
@@ -433,25 +434,31 @@ function dtbUI(){const b=$('#dtb');if(!b)return;if(!SEL){b.style.display='none';
  if(d.k==='t')h+='<button data-a="tex" class="'+(d.ex?'on':'')+'">→ Extend</button>';
  if(d.k==='h'||d.k==='t'){const sw=['#ffffff','#facc15','#16c784','#ea3943','#3b82f6','#a78bfa'].map(c=>'<button data-a="lcs" data-c="'+c+'" title="'+c+'" style="width:20px;height:20px;padding:0;background:'+c+'"></button>').join('');
   h+='<select data-a="ls" title="Line style"><option value="s">━ Solid</option><option value="d">╌ Dashed</option><option value="o">┈ Dotted</option></select><select data-a="lw" title="Line size"><option value="1">1 px</option><option value="1.5">1.5 px</option><option value="2">2 px</option><option value="3">3 px</option><option value="4">4 px</option></select>'+sw+'<input type="color" data-a="lc" title="Pick any colour" style="width:30px;height:26px;padding:0">'}
- b.innerHTML=h+'<button data-a="del" title="Delete (Del key)">🗑</button>';b.style.display='flex';if(d.k==='f'){const se=b.querySelector('select');if(se)se.value=fibO(d).ext}
+ if(d.k==='z'){const sw=['#16c784','#ea3943','#3b82f6','#facc15','#a78bfa','#ffffff'].map(c=>'<button data-a="zcs" data-c="'+c+'" title="'+c+'" style="width:20px;height:20px;padding:0;background:'+c+'"></button>').join('');
+  h+='<button data-a="zex" title="Extend the zone to the right edge" class="'+(d.ex===false?'':'on')+'">→ Extend</button><button data-a="zlb" title="Show / hide the zone label" class="'+(d.lb===false?'':'on')+'">Aa Label</button><select data-a="zls" title="Border style"><option value="s">━ Solid</option><option value="d">╌ Dashed</option><option value="o">┈ Dotted</option></select><select data-a="zlw" title="Border size"><option value="0">No border</option><option value="1">1 px</option><option value="1.5">1.5 px</option><option value="2">2 px</option><option value="3">3 px</option><option value="4">4 px</option></select><select data-a="zfo" title="Fill strength"><option value="0">No fill</option><option value="0.1">Fill 10%</option><option value="0.2">Fill 20%</option><option value="0.35">Fill 35%</option><option value="0.5">Fill 50%</option></select>'+sw+'<input type="color" data-a="zc" title="Pick any zone colour" style="width:30px;height:26px;padding:0">'}
+ b.innerHTML=h+'<button data-a="del" title="Delete (Del key)">🗑</button>';b.style.display='flex';
+ if(d.k==='z'){b.querySelector('[data-a=zls]').value=d.ls||'s';const zl=b.querySelector('[data-a=zlw]'),zv=String(d.lw==null?1.5:d.lw);zl.value=[...zl.options].some(o=>o.value===zv)?zv:'1.5';const zf=b.querySelector('[data-a=zfo]'),fv=String(d.fo==null?.2:d.fo);zf.value=[...zf.options].some(o=>o.value===fv)?fv:'0.2';const zc=b.querySelector('[data-a=zc]');zc.value=/^#[0-9a-f]{6}$/i.test(d.col)?d.col:'#3b82f6'}if(d.k==='f'){const se=b.querySelector('select');if(se)se.value=fibO(d).ext}
  if(d.k==='h'||d.k==='t'){b.querySelector('[data-a=ls]').value=d.ls||(d.k==='h'?'d':'s');const lw=b.querySelector('[data-a=lw]'),w=String(d.lw||1.5);lw.value=[...lw.options].some(o=>o.value===w)?w:'2';const ci=b.querySelector('[data-a=lc]'),c=d.lc||(d.k==='h'?'#8a98b3':'#facc15');ci.value=/^#[0-9a-f]{6}$/i.test(c)?c:'#8a98b3'}
  if($('#fbs').classList.contains('on')){d.k==='f'?fbsUI():fbsShow(false)}}
 function fbsShow(on){const p=$('#fbs');if(!p)return;if(on&&SEL&&SEL.k==='f'){fbsUI();p.classList.add('on')}else p.classList.remove('on')}
 function fbsUI(){const o=fibO(SEL),ck=(f,t)=>'<label class="lr"><input type="checkbox" data-f="'+f+'" '+(o[f]?'checked':'')+'> '+t+'</label>';
  $('#fbs').innerHTML='<div class="fh"><b>Fib levels</b><button data-f="close">✕</button></div>'+o.lv.map((l,j)=>'<div class="lr"><input type="checkbox" data-f="on" data-j="'+j+'" '+(l[1]?'checked':'')+'><input type="number" step="0.001" data-f="val" data-j="'+j+'" value="'+l[0]+'"><input type="color" data-f="col" data-j="'+j+'" value="'+l[2]+'"><button data-f="rm" data-j="'+j+'" title="Remove level">✕</button></div>').join('')+
- '<div class="lr"><input type="number" step="0.001" id="fadd" placeholder="New level e.g. 0.705"><button data-f="add">Add</button></div><h5>Style</h5>'+ck('fill','Background fill')+ck('px','Show price')+ck('pc','Show level as %')+ck('tl','Trend line')+'<div class="lr"><button data-f="reset">Reset levels</button></div>'}
+ '<div class="lr"><input type="number" step="0.001" id="fadd" placeholder="New level e.g. 0.705"><button data-f="add">Add</button></div><h5>Style</h5><div class="lr"><select data-f="ls" title="Line style">'+[['s','━ Solid'],['d','╌ Dashed'],['o','┈ Dotted']].map(x=>'<option value="'+x[0]+'"'+((o.ls||'s')===x[0]?' selected':'')+'>'+x[1]+'</option>').join('')+'</select><select data-f="lw" title="Line size">'+[1,1.3,2,3,4].map(w=>'<option value="'+w+'"'+((o.lw||1.3)===w?' selected':'')+'>'+w+' px</option>').join('')+'</select></div>'+ck('fill','Background fill')+ck('px','Show price')+ck('pc','Show level as %')+ck('tl','Trend line')+'<div class="lr"><button data-f="reset">Reset levels</button></div>'}
 function fibSet(fn){if(!SEL||SEL.k!=='f')return;const o=fibO(SEL);fn(o);PF.fib=JSON.parse(JSON.stringify(o));applyPF();save();draw()}
 $('#dtb').addEventListener('click',e=>{const b=e.target.closest('button');if(!b||!SEL)return;const a=b.dataset.a;
  if(a==='del')delSel();else if(a==='rev'){[SEL.i1,SEL.i2]=[SEL.i2,SEL.i1];[SEL.p1,SEL.p2]=[SEL.p2,SEL.p1];save();draw()}
- else if(a==='set')fbsShow(!$('#fbs').classList.contains('on'));else if(a==='tex'){SEL.ex=!SEL.ex;save();b.classList.toggle('on',!!SEL.ex);draw()}else if(a==='lcs'){setLine({lc:b.dataset.c});const ci=$('#dtb [data-a=lc]');if(ci)ci.value=b.dataset.c}});
-$('#dtb').addEventListener('change',e=>{const a=e.target.dataset.a;if(a==='ext')fibSet(o=>{o.ext=e.target.value});else if(a==='ls')setLine({ls:e.target.value});else if(a==='lw')setLine({lw:+e.target.value})});
-$('#dtb').addEventListener('input',e=>{if(e.target.dataset.a==='lc')setLine({lc:e.target.value})});
+ else if(a==='set')fbsShow(!$('#fbs').classList.contains('on'));else if(a==='tex'){SEL.ex=!SEL.ex;save();b.classList.toggle('on',!!SEL.ex);draw()}else if(a==='lcs'){setLine({lc:b.dataset.c});const ci=$('#dtb [data-a=lc]');if(ci)ci.value=b.dataset.c}
+ else if(a==='zcs'){setZone({col:b.dataset.c});const ci=$('#dtb [data-a=zc]');if(ci)ci.value=b.dataset.c}
+ else if(a==='zex'){setZone({ex:SEL.ex===false});b.classList.toggle('on',SEL.ex!==false)}
+ else if(a==='zlb'){setZone({lb:SEL.lb===false});b.classList.toggle('on',SEL.lb!==false)}});
+$('#dtb').addEventListener('change',e=>{const a=e.target.dataset.a;if(a==='ext')fibSet(o=>{o.ext=e.target.value});else if(a==='ls')setLine({ls:e.target.value});else if(a==='lw')setLine({lw:+e.target.value});else if(a==='zls')setZone({ls:e.target.value});else if(a==='zlw')setZone({lw:+e.target.value});else if(a==='zfo')setZone({fo:+e.target.value})});
+$('#dtb').addEventListener('input',e=>{if(e.target.dataset.a==='lc')setLine({lc:e.target.value});else if(e.target.dataset.a==='zc')setZone({col:e.target.value})});
 $('#fbs').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const f=b.dataset.f,j=+b.dataset.j;
  if(f==='close')fbsShow(false);else if(f==='rm'){fibSet(o=>o.lv.splice(j,1));fbsUI()}
  else if(f==='add'){const v=parseFloat($('#fadd').value);if(isNaN(v)){toast('Type a level, e.g. 0.705');return}fibSet(o=>{if(!o.lv.some(l=>l[0]===v)){o.lv.push([v,1,'#38bdf8']);o.lv.sort((a,b)=>a[0]-b[0])}});fbsUI()}
  else if(f==='reset'){fibSet(o=>{o.lv=FIBL()});fbsUI()}});
 $('#fbs').addEventListener('change',e=>{const t=e.target,f=t.dataset.f;if(!f)return;const j=+t.dataset.j;
- fibSet(o=>{if(f==='on')o.lv[j][1]=t.checked?1:0;else if(f==='val'){const v=parseFloat(t.value);if(!isNaN(v))o.lv[j][0]=v}else if(f==='col')o.lv[j][2]=t.value;else o[f]=t.checked?1:0});if(f==='val')fbsUI()});
+ fibSet(o=>{if(f==='on')o.lv[j][1]=t.checked?1:0;else if(f==='val'){const v=parseFloat(t.value);if(!isNaN(v))o.lv[j][0]=v}else if(f==='col')o.lv[j][2]=t.value;else if(f==='ls')o.ls=t.value;else if(f==='lw')o.lw=+t.value;else o[f]=t.checked?1:0});if(f==='val')fbsUI()});
 $('#fbs').addEventListener('input',e=>{const t=e.target;if(t.dataset.f==='col'&&SEL&&SEL.k==='f'){fibO(SEL).lv[+t.dataset.j][2]=t.value;draw()}});
 /* ---- long/short box ---- */
 function plGeo(){const x1=T.xi(PL.i),w=Math.min(PL.w*T.slot,T.pw-x1);return{x1,x2:x1+w,yE:Yf(PL.en),yS:Yf(PL.sl),yT:Yf(PL.tp)}}
@@ -486,14 +493,14 @@ function probe(x,y,tl){if(!D||x>T.pw||y>T.ph||tl==='p')return null;
  for(const p of S.pos)for(const w of['sl','tp'])if(p[w]&&Math.abs(Yf(p[w])-y)<6)return{k:'ps',id:p.id,w,cur:'ns-resize'};
  for(const o of S.ord)for(const[w,v]of[['sl',o.sl&&olv(o,'sl')],['tp',o.tp&&olv(o,'tp')],['en',o.p]])if(v&&Math.abs(Yf(v)-y)<6)return{k:'od',id:o.id,w,cur:'ns-resize'};
  if(tl==='c'||tl==='lg'||tl==='sh'){const h=plProbe(x,y);if(h)return h}
- if(tl==='c')for(let i=S.dr.length-1;i>=0;i--){const d=S.dr[i];if(d.c>S.idx)continue;const part=hitDr(d,x,y);if(part)return{k:'dr',d,part,cur:(part==='a1'||part==='a2')?'grab':(d.k==='h'||part==='top'||part==='bot')?'ns-resize':'move'}}
+ if(tl==='c')for(let i=S.dr.length-1;i>=0;i--){const d=S.dr[i];if(d.c>S.idx)continue;const part=hitDr(d,x,y);if(part)return{k:'dr',d,part,cur:(part==='a1'||part==='a2')?'grab':part==='r'?'ew-resize':(d.k==='h'||part==='top'||part==='bot')?'ns-resize':'move'}}
  return null}
 function dragMove(){const d=drag,c=D.c[S.idx],pr=yp(my),g=.5;
  if(d.mv==='ps'){const p=S.pos.find(x=>x.id===d.id);if(!p)return;const B=p.side==='B';if(d.w==='sl')p.sl=q05(B?Math.min(pr,c-g):Math.max(pr,c+g));else p.tp=q05(B?Math.max(pr,c+g):Math.min(pr,c-g));term()}
  else if(d.mv==='od'){const o=S.ord.find(x=>x.id===d.id);if(!o)return;const b=o.side==='B';if(d.w==='en')o.p=q05(((o.t==='L')===b)?Math.min(pr,c-g):Math.max(pr,c+g));else{const dist=(d.w==='sl')===b?o.p-pr:pr-o.p;o[d.w]=Math.max(.5,q05(dist))}term()}
  else if(d.mv==='dr'){const dd=d.d,s=d.s,di=xidx2(mx)-d.i0,dp=pr-d.p0;
   if(dd.k==='h')dd.p=q05(s.p+dp);
-  else if(dd.k==='z'){if(d.part==='top')dd.hi=Math.max(q05(pr),dd.lo+.1);else if(d.part==='bot')dd.lo=Math.min(q05(pr),dd.hi-.1);else{dd.i1=s.i1+di;dd.i2=s.i2+di;dd.hi=s.hi+dp;dd.lo=s.lo+dp}}
+  else if(dd.k==='z'){if(d.part==='r')dd.i2=Math.max(xidx2(mx),dd.i1+1);else if(d.part==='top')dd.hi=Math.max(q05(pr),dd.lo+.1);else if(d.part==='bot')dd.lo=Math.min(q05(pr),dd.hi-.1);else{dd.i1=s.i1+di;dd.i2=s.i2+di;dd.hi=s.hi+dp;dd.lo=s.lo+dp}}
   else if(d.part==='a1'){dd.i1=xidx2(mx);dd.p1=pxp(mx,my)}else if(d.part==='a2'){dd.i2=xidx2(mx);dd.p2=pxp(mx,my)}
   else{dd.i1=s.i1+di;dd.i2=s.i2+di;dd.p1=s.p1+dp;dd.p2=s.p2+dp}}
  else if(d.mv==='pls'){const s=d.s,L=PL.side==='B',dp=pr-d.p0;
