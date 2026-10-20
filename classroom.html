@@ -1,31 +1,34 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="apple-touch-icon.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BFT Classroom Board</title><meta property="og:title" content="BFT Classroom Board"><meta property="og:type" content="website"><meta property="og:image" content="icon-512.png">
-<style>
-:root{--pn:#111a2e;--ln:#26324d;--tx:#e6edf7;--ac:#3b82f6}
-*{box-sizing:border-box;margin:0}html,body{height:100%;background:#05080d;color:var(--tx);font:13px system-ui,-apple-system,Segoe UI,sans-serif;overflow:hidden}
+<script>try{if(localStorage.getItem("bft_ui")==="light")document.documentElement.dataset.ui="light"}catch(e){}</script><style>
+:root{--pn:#111a2e;--ln:#26324d;--tx:#e6edf7;--ac:#3b82f6;--b0:#0b1220;--b1:#0f1729;--b2:#13203a;--b3:#070b12;--ln2:#33456b;--mu:#8a98b3;--mu2:#9fb0d0;--mu3:#64748b;--bg0:#05080d}
+html[data-ui=light]{--pn:#ffffff;--ln:#cbd5e1;--tx:#0f172a;--b0:#f1f5f9;--b1:#ffffff;--b2:#e2e8f0;--b3:#e2e8f0;--ln2:#cbd5e1;--mu:#475569;--mu2:#334155;--mu3:#64748b;--bg0:#e8edf3;color-scheme:light}
+.b.wr,.b.ok,.b.reset,.b.rec,.b.menu{color:#fff}html[data-ui=light] .sw.on{border-color:#0f172a}
+.side{position:absolute;right:10px;top:calc(100% + 8px);display:flex;gap:6px;z-index:6}.m .ma .side{position:static;flex:1 1 100%}
+*{box-sizing:border-box;margin:0}html,body{height:100%;background:var(--bg0);color:var(--tx);font:13px system-ui,-apple-system,Segoe UI,sans-serif;overflow:hidden}
 button,select,input,a{font:inherit;color:var(--tx)}
-.bar{position:fixed;top:0;left:0;right:0;z-index:5;background:#111a2eee;border-bottom:1px solid var(--ln);padding:6px 8px;display:flex;flex-direction:column;gap:6px}.bar.h{display:none}
+.bar{position:fixed;top:0;left:0;right:0;z-index:5;background:color-mix(in srgb,var(--pn) 93%,transparent);border-bottom:1px solid var(--ln);padding:6px 8px;display:flex;flex-direction:column;gap:6px}.bar.h{display:none}
 .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-.g{display:flex;gap:4px;align-items:center;padding-right:8px;border-right:1px solid var(--ln)}.g:last-child{border:0}.g label{font-size:11px;color:#8a98b3;display:flex;align-items:center;gap:4px}
-.b{background:#0b1220;border:1px solid var(--ln);border-radius:8px;padding:6px 10px;cursor:pointer;white-space:nowrap;text-decoration:none}.b:hover{border-color:#4a5d86}.b.on{background:var(--ac);border-color:var(--ac);color:#fff}
+.g{display:flex;gap:4px;align-items:center;padding-right:8px;border-right:1px solid var(--ln)}.g:last-child{border:0}.g label{font-size:11px;color:var(--mu);display:flex;align-items:center;gap:4px}
+.b{background:var(--b0);border:1px solid var(--ln);border-radius:8px;padding:6px 10px;cursor:pointer;white-space:nowrap;text-decoration:none}.b:hover{border-color:#4a5d86}.b.on{background:var(--ac);border-color:var(--ac);color:#fff}
 .b.ok{background:#14532d;border-color:#166534}.b.wr{background:#7f1d1d;border-color:#991b1b}.b.rec{background:#dc2626;border-color:#dc2626;color:#fff;font-weight:700}
 .b.hero{border-color:#f59e0b;font-weight:700;box-shadow:0 0 0 1px #f59e0b55}.b.hero.on{background:#d97706;border-color:#f59e0b}
 .b.menu{background:linear-gradient(135deg,#2563eb,#7c3aed);border-color:#818cf8;font-weight:700;color:#fff;padding:8px 14px;font-size:14px}
 .b.reset{background:#b91c1c;border-color:#f87171;color:#fff;font-weight:700;font-size:15px;padding:9px 18px;min-height:40px}.b.reset:hover{background:#dc2626}
 .sw{width:22px;height:22px;border-radius:50%;border:2px solid #0000;cursor:pointer;padding:0}.sw.on{border-color:#fff;box-shadow:0 0 0 1px #000}
-select{background:#0b1220;border:1px solid var(--ln);border-radius:8px;padding:5px}input[type=range]{width:70px}
+select{background:var(--b0);border:1px solid var(--ln);border-radius:8px;padding:5px}input[type=range]{width:70px}
 .stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
 #cv{max-width:100%;max-height:100%;aspect-ratio:16/9;touch-action:none;cursor:crosshair;box-shadow:0 0 0 1px var(--ln)}
 #mn{position:fixed;right:10px;top:10px;z-index:6;display:none}
-.ov{position:fixed;inset:0;background:#000b;z-index:40;display:none;align-items:center;justify-content:center;padding:16px}.ov.on{display:flex}.card{background:#111a2e;border:1px solid var(--ln);border-radius:16px;padding:22px;max-width:480px;line-height:1.55}.card h2{margin-bottom:8px}.card ol{padding-left:20px;margin:10px 0}.card li{margin-bottom:8px}.m{color:#8a98b3}
+.ov{position:fixed;inset:0;background:#000b;z-index:40;display:none;align-items:center;justify-content:center;padding:16px}.ov.on{display:flex}.card{background:var(--pn);border:1px solid var(--ln);border-radius:16px;padding:22px;max-width:480px;line-height:1.55}.card h2{margin-bottom:8px}.card ol{padding-left:20px;margin:10px 0}.card li{margin-bottom:8px}.m{color:var(--mu)}
 .btns{display:flex;gap:10px;margin-top:16px}.btns .b{flex:1;padding:11px;font-size:14px}
 #toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:#000d;color:#fff;padding:9px 16px;border-radius:10px;display:none;z-index:50}
-.pop{position:fixed;z-index:30;display:none;flex-direction:column;background:#0f1729;border:1px solid #33456b;border-radius:14px;box-shadow:0 18px 50px #000a;width:min(680px,calc(100vw - 16px));overflow:hidden}.pop.on{display:flex}
-.pop .ph{padding:10px 10px 6px}.pop #q{width:100%;background:#0b1220;border:1px solid #33456b;border-radius:10px;padding:10px 12px;font-size:15px;outline:none}.pop #q:focus{border-color:var(--ac)}
-.chips{display:flex;gap:6px;flex-wrap:wrap;padding:4px 10px}.chip{background:#0b1220;border:1px solid var(--ln);border-radius:99px;padding:4px 11px;cursor:pointer;font-size:12px}.chip.on{background:var(--ac);border-color:var(--ac);color:#fff}
-.pl{overflow:auto;padding:4px 10px 12px;flex:1}.hd{position:sticky;top:0;background:#0f1729;padding:8px 2px 4px;font-weight:700;color:#9fb0d0;font-size:12px;z-index:1}.hd i{font-style:normal;color:#64748b;font-weight:400;margin-left:4px}
+.pop{position:fixed;z-index:30;display:none;flex-direction:column;background:var(--b1);border:1px solid var(--ln2);border-radius:14px;box-shadow:0 18px 50px #000a;width:min(680px,calc(100vw - 16px));overflow:hidden}.pop.on{display:flex}
+.pop .ph{padding:10px 10px 6px}.pop #q{width:100%;background:var(--b0);border:1px solid var(--ln2);border-radius:10px;padding:10px 12px;font-size:15px;outline:none}.pop #q:focus{border-color:var(--ac)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;padding:4px 10px}.chip{background:var(--b0);border:1px solid var(--ln);border-radius:99px;padding:4px 11px;cursor:pointer;font-size:12px}.chip.on{background:var(--ac);border-color:var(--ac);color:#fff}
+.pl{overflow:auto;padding:4px 10px 12px;flex:1}.hd{position:sticky;top:0;background:var(--b1);padding:8px 2px 4px;font-weight:700;color:var(--mu2);font-size:12px;z-index:1}.hd i{font-style:normal;color:var(--mu3);font-weight:400;margin-left:4px}
 .gr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}@media(max-width:520px){.gr{grid-template-columns:1fr}}
-.li{min-width:0;display:flex;gap:10px;align-items:center;text-align:left;background:#0b1220;border:1px solid var(--ln);border-radius:10px;padding:6px 8px;cursor:pointer}.li:hover,.li:focus{border-color:var(--ac);background:#13203a;outline:none}.li svg{flex:none;width:64px;height:36px;background:#070b12;border-radius:6px}.li span{display:flex;flex-direction:column;min-width:0}.li b{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.li small{color:#7d8ba8;font-size:11px}
-.none{padding:30px 10px;text-align:center;color:#8a98b3}.foot{padding:6px 12px;border-top:1px solid var(--ln);color:#6b7a99;font-size:11px}
+.li{min-width:0;display:flex;gap:10px;align-items:center;text-align:left;background:var(--b0);border:1px solid var(--ln);border-radius:10px;padding:6px 8px;cursor:pointer}.li:hover,.li:focus{border-color:var(--ac);background:var(--b2);outline:none}.li svg{flex:none;width:64px;height:36px;background:var(--b3);border-radius:6px}.li span{display:flex;flex-direction:column;min-width:0}.li b{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.li small{color:#7d8ba8;font-size:11px}
+.none{padding:30px 10px;text-align:center;color:var(--mu)}.foot{padding:6px 12px;border-top:1px solid var(--ln);color:var(--mu3);font-size:11px}
 button,.b,.sw,.chip,.li{touch-action:manipulation;-webkit-tap-highlight-color:transparent}.b{user-select:none;-webkit-user-select:none}
 #rot{position:fixed;left:8px;right:8px;bottom:10px;z-index:45;display:none;align-items:center;gap:10px;background:#1e293bf2;border:1px solid #475569;border-radius:12px;padding:10px 12px;font-size:13px;line-height:1.35}#rot button{margin-left:auto}
 @media(max-width:900px),(max-height:520px){
@@ -42,24 +45,24 @@ button,.b,.sw,.chip,.li{touch-action:manipulation;-webkit-tap-highlight-color:tr
 @media(max-width:900px) and (orientation:portrait){#rot{display:flex}#rot.x{display:none}#toast{bottom:112px;max-width:calc(100vw - 24px);text-align:center}}
 
 .m .bar,.m #mn{display:none!important}.m.uih #mn{display:block!important}.m.uih .rail,.m.uih .cpop{display:none!important}
-.m .rail{position:fixed;z-index:6;display:flex;gap:3px;padding:4px;overflow:auto;scrollbar-width:none;background:#0b1220e6}.m .rail::-webkit-scrollbar{display:none}
+.m .rail{position:fixed;z-index:6;display:flex;gap:3px;padding:4px;overflow:auto;scrollbar-width:none;background:color-mix(in srgb,var(--b0) 90%,transparent)}.m .rail::-webkit-scrollbar{display:none}
 .m .rail .b{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:36px;padding:2px 1px;font-size:10px;line-height:1.05;gap:1px;text-align:center;white-space:nowrap;border-radius:9px;flex:none;box-shadow:none;font-weight:600}
 .m .rail .b i{font-style:normal;font-size:15px;line-height:1}.m .rail .b small{font-size:9px;font-weight:600}
 .m .rail .b.hero:not(.on){border-color:var(--ln)}
 .dot{display:block;width:16px;height:16px;border-radius:50%;border:2px solid #fff}
-.m .cpop{position:fixed;z-index:20;display:none;background:#0f1729;border:1px solid #33456b;border-radius:12px;padding:10px;gap:10px;flex-direction:column;align-items:flex-start;box-shadow:0 10px 30px #000a}.m .cpop.on{display:flex}
+.m .cpop{position:fixed;z-index:20;display:none;background:var(--b1);border:1px solid var(--ln2);border-radius:12px;padding:10px;gap:10px;flex-direction:column;align-items:flex-start;box-shadow:0 10px 30px #000a}.m .cpop.on{display:flex}
 .m .cpop .g{border:0;padding:0;margin:0}.m .cpop .sw{width:34px;height:34px}.m .cpop input[type=range]{width:170px}
 .m #mcard{width:min(600px,96vw);max-height:calc(100vh - 16px);overflow:auto;padding:12px}
 .m .mh{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-size:15px}
 .m .mg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.m .mg label{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12px;color:var(--tx);padding:6px 8px;background:#0b1220;border-radius:8px;min-height:36px}
+.m .mg label{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12px;color:var(--tx);padding:6px 8px;background:var(--b0);border-radius:8px;min-height:36px}
 .m .mg input[type=range]{width:90px}.m .mg select{width:100%}
 .m .ma{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.m .ma .b{flex:1 1 28%;text-align:center;min-height:38px}
 .m #tm{position:fixed;top:4px;left:50%;transform:translateX(-50%);z-index:7;background:#b91c1ccc;border-radius:99px;padding:2px 10px;font-size:12px;color:#fff}.m #tm:empty{display:none}
 .m #rot{bottom:auto;top:8px}
 @media(orientation:landscape){.m #lr,.m #rr{top:0;bottom:0;width:64px;flex-direction:column}.m #lr{left:0;border-right:1px solid var(--ln)}.m #rr{right:0;border-left:1px solid var(--ln)}.m .rail .b{width:100%}.m .cpop{right:70px;top:6px}}
 @media(orientation:portrait){.m #lr,.m #rr{left:0;right:0;flex-direction:row}.m #rr{bottom:0}.m #lr{bottom:52px;border-top:1px solid var(--ln)}.m .rail .b{flex:1 1 0;min-width:0;min-height:44px}.m .cpop{left:8px;right:8px;bottom:112px}}
-.lvg{display:grid;grid-template-columns:1fr 1fr;gap:8px}.lvg label{display:flex;flex-direction:column;gap:3px;font-size:11px;color:#8a98b3}.lvg select{min-height:36px;font-size:13px;color:var(--tx)}
+.lvg{display:grid;grid-template-columns:1fr 1fr;gap:8px}.lvg label{display:flex;flex-direction:column;gap:3px;font-size:11px;color:var(--mu)}.lvg select{min-height:36px;font-size:13px;color:var(--tx)}
 #lvx{position:fixed;top:8px;right:8px;z-index:60;display:none;opacity:0;pointer-events:none;transition:opacity .2s;background:#b91c1c;border-color:#f87171;color:#fff;font-weight:700}.live #lvx{display:block}.live #lvx.show{opacity:1;pointer-events:auto}
 .m .lvg{grid-template-columns:1fr 1fr 1fr;gap:6px}.m #lvo p{display:none}.m #lvo h2{font-size:16px;margin-bottom:8px}.m #lvo .btns{margin-top:10px}
 .live .bar,.live .rail,.live .cpop,.live #mn,.live #rot,.live #pop,.live #toast,.live #tm{display:none!important}.live,.live *{cursor:none}
@@ -78,28 +81,28 @@ button,.b,.sw,.chip,.li{touch-action:manipulation;-webkit-tap-highlight-color:tr
 <div class="g"><select id="th"><option value="black">Black board</option><option value="white">White board</option><option value="chalk">Chalkboard</option></select><label><input type="checkbox" id="gr" checked> grid</label><label><input type="checkbox" id="wm" checked> logo</label><button class="b brand" id="brd" title="Put your own name on every video (Pro)">✦ Brand</button><button class="b" id="un" title="Undo last item (Ctrl+Z)">↶ Undo</button></div>
 <div class="g"><button class="b wr" id="cl" title="Erase everything and start fresh">🗑 Reset</button></div>
 <div class="g"><button class="b rec" id="rec">● Record</button><label><input type="checkbox" id="mic" checked> 🎤 voice</label><label title="Halka background music (voice ke waqt dheema)"><input type="checkbox" id="mu" checked> 🎵 music</label><span id="tm"></span></div>
-</div></div>
+</div><div class="side" id="side"><span id="lgslot" data-cls="b"></span><button class="b" id="thb" title="Light / dark theme">◐</button></div></div>
 <div class="pop" id="pop"><div class="ph"><input id="q" type="search" placeholder="Search lessons… e.g. flag, hammer, trap, sell, double top" autocomplete="off"></div><div class="chips" id="chips"></div><div class="chips" id="dirs"></div><div class="pl" id="plist"></div><div class="foot">Enter = open first result · ↑ ↓ to move · Esc to close · press <b>/</b> anytime to open</div></div>
 <button class="b" id="mn">☰ Toolbar</button>
 <div id="rot"><span>📱↻ Phone ko <b>landscape</b> me ghumaiye: board bada dikhega aur recording better banegi.</span><button class="b on" id="rotgo">Fullscreen</button><button class="b" id="rotx">✕</button></div>
 <div class="stage"><canvas id="cv"></canvas></div>
-<div class="ov" id="hov"><div class="card"><h2>🎓 Welcome to the Classroom</h2><p class="m">A blank board for teaching price action. Three steps:</p>
-<ol><li><b>Start</b>: draw your own price path with 🕯 <b>Candle Path</b> (candles follow it), or open 📚 <b>Lessons</b>, search and pick from 100+ ready lessons (breakouts, traps, patterns, candlesticks).</li><li><b>Explain</b>: press <b>Space</b> to pause, ⏭ to step one candle, 🔴 Laser to point, ✏️ Pen to write.</li><li><b>Record</b>: hide the toolbar with ☰, press ● <b>Record</b>, talk, then <b>Stop &amp; Download</b>.</li></ol>
-<p class="m">Made a mistake? ↶ Undo, ⌫ Eraser, or 🗑 <b>Reset</b> to start fresh.</p><button class="b on" id="hgo" style="width:100%;margin-top:14px;padding:10px">Start teaching →</button></div></div>
+<div class="ov" id="hov"><div class="card"><h2>🎓 Welcome to the Classroom</h2><p class="m" data-k="clsIntro">A blank board for teaching price action. Three steps:</p>
+<ol data-k="clsSteps"><li><b>Start</b>: draw your own price path with 🕯 <b>Candle Path</b> (candles follow it), or open 📚 <b>Lessons</b>, search and pick from 100+ ready lessons (breakouts, traps, patterns, candlesticks).</li><li><b>Explain</b>: press <b>Space</b> to pause, ⏭ to step one candle, 🔴 Laser to point, ✏️ Pen to write.</li><li><b>Record</b>: hide the toolbar with ☰, press ● <b>Record</b>, talk, then <b>Stop &amp; Download</b>.</li></ol>
+<p class="m" data-k="clsMist">Made a mistake? ↶ Undo, ⌫ Eraser, or 🗑 <b>Reset</b> to start fresh.</p><button class="b on" id="hgo" style="width:100%;margin-top:14px;padding:10px">Start teaching →</button></div></div>
 <div class="ov" id="cov"><div class="card"><h2>🗑 Reset the board?</h2><p class="m">Every drawing, candle and lesson will be erased. You can still press Undo right after to bring it back.</p><div class="btns"><button class="b" id="cno">Cancel</button><button class="b reset" id="cyes">Yes, reset</button></div></div></div>
-<div class="ov" id="tov"><div class="card" style="width:min(420px,94vw)"><b>T Text likhiye</b><input id="tin" type="text" maxlength="80" placeholder="e.g. Buy above high, SL below low" autocomplete="off" style="width:100%;margin-top:10px;background:#0b1220;border:1px solid #33456b;border-radius:10px;padding:10px 12px;font-size:16px"><div class="btns"><button class="b" id="tcan">Cancel</button><button class="b on" id="tadd">Add on board</button></div></div></div>
+<div class="ov" id="tov"><div class="card" style="width:min(420px,94vw)"><b>T Text likhiye</b><input id="tin" type="text" maxlength="80" placeholder="e.g. Buy above high, SL below low" autocomplete="off" style="width:100%;margin-top:10px;background:var(--b0);border:1px solid var(--ln2);border-radius:10px;padding:10px 12px;font-size:16px"><div class="btns"><button class="b" id="tcan">Cancel</button><button class="b on" id="tadd">Add on board</button></div></div></div>
 <div class="ov" id="exo"><div class="card" style="width:min(480px,94vw)"><h2>⬇ Export all lessons</h2><p class="m" style="margin:4px 0 10px">Har lesson ki alag video file banegi (naam: 001-lesson-name). Chalte waqt tab khula rakhein aur doosre tab me na jaayein. Lagbhag 30-60 sec per lesson.</p>
 <div class="lvg"><label>Video type<select id="exfm"><option value="v">Reels / Shorts (9:16 vertical)</option><option value="h">Video (16:9 landscape)</option></select></label><label>Category<select id="excat"></select></label>
 <label>Flow<select id="exns"><option value="1">Non-stop (bina pause, Shorts ke liye best)</option><option value="0">Normal (thoda pause ke saath)</option></select></label><label>Explanation<select id="exfull"><option value="1">Poori (Entry, SL, Target, Galti, Yaad rakho)</option><option value="0">Chhoti (sirf pehla vaakya)</option></select></label><label>End me "Comment karo Buy ya Sell"<select id="excta"><option value="0">Nahi (Shorts ke liye)</option><option value="1">Haan</option></select></label><label>Candle speed<select id="exspd"><option value="2">Slow</option><option value="3" selected>Normal</option><option value="4">Fast</option></select></label>
 <label>Background music<select id="exmu"><option value="1">On</option><option value="0">Off</option></select></label><label>Pehle kitne lessons (test)<select id="exn"><option value="3">Sirf 3 (test)</option><option value="10">10</option><option value="0" selected>Sabhi</option></select></label></div>
 <div class="btns"><button class="b" id="excancel">Cancel</button><button class="b on" id="exgo">⬇ Start export</button></div></div></div>
-<div id="exp" style="position:fixed;left:8px;bottom:8px;z-index:70;background:#111a2e;color:#e6edf7;border:1px solid #26324d;border-radius:10px;padding:8px 12px;font:600 13px system-ui;display:none"></div>
+<div id="exp" style="position:fixed;left:8px;bottom:8px;z-index:70;background:var(--pn);color:var(--tx);border:1px solid var(--ln);border-radius:10px;padding:8px 12px;font:600 13px system-ui;display:none"></div>
 <div class="ov" id="lvo"><div class="card" style="width:min(480px,94vw)"><h2>📺 Live / Reels mode</h2><p class="m" style="margin:4px 0 10px">Lessons ek ke baad ek apne aap chalenge: upar strategy ka naam, awaaz me explain, aur loop me. YouTube Live ke liye chhod dein.</p>
 <div class="lvg"><label>Category<select id="lvcat"></select></label><label>Order<select id="lvord"><option value="1">Shuffle (random)</option><option value="0">In order</option></select></label>
 <label>Gap between lessons<select id="lvgap"><option>3</option><option selected>5</option><option>8</option><option>12</option></select></label><label>Format<select id="lvfm"><option value="h">16:9 Landscape (PC)</option><option value="v">9:16 Vertical (Mobile Live)</option></select></label><label>Candle speed<select id="lvspd"><option value="2">Slow</option><option value="3" selected>Normal</option><option value="5">Fast</option></select></label>
 <label>Voice<select id="lvvo"><option value="1">On</option><option value="0">Off</option></select></label><label>Voice type<select id="lvvn"></select></label></div>
 <div class="btns"><button class="b" id="lvcancel">Cancel</button><button class="b on" id="lvgo">▶ Start Live</button></div>
-<p class="m" style="font-size:11px;margin-top:10px;color:#8a98b3">Exit: Esc ya screen tap → ⏹ Exit. Tab ko visible aur screen on rakhein. Stream ke liye OBS me window capture + desktop audio.</p></div></div>
+<p class="m" style="font-size:11px;margin-top:10px;color:var(--mu)">Exit: Esc ya screen tap → ⏹ Exit. Tab ko visible aur screen on rakhein. Stream ke liye OBS me window capture + desktop audio.</p></div></div>
 <button class="b" id="lvx">⏹ Exit Live</button>
 <div id="toast"></div>
 <script>
@@ -353,6 +356,7 @@ function markers(){const m=TM;if(!m)return;const now=performance.now(),cur=LV.st
  r=rv(1);if(r>0){g.save();g.globalAlpha=.22*r;g.fillStyle='#ef4444';g.fillRect(m.xa,Math.min(m.ey,m.sl),w,Math.abs(m.sl-m.ey));g.globalAlpha=r;g.strokeStyle='#ef4444';g.lineWidth=4;g.setLineDash([12,8]);g.beginPath();g.moveTo(m.xa,m.sl);g.lineTo(m.xb,m.sl);g.stroke();g.setLineDash([]);mtag('STOP-LOSS',m.xb,m.sl,'#ef4444');g.restore()}
  r=rv(0);if(r>0){g.save();g.globalAlpha=r;g.strokeStyle='#38bdf8';g.lineWidth=4;g.setLineDash([12,8]);g.beginPath();g.moveTo(m.xa,m.ey);g.lineTo(m.xb,m.ey);g.stroke();g.setLineDash([]);g.fillStyle='#38bdf8';g.beginPath();g.arc(m.ex,m.ey,9,0,7);g.fill();mtag('ENTRY',m.xb,m.ey,'#38bdf8');g.restore()}
  if(cur>=0&&cur<3&&m.t[cur]!=null){const e=now-m.t[cur];arrowTo(cur===2?m.xa+w*.14:m.ex,[m.ey,m.sl,m.tg][cur],e)}}
+const T_=s=>window.BFTL?BFTL.t(s):s;
 const isPro=()=>!!(window.BFTX&&BFTX.pro&&BFTX.pro()),upsell=()=>window.BFTX&&BFTX.upsell&&BFTX.upsell();
 const brand=()=>{try{return localStorage.getItem('cls_brand')||''}catch(e){return''}};
 function syncBrand(){const b=$('#brd');if(!b)return;const p=isPro();b.classList.toggle('pro',p&&!!brand());b.textContent=p?(brand()?'✦ '+brand().slice(0,16):'✦ Add brand'):'✦ Brand · Pro';if(!p)$('#wm').checked=true}
@@ -360,6 +364,7 @@ $('#brd').onclick=()=>{if(!isPro())return upsell();const v=prompt('Your brand na
 $('#wm').addEventListener('change',()=>{if(!isPro()){$('#wm').checked=true;toast('Removing the logo is a Pro feature');upsell()}});
 document.addEventListener('click',e=>{if(e.target.closest('#exb')&&!isPro()){e.stopPropagation();e.preventDefault();toast('Bulk export is a Pro feature');upsell()}},true);
 setInterval(syncBrand,1500);syncBrand();
+(function(){const b=$('#thb'),sy=()=>{b.textContent=document.documentElement.dataset.ui==='light'?'🌙':'◐'};b.onclick=()=>{const l=document.documentElement.dataset.ui==='light';if(l)delete document.documentElement.dataset.ui;else document.documentElement.dataset.ui='light';try{localStorage.setItem('bft_ui',l?'':'light')}catch(e){}sy()};sy()})();
 function draw(){g.fillStyle=TH[th].bg;g.fillRect(0,0,W,H);
  if($('#gr').checked){g.strokeStyle=TH[th].gr;g.lineWidth=1;g.beginPath();for(let x=0;x<W;x+=40){g.moveTo(x,0);g.lineTo(x,H)}for(let y=0;y<H;y+=40){g.moveTo(0,y);g.lineTo(W,y)}g.stroke()}
  let base=0;if(LV.on){g.save();if(VERT)g.translate(0,SAFE_T+100);else{g.translate(W*(1-LS_)/2,62);g.scale(LS_,LS_)}}I.forEach(it=>{if(it.cs){it.cs.forEach((c,i)=>candle(c,rev-(base+i)));base+=it.cs.length}else item(it)});if(LV.on&&(LV.state==='teach'||LV.state==='hold'))markers();if(LV.on)g.restore();
@@ -368,7 +373,7 @@ function draw(){g.fillStyle=TH[th].bg;g.fillRect(0,0,W,H);
  for(let i=1;i<laser.length;i++){g.strokeStyle='rgba(255,40,40,'+(1-(now-laser[i][2])/700)+')';g.lineWidth=6;g.lineCap='round';g.beginPath();g.moveTo(laser[i-1][0],laser[i-1][1]);g.lineTo(laser[i][0],laser[i][1]);g.stroke()}
  if(laser.length){const q=laser[laser.length-1];g.fillStyle='#ff2828';g.shadowColor='#ff2828';g.shadowBlur=18;g.beginPath();g.arc(q[0],q[1],8,0,7);g.fill();g.shadowBlur=0}
  const pro=isPro(),bn=pro?brand():'BFT Trade Lab · Free plan';if(!pro||$('#wm').checked&&bn){g.font=(pro?'700 16px':'800 20px')+' system-ui';g.textBaseline='alphabetic';g.fillStyle=C('ink');g.globalAlpha=pro?.4:.55;g.textAlign='right';g.fillText(bn,W-16,H-14);g.textAlign='left';g.globalAlpha=1}
- if(!I.length&&!cur&&!LV.on&&!(mr&&mr.state==='recording')){g.fillStyle=C('ink');g.textAlign='center';g.textBaseline='middle';g.globalAlpha=.7;g.font='600 '+Math.round(W/32)+'px system-ui';g.fillText('Draw a price path with Candle Path',W/2,H/2-30);g.globalAlpha=.45;g.font='500 '+Math.round(W/50)+'px system-ui';g.fillText('or press / to pick one of '+LS.length+' ready lessons',W/2,H/2+24);g.globalAlpha=1;g.textAlign='left'}if(LV.on){if(VERT){const w0=W,h0=H;g.save();g.translate(0,SAFE_T);g.scale(VK,VK);W=w0/VK;H=(h0-SAFE_T-SAFE_B)/VK;try{liveHUD()}finally{W=w0;H=h0;g.restore()}}else liveHUD()}}
+ if(!I.length&&!cur&&!LV.on&&!(mr&&mr.state==='recording')){g.fillStyle=C('ink');g.textAlign='center';g.textBaseline='middle';g.globalAlpha=.7;g.font='600 '+Math.round(W/32)+'px system-ui';g.fillText(T_('Draw a price path with Candle Path'),W/2,H/2-30);g.globalAlpha=.45;g.font='500 '+Math.round(W/50)+'px system-ui';g.fillText(T_('or press / to pick one of '+LS.length+' ready lessons'),W/2,H/2+24);g.globalAlpha=1;g.textAlign='left'}if(LV.on){if(VERT){const w0=W,h0=H;g.save();g.translate(0,SAFE_T);g.scale(VK,VK);W=w0/VK;H=(h0-SAFE_T-SAFE_B)/VK;try{liveHUD()}finally{W=w0;H=h0;g.restore()}}else liveHUD()}}
 /* ---------- input ---------- */
 const pos=e=>{const r=cv.getBoundingClientRect();return[(e.clientX-r.left)*W/r.width,(e.clientY-r.top)*H/r.height]};
 function segd(a,b,x,y){const dx=b[0]-a[0],dy=b[1]-a[1],L=dx*dx+dy*dy||1,u=Math.max(0,Math.min(1,((x-a[0])*dx+(y-a[1])*dy)/L));return Math.hypot(x-a[0]-u*dx,y-a[1]-u*dy)}
@@ -560,7 +565,7 @@ if(MOB){document.body.classList.add('m');
  ['#spd','#cw','#vol','#th','#sp','#ap','#gr','#wm','#mic','#mu'].forEach(s=>{const e=$(s);$('#mg').appendChild(e.closest('label')||e)});
  $('a[href="index.html"]').textContent='⌂ Home';$('#fs').textContent='⛶ Fullscreen';
  const hb=document.createElement('button');hb.className='b';hb.textContent='🙈 Hide controls';
- $('#ma').append($('#lvb'),$('#exb'),$('#cl'),$('#hpb'),$('a[href="index.html"]'),$('#fs'),hb);
+ $('#ma').append($('#lvb'),$('#exb'),$('#cl'),$('#hpb'),$('a[href="index.html"]'),$('#fs'),hb,$('#side'));
  const shut=()=>ov.classList.remove('on');
  mb.onclick=()=>ov.classList.add('on');$('#mclose').onclick=shut;ov.addEventListener('pointerdown',e=>{if(e.target===ov)shut()});
  ['#cl','#hpb','#fs','#lvb','#exb'].forEach(s=>$(s).addEventListener('click',shut));
@@ -625,4 +630,4 @@ $('#exgo').onclick=async()=>{
  X.on=true;LV.i=-1;LV.on=true;document.body.classList.add('live');setFmt(LV.opt.fmt==='v');
  try{AU()}catch(e){}if($('#mu').checked)musicOn();vstop();lay();liveNext()};
 })();
-</script><script src="bft-analytics.js" defer></script><script src="access.js" defer></script></body></html>
+</script><script src="bft-analytics.js" defer></script><script src="i18n.js" defer></script><script src="access.js" defer></script></body></html>
