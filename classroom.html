@@ -63,6 +63,7 @@ button,.b,.sw,.chip,.li{touch-action:manipulation;-webkit-tap-highlight-color:tr
 #lvx{position:fixed;top:8px;right:8px;z-index:60;display:none;opacity:0;pointer-events:none;transition:opacity .2s;background:#b91c1c;border-color:#f87171;color:#fff;font-weight:700}.live #lvx{display:block}.live #lvx.show{opacity:1;pointer-events:auto}
 .m .lvg{grid-template-columns:1fr 1fr 1fr;gap:6px}.m #lvo p{display:none}.m #lvo h2{font-size:16px;margin-bottom:8px}.m #lvo .btns{margin-top:10px}
 .live .bar,.live .rail,.live .cpop,.live #mn,.live #rot,.live #pop,.live #toast,.live #tm{display:none!important}.live,.live *{cursor:none}
+.b.rec{padding:8px 16px;font-size:14px;box-shadow:0 0 0 2px #dc262655}.b.brand{border-color:#f5c76b;color:#f5c76b}.b.brand.pro{background:#f5c76b;color:#2a1d00;font-weight:700}
 </style></head><body>
 <div class="bar" id="bar">
 <div class="row">
@@ -73,8 +74,8 @@ button,.b,.sw,.chip,.li{touch-action:manipulation;-webkit-tap-highlight-color:tr
 </div>
 <div class="row">
 <div class="g"><button class="b" id="pl">▶ Play</button><button class="b" id="st" title="Next candle">⏭ Step</button><button class="b" id="rp" title="Replay from start">⟲ Replay</button><label>Speed<input type="range" id="spd" min="1" max="12" value="4"></label><label>Candle<input type="range" id="cw" min="8" max="36" value="18"></label><select id="vol"><option value="0">Calm</option><option value="1" selected>Normal</option><option value="2">Wild</option></select><label><input type="checkbox" id="sp" checked> path</label><label title="Har label pe 1 second ruk-ke aage badhe"><input type="checkbox" id="ap" checked> 1s pause</label></div>
-<div class="g"><select id="th"><option value="black">Black board</option><option value="white">White board</option><option value="chalk">Chalkboard</option></select><label><input type="checkbox" id="gr" checked> grid</label><label><input type="checkbox" id="wm" checked> logo</label><button class="b" id="un" title="Undo last item (Ctrl+Z)">↶ Undo</button></div>
-<div class="g"><button class="b reset" id="cl" title="Erase everything and start fresh">🗑 Reset</button></div>
+<div class="g"><select id="th"><option value="black">Black board</option><option value="white">White board</option><option value="chalk">Chalkboard</option></select><label><input type="checkbox" id="gr" checked> grid</label><label><input type="checkbox" id="wm" checked> logo</label><button class="b brand" id="brd" title="Put your own name on every video (Pro)">✦ Brand</button><button class="b" id="un" title="Undo last item (Ctrl+Z)">↶ Undo</button></div>
+<div class="g"><button class="b wr" id="cl" title="Erase everything and start fresh">🗑 Reset</button></div>
 <div class="g"><button class="b rec" id="rec">● Record</button><label><input type="checkbox" id="mic" checked> 🎤 voice</label><label title="Halka background music (voice ke waqt dheema)"><input type="checkbox" id="mu" checked> 🎵 music</label><span id="tm"></span></div>
 </div></div>
 <div class="pop" id="pop"><div class="ph"><input id="q" type="search" placeholder="Search lessons… e.g. flag, hammer, trap, sell, double top" autocomplete="off"></div><div class="chips" id="chips"></div><div class="chips" id="dirs"></div><div class="pl" id="plist"></div><div class="foot">Enter = open first result · ↑ ↓ to move · Esc to close · press <b>/</b> anytime to open</div></div>
@@ -351,6 +352,13 @@ function markers(){const m=TM;if(!m)return;const now=performance.now(),cur=LV.st
  r=rv(1);if(r>0){g.save();g.globalAlpha=.22*r;g.fillStyle='#ef4444';g.fillRect(m.xa,Math.min(m.ey,m.sl),w,Math.abs(m.sl-m.ey));g.globalAlpha=r;g.strokeStyle='#ef4444';g.lineWidth=4;g.setLineDash([12,8]);g.beginPath();g.moveTo(m.xa,m.sl);g.lineTo(m.xb,m.sl);g.stroke();g.setLineDash([]);mtag('STOP-LOSS',m.xb,m.sl,'#ef4444');g.restore()}
  r=rv(0);if(r>0){g.save();g.globalAlpha=r;g.strokeStyle='#38bdf8';g.lineWidth=4;g.setLineDash([12,8]);g.beginPath();g.moveTo(m.xa,m.ey);g.lineTo(m.xb,m.ey);g.stroke();g.setLineDash([]);g.fillStyle='#38bdf8';g.beginPath();g.arc(m.ex,m.ey,9,0,7);g.fill();mtag('ENTRY',m.xb,m.ey,'#38bdf8');g.restore()}
  if(cur>=0&&cur<3&&m.t[cur]!=null){const e=now-m.t[cur];arrowTo(cur===2?m.xa+w*.14:m.ex,[m.ey,m.sl,m.tg][cur],e)}}
+const isPro=()=>!!(window.BFTX&&BFTX.pro&&BFTX.pro()),upsell=()=>window.BFTX&&BFTX.upsell&&BFTX.upsell();
+const brand=()=>{try{return localStorage.getItem('cls_brand')||''}catch(e){return''}};
+function syncBrand(){const b=$('#brd');if(!b)return;const p=isPro();b.classList.toggle('pro',p&&!!brand());b.textContent=p?(brand()?'✦ '+brand().slice(0,16):'✦ Add brand'):'✦ Brand · Pro';if(!p)$('#wm').checked=true}
+$('#brd').onclick=()=>{if(!isPro())return upsell();const v=prompt('Your brand name (shown bottom-right on every video). Leave empty for none.',brand());if(v===null)return;try{localStorage.setItem('cls_brand',v.trim().slice(0,40))}catch(e){}syncBrand();toast('Brand saved')};
+$('#wm').addEventListener('change',()=>{if(!isPro()){$('#wm').checked=true;toast('Removing the logo is a Pro feature');upsell()}});
+document.addEventListener('click',e=>{if(e.target.closest('#exb')&&!isPro()){e.stopPropagation();e.preventDefault();toast('Bulk export is a Pro feature');upsell()}},true);
+setInterval(syncBrand,1500);syncBrand();
 function draw(){g.fillStyle=TH[th].bg;g.fillRect(0,0,W,H);
  if($('#gr').checked){g.strokeStyle=TH[th].gr;g.lineWidth=1;g.beginPath();for(let x=0;x<W;x+=40){g.moveTo(x,0);g.lineTo(x,H)}for(let y=0;y<H;y+=40){g.moveTo(0,y);g.lineTo(W,y)}g.stroke()}
  let base=0;if(LV.on){g.save();if(VERT)g.translate(0,SAFE_T+100);else{g.translate(W*(1-LS_)/2,62);g.scale(LS_,LS_)}}I.forEach(it=>{if(it.cs){it.cs.forEach((c,i)=>candle(c,rev-(base+i)));base+=it.cs.length}else item(it)});if(LV.on&&(LV.state==='teach'||LV.state==='hold'))markers();if(LV.on)g.restore();
@@ -358,7 +366,8 @@ function draw(){g.fillStyle=TH[th].bg;g.fillRect(0,0,W,H);
  const now=performance.now();laser=laser.filter(p=>now-p[2]<700);
  for(let i=1;i<laser.length;i++){g.strokeStyle='rgba(255,40,40,'+(1-(now-laser[i][2])/700)+')';g.lineWidth=6;g.lineCap='round';g.beginPath();g.moveTo(laser[i-1][0],laser[i-1][1]);g.lineTo(laser[i][0],laser[i][1]);g.stroke()}
  if(laser.length){const q=laser[laser.length-1];g.fillStyle='#ff2828';g.shadowColor='#ff2828';g.shadowBlur=18;g.beginPath();g.arc(q[0],q[1],8,0,7);g.fill();g.shadowBlur=0}
- if($('#wm').checked){g.font='700 16px system-ui';g.textBaseline='alphabetic';g.fillStyle=C('ink');g.globalAlpha=.35;g.textAlign='right';g.fillText('BFT Trade Lab · Classroom',W-16,H-14);g.textAlign='left';g.globalAlpha=1}if(LV.on){if(VERT){const w0=W,h0=H;g.save();g.translate(0,SAFE_T);g.scale(VK,VK);W=w0/VK;H=(h0-SAFE_T-SAFE_B)/VK;try{liveHUD()}finally{W=w0;H=h0;g.restore()}}else liveHUD()}}
+ const pro=isPro(),bn=pro?brand():'BFT Trade Lab · Free plan';if(!pro||$('#wm').checked&&bn){g.font=(pro?'700 16px':'800 20px')+' system-ui';g.textBaseline='alphabetic';g.fillStyle=C('ink');g.globalAlpha=pro?.4:.55;g.textAlign='right';g.fillText(bn,W-16,H-14);g.textAlign='left';g.globalAlpha=1}
+ if(!I.length&&!cur&&!LV.on&&!(mr&&mr.state==='recording')){g.fillStyle=C('ink');g.textAlign='center';g.textBaseline='middle';g.globalAlpha=.7;g.font='600 '+Math.round(W/32)+'px system-ui';g.fillText('Draw a price path with Candle Path',W/2,H/2-30);g.globalAlpha=.45;g.font='500 '+Math.round(W/50)+'px system-ui';g.fillText('or press / to pick one of '+LS.length+' ready lessons',W/2,H/2+24);g.globalAlpha=1;g.textAlign='left'}if(LV.on){if(VERT){const w0=W,h0=H;g.save();g.translate(0,SAFE_T);g.scale(VK,VK);W=w0/VK;H=(h0-SAFE_T-SAFE_B)/VK;try{liveHUD()}finally{W=w0;H=h0;g.restore()}}else liveHUD()}}
 /* ---------- input ---------- */
 const pos=e=>{const r=cv.getBoundingClientRect();return[(e.clientX-r.left)*W/r.width,(e.clientY-r.top)*H/r.height]};
 function segd(a,b,x,y){const dx=b[0]-a[0],dy=b[1]-a[1],L=dx*dx+dy*dy||1,u=Math.max(0,Math.min(1,((x-a[0])*dx+(y-a[1])*dy)/L));return Math.hypot(x-a[0]-u*dx,y-a[1]-u*dy)}
@@ -402,9 +411,9 @@ $('#rec').onclick=async()=>{
  if($('#mic').checked){try{mic=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true}});const m=a.ctx.createMediaStreamSource(mic),hp=a.ctx.createBiquadFilter(),pk=a.ctx.createBiquadFilter(),cp=a.ctx.createDynamicsCompressor();hp.type='highpass';hp.frequency.value=90;pk.type='peaking';pk.frequency.value=3200;pk.gain.value=3;cp.threshold.value=-24;cp.ratio.value=3;m.connect(hp).connect(pk).connect(cp).connect(a.dest)}catch(e){toast('Mic blocked: recording without voice')}}
  a.dest.stream.getAudioTracks().forEach(t=>cs.addTrack(t));if($('#mu').checked)musicOn();
  const mt=['video/mp4;codecs=avc1.42E01E,mp4a.40.2','video/mp4;codecs=avc1,mp4a.40.2','video/mp4','video/webm;codecs=vp9,opus','video/webm;codecs=vp8,opus','video/webm'].find(t=>MediaRecorder.isTypeSupported(t)),ext=mt&&mt.indexOf('mp4')>-1?'mp4':'webm';chunks=[];
- mr=new MediaRecorder(cs,mt?{mimeType:mt,videoBitsPerSecond:5e6}:{videoBitsPerSecond:5e6});mr.ondataavailable=e=>{if(e.data.size)chunks.push(e.data)};
+ mr=new MediaRecorder(cs,mt?{mimeType:mt,videoBitsPerSecond:isPro()?8e6:2.5e6}:{videoBitsPerSecond:isPro()?8e6:2.5e6});mr.ondataavailable=e=>{if(e.data.size)chunks.push(e.data)};
  mr.onstop=()=>{if(!LV.on)musicOff();clearInterval(rti);$('#tm').textContent='';$('#rec').textContent='● Record';if(mic)mic.getTracks().forEach(t=>t.stop());const u=URL.createObjectURL(new Blob(chunks,{type:ext==='mp4'?'video/mp4':'video/webm'})),a=document.createElement('a');a.href=u;a.download='classroom-'+new Date().toISOString().slice(0,16).replace(/[:T]/g,'-')+'.'+ext;document.body.appendChild(a);a.click();setTimeout(()=>{a.remove();URL.revokeObjectURL(u)},4000);toast(ext==='mp4'?'Lesson saved (MP4): check your Downloads':'Lesson saved (WEBM): is browser me MP4 support nahi, VLC/Chrome me chalegi')};
- mr.start(500);rt=0;$('#rec').textContent=MOB?'■ Stop':'■ Stop & Download';rti=setInterval(()=>{rt++;$('#tm').textContent='● '+String(rt/60|0).padStart(2,'0')+':'+String(rt%60).padStart(2,'0')},1000);toast('Recording started. Hide the toolbar (☰) for a clean video')};
+ mr.start(500);rt=0;$('#rec').textContent=MOB?'■ Stop':'■ Stop & Download';rti=setInterval(()=>{rt++;if(!isPro()&&rt>=180&&mr.state==='recording'){mr.stop();toast('Free recordings stop at 3 min');setTimeout(upsell,900)}$('#tm').textContent='● '+String(rt/60|0).padStart(2,'0')+':'+String(rt%60).padStart(2,'0')},1000);toast('Recording started. Hide the toolbar (☰) for a clean video')};
 $('#hpb').onclick=()=>$('#hov').classList.add('on');$('#hgo').onclick=()=>{$('#hov').classList.remove('on');try{localStorage.setItem('cls_seen',1)}catch(e){}};try{if(!localStorage.getItem('cls_seen'))$('#hov').classList.add('on')}catch(e){}
 /* ---------- loop ---------- */
 let TM=null,HOLD=0,SP=new Set();let last=performance.now();(function loop(now){const dt=(now-last)/1e3;last=now;if(LV.on)liveTick(now);const n=tot();if(play&&rev<n&&now>=HOLD){rev=Math.min(n,LV.lim==null?n:LV.lim,rev+dt*(LV.sp2||+$('#spd').value*(NS?2:1)));const nl=I.find(i=>i.t==='x'&&i.at!=null&&!SP.has(i)&&rev>=i.at);if(nl)labelHit(nl,now);if(rev>=n)play=false}{const s=play?'⏸ Pause':'▶ Play';if(pl_s!==s){pl_s=s;const a=s.split(' ');$('#pl').innerHTML=MOB?'<i>'+a[0]+'</i><small>'+a[1]+'</small>':s}}draw();requestAnimationFrame(loop)})(last);
@@ -575,7 +584,7 @@ async function save(blob,name){
 function recStart(L){
  const a=AU(),cs=cv.captureStream(30);a.dest.stream.getAudioTracks().forEach(t=>cs.addTrack(t));
  const mt=pick(),ext=mt&&mt.indexOf('mp4')>-1?'mp4':'webm',ch=[],name=String(LV.i+1).padStart(3,'0')+'-'+slug(L.n+' '+(L.dir||''))+'.'+ext;
- const r=new MediaRecorder(cs,mt?{mimeType:mt,videoBitsPerSecond:5e6}:{videoBitsPerSecond:5e6});
+ const r=new MediaRecorder(cs,mt?{mimeType:mt,videoBitsPerSecond:isPro()?8e6:2.5e6}:{videoBitsPerSecond:isPro()?8e6:2.5e6});
  r.ondataavailable=e=>{if(e.data.size)ch.push(e.data)};
  r.onstop=async()=>{if(!r.keep){X.pend--;return}await save(new Blob(ch,{type:ext==='mp4'?'video/mp4':'video/webm'}),name);X.pend--;X.n++};
  r.start(500);X.rec=r;X.pend++;info('⬇ Exporting '+(LV.i+1)+'/'+LV.order.length+': '+L.n+'  ('+X.n+' saved)')}

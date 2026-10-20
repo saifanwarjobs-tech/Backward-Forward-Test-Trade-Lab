@@ -60,11 +60,11 @@ function toolOptions(){const o=opts(TOOL);const b=P.all_tools;if(b&&TOOL){if(b.p
 const TK='bftx_t_'+TOOL;let secs=0;const getS=()=>{try{return +localStorage.getItem(TK)||0}catch(e){return 0}};
 function upBadge(){let b=document.getElementById('bftx-badge');if(!TOOL||entitled()||!P[TOOL]||P[TOOL].trial_minutes==null){b&&b.remove();return}
  const left=Math.max(0,P[TOOL].trial_minutes*60-secs);if(!b){b=h('div',{id:'bftx-badge',style:'position:fixed;left:10px;bottom:10px;z-index:9999;background:#0f1626;color:#f5c76b;border:1px solid #3a4666;border-radius:99px;padding:5px 12px;font:600 12px system-ui;cursor:pointer',onclick:()=>openTool(false)});document.body.appendChild(b)}
- b.textContent='Free: '+Math.ceil(left/60)+' min left'}
-function openTool(blocking){const p=P[TOOL]||{};show({title:blocking?'Free trial finished':'Unlock '+p.name,text:blocking?`Your free ${p.trial_minutes} minutes in ${p.name} are over. Pick a plan to continue. Your data stays saved.`:'Choose a plan.',options:toolOptions(),blocking,owned:entitled})}
+ b.textContent='Free: '+Math.ceil(left/60)+' min left · Upgrade'}
+function openTool(blocking){const p=P[TOOL]||{};show({title:blocking?'Free trial finished':'Unlock '+p.name,text:blocking?`Your free ${p.trial_minutes} minutes in ${p.name} are over. Pick a plan to continue. Your data stays saved.`:'Pro removes the watermark, adds your own brand, records in HD with no time limit and unlocks bulk export.',options:toolOptions(),blocking,owned:entitled})}
 async function tick(){if(document.hidden||entitled())return;const p=P[TOOL];if(!p||p.trial_minutes==null)return;secs+=5;try{localStorage.setItem(TK,secs)}catch(e){}upBadge();if(secs>=p.trial_minutes*60&&!box)openTool(true)}
 /* ---------- public API ---------- */
-window.BFTX={owns,ready:()=>init(),
+window.BFTX={pro:()=>entitled(),upsell:()=>openTool(false),owns,ready:()=>init(),
  entry(count){const p=P[TOOL];if(!p||p.free_entries==null||entitled()||count<p.free_entries)return true;
   show({title:'Free entries used',text:`You have used your ${p.free_entries} free journal entries. Unlock to keep logging.`,options:toolOptions(),blocking:false,owned:entitled});return false},
  async sell(x){await init();const pid='item:'+x.id;let pr=x.price;if(pr==null){const r=await rest('items?select=price&id=eq.'+encodeURIComponent(x.id));pr=r[0]&&r[0].price}
