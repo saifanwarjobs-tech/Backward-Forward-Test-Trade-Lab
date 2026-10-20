@@ -1,8 +1,8 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex"><meta name="theme-color" content="#060a13">
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="robots" content="noindex"><meta name="theme-color" content="#070b12" media="(prefers-color-scheme: dark)"><meta name="theme-color" content="#f3f6fc" media="(prefers-color-scheme: light)">
 <title>BFT Academy Admin</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <style>
-:root{--bg:#060a13;--bg2:#0b1222;--c:#101a30;--c2:#16223d;--tx:#e8eefb;--mu:#8e9bb8;--ln:rgba(255,255,255,.1);--ac:#6aa5ff;--ac2:#a78bfa;--gold:#f5c76b;--ok:#3ddc97;--dn:#ff6b6b;--wn:#f5c76b;--ink:#06101f}
+:root{--bg:#070b12;--bg2:#0c121d;--c:#0e1522;--c2:#141d2e;--tx:#e8eefb;--mu:#8e9bb8;--ln:rgba(255,255,255,.1);--ac:#5b9cff;--ac2:#5b9cff;--gold:#f5c76b;--ok:#3ddc97;--dn:#ff6b6b;--wn:#f5c76b;--ink:#06101f}
 @media(prefers-color-scheme:light){:root{--bg:#f3f6fc;--bg2:#fff;--c:#fff;--c2:#eef2fa;--tx:#0f172a;--mu:#5a667f;--ln:rgba(15,23,42,.13);--ac:#2f6fe4;--ac2:#6d4fe0;--gold:#b7791f;--ok:#12805c;--dn:#d33;--wn:#b7791f;--ink:#fff}}
 *{box-sizing:border-box;margin:0}html{-webkit-text-size-adjust:100%}
 body{background:var(--bg);color:var(--tx);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding-bottom:calc(84px + env(safe-area-inset-bottom))}
@@ -52,10 +52,9 @@ input[type=checkbox]{width:20px;height:20px;accent-color:var(--ac);flex:none}.ch
 .list-s{margin-top:4px}
 
 /* polish layer v2 */
-:root{--bg:#070b12;--bg2:#0c121d;--c:#0e1522;--c2:#141d2e;--ac:#5b9cff;--ac2:#5b9cff}
 body{font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased;font-feature-settings:"cv11","ss03"}
 .w{max-width:1120px}.logo i{background:none;color:var(--ac);-webkit-text-fill-color:currentColor}
-.btn,.fab{background:var(--ac);color:#04101f;border-radius:10px;font-weight:600}.btn.o{background:var(--c2);color:var(--tx)}.btn.d{background:var(--dn);color:#fff}
+.btn,.fab{background:var(--ac);color:var(--ink);border-radius:10px;font-weight:600}.btn.o{background:var(--c2);color:var(--tx)}.btn.d{background:var(--dn);color:#fff}
 .card,.kpi,.it{border-radius:12px}.bars i,.prog i{background:var(--ac)}
 .nav i{display:grid;place-items:center;font-size:0}.nav svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 @media(min-width:760px){.nav{justify-content:center;gap:6px}.nav button{flex:none;padding:12px 24px}}
@@ -74,6 +73,18 @@ body{font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-web
 .an-rn{position:relative;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.an-rv{position:relative;flex:none;color:var(--mu);font-size:12.5px}.an-rv b{color:var(--tx);font-size:14px;margin-left:8px;font-variant-numeric:tabular-nums}
 .an-feed{display:flex;gap:10px;padding:8px 0;border-top:1px solid var(--ln);font-size:13.5px}.an-feed:first-of-type{border-top:0}.an-feed time{flex:none;width:58px;color:var(--mu);font-size:12px}.an-feed div{min-width:0}.an-feed small{display:block;color:var(--mu);font-size:12px}
 .an-live{display:inline-flex;align-items:center;gap:6px}.an-live:before{content:"";width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 0 var(--ok);animation:anp 1.8s infinite}@keyframes anp{70%{box-shadow:0 0 0 7px transparent}}
+/* pricing tab (theme variables only, works in dark and light) */
+.pr-n{font-size:13.5px;margin:2px 0 10px}
+.pr-p{border-top:1px solid var(--ln);padding:12px 0}.pr-p:first-of-type{border-top:0}
+.pr-p .btn{margin-top:10px}
+.pr-g{display:grid;grid-template-columns:repeat(2,1fr);gap:0 10px}@media(min-width:760px){.pr-g{grid-template-columns:repeat(4,1fr)}}
+.pr-g input,.pr-g select,.pr-i input{margin-top:0}
+.pr-i{display:flex;gap:10px;align-items:center;padding:9px 0;border-top:1px solid var(--ln)}.pr-i:first-of-type{border-top:0}
+.pr-i input{width:110px;flex:none}.pr-in{display:flex;gap:10px;align-items:center;flex:1;min-width:0}.pr-in>div{min-width:0}.pr-in b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pr-in small,.pr-r small{display:block;font-size:12.5px}
+.pr-add{margin-top:10px;border-top:1px solid var(--ln);padding-top:12px}.pr-add summary{cursor:pointer;font-weight:600}.pr-add .btn{margin-top:10px}
+.pr-sum{margin:2px 0 10px}.pr-own{margin:0 0 10px;display:flex;gap:6px;flex-wrap:wrap;align-items:center}.pr-own .chip a{margin-left:6px;color:var(--dn);text-decoration:none}
+.pr-r{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-top:1px solid var(--ln);font-size:14px}.pr-r>div{min-width:0}.pr-ra{text-align:right;flex:none}.dn-t{color:var(--dn)}
 </style><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"></head><body>
 <div id="boot" class="empty" style="padding-top:30vh">Loading…</div>
 
@@ -82,12 +93,13 @@ body{font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-web
 
 <div id="app" class="hid">
 <header class="top"><div class="w"><span class="logo">BFT <i>Admin</i></span><span class="sp"></span><span class="who" id="who"></span><a class="btn s o" href="academy.html" target="_blank" rel="noopener" style="text-decoration:none">View Academy ↗</a><button class="btn s o" id="out">Sign out</button></div></header>
-<nav class="nav" id="nav"><button data-v="dash" class="on"><i><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg></i>Dashboard</button><button data-v="content"><i><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="m10 9 5 3-5 3z"/></svg></i>Content</button><button data-v="students"><i><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14.3c2 .7 3.5 2.6 3.5 5.7"/></svg></i>Students</button><button data-v="analytics"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V11M10 20V4M16 20v-6M22 20H2"/></svg></i>Analytics</button><button data-v="settings"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg></i>Settings</button></nav>
+<nav class="nav" id="nav"><button data-v="dash" class="on"><i><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg></i>Dashboard</button><button data-v="content"><i><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="m10 9 5 3-5 3z"/></svg></i>Content</button><button data-v="students"><i><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14.3c2 .7 3.5 2.6 3.5 5.7"/></svg></i>Students</button><button data-v="pricing"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h10M7 9h10M7 5c5 0 5 8 0 8l7 6"/></svg></i>Pricing</button><button data-v="analytics"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V11M10 20V4M16 20v-6M22 20H2"/></svg></i>Analytics</button><button data-v="settings"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg></i>Settings</button></nav>
 <main class="w">
  <section id="v-dash"></section>
  <section id="v-content" class="hid"><div class="tools"><input id="q" type="search" placeholder="Search content…" aria-label="Search content"></div><div class="chips" id="kf" style="margin-bottom:14px"></div><div id="list"></div><button class="btn fab" id="new">＋ New</button></section>
  <section id="v-settings" class="hid"></section>
  <section id="v-analytics" class="hid"></section>
+ <section id="v-pricing" class="hid"></section>
  <section id="v-students" class="hid"><div class="tools"><input id="sq" type="search" placeholder="Search students…" aria-label="Search students"><button class="btn" id="sadd">＋ Add</button><button class="btn o" id="scsv">Export CSV</button></div><div class="row" id="ssum" style="margin-bottom:12px"></div><div id="slist"></div></section>
 </main></div>
 <div id="s1" class="sheet hid"></div><div id="s2" class="sheet l2 hid"></div><div id="dlg" class="dlg hid"></div><div id="toast" role="status"></div>
@@ -137,7 +149,7 @@ const stat=s=>{if(!s.expires_at)return{t:'Lifetime',c:'ok',on:1};const d=new Dat
 function renderAll(){renderDash();renderContent();renderStudents();if(S.view==='settings'&&!document.activeElement.closest('#v-settings'))renderSettings()}
 
 /* ---------- navigation ---------- */
-function view(v){S.view=v;$$('.nav button').forEach(b=>b.classList.toggle('on',b.dataset.v===v));['dash','content','students','analytics','settings'].forEach(x=>$('#v-'+x).classList.toggle('hid',x!==v));if(v==='settings')renderSettings();if(v==='analytics')loadAnalytics();scrollTo(0,0)}
+function view(v){S.view=v;$$('.nav button').forEach(b=>b.classList.toggle('on',b.dataset.v===v));['dash','content','students','pricing','analytics','settings'].forEach(x=>$('#v-'+x).classList.toggle('hid',x!==v));if(v==='settings')renderSettings();if(v==='analytics')loadAnalytics();if(v==='pricing')loadPricing();scrollTo(0,0)}
 $('#nav').onclick=e=>{const b=e.target.closest('button');if(b)view(b.dataset.v)};
 
 /* ---------- dashboard ---------- */
@@ -461,6 +473,59 @@ $('#v-analytics').onclick=async e=>{const b=e.target.closest('[data-d]');if(b){S
   const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([rows.map(r=>r.map(q).join(',')).join('\n')],{type:'text/csv'}));a.download='bft-analytics-'+new Date().toISOString().slice(0,10)+'.csv';a.click();return}
  if(e.target.closest('#an_purge')){const days=+$('#an_pd').value;if(!await ask(days?'Delete old analytics?':'Delete ALL analytics?',days?'Visits and actions older than '+days+' days will be removed. This cannot be undone.':'Every recorded visit and action will be removed. This cannot be undone.','Delete',true))return;
   const{data,error}=await sb.rpc('admin_purge_analytics',{p_days:days});if(error)return toast(error.message);toast(num(data)+' rows deleted');S.an.data=null;loadAnalytics()}};
+
+/* ---------- pricing & payments ---------- */
+S.pr={prod:[],pay:[],err:''};
+async function loadPricing(){
+ const[a,c]=await Promise.all([sb.from('products').select('*').order('sort'),sb.from('payments').select('*').order('created_at',{ascending:false}).limit(1000)]);
+ S.pr.err=a.error?a.error.message:'';S.pr.prod=a.data||[];S.pr.pay=c.data||[];renderPricing()}
+const prN=v=>v===''||v==null?null:Math.max(0,Math.round(+v)||0);
+const prName=pid=>{if(!pid)return'—';if(pid.startsWith('item:')){const i=S.items.find(x=>'item:'+x.id===pid);return i?i.title:'Removed item'}const p=S.pr.prod.find(x=>x.id===pid);return p?p.name:pid};
+function renderPricing(){
+ const el=$('#v-pricing');
+ if(S.pr.err){el.innerHTML=`<h1 style="margin:4px 0 14px">Pricing</h1><div class="alert dn"><span>⛔</span><div><b>Pricing tables not found</b><span class="mu">Run schema_pricing.sql once in Supabase → SQL Editor, then reload. (${esc(S.pr.err)})</span></div></div>`;return}
+ const fld=(id,l,v,ph)=>`<div><label for="${id}">${l}</label><input id="${id}" type="number" min="0" inputmode="numeric" value="${v??''}" placeholder="${ph||''}"></div>`;
+ const P=S.pr.prod,items=S.items.slice().sort((a,b)=>a.kind.localeCompare(b.kind)||a.title.localeCompare(b.title));
+ el.innerHTML=`<div class="row spb" style="margin:4px 0 14px"><h1>Pricing &amp; Payments</h1></div>
+ <div class="card"><h2>Tools, bundle &amp; Academy</h2><p class="mu pr-n">Leave a price empty to hide that plan. Free minutes / entries: empty = unlimited free, 0 = no free use. Free limits are counted in the visitor's browser.</p>
+ ${P.map((p,i)=>`<div class="pr-p"><div class="row spb"><div><b>${esc(p.name)}</b> <span class="mu">· ${esc(p.id)}</span></div><label class="chk" style="margin:0"><input type="checkbox" id="pp_on${i}" ${p.active?'checked':''}> On sale</label></div>
+ <div class="pr-g">${fld('pp_o'+i,'One-time ₹',p.price_once)}${p.kind==='academy'?'':fld('pp_m'+i,'Monthly ₹ (30 days)',p.price_month)}${p.kind==='academy'?'':fld('pp_t'+i,'Free minutes',p.trial_minutes,'unlimited')}${p.id==='journal'?fld('pp_e'+i,'Free entries',p.free_entries,'unlimited'):''}</div>
+ <button class="btn s" data-prs="${i}">Save</button></div>`).join('')}
+ <details class="pr-add"><summary class="mu">＋ Add another product</summary><div class="pr-g"><div><label for="np_id">Code (letters)</label><input id="np_id" placeholder="scanner"></div><div><label for="np_name">Name</label><input id="np_name" placeholder="Scanner"></div></div><button class="btn s" id="np_go">Add</button></details></div>
+ <div class="card"><h2>Single PDF / course / indicator prices</h2><p class="mu pr-n">Empty price = available only through Academy. Set a price to let people buy just that item.</p>
+ ${items.length?items.map(x=>`<div class="pr-i"><div class="pr-in"><span>${(KIND[x.kind]||['',''])[0]}</span><div><b>${esc(x.title)}</b><small class="mu">${(KIND[x.kind]||['',x.kind])[1]}${x.free?' · FREE':''}${x.published?'':' · draft'}</small></div></div><input id="ip_${x.id}" type="number" min="0" inputmode="numeric" placeholder="₹" value="${x.price??''}" aria-label="Price of ${esc(x.title)}"><button class="btn s" data-pri="${x.id}">Save</button></div>`).join(''):'<p class="mu">No content yet.</p>'}</div>
+ <div class="card"><h2>Customer lookup</h2><p class="mu pr-n">Someone WhatsApps you? Type their mobile number or email.</p><div class="tools"><input id="pr_q" type="search" placeholder="Mobile or email" aria-label="Mobile or email"><button class="btn" id="pr_qb">Search</button></div><div id="pr_res"></div></div>
+ <div class="card"><h2>Add a payment by hand (UPI / WhatsApp)</h2><div class="pr-g"><div><label for="g_e">Customer email</label><input id="g_e" type="email" placeholder="name@gmail.com"></div><div><label for="g_p">Mobile</label><input id="g_p" type="tel" placeholder="optional"></div>
+ <div><label for="g_pr">Bought</label><select id="g_pr">${P.map(p=>`<option value="${esc(p.id)}">${esc(p.name)}</option>`).join('')}${items.map(x=>`<option value="item:${esc(x.id)}">${esc((KIND[x.kind]||['',''])[1])}: ${esc(x.title)}</option>`).join('')}</select></div>
+ <div><label for="g_pl">Plan</label><select id="g_pl"><option value="once">One-time (lifetime)</option><option value="month">Monthly (+30 days)</option></select></div>${fld('g_a','Amount received ₹','')}</div>
+ <button class="btn" id="g_go" style="margin-top:14px">Save payment &amp; unlock</button></div>`;
+ prSearch()}
+async function prSearch(){
+ const q=($('#pr_q')?.value||'').trim().toLowerCase(),d=q.replace(/\D/g,''),box=$('#pr_res');if(!box)return;
+ const L=S.pr.pay.filter(r=>!q||(r.email||'').toLowerCase().includes(q)||(d.length>=4&&(r.phone||'').includes(d)));
+ const tot=L.filter(r=>r.status==='captured').reduce((n,r)=>n+(r.amount||0),0);
+ let own='';if(q&&L.length){const em=L[0].email,e=await sb.from('entitlements').select('*').eq('email',em);
+  own=(e.data||[]).length?`<div class="pr-own"><b>${esc(em)}</b> has: ${(e.data||[]).map(x=>`<span class="chip on">${esc(prName(x.product_id))} · ${x.expires_at?'till '+fmtD(x.expires_at):'lifetime'} <a href="#" data-prx="${esc(x.email)}|${esc(x.product_id)}" title="Remove access" aria-label="Remove access">✕</a></span>`).join(' ')}</div>`:`<div class="pr-own mu">${esc(em)} has no active access.</div>`}
+ box.innerHTML=`<div class="pr-sum"><b>${L.length}</b> payment${L.length==1?'':'s'} · total <b>${rs(tot)}</b></div>${own}`+(L.slice(0,100).map(r=>`<div class="pr-r"><div><b>${esc(prName(r.product_id))}</b><small class="mu">${esc(r.email)}${r.phone?' · '+esc(r.phone):''}</small></div><div class="pr-ra"><b>${rs(r.amount)}</b><small class="${r.status==='captured'?'':'dn-t'}">${fmtD(r.created_at)} · ${esc(r.plan||'')} · ${esc(r.source||'')}${r.status==='captured'?'':' · '+esc(r.status||'')}</small></div></div>`).join('')||'<p class="mu">No payments found.</p>')}
+$('#v-pricing').addEventListener('input',e=>{if(e.target.id==='pr_q')prSearch()});
+$('#v-pricing').addEventListener('click',async e=>{
+ const t=e.target.closest('[data-prs],[data-pri],[data-prx],#np_go,#pr_qb,#g_go');if(!t)return;
+ if(t.dataset.prx!==undefined){e.preventDefault();const[em,pid]=t.dataset.prx.split('|');if(!await ask('Remove access?',em+' will lose access to '+prName(pid)+'.','Remove',true))return;const r=await sb.from('entitlements').delete().eq('email',em).eq('product_id',pid);if(r.error)return toast(r.error.message);toast('Access removed');return prSearch()}
+ if(t.id==='pr_qb')return prSearch();
+ if(t.dataset.prs!==undefined){const i=+t.dataset.prs,p=S.pr.prod[i],g=id=>$('#'+id+i),row={price_once:prN(g('pp_o')?.value),price_month:p.kind==='academy'?null:prN(g('pp_m')?.value),trial_minutes:p.kind==='academy'?null:prN(g('pp_t')?.value),free_entries:g('pp_e')?prN(g('pp_e').value):p.free_entries,active:g('pp_on').checked,updated_at:new Date().toISOString()};
+  const r=await sb.from('products').update(row).eq('id',p.id);if(r.error)return toast(r.error.message);
+  if(p.id==='academy'&&row.price_once!=null){const s=await sb.from('site_settings').select('data').eq('id',1).maybeSingle(),d=(s.data&&s.data.data)||{};d.price=row.price_once;await sb.from('site_settings').upsert({id:1,data:d,updated_at:new Date().toISOString()});if(S.settings)S.settings.price=row.price_once}
+  toast('Saved '+p.name);return loadPricing()}
+ if(t.dataset.pri){const x=S.items.find(y=>y.id===t.dataset.pri),v=prN($('#ip_'+t.dataset.pri).value),r=await sb.from('items').update({price:v}).eq('id',x.id);if(r.error)return toast(r.error.message);x.price=v;return toast('Saved '+x.title)}
+ if(t.id==='np_go'){const id=$('#np_id').value.trim().toLowerCase().replace(/[^a-z0-9_]/g,''),nm=$('#np_name').value.trim();if(!id||!nm)return toast('Enter a code and a name');const r=await sb.from('products').insert({id,name:nm,kind:'tool',sort:99});if(r.error)return toast(r.error.message);toast('Added');return loadPricing()}
+ if(t.id==='g_go'){const em=$('#g_e').value.trim().toLowerCase(),pid=$('#g_pr').value,item=pid.startsWith('item:'),plan=item?'once':$('#g_pl').value,amt=prN($('#g_a').value),ph=$('#g_p').value.replace(/\D/g,'').slice(-12)||null;
+  if(!/^\S+@\S+\.\S+$/.test(em)||amt==null)return toast('Enter a valid email and the amount');
+  let exp=null;if(plan==='month'){const c=await sb.from('entitlements').select('expires_at').eq('email',em).eq('product_id',pid).maybeSingle();exp=(c.data&&c.data.expires_at===null)?null:new Date(Math.max(Date.now(),c.data&&c.data.expires_at?Date.parse(c.data.expires_at):0)+30*864e5).toISOString()}
+  const a=await sb.from('payments').insert({payment_id:'man_'+Date.now(),email:em,phone:ph,amount:amt,status:'captured',product_id:pid,plan,source:'manual'});if(a.error)return toast(a.error.message);
+  const b=await sb.from('entitlements').upsert({email:em,product_id:pid,plan,expires_at:exp,amount:amt,phone:ph},{onConflict:'email,product_id'});if(b.error)return toast(b.error.message);
+  if(pid==='academy')await sb.from('students').upsert({email:em,phone:ph,amount:amt,expires_at:null,note:'manual payment'},{onConflict:'email'});
+  toast('Done. '+em+' now has '+prName(pid)+(exp?' until '+fmtD(exp):''));['g_e','g_p','g_a'].forEach(k=>$('#'+k).value='');return loadPricing()}
+});
 
 sb.auth.onAuthStateChange(ev=>{if(ev==='SIGNED_OUT')showLogin()});
 init().catch(e=>showLogin(e.message));
