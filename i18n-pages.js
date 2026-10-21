@@ -16,6 +16,15 @@ const RULES=[
 [/^Your trade #(\d+) averages (.+) \((\d+) trades\)\. Consider stopping at$/,m=>'आपका ट्रेड #'+m[1]+' औसतन '+m[2]+' देता है ('+m[3]+' ट्रेड)। रुकने पर विचार करें:']
 ];
 const HI={
+"Questions? Talk to a real person": "सवाल? असली इंसान से बात करें",
+"Payment help, refunds, partnerships or just a doubt about the Lab. We reply within 1 working day": "पेमेंट में मदद, रिफ़ंड, पार्टनरशिप या लैब के बारे में कोई भी सवाल। हम 1 कार्य-दिवस में जवाब देते हैं",
+"WhatsApp": "व्हाट्सऐप",
+"Best for payments, refunds and details": "पेमेंट, रिफ़ंड और डिटेल के लिए सबसे अच्छा",
+"Quick questions, chat with us": "छोटे सवाल, हमसे चैट करें",
+"Support hours": "सपोर्ट का समय",
+"Mon to Sat, 10:00 to 19:00 IST": "सोम से शनि, सुबह 10:00 से शाम 7:00 IST",
+"See all contact details": "सारी संपर्क जानकारी देखें",
+"Chat with us": "हमसे चैट करें",
 "On your device, in this browser. Use Export for a backup. Cloud sync is planned": "आपके डिवाइस पर, इसी ब्राउज़र में। बैकअप के लिए Export इस्तेमाल करें। क्लाउड सिंक आने वाला है",
 "Academy": "एकेडमी",
 "See the Academy": "एकेडमी देखें",
