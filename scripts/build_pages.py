@@ -3,6 +3,9 @@
 Edit the values in B below, then run:  python3 scripts/build_pages.py
 Pages are plain HTML (no JavaScript needed to read them), so payment-gateway reviewers and crawlers can see the text."""
 import html, pathlib
+import sys
+if "--force" not in sys.argv:
+    sys.exit("STOP: this script is out of date. The live policy pages (terms, privacy, refund, pricing, contact, about, legal) now have theme toggle, language switch, analytics and SEO tags that this script does not write. Running it would REMOVE them. If you really want to regenerate, back up first and run: python scripts/build_pages.py --force")
 B = dict(
     name="BFT Trade Lab", updated="19 October 2026", city="Jaipur", state="Rajasthan",
     address="58A, Udyog Nagar, Jhotwara, Jaipur 302012, Rajasthan, India",   # full postal address (Razorpay asks for it)
