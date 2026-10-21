@@ -51,7 +51,11 @@ a.card:hover{border-color:rgba(91,156,255,.6);box-shadow:0 22px 50px -22px rgba(
 footer{border-top:1px solid var(--ln);padding:26px 0 40px;color:var(--mu);font-size:13px;text-align:center}footer a{margin:0 8px}footer a:hover{color:var(--tx)}
 .rv{opacity:0;transform:translateY(12px);transition:opacity .6s,transform .6s}.rv.in{opacity:1;transform:none}
 @media(max-width:900px){.hg,.acad{grid-template-columns:1fr}.bento{grid-template-columns:1fr 1fr}.path{grid-template-columns:1fr 1fr}.feat{grid-template-columns:1fr 1fr}.kpis{grid-template-columns:1fr 1fr}nav .l.h{display:none}}
-@media(max-width:700px){nav .w{overflow-x:auto;scrollbar-width:none}nav .w::-webkit-scrollbar{display:none}nav .w>.btn.s,nav .w>.sp{display:none}nav #lgslot,nav #thslot{position:sticky;background:var(--bg);z-index:2}nav #lgslot{right:46px;margin-left:auto}nav #thslot{right:0}}
+.nl{display:contents}
+@media(max-width:700px){nav .w{flex-wrap:wrap;height:auto;padding-top:6px;padding-bottom:2px;row-gap:0}nav .w>.btn.s,nav .w>.sp{display:none}
+nav .lg{order:1;flex:1;margin-right:0}nav #lgslot{order:2}nav #thslot{order:3}
+nav .nl{order:4;flex:1 0 100%;display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;padding:0 0 4px}nav .nl::-webkit-scrollbar{display:none}
+nav .nl .l{padding:8px 11px}nav details{position:static}nav .dd{top:calc(100% + 4px);left:20px;z-index:40}}
 @media(max-width:620px){.bento,.path,.feat{grid-template-columns:1fr}.bento .c2{grid-column:auto}.hero{padding-top:34px}.viz canvas{height:230px}.sec{padding:44px 0}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}.rv{opacity:1;transform:none}}
 </style><script type="application/ld+json">{"@context":"https://schema.org","@type":"EducationalOrganization","name":"BFT Trade Lab","url":"https://saifanwarjobs-tech.github.io/Backward-Forward-Test-Trade-Lab/","logo":"https://saifanwarjobs-tech.github.io/Backward-Forward-Test-Trade-Lab/icon-512.png","description":"Trading education and practice platform: Academy, Testing Lab, Journal and Market Movers. No tips or signals.","address":{"@type":"PostalAddress","addressLocality":"Jaipur","addressRegion":"Rajasthan","addressCountry":"IN"}}</script></head><body>
@@ -68,8 +72,8 @@ footer{border-top:1px solid var(--ln);padding:26px 0 40px;color:var(--mu);font-s
 <symbol id="ind" viewBox="0 0 24 24"><path d="M3 20V4M3 20h18"/><path d="M7 15l4-5 3 3 5-6"/></symbol>
 </defs></svg>
 
-<nav><div class="w"><a class="lg" href="index.html">BFT <i>Trade Lab</i></a><a class="l" href="academy.html">Academy</a><a class="l" href="trade-lab-pro.html">Testing Lab</a><a class="l" href="classroom.html">Classroom</a><a class="l" href="journal.html">Journal</a>
-<details><summary class="l">More ▾</summary><div class="dd"><a href="tools.html"><svg class="i"><use href="#tls"/></svg>Tools</a><a href="screener.html"><svg class="i"><use href="#mov"/></svg>Market Movers</a><a href="reality.html"><svg class="i"><use href="#rea"/></svg>Reality Check</a></div></details>
+<nav><div class="w"><a class="lg" href="index.html">BFT <i>Trade Lab</i></a><div class="nl"><a class="l" href="academy.html">Academy</a><a class="l" href="trade-lab-pro.html">Testing Lab</a><a class="l" href="classroom.html">Classroom</a><a class="l" href="journal.html">Journal</a>
+<details><summary class="l">More ▾</summary><div class="dd"><a href="tools.html"><svg class="i"><use href="#tls"/></svg>Tools</a><a href="screener.html"><svg class="i"><use href="#mov"/></svg>Market Movers</a><a href="reality.html"><svg class="i"><use href="#rea"/></svg>Reality Check</a></div></details></div>
 <span class="sp"></span><span id="lgslot"></span><span id="thslot"></span><a class="btn g s" href="academy.html">Academy dekho</a></div></nav>
 
 <header class="hero"><div class="w"><div class="hg"><div>
