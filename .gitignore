@@ -1,3 +1,7 @@
 node_modules
 dist
 .env
+
+# full price data stays private; only the truncated public files and holdout/ are deployed
+_private-full-data/
+holdout/

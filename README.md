@@ -26,6 +26,8 @@ Academy setup (once):
 
 Before charging: confirm the data licence for the CSV files, set up custom SMTP in Supabase (the default sender is heavily rate-limited), and add a support email in `legal.html` (`B.email`).
 
+Forward test (honest version): rules are locked on the server and the reserved candles are kept in a private Supabase bucket, released only after the lock. Setup and details: `FORWARD_SETUP.md`. Price files in the site root are now only the public (backtest) part; to rebuild them from the full data run `python3 scripts/split_holdout.py` (see `FORWARD_SETUP.md`).
+
 Payment is still manual UPI + WhatsApp (temporary). See DECISIONS.md.
 
 ## Market Movers (screener) setup

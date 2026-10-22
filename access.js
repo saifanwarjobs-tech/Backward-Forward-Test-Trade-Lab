@@ -36,7 +36,7 @@ function show(o){close();const msg=h('div',{style:'font-size:13px;margin-top:8px
   h('div',{style:'background:#0f1626;color:#e8eefb;border:1px solid #3a4666;border-radius:18px;padding:22px;max-width:440px;width:100%;max-height:92vh;overflow:auto'},
    h('div',{style:'font-size:34px;text-align:center'},'🔒'),h('h3',{style:'text-align:center;margin:4px 0'},o.title),h('p',{style:'text-align:center;color:#8e9bb8;font-size:14px'},o.text||''),
    em,ph,...cards,
-   h('details',{style:'margin-top:12px;font-size:13px;color:#8e9bb8'},h('summary',{style:'cursor:pointer'},'Already paid? Sign in'),pw,
+   h('details',Object.assign({style:'margin-top:12px;font-size:13px;color:#8e9bb8'},o.open?{open:''}:{}),h('summary',{style:'cursor:pointer'},o.open?'Sign in':'Already paid? Sign in'),pw,
     h('div',{style:'display:flex;gap:8px;margin-top:8px'},h('button',{style:btn('#6aa5ff','#06101f'),onclick:()=>sign(false)},'Sign in'),h('button',{style:btn('#2a3350','#e8eefb'),onclick:()=>sign(true)},'Create account'))),
    msg,o.blocking?'':h('button',{style:'display:block;margin:10px auto 0;background:none;border:0;color:#8e9bb8;cursor:pointer',onclick:close},'Not now'),
    h('p',{style:'font-size:11px;color:#6b7896;text-align:center;margin-top:10px'},'Education & practice tool. No tips or advice. See Terms and Refund policy.')));
@@ -70,6 +70,12 @@ function openTool(blocking){const p=P[TOOL]||{};show({title:blocking?'Free trial
 async function tick(){if(document.hidden||entitled())return;const p=P[TOOL];if(!p||p.trial_minutes==null)return;secs+=5;try{localStorage.setItem(TK,secs)}catch(e){}upBadge();if(secs>=p.trial_minutes*60&&!box)openTool(true)}
 /* ---------- public API ---------- */
 window.BFTX={pro:()=>entitled(),upsell:()=>openTool(false),owns,ready:()=>init(),
+ sb:()=>sb,                 // the Supabase client (null until ready() resolves, or if the library did not load)
+ email:()=>email,           // signed-in email, '' if signed out
+ /* show the sign-in box; resolves true once the user is signed in, false if they close it */
+ login(why){return init().then(()=>new Promise(res=>{if(email)return res(true);
+  show({title:'Sign in to continue',text:why||'Create a free account or sign in.',options:[],blocking:false,open:true,owned:()=>!!email});
+  const t=setInterval(()=>{if(email){clearInterval(t);res(true)}else if(!box){clearInterval(t);res(false)}},400)}))},
  entry(count){const p=P[TOOL];if(!p||p.free_entries==null||entitled()||count<p.free_entries)return true;
   show({title:'Free entries used',text:`You have used your ${p.free_entries} free journal entries. Unlock to keep logging.`,options:toolOptions(),blocking:false,owned:entitled});return false},
  async sell(x){await init();const pid='item:'+x.id;let pr=x.price;if(pr==null){const r=await rest('items?select=price&id=eq.'+encodeURIComponent(x.id));pr=r[0]&&r[0].price}

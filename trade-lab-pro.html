@@ -151,7 +151,7 @@ const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const K={bt:'bftp_bt',fw:'bftp_fw',pf:'bftp_pf'},ld=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))||d}catch(e){return d}};
 let PF=Object.assign({theme:'dark',up:'#16c784',dn:'#ea3943',grid:1,lot:30,spread:2,start:1000000,ix:{},fee:20,pct:.0003,cur:'₹',prof:'NSE',chg:'nse',mgn:.1,dec:0,px:1},ld(K.pf,{}));
 {const g=window.BFTT&&BFTT.stored();if(g&&(PF.theme==='dark'||PF.theme==='light'))PF.theme=g;if(window.BFTT)BFTT.def(PF.theme==='light'?'light':'dark')}
-var PL=null;let D,S,mode='bt',tool='c',tf=5,zoom=90,off=0,mx=-1,my=-1,drag=null,timer=null,tab='pos',C=[],T={},ds=[],FWS=0,PATH=null,PP=null,PAD=6,SC=null,BM=5,SO=555,INS='BANKNIFTY',MAN=false,MR=null,DEC=1,SEL=null,PEND=null,HX=[];
+var PL=null;let D,S,mode='bt',tool='c',tf=5,zoom=90,off=0,mx=-1,my=-1,drag=null,timer=null,tab='pos',C=[],T={},ds=[],FWS=0,HO=null,KEEP=false,PATH=null,PP=null,PAD=6,SC=null,BM=5,SO=555,INS='BANKNIFTY',MAN=false,MR=null,DEC=1,SEL=null,PEND=null,HX=[];
 const R=n=>{const d=PF.dec||0;return(n<0?'-':'')+(PF.cur||'₹')+Math.abs(d?n:Math.round(n)).toLocaleString(d&&PF.cur==='$'?'en-US':'en-IN',{minimumFractionDigits:d,maximumFractionDigits:d})},sum=a=>a.reduce((x,y)=>x+y,0);
 const css=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
 function toast(t){const e=$('#toast');e.textContent=t;e.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(()=>e.style.display='none',2400)}
@@ -171,7 +171,7 @@ function fastDate(s,tm){const n=s.length;if(n<10)return null;let y,mo,dy,hh,mi;c
  else if(n===10&&sp(2)&&sp(5)&&tm){dy=c(0)*10+c(1);mo=c(3)*10+c(4);y=c(6)*1000+c(7)*100+c(8)*10+c(9);const k=tm.indexOf(':');if(k<1)return null;hh=+tm.slice(0,k)||0;mi=+tm.substr(k+1,2)||0}
  else return null;
  if(!(y>999&&mo>=1&&mo<=12&&dy>=1&&dy<=31&&hh>=0&&hh<24&&mi>=0&&mi<60))return null;return new Date(y,mo-1,dy,hh,mi)}
-function boot(txt,name,tag){const CR=/BTC|ETH|XBT/i.test(name||''),SUN=!CR&&/XAU|GOLD|XAG|EUR|GBP|JPY|USD/i.test(name||'');if(/^\s*[\[{]/.test(txt)){try{txt=json2csv(txt)}catch(e){toast('Could not read this JSON file');return}}
+function boot(txt,name,tag,ho){if(!KEEP)HO=ho?{id:ho,n:name,t:tag,txt:txt,cut:null,loaded:false}:null;const CR=/BTC|ETH|XBT/i.test(name||''),SUN=!CR&&/XAU|GOLD|XAG|EUR|GBP|JPY|USD/i.test(name||'');if(/^\s*[\[{]/.test(txt)){try{txt=json2csv(txt)}catch(e){toast('Could not read this JSON file');return}}
  const L=txt.split(/\r?\n/);if(/^\d/.test(L[0])){const sp0=L[0].includes('\t')?'\t':L[0].includes(';')?';':',',q=L[0].split(/[,;\t]/);L.unshift((q[1]&&q[1].includes(':')?['Date','Time','Open','High','Low','Close','Volume']:['Date','Open','High','Low','Close','Volume']).join(sp0))}
  const sep=L[0].includes('\t')?'\t':L[0].includes(';')?';':',',H=L[0].toLowerCase().split(sep).map(x=>x.replace(/["']/g,'').trim()),f=re=>H.findIndex(h=>re.test(h));
  let ci={o:f(/^(open|o)$/),h:f(/^(high|h)$/),l:f(/^(low|l)$/),c:f(/^(close|c)$/)},dc=f(/date/);if(dc<0)dc=f(/time|stamp/);let tc=H.findIndex((h,i)=>/^time$/.test(h)&&i!==dc);
@@ -182,17 +182,17 @@ function boot(txt,name,tag){const CR=/BTC|ETH|XBT/i.test(name||''),SUN=!CR&&/XAU
   const ts=d.getTime();if(isNaN(ts))continue;t[k]=ts;o[k]=+p[ci.o];h[k]=+p[ci.h];l[k]=+p[ci.l];c[k]=+p[ci.c];const su=SUN&&d.getDay()===0,dd=su?new Date(d.getFullYear(),d.getMonth(),d.getDate()+1):d;dk[k]=dd.getFullYear()*10000+(dd.getMonth()+1)*100+dd.getDate();mm[k]=d.getHours()*60+d.getMinutes()-(su?1440:0);k++}
  if(k<500){toast('Could not read enough rows. Check the CSV format');return}
  let b2=1e9;for(let i=1;i<Math.min(k,400);i++){const df=(t[i]-t[i-1])/6e4;if(df>0&&df<b2)b2=df}BM=Math.round(b2)||5;
- D={n:k,t,o,h,l,c,dk,mm};ds=[];for(let i=0;i<k;i++)if(i===0||dk[i]!==dk[i-1])ds.push(i);SO=mm[ds[ds.length>>1]];FWS=ds.find(x=>x>=Math.floor(k*.75));
+ D={n:k,t,o,h,l,c,dk,mm};ds=[];for(let i=0;i<k;i++)if(i===0||dk[i]!==dk[i-1])ds.push(i);SO=mm[ds[ds.length>>1]];if(HO&&HO.cut==null)HO.cut=k;FWS=HO?HO.cut:ds.find(x=>x>=Math.floor(k*.75));if(KEEP){KEEP=false;HO.loaded=true;return true}
  INS=name||'DATA';const PR=/BTC|ETH|XBT/i.test(INS)?{prof:'CRYPTO',lot:.01,spread:10,start:10000,cur:'$',fee:0,pct:.0005,chg:'pct',mgn:.1,dec:0,px:1}:/XAU|GOLD/i.test(INS)?{prof:'GOLD',lot:10,spread:.4,start:10000,cur:'$',fee:0,pct:0,chg:'none',mgn:.01,dec:2,px:2}:/NIFTY|BANK/i.test(INS)?{prof:'NSE',lot:30,spread:2,start:1000000,cur:'₹',fee:20,pct:.0003,chg:'nse',mgn:.1,dec:0,px:1}:null;
  if(PR&&PF.prof!==PR.prof){const PK=['lot','spread','start','cur','fee','pct','chg','mgn','dec','px'];PF.pp=PF.pp||{};PF.pp[PF.prof]=Object.fromEntries(PK.map(k=>[k,PF[k]]));Object.assign(PF,PR,PF.pp[PR.prof]||{},{prof:PR.prof});applyPF()}const sl=(INS+(tag||'')).replace(/\W+/g,'').toLowerCase()||'data';K.bt='bftp_bt_'+sl;K.fw='bftp_fw_'+sl;$('#ins').textContent=INS;
  const op=[1,3,5,10,15,30,60].concat(SUN||CR?[240,1440]:[]).filter(x=>x>=BM&&x%BM===0);tf=op.includes(5)?5:op[0];$('#tf').innerHTML=op.map(x=>`<option value="${x}">${x>=1440?'D1':x>=60?'H'+x/60:'M'+x}</option>`).join('');$('#tf').value=tf;
  SC=null;PATH=null;S=null;mode='bt';MAN=false;MR=null;off=0;$('#scb').style.display='none';$('#ld').classList.remove('on');setMode('bt');return true}
-function fresh(m){const pool=ds.filter(x=>x<FWS-Math.min(3000,Math.floor(FWS*.4))),i=m==='fw'?FWS+12:pool[Math.floor(pool.length*(.05+Math.random()*.9))]+12;
+function fresh(m){const pool=ds.filter(x=>x<FWS-Math.min(3000,Math.floor(FWS*.4))),i=m==='fw'?(HO?FWS-1:FWS+12):pool[Math.floor(pool.length*(.05+Math.random()*.9))]+12;
  return{idx:i,bal:PF.start,start:PF.start,pos:[],ord:[],hist:[],dr:[],nid:1,locked:false,rules:'',lockedAt:0,blind:false}}
 const save=()=>{if(mode!=='sc')localStorage.setItem(K[mode],JSON.stringify(S))};
-function setMode(m){if(S)save();pause();mode=m;UND=[];S=ld(K[m],null)||fresh(m);S.ord=S.ord||[];off=0;MAN=false;MR=null;SEL=null;PEND=null;dtbUI();$$('.mt').forEach(b=>b.classList.toggle('on',b.dataset.m===m));
+function setMode(m){if(S)save();pause();mode=m;UND=[];S=ld(K[m],null)||fresh(m);S.ord=S.ord||[];if(HO){if(m==='fw'&&S.locked&&!S.attempt){S=fresh('fw');toast('The forward test now runs on server-held data. Please lock your rules again.')}if(m==='bt'&&S.idx>FWS-1)S=fresh('bt');if(m==='fw'&&!HO.loaded&&S.idx>=D.n){S._w=S._w||S.idx;S.idx=D.n-1}}off=0;MAN=false;MR=null;SEL=null;PEND=null;dtbUI();$$('.mt').forEach(b=>b.classList.toggle('on',b.dataset.m===m));
  $('#fwb').style.display=m==='fw'?'block':'none';$('#btc').style.display=m==='bt'?'inline':'none';$('#bkb').style.display=m==='bt'?'':'none';$('#bl').checked=!!S.blind;$('#rules').value=S.rules;$('#rules').readOnly=S.locked;$('#lk').style.display=S.locked?'none':'block';document.body.classList.toggle('fwu',m==='fw'&&!S.locked);
- $('#lki').textContent=S.locked?'Locked on '+new Date(S.lockedAt).toLocaleString('en-IN')+'. Rules cannot be changed. Reset the demo account to start a new version.':'Forward mode stays locked until you lock your rules.';refresh()}
+ $('#lki').textContent=S.locked?'Locked on '+new Date(S.lockedAt).toLocaleString('en-IN')+(S.attempt?' by our server clock (attempt '+S.attempt+')':'')+'. Rules cannot be changed. Reset the demo account to start a new version (it counts as a new attempt).':(HO?'The reserved period is kept on our server and opens only after you lock your rules (free sign-in).':'Forward mode stays locked until you lock your rules.');refresh();if(m==='fw')fwSync()}
 /* ---------- candles ---------- */
 function build(){const cap=zoom+off+70,key=j=>{const b=Math.floor((D.mm[j]-SO)/tf);return D.dk[j]*10000+(tf>=1440?Math.max(0,b):b)},out=[];let i=S.idx;
  while(i>=0&&out.length<cap){const k=key(i),e=i;let h=-1e9,l=1e9;while(i>=0&&key(i)===k){if(D.h[i]>h)h=D.h[i];if(D.l[i]<l)l=D.l[i];i--}const s=i+1;out.push({s,e,o:D.o[s],h,l,c:D.c[e]})}
@@ -282,7 +282,7 @@ function closeP(id,px,why,q){const p=S.pos.find(x=>x.id===id);if(!p)return;const
  const pts=p.side==='B'?px-p.entry:p.entry-px,cs=tradeCost(p,px,D.t[S.idx]),net=pts*p.qty-cs.total;S.bal+=net;
  S.hist.push({n:S.hist.length+1,side:p.side,lots:p.lots,entry:p.entry,exit:px,pts,net,cost:cs.total,cb:cs.stt!=null?cs:null,why:why||'Manual',tag:p.tag||'',t0:D.t[p.i0],t1:D.t[S.idx]});S.pos=S.pos.filter(x=>x!==p);save();if(!q)refresh()}
 const closeAll=w=>{S.pos.slice().forEach(p=>closeP(p.id,null,w||'Manual',1));S.ord=[];save();refresh()};
-function canStep(){if(mode==='fw'&&!S.locked){toast('🔒 Lock your strategy rules first');return false}return true}
+function canStep(){if(mode==='fw'&&!S.locked){toast('🔒 Lock your strategy rules first');return false}if(mode==='fw'&&HO&&!HO.loaded){toast('Loading the reserved data...');return false}return true}
 let UND=[],RP=-1;/* RP = candle index previewed by the Replay-from-here tool */
 function rpIdx(px){const k=Math.max(0,Math.min(C.length-1,Math.floor(px/T.slot-.5)+T.left));return Math.min(C[k].e,S.idx)}
 /* undo stack for Backtest: one snapshot per candle stepped */
@@ -359,7 +359,7 @@ $('#cMax').onclick=()=>maxChart();$('#cAuto').onclick=()=>{MAN=false;MR=null;dra
 function repImg(){if(!S.hist.length){toast('Close at least one trade first');return}
  const s=st(S.hist,S.start),W=1080,H=1350,c=document.createElement('canvas');c.width=W;c.height=H;const g=c.getContext('2d'),pro=window.BFTX&&BFTX.pro&&BFTX.pro(),fw=mode==='fw',up=s.net>=0;
  g.fillStyle='#0b1220';g.fillRect(0,0,W,H);g.textBaseline='alphabetic';g.fillStyle='#e6edf7';g.font='800 54px system-ui';g.fillText(INS+' · '+(fw?'Forward test':'Backtest'),60,110);
- g.font='600 28px system-ui';g.fillStyle=fw&&S.locked?'#f5c76b':'#8a98b3';g.fillText(fw&&S.locked?'🔒 Rules locked on '+new Date(S.lockedAt).toLocaleDateString('en-IN')+' and never edited':'Practice account · '+s.n+' closed trades',60,158);
+ g.font='600 28px system-ui';g.fillStyle=fw&&S.locked?'#f5c76b':'#8a98b3';g.fillText(fw&&S.locked?'🔒 Rules locked on '+new Date(S.lockedAt).toLocaleDateString('en-IN')+' and never edited'+(S.attempt?' · attempt '+S.attempt:''):'Practice account · '+s.n+' closed trades',60,158);
  g.fillStyle=up?PF.up:PF.dn;g.font='800 110px system-ui';g.fillText(R(s.net),60,300);g.fillStyle='#8a98b3';g.font='600 28px system-ui';g.fillText('Net P/L after charges',60,344);
  const cells=[['Trades',s.n],['Win rate',s.wr.toFixed(0)+'%'],['Profit factor',s.pf.toFixed(2)],['Expectancy',R(s.ex)],['Max drawdown',R(s.dd)+(s.ddp?' · '+s.ddp.toFixed(0)+'%':'')],['Avg win / loss',R(s.aw)+' / '+R(-s.al)],['Payoff ratio',s.po.toFixed(2)],['Worst loss streak',s.ml],['Recovery factor',s.rf.toFixed(2)]];
  cells.forEach((x,i)=>{const cx=60+i%3*330,cy=400+Math.floor(i/3)*130;g.fillStyle='#111a2e';g.beginPath();g.roundRect(cx,cy,310,110,16);g.fill();g.fillStyle='#8a98b3';g.font='600 24px system-ui';g.fillText(x[0],cx+20,cy+38);g.fillStyle='#e6edf7';g.font='800 40px system-ui';g.fillText(String(x[1]),cx+20,cy+84)});
@@ -380,7 +380,7 @@ $('#tf').onchange=e=>{tf=+e.target.value;off=0;draw()};$('#bs').onclick=()=>open
 $('#bl').onchange=e=>{S.blind=e.target.checked;save();refresh()};
 $('#go').onclick=()=>{const v=$('#jd').value;if(!v)return;if(S.pos.length){toast('Close open positions before jumping');return}const i=D.t.findIndex(t=>t>=new Date(v).getTime());if(i<0||i>=FWS-3000){toast('Pick an earlier date (later data is reserved for Forward Test)');return}UND=[];S.idx=i+12;off=0;save();refresh()};
 $('#rnd').onclick=()=>{if(S.pos.length){toast('Close open positions first');return}UND=[];S.idx=fresh('bt').idx;off=0;save();refresh()};
-$('#lk').onclick=()=>{const t=$('#rules').value.trim();if(t.length<10){toast('Write your rules first (min 10 characters)');return}S.rules=t;S.locked=true;S.lockedAt=Date.now();save();setMode('fw');toast('Rules locked. Forward test started 🔒')};
+$('#lk').onclick=()=>{const t=$('#rules').value.trim();if(t.length<10){toast('Write your rules first (min 10 characters)');return}if(HO){lockServer(t);return}S.rules=t;S.locked=true;S.lockedAt=Date.now();save();setMode('fw');toast('Rules locked. Forward test started 🔒')};
 document.addEventListener('keydown',e=>{if(!D||/INPUT|TEXTAREA|SELECT/.test(e.target.tagName))return;if((e.key==='Delete'||e.key==='Backspace')&&SEL){e.preventDefault();delSel();return}if(e.key==='Escape'&&(PEND||SEL||(PL&&PL.act))){PEND=null;clearSel();draw();return}if(e.code==='Space'){e.preventDefault();play()}else if(e.key==='ArrowRight'){if(canStep())step()}else if(e.key==='ArrowLeft'){prev()}else if(e.key==='b')openP('B');else if(e.key==='f'||e.key==='F')maxChart();else if(e.key==='Escape'&&document.body.classList.contains('mx'))maxChart(false);else if(e.key==='a'||e.key==='A'){MAN=false;MR=null;draw()}else if(false)0;else if(e.key==='s')openP('S')});
 function upsUI(){idbKeys().then(keys=>{const b=$('#ups');if(!b)return;b.innerHTML=keys.length?'<b>Saved uploads (this browser)</b>'+keys.map(k=>`<div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px"><span>${String(k).replace(/[<>&]/g,'')}</span><button data-rm="${String(k).replace(/["<>&]/g,'')}" style="border:1px solid var(--ln);background:none;border-radius:6px;padding:2px 8px">Remove</button></div>`).join(''):'';$$('[data-rm]').forEach(x=>x.onclick=()=>idb('readwrite',o=>o.delete(x.dataset.rm)).then(()=>idbKeys()).then(ks=>{buildSel(ks);upsUI();if(INK==='u:'+x.dataset.rm){INK='b';loadIns('b')}}))})}
 function sUI(){$('#ths').innerHTML=[['dark','Dark'],['light','Light'],['gold','Black Gold'],['emerald','Emerald'],['violet','Violet']].map(([k,n])=>`<button class="${PF.theme===k?'on':''}" data-th="${k}">${n}</button>`).join('');$$('[data-th]').forEach(b=>b.onclick=()=>{PF.theme=b.dataset.th;applyPF();sUI();draw();eqDraw();if(window.BFTT){if(PF.theme==='light'||PF.theme==='dark')BFTT.set(PF.theme);else BFTT.def('dark')}});
@@ -391,19 +391,45 @@ $('#rs').onclick=()=>{PF.lot=Math.max(1e-6,+$('#ls').value||30);PF.spread=Math.m
 window.addEventListener('resize',()=>{draw();eqDraw()});
 const ldf=e=>{const f=e.target.files[0];e.target.value='';if(!f)return;f.text().then(t=>{const nm=f.name.replace(/\.\w+$/,'').toUpperCase();if(mode==='sc')exitSc();if(S){pause();save()}if(!boot(t,nm))return;INK='u:'+nm;try{localStorage.setItem('bftp_ins',INK)}catch(x){}
  idb('readwrite',o=>o.put(t,nm)).then(()=>idbKeys()).then(keys=>{buildSel(keys);toast('Saved in this browser: '+nm)}).catch(()=>{buildSel([]);$('#isel').selectedIndex=-1;toast('Loaded (could not save in this browser, it will not stay after reload)')})})};$('#fin').onchange=ldf;$('#fin2').onchange=ldf;
-const INSL={b:{f:'bank-nifty-5m-data.csv',n:'BANKNIFTY',t:'',l:'BANKNIFTY · 5m'},g15:{f:'xauusd-m15-data.csv',n:'XAUUSD',t:'m15',l:'GOLD · M15 · 2022-26'},g30:{f:'xauusd-m30-data.csv',n:'XAUUSD',t:'m30',l:'GOLD · M30 · 2018-26'},g60:{f:'xauusd-h1-data.csv',n:'XAUUSD',t:'h1',l:'GOLD · H1 · 2010-26'},g4h:{f:'xauusd-h4-data.csv',n:'XAUUSD',t:'h4',l:'GOLD · H4 · 2010-26'},gd1:{f:'xauusd-d1-data.csv',n:'XAUUSD',t:'d1',l:'GOLD · D1 · 2010-26'},g5:{f:'xauusd-m5-data.csv',n:'XAUUSD',t:'m5',l:'GOLD · M5 · 2025-26'},g1:{f:'xauusd-m1-data.csv',n:'XAUUSD',t:'m1',l:'GOLD · M1 · Jul-Oct 2026'},c1:{f:'btcusd-m1-data.csv',n:'BTCUSD',t:'m1',l:'BITCOIN · M1 · Aug-Oct 2026'},c5:{f:'btcusd-m5-data.csv',n:'BTCUSD',t:'m5',l:'BITCOIN · M5 · 2025-26'},c15:{f:'btcusd-m15-data.csv',n:'BTCUSD',t:'m15',l:'BITCOIN · M15 · 2023-26'},c30:{f:'btcusd-m30-data.csv',n:'BTCUSD',t:'m30',l:'BITCOIN · M30 · 2021-26'},c60:{f:'btcusd-h1-data.csv',n:'BTCUSD',t:'h1',l:'BITCOIN · H1 · 2017-26'},c4h:{f:'btcusd-h4-data.csv',n:'BTCUSD',t:'h4',l:'BITCOIN · H4 · 2017-26'},cd1:{f:'btcusd-d1-data.csv',n:'BTCUSD',t:'d1',l:'BITCOIN · D1 · 2017-26'}};
+const INSL={b:{f:'bank-nifty-5m-data.csv',n:'BANKNIFTY',t:'',l:'BANKNIFTY · 5m'},g15:{f:'xauusd-m15-data.csv',n:'XAUUSD',t:'m15',l:'GOLD · M15 · 2022-26'},g30:{f:'xauusd-m30-data.csv',n:'XAUUSD',t:'m30',l:'GOLD · M30 · 2018-26'},g60:{f:'xauusd-h1-data.csv',n:'XAUUSD',t:'h1',l:'GOLD · H1 · 2010-26'},g4h:{f:'xauusd-h4-data.csv',n:'XAUUSD',t:'h4',l:'GOLD · H4 · 2010-26'},gd1:{f:'xauusd-d1-data.csv',n:'XAUUSD',t:'d1',l:'GOLD · D1 · 2010-26'},g5:{f:'xauusd-m5-data.csv',n:'XAUUSD',t:'m5',l:'GOLD · M5 · 2025-26'},c5:{f:'btcusd-m5-data.csv',n:'BTCUSD',t:'m5',l:'BITCOIN · M5 · 2025-26'},c15:{f:'btcusd-m15-data.csv',n:'BTCUSD',t:'m15',l:'BITCOIN · M15 · 2023-26'},c30:{f:'btcusd-m30-data.csv',n:'BTCUSD',t:'m30',l:'BITCOIN · M30 · 2021-26'},c60:{f:'btcusd-h1-data.csv',n:'BTCUSD',t:'h1',l:'BITCOIN · H1 · 2017-26'},c4h:{f:'btcusd-h4-data.csv',n:'BTCUSD',t:'h4',l:'BITCOIN · H4 · 2017-26'},cd1:{f:'btcusd-d1-data.csv',n:'BTCUSD',t:'d1',l:'BITCOIN · D1 · 2017-26'}};
 /* uploaded files are kept in this browser (IndexedDB) so they stay in the dropdown */
 const IDB=()=>new Promise((res,rej)=>{if(!window.indexedDB)return rej();const r=indexedDB.open('bftp',1);r.onupgradeneeded=()=>r.result.createObjectStore('f');r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)});
 const idb=(m,f)=>IDB().then(db=>new Promise((res,rej)=>{const t=db.transaction('f',m),q=f(t.objectStore('f'));t.oncomplete=()=>res(q&&q.result);t.onerror=()=>rej(t.error)}));
 const idbKeys=()=>idb('readonly',o=>o.getAllKeys()).then(k=>k||[]).catch(()=>[]);
 let INK='b';
 function buildSel(keys){const e=x=>String(x).replace(/[&<>"]/g,c=>'&#'+c.charCodeAt(0)+';');$('#isel').innerHTML=Object.keys(INSL).map(k=>`<option value="${k}">${e(INSL[k].l)}</option>`).join('')+(keys.length?'<optgroup label="Your uploads">'+keys.map(k=>`<option value="u:${e(k)}">${e(k)}</option>`).join('')+'</optgroup>':'');$('#isel').value=INK;if($('#isel').value!==INK)$('#isel').selectedIndex=-1}
+
+/* ---------- honest forward test: lock and reserved data live on the server ---------- */
+const bx=()=>window.BFTX||null;
+async function loadHoldout(){if(!HO||HO.loaded)return;const B=bx(),sb=B&&B.sb();if(!sb)throw new Error('offline');
+ const r=await sb.storage.from('holdout').download(HO.id+'.csv.gz');if(r.error||!r.data)throw (r.error||new Error('no data'));
+ const b=new Uint8Array(await r.data.arrayBuffer());
+ const text=(b[0]===0x1f&&b[1]===0x8b&&window.DecompressionStream)?await new Response(new Blob([b]).stream().pipeThrough(new DecompressionStream('gzip'))).text():new TextDecoder().decode(b);
+ KEEP=true;const ok=boot(HO.txt+'\n'+text.replace(/^[^\n]*\n/,''),HO.n,HO.t);KEEP=false;if(!ok||!HO.loaded)throw new Error('parse')}
+async function lockServer(t){const B=bx();if(!B){toast('Sign-in is not available. Reload the page.');return}
+ await B.ready();let sb=B.sb();if(!sb){toast('Could not reach the server. Check your internet and reload.');return}
+ if(!B.email()){const ok=await B.login('Sign in (free) so your rules are locked on our server, with our clock. This is what makes the forward test honest.');if(!ok)return;sb=B.sb()}
+ const btn=$('#lk');btn.disabled=true;
+ try{const r=await sb.rpc('fw_lock',{ds:HO.id,rules_txt:t});
+  if(r.error){const m=r.error.message||'';if(/not_entitled/.test(m)){toast('Forward test on this data is part of the Pro Lab');B.upsell()}else if(/too_many/.test(m))toast('Too many locks today. Try again tomorrow.');else if(/login_required/.test(m))toast('Please sign in first');else toast('Could not lock the rules: '+m);return}
+  const d=Array.isArray(r.data)?r.data[0]:r.data;
+  try{await loadHoldout()}catch(e){toast('Rules are locked, but the reserved data could not load. Reload to continue.');return}
+  S.rules=d.rules;S.locked=true;S.lockedAt=Date.parse(d.locked_at);S.attempt=d.attempt;S.idx=FWS+12;delete S._w;save();setMode('fw');toast('Rules locked on our server (attempt '+d.attempt+') 🔒')}
+ finally{btn.disabled=false}}
+async function fwSync(){if(!(HO&&mode==='fw'&&S.locked&&!HO.loaded))return;const B=bx();if(!B)return;await B.ready();let sb=B.sb();
+ if(!sb){toast('Could not reach the server. Reload to continue your forward test.');return}
+ if(!B.email()){const ok=await B.login('Sign in to continue your locked forward test.');if(!ok)return;sb=B.sb()}
+ const r=await sb.from('fw_locks').select('attempt,rules,locked_at').eq('dataset',HO.id).eq('attempt',S.attempt).limit(1);
+ if(r.error||!r.data||!r.data.length){S.locked=false;S.rules='';S.lockedAt=0;S.attempt=0;delete S._w;S.idx=FWS-1;save();setMode('fw');toast('No server lock found for this test. Please lock your rules again.');return}
+ S.rules=r.data[0].rules;S.lockedAt=Date.parse(r.data[0].locked_at);
+ try{await loadHoldout()}catch(e){toast('Could not load the reserved data. Check your connection and reload.');return}
+ if(S._w!=null){S.idx=S._w;delete S._w}save();setMode('fw')}
 /* Built-in data loads as a small .gz file (about 4x smaller); falls back to the plain .csv if that fails */
 async function fetchData(f){try{const r=await fetch(f+'.gz');if(r.ok){const b=new Uint8Array(await r.arrayBuffer());if(b[0]===0x1f&&b[1]===0x8b&&window.DecompressionStream){return await new Response(new Blob([b]).stream().pipeThrough(new DecompressionStream('gzip'))).text()}if(b.length&&b[0]!==0x1f)return new TextDecoder().decode(b)}}catch(e){}
  const r=await fetch(f);if(!r.ok)throw 0;return r.text()}
 function loadIns(k,first){const up=k.startsWith('u:'),c=up?{u:k.slice(2)}:INSL[k];if(!c)return Promise.resolve();if(!first){if(mode==='sc')exitSc();if(S){pause();save()}$('#ld').classList.add('on')}
  const src=up?idb('readonly',o=>o.get(c.u)).then(t=>{if(!t)throw 0;return t}):fetchData(c.f);
- return src.then(t=>{if(boot(t,up?c.u:c.n,c.t)){INK=k;$('#isel').value=k;try{localStorage.setItem('bftp_ins',k)}catch(e){}}else if(!first){$('#ld').classList.remove('on');$('#isel').value=INK}}).catch(()=>{if(!first){$('#ld').classList.remove('on');$('#isel').value=INK;toast('Could not load this data. If it is a built-in file, open the site via GitHub Pages / a local server')}})}
+ return src.then(t=>{if(boot(t,up?c.u:c.n,c.t,up?null:c.f.replace(/\.csv$/,''))){INK=k;$('#isel').value=k;try{localStorage.setItem('bftp_ins',k)}catch(e){}}else if(!first){$('#ld').classList.remove('on');$('#isel').value=INK}}).catch(()=>{if(!first){$('#ld').classList.remove('on');$('#isel').value=INK;toast('Could not load this data. If it is a built-in file, open the site via GitHub Pages / a local server')}})}
 $('#isel').onchange=e=>loadIns(e.target.value);
 try{INK=localStorage.getItem('bftp_ins')||'b'}catch(e){}
 applyPF();idbKeys().then(keys=>{if(!INSL[INK]&&!(INK.startsWith('u:')&&keys.includes(INK.slice(2))))INK='b';buildSel(keys);loadIns(INK,true)});
