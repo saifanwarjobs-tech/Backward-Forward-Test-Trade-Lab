@@ -58,6 +58,7 @@ body{font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-web
 .card,.kpi,.it{border-radius:12px}.bars i,.prog i{background:var(--ac)}
 .nav i{display:grid;place-items:center;font-size:0}.nav svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 @media(min-width:760px){.nav{justify-content:center;gap:6px}.nav button{flex:none;padding:12px 24px}}
+@media(max-width:480px){.nav{padding-left:2px;padding-right:2px}.nav button{min-width:0;font-size:10.5px}}
 .wd{margin-bottom:14px}.wd summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:8px;padding:12px 14px;border-radius:12px;font-weight:600;border:1px solid color-mix(in srgb,var(--wn) 40%,transparent);background:color-mix(in srgb,var(--wn) 10%,transparent)}
 .wd summary::-webkit-details-marker{display:none}.wd summary:after{content:"Show";margin-left:auto;font-size:13px;color:var(--mu)}.wd[open] summary:after{content:"Hide"}.wd[open] summary{margin-bottom:10px}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
@@ -93,13 +94,14 @@ body{font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-web
 
 <div id="app" class="hid">
 <header class="top"><div class="w"><span class="logo">BFT <i>Admin</i></span><span class="sp"></span><span id="lgslot" data-cls="btn s o"></span><span id="thslot" data-cls="btn s o"></span><span class="who" id="who"></span><a class="btn s o" href="academy.html" target="_blank" rel="noopener" style="text-decoration:none">View Academy ↗</a><button class="btn s o" id="out">Sign out</button></div></header>
-<nav class="nav" id="nav"><button data-v="dash" class="on"><i><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg></i>Dashboard</button><button data-v="content"><i><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="m10 9 5 3-5 3z"/></svg></i>Content</button><button data-v="students"><i><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14.3c2 .7 3.5 2.6 3.5 5.7"/></svg></i>Students</button><button data-v="pricing"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h10M7 9h10M7 5c5 0 5 8 0 8l7 6"/></svg></i>Pricing</button><button data-v="analytics"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V11M10 20V4M16 20v-6M22 20H2"/></svg></i>Analytics</button><button data-v="settings"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg></i>Settings</button></nav>
+<nav class="nav" id="nav"><button data-v="dash" class="on"><i><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg></i>Dashboard</button><button data-v="content"><i><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="m10 9 5 3-5 3z"/></svg></i>Content</button><button data-v="students"><i><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6M16 4.6a3.5 3.5 0 0 1 0 6.8M18 14.3c2 .7 3.5 2.6 3.5 5.7"/></svg></i>Students</button><button data-v="pricing"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h10M7 9h10M7 5c5 0 5 8 0 8l7 6"/></svg></i>Pricing</button><button data-v="partners"><i><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.6 3.1-6 7-6s7 2.4 7 6M18.5 3.5v4M16.5 5.5h4"/></svg></i>Partners</button><button data-v="analytics"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V11M10 20V4M16 20v-6M22 20H2"/></svg></i>Analytics</button><button data-v="settings"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg></i>Settings</button></nav>
 <main class="w">
  <section id="v-dash"></section>
  <section id="v-content" class="hid"><div class="tools"><input id="q" type="search" placeholder="Search content…" aria-label="Search content"></div><div class="chips" id="kf" style="margin-bottom:14px"></div><div id="list"></div><button class="btn fab" id="new">＋ New</button></section>
  <section id="v-settings" class="hid"></section>
  <section id="v-analytics" class="hid"></section>
  <section id="v-pricing" class="hid"></section>
+ <section id="v-partners" class="hid"></section>
  <section id="v-students" class="hid"><div class="tools"><input id="sq" type="search" placeholder="Search students…" aria-label="Search students"><button class="btn" id="sadd">＋ Add</button><button class="btn o" id="scsv">Export CSV</button></div><div class="row" id="ssum" style="margin-bottom:12px"></div><div id="slist"></div></section>
 </main></div>
 <div id="s1" class="sheet hid"></div><div id="s2" class="sheet l2 hid"></div><div id="dlg" class="dlg hid"></div><div id="toast" role="status"></div>
@@ -149,7 +151,7 @@ const stat=s=>{if(!s.expires_at)return{t:'Lifetime',c:'ok',on:1};const d=new Dat
 function renderAll(){renderDash();renderContent();renderStudents();if(S.view==='settings'&&!document.activeElement.closest('#v-settings'))renderSettings()}
 
 /* ---------- navigation ---------- */
-function view(v){S.view=v;$$('.nav button').forEach(b=>b.classList.toggle('on',b.dataset.v===v));['dash','content','students','pricing','analytics','settings'].forEach(x=>$('#v-'+x).classList.toggle('hid',x!==v));if(v==='settings')renderSettings();if(v==='analytics')loadAnalytics();if(v==='pricing')loadPricing();scrollTo(0,0)}
+function view(v){S.view=v;$$('.nav button').forEach(b=>b.classList.toggle('on',b.dataset.v===v));['dash','content','students','pricing','partners','analytics','settings'].forEach(x=>$('#v-'+x).classList.toggle('hid',x!==v));if(v==='settings')renderSettings();if(v==='analytics')loadAnalytics();if(v==='pricing')loadPricing();if(v==='partners')loadPartners();scrollTo(0,0)}
 $('#nav').onclick=e=>{const b=e.target.closest('button');if(b)view(b.dataset.v)};
 
 /* ---------- dashboard ---------- */
@@ -474,6 +476,46 @@ $('#v-analytics').onclick=async e=>{const b=e.target.closest('[data-d]');if(b){S
   const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([rows.map(r=>r.map(q).join(',')).join('\n')],{type:'text/csv'}));a.download='bft-analytics-'+new Date().toISOString().slice(0,10)+'.csv';a.click();return}
  if(e.target.closest('#an_purge')){const days=+$('#an_pd').value;if(!await ask(days?'Delete old analytics?':'Delete ALL analytics?',days?'Visits and actions older than '+days+' days will be removed. This cannot be undone.':'Every recorded visit and action will be removed. This cannot be undone.','Delete',true))return;
   const{data,error}=await sb.rpc('admin_purge_analytics',{p_days:days});if(error)return toast(error.message);toast(num(data)+' rows deleted');S.an.data=null;loadAnalytics()}};
+
+/* ---------- partners (referral programme): balances, UPI payouts, cancel a sale ---------- */
+S.pt={d:null,err:''};
+const PT_MIN=500;
+async function loadPartners(){const{data,error}=await sb.rpc('admin_referrals');S.pt.err=error?error.message:'';if(!error)S.pt.d=data;if(S.view==='partners')renderPartners()}
+const ptNet=p=>Math.max(0,(p.approved||0)-(p.clawback||0));
+function renderPartners(){const el=$('#v-partners'),d=S.pt.d;
+ const head=`<div class="row spb" style="margin-bottom:12px"><h1 style="font-size:22px">Partners</h1><div class="row"><button class="btn o s" id="pt_r">Refresh</button><button class="btn o s" id="pt_csv">Export payouts due</button></div></div>`;
+ if(S.pt.err){const miss=/function|schema cache|does not exist|relation/i.test(S.pt.err);el.innerHTML=head+`<div class="alert dn"><span>⛔</span><div><b>${miss?'Partner programme is not set up yet':'Could not load partners'}</b><span class="mu">${miss?' Run schema_referral.sql in Supabase → SQL Editor, then Refresh.':' '+esc(S.pt.err)}</span></div></div>`;return}
+ if(!d){el.innerHTML=head+'<div class="empty">Loading…</div>';return}
+ const P=d.partners,due=P.reduce((n,p)=>n+ptNet(p),0),pend=P.reduce((n,p)=>n+p.pending,0),paid=d.payouts.reduce((n,x)=>n+x.amount,0);
+ const kp=`<div class="kpis"><div class="kpi"><b>${rs(due)}</b><span>Payable now</span></div><div class="kpi"><b>${rs(pend)}</b><span>Pending (hold)</span></div><div class="kpi"><b>${rs(paid)}</b><span>Paid out so far</span></div><div class="kpi"><b>${P.filter(p=>p.active).length}</b><span>Active partners</span></div></div>`;
+ const cards=P.length?P.map(p=>{const net=ptNet(p);return `<div class="card" style="padding:14px;margin-bottom:10px">
+  <div class="row spb"><div style="min-width:0"><b>${esc(p.name)}</b> <span class="k">${esc(p.code)}</span> ${p.active?'':'<span class="k dn">Paused</span>'}<div class="mu" style="font-size:13px;word-break:break-all">${esc(p.email)} · UPI <b>${esc(p.upi||'—')}</b> · ${p.rate}%</div></div>
+  <div class="row"><button class="btn s" data-a="pay" data-e="${esc(p.email)}" ${net>0&&p.upi?'':'disabled'}>Pay ${rs(net)}</button><button class="btn o s" data-a="edit" data-e="${esc(p.email)}">Edit</button></div></div>
+  <div class="mu" style="font-size:13px;margin-top:8px">Visitors ${p.clicks} · Sales ${p.sales} · Pending ${rs(p.pending)} · Paid ${rs(p.paid)}${p.clawback>0?' · <b style="color:var(--dn)">Refund adjustment −'+rs(p.clawback)+'</b>':''}${net>0&&net<PT_MIN?' · below '+rs(PT_MIN)+' minimum':''}</div></div>`}).join(''):'<div class="empty">No partners yet. Share <b>referral.html</b> to get them started.</div>';
+ const sales=d.recent.length?d.recent.map(x=>{const st=x.refunded?'Refunded':x.status;const c=x.status==='paid'?'ok':x.status==='approved'?'ok':x.status==='pending'?'wn':'dn';
+  return `<div class="ls"><div class="t" style="cursor:default"><b>${esc(x.product)} · ${rs(x.amount)} → ${rs(x.commission)}</b><span class="mu" style="font-size:12.5px">${fd(x.created_at)} · ${esc(x.buyer_email)} · via ${esc(x.code)}${x.status==='pending'&&!x.refunded?' · payable after '+fd(x.approve_after):''}</span></div><span class="k ${c}">${esc(st)}</span>${(x.status==='pending'||x.status==='approved')?`<button class="btn o s" data-a="void" data-id="${esc(x.payment_id)}">Cancel</button>`:''}</div>`}).join(''):'<div class="empty">No referred sales yet.</div>';
+ const pays=d.payouts.length?d.payouts.map(x=>`<div class="ls"><div class="t" style="cursor:default"><b>${rs(x.amount)} · ${esc(x.referrer_email)}</b><span class="mu" style="font-size:12.5px">${fd(x.created_at)}${x.utr?' · UTR '+esc(x.utr):''}${x.note?' · '+esc(x.note):''}</span></div></div>`).join(''):'<div class="empty">No payouts yet.</div>';
+ el.innerHTML=head+kp+`<h2 style="font-size:16px;margin:6px 0 10px">Partners</h2>${cards}<h2 style="font-size:16px;margin:18px 0 6px">Referred sales</h2><div class="card" style="padding:6px 14px">${sales}</div><h2 style="font-size:16px;margin:18px 0 6px">Payout history</h2><div class="card" style="padding:6px 14px">${pays}</div>
+ <p class="mu" style="font-size:12.5px;margin-top:12px">Commission becomes payable 10 days after a sale (refund window is 7 days). Pay by UPI once a month, then record the UTR here. Refunds after a payout are deducted automatically from that partner's next payout.</p>`}
+function ptDlg(html){const d=$('#dlg');d.classList.remove('hid');d.innerHTML='<div class="box" role="dialog" aria-modal="true">'+html+'</div>';return d}
+function ptClose(){const d=$('#dlg');d.classList.add('hid');d.innerHTML=''}
+function ptPay(p){const net=ptNet(p),up='upi://pay?pa='+encodeURIComponent(p.upi||'')+'&pn='+encodeURIComponent(p.name)+'&am='+net+'&cu=INR&tn='+encodeURIComponent('BFT partner payout');
+ ptDlg(`<h2>Pay ${esc(p.name)}</h2><p>Send <b>${rs(net)}</b> to <b>${esc(p.upi)}</b>${p.clawback>0?' (already reduced by '+rs(p.clawback)+' for refunds)':''}. Only after the money is sent, paste the UTR below and confirm.</p><a class="btn o s" href="${esc(up)}">Open UPI app</a><label for="pt_utr">UTR / reference</label><input id="pt_utr" maxlength="60" placeholder="e.g. 429183746291"><div class="row" style="justify-content:flex-end;margin-top:14px"><button class="btn o" id="pt_no">Cancel</button><button class="btn" id="pt_ok">Mark as paid</button></div>`);
+ $('#pt_no').onclick=ptClose;$('#pt_utr').focus();
+ $('#pt_ok').onclick=async()=>{const u=$('#pt_utr').value.trim();if(!u)return toast('Enter the UTR / reference first');$('#pt_ok').disabled=true;
+  const{data,error}=await sb.rpc('admin_pay_partner',{p_email:p.email,p_utr:u,p_note:null});ptClose();if(error)return toast(error.message);toast('Recorded payout of '+rs(data));loadPartners()}}
+function ptEdit(p){ptDlg(`<h2>Edit ${esc(p.name)}</h2><label for="pt_rate">Commission rate (%)</label><input id="pt_rate" type="number" min="0" max="60" inputmode="numeric" value="${p.rate}"><label class="chk"><input id="pt_act" type="checkbox" ${p.active?'checked':''}> Active (untick to pause: no new commission)</label><div class="row" style="justify-content:flex-end;margin-top:14px"><button class="btn o" id="pt_no">Cancel</button><button class="btn" id="pt_ok">Save</button></div>`);
+ $('#pt_no').onclick=ptClose;
+ $('#pt_ok').onclick=async()=>{const r=Math.round(+$('#pt_rate').value);if(!(r>=0&&r<=60))return toast('Rate must be between 0 and 60');
+  const{error}=await sb.rpc('admin_set_partner',{p_email:p.email,p_active:$('#pt_act').checked,p_rate:r});ptClose();if(error)return toast(error.message);toast('Saved');loadPartners()}}
+$('#v-partners').onclick=async e=>{const b=e.target.closest('button');if(!b)return;
+ if(b.id==='pt_r'){loadPartners();return}
+ if(b.id==='pt_csv'){const rows=[['Name','UPI','Amount','Email']].concat((S.pt.d?S.pt.d.partners:[]).filter(p=>ptNet(p)>=PT_MIN&&p.upi).map(p=>[p.name,p.upi,ptNet(p),p.email]));
+  const q=v=>'"'+String(v).replace(/"/g,'""')+'"',a=document.createElement('a');a.href=URL.createObjectURL(new Blob([rows.map(r=>r.map(q).join(',')).join('\n')],{type:'text/csv'}));a.download='bft-partner-payouts-'+new Date().toISOString().slice(0,10)+'.csv';a.click();return}
+ const act=b.dataset.a,p=S.pt.d&&S.pt.d.partners.find(x=>x.email===b.dataset.e);
+ if(act==='pay'&&p)return ptPay(p);if(act==='edit'&&p)return ptEdit(p);
+ if(act==='void'){if(!await ask('Cancel this commission?','The partner will not be paid for this sale. Use it for self-referral or fraud. This cannot be undone.','Cancel commission',true))return;
+  const{error}=await sb.rpc('admin_void_referral',{p_payment_id:b.dataset.id});if(error)return toast(error.message);toast('Commission cancelled');loadPartners()}};
 
 /* ---------- pricing & payments ---------- */
 S.pr={prod:[],pay:[],err:''};

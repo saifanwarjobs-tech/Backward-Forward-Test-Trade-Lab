@@ -46,7 +46,7 @@ async function pay(op,e,ph,msg){e=(e||'').trim().toLowerCase();if(!/\S+@\S+\.\S+
  const phone=(ph||'').replace(/\D/g,'');
  if(CFG.razorpayKey&&CFG.orderUrl){msg.textContent='Opening payment…';
   try{if(!window.Razorpay)await new Promise((ok,no)=>{const s=document.createElement('script');s.src='https://checkout.razorpay.com/v1/checkout.js';s.onload=ok;s.onerror=no;document.head.appendChild(s)});
-   const r=await fetch(CFG.orderUrl,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:e,phone,product_id:op.pid,plan:op.plan})});const d=await r.json();if(!r.ok||!d.order_id)throw new Error(d.error||'Could not start payment');
+   const r=await fetch(CFG.orderUrl,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:e,phone,product_id:op.pid,plan:op.plan,ref:(window.BFT_REF&&BFT_REF())||undefined})});const d=await r.json();if(!r.ok||!d.order_id)throw new Error(d.error||'Could not start payment');
    new Razorpay({key:CFG.razorpayKey,order_id:d.order_id,amount:d.amount,currency:'INR',name:'BFT Trade Lab',description:op.label,prefill:{email:e,contact:phone},theme:{color:'#6aa5ff'},
     handler:()=>{msg.textContent='Payment received ✅ Sign in with '+e+'. Access turns on within a minute.'}}).open()}catch(x){msg.textContent=x.message||'Payment could not start'}return}
  // WhatsApp flow: the message already carries product, plan and amount, so you know exactly what they want

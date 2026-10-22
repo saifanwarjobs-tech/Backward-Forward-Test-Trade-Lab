@@ -181,7 +181,7 @@ body:before{background:radial-gradient(900px 460px at 50% -12%,rgba(91,156,255,.
 :root[data-ui=light] .code .cta{background:linear-gradient(transparent,rgba(244,246,251,.9));color:var(--tx)}
 :root[data-ui=light] .wm{color:rgba(15,23,42,.22);text-shadow:none}
 .top .bft-b{border:0;color:var(--mu);padding:8px 10px}.top .bft-b:hover{color:var(--tx);background:var(--gl2)}
-</style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"></head><body class="ld"><script>window._wo=window.open.bind(window);setTimeout(function(){document.body.classList.remove('ld')},5000)</script>
+</style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"><script src="ref.js" defer></script></head><body class="ld"><script>window._wo=window.open.bind(window);setTimeout(function(){document.body.classList.remove('ld')},5000)</script>
 <header class="top"><div class="w"><a class="logo" href="index.html"><span id="brand"></span></a><span class="sp"></span><a class="nl" href="index.html">Home</a><a class="nl" href="journal.html">Journal</a><a class="nl" href="trade-lab-pro.html">Testing Lab</a><a class="nl" href="classroom.html">Classroom</a><span id="lgslot"></span><span id="thslot"></span><span id="st"></span></div>
 <div class="w"><nav class="tabs" role="tablist" id="tabs"></nav></div></header>
 
@@ -523,7 +523,7 @@ function checkout(pid,label,amt){fb('InitiateCheckout');const live=!!(CFG.razorp
  b.onclick=async()=>{const e=$('#pe').value.trim().toLowerCase(),ph=($('#pph').value||'').replace(/\D/g,'');if(!/\S+@\S+\.\S+/.test(e))return toast('Enter a valid email');
   if(!live)return manualPay(pid,label,amt,e);
   b.disabled=true;b.textContent='Opening payment…';
-  try{await loadRzp();const r=await fetch(CFG.orderUrl,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:e,phone:ph,product_id:pid,plan:'once'})});const o=await r.json();if(!r.ok||!o.order_id)throw new Error(o.error||'Could not start payment');
+  try{await loadRzp();const r=await fetch(CFG.orderUrl,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:e,phone:ph,product_id:pid,plan:'once',ref:(window.BFT_REF&&BFT_REF())||undefined})});const o=await r.json();if(!r.ok||!o.order_id)throw new Error(o.error||'Could not start payment');
    const z=new Razorpay({key:CFG.razorpayKey,order_id:o.order_id,amount:o.amount,currency:'INR',name:CFG.brand,description:label,prefill:{email:e,contact:ph},theme:{color:'#5b9cff'},
     handler:()=>{fb('Purchase');paidOk(e,label)},modal:{ondismiss:reset}});
    z.on('payment.failed',x=>{toast((x&&x.error&&x.error.description)||'Payment failed. Try again.');reset()});z.open()}
