@@ -1,5 +1,5 @@
 // Creates a Razorpay order. The price comes from the DATABASE (products / items), never from the browser.
-// Body: { email, phone, product_id, plan }  plan = 'once' | 'month'. product_id may be 'item:<uuid>'. Default: academy.
+// Body: { email, phone, product_id, plan, ref? }  ref = partner code (optional, validated here)  plan = 'once' | 'month'. product_id may be 'item:<uuid>'. Default: academy.
 // Secrets: RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET, ALLOWED_ORIGIN. SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY are automatic.
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.4";
 const cors = (o: string) => ({ "Access-Control-Allow-Origin": o, "Access-Control-Allow-Headers": "content-type, authorization, apikey",
@@ -13,6 +13,19 @@ export async function priceOf(sb: any, pid: string, plan: string) {
   if (!data || !data.active) return null;
   const p = plan === "month" ? data.price_month : data.price_once;
   return p > 0 ? { rupees: p as number, plan: plan === "month" ? "month" : "once" } : null;
+}
+// Same-person check: lower-case, drop +tag, and ignore dots for gmail, so a@gmail.com / a.b+x@gmail.com count as one person.
+export function normEmail(e: string) {
+  let [l, d] = String(e || "").trim().toLowerCase().split("@"); if (!d) return String(e || "").trim().toLowerCase();
+  l = l.split("+")[0]; if (d === "gmail.com" || d === "googlemail.com") { l = l.replace(/\./g, ""); d = "gmail.com"; }
+  return l + "@" + d;
+}
+// Valid + active partner code that does not belong to the buyer. Anything else is silently ignored (the sale still goes through).
+async function partnerCode(sb: any, raw: unknown, buyer: string): Promise<string> {
+  const c = String(raw || "").trim().toUpperCase();
+  if (!/^[A-Z0-9]{4,12}$/.test(c)) return "";
+  const { data } = await sb.from("referrers").select("email,active").eq("code", c).maybeSingle();
+  return data && data.active && normEmail(data.email) !== normEmail(buyer) ? c : "";
 }
 Deno.serve(async (req) => {
   const origin = Deno.env.get("ALLOWED_ORIGIN");
@@ -29,10 +42,11 @@ Deno.serve(async (req) => {
     const sb = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
     const pr = await priceOf(sb, pid, String(b.plan || "once"));
     if (!pr) return new Response(JSON.stringify({ error: "This option is not on sale" }), { status: 400, headers: h });
+    const ref = await partnerCode(sb, b.ref, em);
     const auth = "Basic " + btoa(`${Deno.env.get("RAZORPAY_KEY_ID")}:${Deno.env.get("RAZORPAY_KEY_SECRET")}`);
     const r = await fetch("https://api.razorpay.com/v1/orders", { method: "POST", headers: { Authorization: auth, "Content-Type": "application/json" },
       body: JSON.stringify({ amount: pr.rupees * 100, currency: "INR", receipt: "bft_" + Date.now(),
-        notes: { email: em, phone: ph, product_id: pid, plan: pr.plan } }) });
+        notes: { email: em, phone: ph, product_id: pid, plan: pr.plan, ...(ref ? { ref } : {}) } }) });
     const o = await r.json();
     if (!r.ok) { console.error("razorpay order error", JSON.stringify(o)); return new Response(JSON.stringify({ error: "Could not start payment. Try again." }), { status: 502, headers: h }); }
     return new Response(JSON.stringify({ order_id: o.id, amount: o.amount }), { headers: h });

@@ -1,4 +1,5 @@
 // Razorpay webhook: verifies signature AND amount, records the payment (with product + plan) and grants access.
+// Partner programme: a valid note `ref` creates a pending commission row (see schema_referral.sql). Refund events void it.
 // Deploy: supabase functions deploy razorpay-webhook --no-verify-jwt   Secret: RAZORPAY_WEBHOOK_SECRET
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.4";
 const hex = (b: ArrayBuffer) => [...new Uint8Array(b)].map((x) => x.toString(16).padStart(2, "0")).join("");
@@ -12,12 +13,38 @@ async function expected(sb: any, pid: string, plan: string): Promise<number | nu
   const { data } = await sb.from("products").select("price_once,price_month").eq("id", pid).maybeSingle();
   return data ? (plan === "month" ? data.price_month : data.price_once) ?? null : null;
 }
+const HOLD_DAYS = 10; // commission becomes payable after this many days (refund window is 7 days)
+function normEmail(e: string) {
+  let [l, d] = String(e || "").trim().toLowerCase().split("@"); if (!d) return String(e || "").trim().toLowerCase();
+  l = l.split("+")[0]; if (d === "gmail.com" || d === "googlemail.com") { l = l.replace(/\./g, ""); d = "gmail.com"; }
+  return l + "@" + d;
+}
+async function recordReferral(sb: any, p: any, email: string, pid: string, rupees: number) {
+  const code = String(p.notes?.ref || "").toUpperCase();
+  if (!/^[A-Z0-9]{4,12}$/.test(code)) return;
+  const { data: r } = await sb.from("referrers").select("email,rate,active").eq("code", code).maybeSingle();
+  if (!r || !r.active || normEmail(r.email) === normEmail(email)) return;   // unknown / paused partner or self-referral
+  const commission = Math.floor((rupees * r.rate) / 100);
+  if (commission <= 0) return;
+  const { error } = await sb.from("referrals").insert({ payment_id: p.id, code, referrer_email: r.email, buyer_email: email, product_id: pid,
+    amount: rupees, rate: r.rate, commission, status: "pending", approve_after: new Date(Date.now() + HOLD_DAYS * 864e5).toISOString() });
+  if (error && error.code !== "23505") console.error("referral insert failed", p.id, error);   // never block access because of a referral problem
+}
 Deno.serve(async (req) => {
   if (req.method !== "POST") return new Response("POST only", { status: 405 });
   const body = await req.text();
   const secret = Deno.env.get("RAZORPAY_WEBHOOK_SECRET") || "";
   if (!secret || !same(await sign(body, secret), req.headers.get("x-razorpay-signature") || "")) return new Response("bad signature", { status: 401 });
   const ev = JSON.parse(body);
+  if (ev.event === "refund.processed") {      // add "refund.processed" to the webhook events in Razorpay
+    const rid = ev.payload?.refund?.entity?.payment_id || ev.payload?.payment?.entity?.id;
+    if (rid) {
+      const sb0 = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
+      await sb0.from("referrals").update({ refunded: true, status: "void" }).eq("payment_id", rid).in("status", ["pending", "approved"]);
+      await sb0.from("referrals").update({ refunded: true }).eq("payment_id", rid).eq("status", "paid");   // already paid out: clawback on next payout
+    }
+    return new Response("ok", { status: 200 });
+  }
   if (ev.event !== "payment.captured" && ev.event !== "order.paid") return new Response("ignored", { status: 200 });
   const p = ev.payload?.payment?.entity;
   if (!p || p.status !== "captured") return new Response("not captured", { status: 200 });
@@ -43,6 +70,7 @@ Deno.serve(async (req) => {
   }
   const up = await sb.from("entitlements").upsert({ email, product_id: pid, plan, expires_at: expires, amount: rupees, phone }, { onConflict: "email,product_id" });
   if (up.error) { console.error(up.error); return new Response("db error", { status: 500 }); }
+  await recordReferral(sb, p, email, pid, rupees);
   if (pid === "academy") await sb.from("students").upsert({ email, phone, amount: rupees, expires_at: null, note: `Razorpay ${p.id}` }, { onConflict: "email" });
   return new Response("ok", { status: 200 });
 });
