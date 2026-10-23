@@ -1,0 +1,162 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg" type="image/svg+xml">
+<title>Watch a Trade Play Out – BFT Testing Lab Demo</title>
+<meta name="description" content="Ek trade lo, Play dabao aur dekho kya hota hai. Real BANKNIFTY candles par demo, plus Testing Lab ke har tool ki guide. Education only.">
+<meta name="theme-color" content="#070b12">
+<script src="bft-ui.js" data-default="dark"></script>
+<style>
+:root{--bg:#070b12;--bg2:#0c121d;--tx:#e8eefb;--mu:#8e9bb8;--ln:rgba(255,255,255,.1);--gl:#0d1420;--gl2:#131c2c;--ac:#5b9cff;--gold:#f5c76b;--ok:#3ddc97;--dn:#ff7a59;--ink:#04101f;color-scheme:dark}
+:root[data-ui=light]{--bg:#f4f6fb;--bg2:#fff;--tx:#0f172a;--mu:#55617a;--ln:rgba(15,23,42,.12);--gl:#fff;--gl2:#eef2fa;--ac:#2f6fe4;--gold:#b7791f;--ok:#0b9a63;--dn:#d6334d;--ink:#fff;color-scheme:light}
+*{box-sizing:border-box;margin:0}html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--tx);font:16px/1.6 Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}.w{max-width:820px;margin:0 auto;padding:0 18px}
+header{display:flex;align-items:center;gap:8px;height:56px}header b{flex:1;font-size:17px;letter-spacing:-.02em}header b i{font-style:normal;color:var(--ac)}
+h1{font-size:clamp(28px,7vw,44px);line-height:1.1;letter-spacing:-.035em;margin:10px 0 8px;text-align:center}h1 em{font-style:normal;color:var(--ac)}
+.lead{color:var(--mu);text-align:center;max-width:560px;margin:0 auto 18px}
+.tabs{display:flex;gap:8px;justify-content:center;margin:0 0 10px}.tabs button{border:1px solid var(--ln);background:var(--gl);color:var(--mu);border-radius:99px;padding:8px 16px;font:600 14px inherit;font-family:inherit;cursor:pointer}.tabs button.on{background:var(--ac);color:var(--ink);border-color:var(--ac)}
+.lab{background:var(--gl);border:1px solid var(--ln);border-radius:16px;overflow:hidden}
+.lh{display:flex;justify-content:space-between;gap:8px;padding:10px 14px;border-bottom:1px solid var(--ln);font-size:12.5px;color:var(--mu)}.lh b{color:var(--tx)}
+canvas{display:block;width:100%;height:340px}
+.nar{padding:12px 14px;border-top:1px solid var(--ln);min-height:64px;font-size:15px}.nar b{color:var(--gold)}
+.ctl{display:flex;gap:8px;padding:10px 14px;border-top:1px solid var(--ln);flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:0;border-radius:10px;padding:11px 18px;font:700 15px inherit;font-family:inherit;background:var(--gold);color:#241800;cursor:pointer}
+.btn.o{background:transparent;color:var(--tx);border:1px solid var(--ln);font-weight:600}.btn.big{padding:15px 26px;font-size:17px}
+.btn[disabled]{opacity:.45;cursor:default}
+.ctl .sp{flex:1}
+.res{display:none;padding:14px;border-top:1px solid var(--ln);text-align:center}.res.show{display:block}
+.res .tag{display:inline-block;font-weight:800;letter-spacing:.06em;font-size:13px;border-radius:8px;padding:4px 12px}
+.res .tag.w1{background:rgba(61,220,151,.15);color:var(--ok)}.res .tag.l1{background:rgba(255,122,89,.15);color:var(--dn)}
+.res p{color:var(--mu);font-size:14.5px;margin-top:8px}
+.sec{padding:30px 0}.sec h2{font-size:23px;letter-spacing:-.02em;margin-bottom:6px}.mu{color:var(--mu)}
+.kp{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}.kp div{background:var(--gl);border:1px solid var(--ln);border-radius:12px;padding:12px;text-align:center}.kp b{display:block;font-size:22px}.kp span{font-size:11.5px;color:var(--mu);text-transform:uppercase;letter-spacing:.05em}
+.callout{border:1px solid rgba(245,199,107,.4);background:rgba(245,199,107,.06);border-radius:14px;padding:16px;margin-top:14px;font-size:15px}
+.step{display:flex;gap:12px;background:var(--gl);border:1px solid var(--ln);border-radius:14px;padding:14px 16px;margin-bottom:10px}.step .n{flex:none;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-weight:800;background:var(--gl2);color:var(--ac);border:1px solid var(--ln)}
+.step b{display:block}.step span{color:var(--mu);font-size:14.5px}
+.tools{display:grid;grid-template-columns:1fr 1fr;gap:10px}.tools div{background:var(--gl);border:1px solid var(--ln);border-radius:12px;padding:13px 15px;font-size:14.5px}.tools b{display:block;margin-bottom:2px}.tools code{font:600 12.5px ui-monospace,monospace;background:var(--gl2);border:1px solid var(--ln);border-radius:6px;padding:1px 7px;color:var(--gold)}.tools span{color:var(--mu)}
+.cta{margin:10px 0 24px;padding:30px 20px;border-radius:18px;border:1px solid rgba(245,199,107,.4);background:linear-gradient(180deg,rgba(245,199,107,.08),transparent);text-align:center}.cta h2{margin-bottom:12px}
+.warn{color:var(--mu);font-size:12.5px;border:1px solid var(--ln);border-radius:12px;padding:12px 14px;margin:0 0 20px}
+footer{border-top:1px solid var(--ln);padding:20px 0 40px;color:var(--mu);font-size:13px;text-align:center}footer a{display:inline-block;margin:0 8px;padding:5px 0}
+@media(max-width:640px){.kp{grid-template-columns:1fr 1fr}.tools{grid-template-columns:1fr}canvas{height:300px}}
+</style></head><body>
+<div class="w"><header><b>BFT <i>Testing Lab</i></b><span id="lgslot"></span><span id="thslot"></span></header></div>
+<main class="w">
+<h1>Ek trade lo. <em>Play</em> dabao.</h1>
+<p class="lead">Asli BANKNIFTY candles par ek demo. Rule simple hai, result jaisa aaya waisa dikhaya hai.</p>
+
+<div class="tabs"><button id="ta" class="on">Example A</button><button id="tb">Example B</button></div>
+<div class="lab">
+ <div class="lh"><span><b>BANKNIFTY · 5 min</b> · <span id="dt"></span></span><span id="px"></span></div>
+ <canvas id="cv"></canvas>
+ <div class="nar" id="nar"></div>
+ <div class="ctl">
+  <button class="btn big" id="play">▶ Play</button>
+  <button class="btn o" id="next">Next ▶</button>
+  <button class="btn o" id="rst">↻ Reset</button><span class="sp"></span>
+  <button class="btn o" id="spd">Speed 1x</button>
+ </div>
+ <div class="res" id="res"></div>
+</div>
+<p class="mu" style="font-size:13px;margin-top:8px;text-align:center">Rule: pehli 15 min ki range (9:15-9:30) ke upar pehli close = BUY. SL range ke low par, target = risk ka 2 guna. Ye sirf demo rule hai, tip nahi.</p>
+
+<section class="sec">
+ <h2>Ab sach dekho: ye rule 2023 mein kaisa raha?</h2>
+ <p class="mu">Lab se maine yahi rule 2023 ke har din par chalaya (BANKNIFTY 5m, charges aur slippage ke bina). Wahi test jo aap bhi kar sakte ho.</p>
+ <div class="kp"><div><b>159</b><span>Trades</span></div><div><b>20</b><span>Target hit</span></div><div><b>59</b><span>SL hit</span></div><div><b>0.98</b><span>Profit factor</span></div></div>
+ <div class="callout"><b>Matlab?</b> Ye rule 2023 mein lagbhag break-even raha (80 trades din ke end par band hue). Costs lagte hi ye nuksaan mein jaata. Isiliye <b>pehle test, phir paisa</b>. Bahut achhi dikhne wali rule bhi history mein fail ho sakti hai. Aur Lab aapko ye paisa lagaye bina bata deta hai.</div>
+</section>
+
+<section class="sec">
+ <h2>Testing Lab ko step-by-step kaise use karein</h2>
+ <p class="mu">Pehli baar aaye ho to ye order follow karo.</p>
+ <div class="step"><span class="n">1</span><div><b>Rule likho (kagaz par)</b><span>Entry kab, SL kahan, target kitna. Jab tak rule likha nahi, test mat shuru karo.</span></div></div>
+ <div class="step"><span class="n">2</span><div><b>Replay mein 20-30 trades lo</b><span>Market aur timeframe chuno. <code>Next</code> se candle aage badhao, <code>BUY</code> / <code>SELL</code> se trade lo, <code>Levels</code> se SL aur target lagao.</span></div></div>
+ <div class="step"><span class="n">3</span><div><b>Report dekho</b><span>Win rate akela kuch nahi batata. Profit factor, expectancy aur drawdown dekho (<code>Report</code>, <code>History</code>).</span></div></div>
+ <div class="step"><span class="n">4</span><div><b>Rule mein ek hi cheez badlo</b><span>Zyada badloge to apne aap ko dhokha doge. Ek change, phir dobara test.</span></div></div>
+ <div class="step"><span class="n">5</span><div><b>Forward test se proof lo</b><span>Rules lock karo (<code>Lock rules &amp; start</code>), phir unseen data par chalao. Yahi asli imtihaan hai.</span></div></div>
+</section>
+
+<section class="sec">
+ <h2>Kaunsa tool kab use karein</h2>
+ <div class="tools">
+  <div><b>▶ Play / Next / Prev</b><span>Replay chalane ke liye. Dheere seekhna ho to Next, jaldi dekhna ho to Play.</span></div>
+  <div><b>BUY / SELL</b><span>Trade lene ke liye. Demo money hai, risk zero.</span></div>
+  <div><b>⚙ Levels (SL / Target)</b><span>Har trade se pehle SL aur target set karo. Bina SL ke trade lena aadat na banao.</span></div>
+  <div><b>BE</b><span>Trade profit mein jaaye to SL ko entry par laane ke liye (break-even).</span></div>
+  <div><b>⇅ Reverse / Close all</b><span>Position ulti karne ya sab band karne ke liye.</span></div>
+  <div><b>Drawing: ╱ ─ ▭ Fib</b><span>Trendline, support/resistance, zone aur Fibonacci. Setup mark karne ke liye.</span></div>
+  <div><b>ƒx Indicators</b><span>Indicator lagakar dekho wo aapke rule mein madad karta hai ya nahi.</span></div>
+  <div><b>Backtest</b><span>Purane data par rule ki practice. Yahan galtiyan sasti hain.</span></div>
+  <div><b>Forward Test</b><span>Rules lock karke unseen data par test. Peeking ka koi chance nahi.</span></div>
+  <div><b>🎲 Scenario (pencil path)</b><span>Apni marzi ka price path banao aur dekho aapka rule uspar kya karta hai.</span></div>
+  <div><b>📊 Report / Export</b><span>Trades ka summary dekho ya CSV mein export karo. Journal mein jaanch karne ke liye.</span></div>
+  <div><b>Spread</b><span>Demo account mein asli spread hota hai, jisse result asli jaisa lage.</span></div>
+ </div>
+</section>
+
+<div class="cta"><h2>Ab apna rule test karo</h2><a class="btn big" id="lab" href="trade-lab-pro.html" data-track="Demo: open Lab">Testing Lab free mein kholo →</a><p class="mu" style="font-size:13px;margin-top:10px">Free, sign-up nahi. Phone par bhi chalta hai.</p></div>
+<p class="warn">Sirf education aur practice ke liye. Koi tip, signal ya investment advice nahi. Upar ke examples chuni hui real days hain aur past result future ki guarantee nahi. Trading mein nuksaan ho sakta hai.</p>
+</main>
+<footer><div class="w"><a href="index.html">Home</a><a href="lab-start.html">Testing Lab</a><a href="academy.html">Academy</a><a href="terms.html">Terms</a><a href="privacy.html">Privacy</a></div></footer>
+
+<script>
+var D={"a":{"date":"20-07-2023","res":"TP","ei":34,"xi":57,"ent":45783.9,"sl":45640.95,"tp":46069.80000000001,"pts":285.9,"c":[[45689.05,45740.5,45640.95,45699.7],[45702.0,45728.8,45663.75,45724.0],[45718.75,45759.45,45691.1,45758.2],[45760.95,45773.95,45697.5,45736.9],[45736.35,45764.9,45716.75,45716.75],[45716.85,45727.1,45685.1,45709.15],[45711.9,45731.25,45690.35,45702.8],[45706.45,45706.45,45676.75,45701.5],[45700.6,45721.9,45686.75,45706.55],[45709.65,45736.75,45687.0,45691.5],[45693.7,45696.75,45656.75,45662.1],[45669.25,45677.4,45651.1,45664.45],[45658.6,45728.05,45654.25,45723.2],[45726.5,45731.55,45696.8,45712.55],[45712.8,45729.4,45706.95,45728.25],[45728.85,45730.75,45709.5,45721.85],[45722.5,45726.4,45699.75,45715.0],[45716.35,45738.45,45703.4,45722.6],[45722.5,45749.45,45703.4,45728.45],[45728.65,45733.7,45707.2,45733.7],[45733.8,45753.4,45719.0,45724.0],[45725.0,45738.15,45712.65,45723.2],[45722.15,45725.9,45691.5,45709.85],[45708.95,45721.35,45694.5,45708.5],[45710.8,45719.85,45683.0,45683.95],[45681.95,45717.95,45681.75,45717.95],[45719.3,45734.75,45712.25,45731.65],[45731.3,45741.95,45717.9,45739.3],[45732.2,45752.6,45713.9,45748.0],[45745.8,45750.15,45719.65,45729.6],[45722.8,45737.7,45712.8,45718.1],[45713.25,45738.5,45709.1,45738.5],[45735.9,45762.45,45727.35,45755.9],[45756.45,45759.95,45733.3,45743.05],[45741.55,45813.45,45716.95,45783.9],[45786.25,45801.45,45763.6,45776.85],[45776.8,45787.2,45750.8,45764.7],[45764.45,45809.45,45751.0,45800.9],[45796.05,45820.7,45787.65,45818.1],[45818.05,45825.45,45786.9,45806.3],[45813.4,45839.2,45795.9,45831.45],[45820.2,45853.75,45810.85,45825.55],[45825.05,45849.65,45810.4,45832.0],[45835.5,45843.25,45819.45,45841.25],[45837.9,45843.65,45807.1,45809.5],[45812.65,45818.7,45788.8,45816.05],[45815.35,45861.25,45814.1,45828.55],[45826.45,45868.75,45819.95,45861.8],[45858.85,45965.4,45854.4,45940.95],[45948.6,45966.95,45907.05,45923.95],[45929.05,45986.3,45916.55,45948.05],[45948.8,46010.8,45939.9,45984.45],[45978.4,45993.35,45883.25,45910.2],[45911.35,45961.75,45901.8,45950.85],[45951.3,45981.4,45942.8,45965.85],[45962.5,46003.75,45921.75,46001.8],[46002.45,46050.05,45991.75,46038.5],[46038.7,46130.25,46025.95,46128.4],[46122.7,46162.85,46077.45,46079.8],[46087.55,46120.85,46079.9,46109.4],[46110.1,46145.65,46095.65,46128.25],[46126.35,46185.4,46107.75,46136.6],[46137.6,46189.35,46117.5,46170.7],[46173.6,46214.45,46164.8,46169.25],[46173.45,46177.9,46119.85,46147.5],[46145.45,46145.45,46062.7,46062.7],[46062.0,46099.8,46006.6,46007.35],[46009.7,46081.5,45982.0,46042.55],[46046.1,46100.95,46036.4,46090.95],[46087.75,46161.3,46065.7,46090.5],[46087.55,46189.0,46087.55,46179.1],[46179.55,46256.2,46171.25,46227.75],[46226.5,46242.2,46188.0,46204.3],[46206.65,46233.35,46179.95,46207.55],[46207.3,46215.75,46146.6,46171.45]],"t":["9:15","9:20","9:25","9:30","9:35","9:40","9:45","9:50","9:55","10:00","10:05","10:10","10:15","10:20","10:25","10:30","10:35","10:40","10:45","10:50","10:55","11:00","11:05","11:10","11:15","11:20","11:25","11:30","11:35","11:40","11:45","11:50","11:55","12:00","12:05","12:10","12:15","12:20","12:25","12:30","12:35","12:40","12:45","12:50","12:55","13:00","13:05","13:10","13:15","13:20","13:25","13:30","13:35","13:40","13:45","13:50","13:55","14:00","14:05","14:10","14:15","14:20","14:25","14:30","14:35","14:40","14:45","14:50","14:55","15:00","15:05","15:10","15:15","15:20","15:25"]},"b":{"date":"07-02-2023","res":"SL","ei":16,"xi":26,"ent":41521.2,"sl":41409.9,"tp":41743.79999999999,"pts":-111.3,"c":[[41513.1,41513.1,41409.9,41454.7],[41462.1,41502.25,41428.8,41501.2],[41495.8,41512.95,41467.2,41485.7],[41489.9,41556.8,41450.65,41451.35],[41452.45,41473.35,41393.5,41458.95],[41456.5,41475.15,41415.1,41438.55],[41442.2,41442.2,41372.75,41414.3],[41414.0,41431.55,41380.55,41418.45],[41418.7,41444.1,41402.0,41434.05],[41432.25,41489.9,41426.3,41463.05],[41465.35,41469.45,41390.4,41409.7],[41411.95,41431.85,41378.4,41429.4],[41430.9,41460.1,41385.4,41388.25],[41386.25,41456.25,41382.5,41438.8],[41439.2,41466.85,41424.3,41459.0],[41455.7,41477.0,41437.9,41447.15],[41448.75,41541.2,41443.3,41521.2],[41527.3,41542.9,41479.35,41479.6],[41478.65,41517.9,41469.75,41485.05],[41485.1,41508.95,41482.5,41490.8],[41493.1,41497.55,41453.05,41471.8],[41469.95,41482.8,41424.8,41472.6],[41472.25,41491.45,41469.55,41471.85],[41470.9,41499.2,41468.85,41495.6],[41494.6,41508.5,41427.75,41434.5],[41433.8,41463.4,41426.35,41426.35],[41425.65,41433.15,41374.9,41378.2],[41378.5,41410.95,41343.6,41401.0],[41399.65,41432.4,41397.9,41407.15],[41404.8,41417.7,41386.35,41386.35],[41384.55,41426.9,41379.45,41417.15],[41414.75,41454.9,41414.75,41428.75],[41427.3,41433.75,41402.5,41413.85],[41415.55,41447.95,41412.8,41430.05],[41430.25,41436.4,41404.75,41408.8],[41400.6,41407.25,41367.5,41371.55],[41370.75,41372.4,41316.95,41330.25],[41333.25,41346.55,41296.4,41318.45],[41321.35,41362.65,41299.35,41319.5],[41317.3,41341.2,41293.05,41311.4],[41314.1,41317.8,41282.4,41302.25],[41300.8,41313.45,41286.65,41302.65],[41301.9,41326.0,41287.45,41287.45],[41285.4,41291.75,41170.85,41187.75],[41190.65,41223.2,41174.85,41205.15],[41203.0,41245.5,41127.95,41132.2],[41141.95,41153.85,41097.1,41148.95],[41150.05,41176.1,41106.85,41119.25],[41118.1,41161.75,41104.6,41148.35],[41152.55,41224.35,41147.9,41204.0],[41210.3,41265.15,41206.05,41258.6],[41259.9,41367.45,41259.9,41339.05],[41337.75,41390.1,41299.75,41376.05],[41374.3,41419.75,41345.0,41397.6],[41392.6,41433.1,41361.75,41385.45],[41394.2,41437.15,41376.35,41376.8],[41375.7,41390.45,41291.45,41338.4],[41338.8,41437.65,41330.55,41432.4],[41432.0,41466.1,41397.15,41418.65],[41418.7,41448.3,41407.3,41414.1],[41414.3,41447.3,41404.4,41431.1],[41431.25,41451.0,41381.45,41391.35],[41384.05,41426.65,41371.35,41411.8],[41410.3,41457.0,41399.15,41448.7],[41451.6,41513.55,41444.5,41513.55],[41512.35,41539.0,41490.05,41532.8],[41531.0,41588.95,41531.0,41561.9],[41561.95,41608.0,41557.75,41589.4],[41569.45,41628.75,41569.45,41605.25],[41605.65,41611.0,41480.75,41489.3],[41489.8,41533.15,41485.05,41496.2],[41496.25,41511.25,41457.05,41486.5],[41488.55,41498.8,41470.95,41481.05],[41477.35,41485.2,41452.9,41457.95],[41460.85,41495.85,41450.15,41464.4]],"t":["9:15","9:20","9:25","9:30","9:35","9:40","9:45","9:50","9:55","10:00","10:05","10:10","10:15","10:20","10:25","10:30","10:35","10:40","10:45","10:50","10:55","11:00","11:05","11:10","11:15","11:20","11:25","11:30","11:35","11:40","11:45","11:50","11:55","12:00","12:05","12:10","12:15","12:20","12:25","12:30","12:35","12:40","12:45","12:50","12:55","13:00","13:05","13:10","13:15","13:20","13:25","13:30","13:35","13:40","13:45","13:50","13:55","14:00","14:05","14:10","14:15","14:20","14:25","14:30","14:35","14:40","14:45","14:50","14:55","15:00","15:05","15:10","15:15","15:20","15:25"]}};
+var cv=document.getElementById('cv'),cx=cv.getContext('2d'),cur='a',idx=0,timer=null,speed=1,done=false;
+var $=function(i){return document.getElementById(i)};
+function css(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim()}
+function d(){return D[cur]}
+function fmt(n){return n.toLocaleString('en-IN',{maximumFractionDigits:1})}
+function size(){var r=window.devicePixelRatio||1,w=cv.clientWidth,h=cv.clientHeight;cv.width=w*r;cv.height=h*r;cx.setTransform(r,0,0,r,0,0);draw()}
+function draw(){
+ var e=d(),w=cv.clientWidth,h=cv.clientHeight,pl=8,pr=92,pt=14,pb=22,n=e.c.length;
+ cx.clearRect(0,0,w,h);
+ var hi=-1e9,lo=1e9;e.c.forEach(function(c){hi=Math.max(hi,c[1]);lo=Math.min(lo,c[2])});
+ hi=Math.max(hi,e.tp)+20;lo=Math.min(lo,e.sl)-20;
+ var X=function(i){return pl+(i+.5)*(w-pl-pr)/n},Y=function(p){return pt+(hi-p)*(h-pt-pb)/(hi-lo)},bw=Math.max(2,(w-pl-pr)/n*.62);
+ var up=css('--ok'),dn=css('--dn'),mu=css('--mu'),ac=css('--ac'),ln=css('--ln'),gold=css('--gold');
+ cx.font='11px system-ui';cx.textBaseline='middle';
+ // opening range shade
+ if(idx>=2){var orh=Math.max(e.c[0][1],e.c[1][1],e.c[2][1]),orl=Math.min(e.c[0][2],e.c[1][2],e.c[2][2]);cx.fillStyle=ac;cx.globalAlpha=.1;cx.fillRect(X(0)-bw,Y(orh),(X(2)-X(0))+2*bw,Y(orl)-Y(orh));cx.globalAlpha=1;cx.fillStyle=mu;cx.fillText('Opening range',X(0)-bw+4,Y(orh)-8)}
+ // levels after entry
+ if(idx>=e.ei){
+  [[e.tp,up,'Target'],[e.ent,ac,'Entry'],[e.sl,dn,'SL']].forEach(function(l){cx.strokeStyle=l[1];cx.setLineDash([5,4]);cx.beginPath();cx.moveTo(X(e.ei),Y(l[0]));cx.lineTo(w-pr,Y(l[0]));cx.stroke();cx.setLineDash([]);cx.fillStyle=l[1];cx.fillText(l[2]+' '+Math.round(l[0]),w-pr+5,Y(l[0]))});
+ }
+ // candles
+ for(var i=0;i<=idx&&i<n;i++){var c=e.c[i],col=c[3]>=c[0]?up:dn;cx.strokeStyle=col;cx.fillStyle=col;cx.beginPath();cx.moveTo(X(i),Y(c[1]));cx.lineTo(X(i),Y(c[2]));cx.stroke();var t=Y(Math.max(c[0],c[3])),b=Y(Math.min(c[0],c[3]));cx.fillRect(X(i)-bw/2,t,bw,Math.max(1,b-t))}
+ // markers
+ if(idx>=e.ei){cx.fillStyle=ac;cx.beginPath();cx.moveTo(X(e.ei),Y(e.c[e.ei][2])+4);cx.lineTo(X(e.ei)-6,Y(e.c[e.ei][2])+15);cx.lineTo(X(e.ei)+6,Y(e.c[e.ei][2])+15);cx.fill();cx.fillText('BUY',X(e.ei)-10,Y(e.c[e.ei][2])+25)}
+ if(idx>=e.xi){var win=e.res==='TP';cx.fillStyle=win?up:dn;cx.beginPath();cx.arc(X(e.xi),Y(win?e.tp:e.sl),5,0,7);cx.fill()}
+ // time axis
+ cx.fillStyle=mu;[0,12,24,36,48,60,72].forEach(function(i){if(i<n)cx.fillText(e.t[i],Math.max(2,X(i)-14),h-8)});
+ var c=e.c[Math.min(idx,n-1)];$('px').textContent=fmt(c[3]);
+}
+function nar(){
+ var e=d(),m;
+ if(idx<2)m='<b>Step 1:</b> Pehli 15 minute ki range bante dekho (9:15 se 9:30).';
+ else if(idx<e.ei)m='<b>Step 2:</b> Intezaar. Jab tak candle range ke upar <i>close</i> na kare, trade nahi lena.';
+ else if(idx===e.ei)m='<b>Step 3: BUY.</b> Candle range ke upar close hui. Entry '+fmt(e.ent)+', SL '+fmt(e.sl)+' (risk '+fmt(e.ent-e.sl)+' points), target '+fmt(e.tp)+' (2 guna).';
+ else if(idx<e.xi)m='Trade chal raha hai. Ab sirf rule follow karo, beech mein dimag mat lagao.';
+ else m=e.res==='TP'?'<b>Target hit.</b> Rule ke hisaab se trade band.':'<b>SL hit.</b> Rule ke hisaab se trade band. Ye bhi trading ka hissa hai.';
+ $('nar').innerHTML=m;
+}
+function result(){
+ var e=d(),r=$('res'),win=e.res==='TP';
+ r.className='res show';
+ r.innerHTML='<span class="tag '+(win?'w1':'l1')+'">'+(win?'TARGET HIT: +'+Math.abs(e.pts).toFixed(0)+' pts (+2R)':'STOP LOSS HIT: -'+Math.abs(e.pts).toFixed(0)+' pts (-1R)')+'</span><p>'+(win?'Is baar rule jeeta. ':'Is baar rule haara. ')+'Ek trade se kuch sabit nahi hota. Isiliye 100+ trades test karo, 1 nahi.</p>';
+}
+function step(){if(idx<d().xi){idx++;nar();draw();if(idx>=d().xi){stop();done=true;result();$('play').disabled=true;$('next').disabled=true}}}
+function stop(){if(timer){clearInterval(timer);timer=null}$('play').textContent='▶ Play'}
+function play(){if(timer){stop();return}if(done)return;$('play').textContent='⏸ Pause';timer=setInterval(step,320/speed)}
+function reset(){stop();idx=0;done=false;$('res').className='res';$('play').disabled=false;$('next').disabled=false;$('dt').textContent=d().date;nar();draw()}
+function pick(k){cur=k;$('ta').className=k==='a'?'on':'';$('tb').className=k==='b'?'on':'';reset();try{BFTTrack&&BFTTrack('Demo example',k)}catch(e){}}
+$('play').onclick=function(){if(idx<2)idx=2;play()};$('next').onclick=function(){stop();step()};$('rst').onclick=reset;
+$('spd').onclick=function(){speed=speed===1?2:speed===2?4:1;$('spd').textContent='Speed '+speed+'x';if(timer){stop();play()}};
+$('ta').onclick=function(){pick('a')};$('tb').onclick=function(){pick('b')};
+new MutationObserver(draw).observe(document.documentElement,{attributes:true});
+window.addEventListener('resize',size);
+var q=location.search,P=new URLSearchParams(q);
+if(q){var l=$('lab');l.href='trade-lab-pro.html'+q}
+cur=P.get('t')==='b'?'b':'a';size();pick(cur);
+if(P.get('autoplay')){idx=2;setTimeout(play,600)}
+</script>
+<script src="i18n.js"></script><script src="bft-analytics.js" defer></script>
+</body></html>
