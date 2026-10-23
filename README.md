@@ -11,6 +11,7 @@ Static site (plain HTML/JS, no build step). Open `index.html` or serve the folde
 | `trade-lab-pro.html` | Pro replay lab, backtest + locked forward test |
 | `classroom.html` | Teaching board |
 | `screener.html` | Market Movers: end-of-day top gainers/losers, 52-week highs/lows, volume spikes (data in `data/screener.json`) |
+| `events.html` | Market Events: RBI / Fed / US CPI and jobs / expiry / holidays in IST, countdown, BankNifty history, Telegram reminders. Setup: `EVENTS_SETUP.md` |
 | `tools.html` | Trading tools (calculators, checklists) |
 | `legal.html` | Terms, privacy and refund policy |
 

@@ -1,0 +1,11 @@
+{
+  "_help": "Past dates (YYYY-MM-DD, India trading day) for each event type. The key must match the 'type' used in events.json. After editing run: python3 scripts/build_impact.py. The BankNifty CSV ends April 2024, later dates are listed as missing. RBI policy, FOMC, US CPI and NFP dates are NOT filled in yet: copy them from the official calendars (rbi.org.in, federalreserve.gov, bls.gov) so they are exact.",
+  "budget": {
+    "label": "Union Budget day",
+    "dates": ["2015-02-28", "2016-02-29", "2017-02-01", "2018-02-01", "2019-02-01", "2020-02-01", "2021-02-01", "2022-02-01", "2023-02-01", "2024-02-01"]
+  },
+  "rbi": {"label": "RBI policy day", "dates": []},
+  "fomc": {"label": "US Fed decision (next morning in India)", "dates": []},
+  "us_cpi": {"label": "US CPI day", "dates": []},
+  "us_nfp": {"label": "US jobs report day", "dates": []}
+}
