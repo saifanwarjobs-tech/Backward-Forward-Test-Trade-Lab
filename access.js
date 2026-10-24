@@ -3,7 +3,7 @@
    NOTE: trial counters live in the browser (localStorage). They are a nudge, not DRM. Paid Academy files are protected by Supabase RLS. */
 (function(){
 const CFG={sbUrl:'https://ytdipdzzwuzdnzrabpwx.supabase.co',sbKey:'sb_publishable_TZWfmoKVdyeuoBpmOvllUA_Cj7atACi',
- razorpayKey:'rzp_live_Tq2J3Mo863dERr',orderUrl:'https://ytdipdzzwuzdnzrabpwx.supabase.co/functions/v1/razorpay-order',wa:'916350566010'};   // fill razorpayKey + orderUrl when Razorpay is live; until then payment goes through WhatsApp
+ razorpayKey:'rzp_live_TrjARMbmodrxTK',orderUrl:'https://ytdipdzzwuzdnzrabpwx.supabase.co/functions/v1/razorpay-order',wa:'916350566010'};   // fill razorpayKey + orderUrl when Razorpay is live; until then payment goes through WhatsApp
 const TOOL={'journal.html':'journal','trade-lab-pro.html':'lab','classroom.html':'classroom'}[location.pathname.split('/').pop()||'']||'';
 const P={},ENT={};let sb=null,email='',ready=null;
 const rs=n=>'₹'+Number(n).toLocaleString('en-IN');
