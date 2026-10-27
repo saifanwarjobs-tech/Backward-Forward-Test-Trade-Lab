@@ -15,7 +15,8 @@ async function loadEnt(){Object.keys(ENT).forEach(k=>delete ENT[k]);email='';
   const{data}=await sb.from('entitlements').select('product_id,expires_at');(data||[]).forEach(r=>{if(!r.expires_at||Date.parse(r.expires_at)>Date.now())ENT[r.product_id]=1})}catch(e){}}
 function init(){return ready||(ready=(async()=>{const rows=await rest('products?select=*&active=eq.true');rows.forEach(r=>P[r.id]=r);
  await lib();try{if(window.supabase)sb=supabase.createClient(CFG.sbUrl,CFG.sbKey)}catch(e){}if(sb)await loadEnt();})())}
-const entitled=()=>!!(ENT[TOOL]||ENT.all_tools);
+const FREE_TOOLS=['classroom'];   // tools that are free for everyone: no trial timer, no Pro limits
+const entitled=()=>!!(FREE_TOOLS.includes(TOOL)||ENT[TOOL]||ENT.all_tools);
 const owns=x=>typeof x==='string'?!!ENT[x]:!!(x&&ENT['item:'+x.id]);
 /* ---------- UI ---------- */
 let box=null;
@@ -55,7 +56,7 @@ async function pay(op,e,ph,msg){e=(e||'').trim().toLowerCase();if(!/\S+@\S+\.\S+
 function opts(pid,name){const p=P[pid]||{},o=[];
  if(p.price_once)o.push({pid,plan:'once',amount:p.price_once,label:name||p.name,sub:'One-time, lifetime'});
  if(p.price_month)o.push({pid,plan:'month',amount:p.price_month,label:name||p.name,sub:'Monthly, 30 days, renew any time'});return o}
-function toolOptions(){const o=opts(TOOL);const b=P.all_tools;if(b&&TOOL){if(b.price_once)o.push({pid:'all_tools',plan:'once',amount:b.price_once,label:b.name,sub:'Journal + Lab + Classroom, one-time'});if(b.price_month)o.push({pid:'all_tools',plan:'month',amount:b.price_month,label:b.name,sub:'Journal + Lab + Classroom, monthly'})}return o}
+function toolOptions(){const o=opts(TOOL);const b=P.all_tools;if(b&&TOOL){if(b.price_once)o.push({pid:'all_tools',plan:'once',amount:b.price_once,label:b.name,sub:'Journal + Lab, one-time'});if(b.price_month)o.push({pid:'all_tools',plan:'month',amount:b.price_month,label:b.name,sub:'Journal + Lab, monthly'})}return o}
 /* ---------- trial ---------- */
 const TK='bftx_t_'+TOOL;let secs=0;const getS=()=>{try{return +localStorage.getItem(TK)||0}catch(e){return 0}};
 function upBadge(){let b=document.getElementById('bftx-badge');if(!TOOL||entitled()||!P[TOOL]||P[TOOL].trial_minutes==null){b&&b.remove();const q=document.getElementById('plan');if(q)q.style.display='';return}
