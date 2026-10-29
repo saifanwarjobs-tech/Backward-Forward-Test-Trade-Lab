@@ -84,6 +84,7 @@ footer{border-top:1px solid var(--ln);padding:30px 0 50px;color:var(--mu);font-s
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}.rv{opacity:1;transform:none}}
 /* v2: bottom nav, auth inputs, watermark, loading */
 .md input[type=email],.md input[type=password]{width:100%;background:var(--gl);border:1px solid var(--ln);border-radius:12px;padding:13px;color:var(--tx);font:inherit;font-size:16px;margin:8px 0}.md input:focus{outline:0;border-color:var(--ac)}
+.gs{display:flex;justify-content:center;gap:6px;list-style:none;margin:0 0 14px;padding:0;flex-wrap:wrap}.gs li{display:flex;align-items:center;gap:6px;font-size:12px;opacity:.55}.gs li i{font-style:normal;width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;border:1px solid currentColor;font-weight:700;font-size:12px}.gs li.dn,.gs li.on{opacity:1}.gs li.dn i{background:#3ecf8e;border-color:#3ecf8e;color:#04210f}.gs li.on i{background:#5b9cff;border-color:#5b9cff;color:#06101f}.gt{text-align:left;margin:12px 0 0}.gt p{margin:0 0 10px;font-size:14px;line-height:1.5}
 .md .lnk{background:none;border:0;color:var(--mu);text-decoration:underline;font-size:13px;padding:6px}
 .vid{position:relative}.wm{position:absolute;z-index:2;pointer-events:none;font:600 11px system-ui;color:rgba(255,255,255,.28);text-shadow:0 0 3px rgba(0,0,0,.6);animation:wm 48s linear infinite;left:6%;top:8%}
 @keyframes wm{0%,100%{left:6%;top:8%}25%{left:55%;top:14%}50%{left:48%;top:80%}75%{left:8%;top:72%}}
@@ -528,7 +529,18 @@ function checkout(pid,label,amt){fb('InitiateCheckout');const live=!!(CFG.razorp
     handler:()=>{fb('Purchase');paidOk(e,label)},modal:{ondismiss:reset}});
    z.on('payment.failed',x=>{toast((x&&x.error&&x.error.description)||'Payment failed. Try again.');reset()});z.open()}
   catch(err){toast(err.message||'Payment could not start');reset()}}},0)}
-function paidOk(e,label){open(`<div style="text-align:center;padding:10px 6px"><div style="font-size:44px">✅</div><h3 style="padding:0">Payment received</h3><p class="m">${esc(label)} will unlock within a minute. Press <b>Sign in</b> and use <b>${esc(e)}</b>. No account yet? Choose Create account with the same email.</p><div class="row" style="justify-content:center;margin-top:14px"><button class="btn s" onclick="location.reload()">Refresh my access</button></div><p class="m" style="font-size:13px;margin-top:12px">Not unlocked after 10 minutes? <a href="${esc(CFG.contact)}" target="_blank" rel="noopener" style="text-decoration:underline">Contact us</a> with your email.</p></div>`,'n')}
+function stepsHTML(cur){const S=['Payment done','Create account','Confirm email','Start learning'];
+ return '<ol class="gs">'+S.map((t,k)=>`<li class="${k<cur?'dn':k===cur?'on':''}"><i>${k<cur?'✓':k+1}</i><span>${t}</span></li>`).join('')+'</ol>'}
+window.guideBox=function(e,label,cur,body){open(`<div style="text-align:center;padding:10px 6px">${stepsHTML(cur)}${body}<p class="m" style="font-size:13px;margin-top:14px">Stuck? <a href="${esc(CFG.contact)}" target="_blank" rel="noopener" style="text-decoration:underline">WhatsApp us</a> with your email, we reply fast.</p></div>`,'n')};
+function paidOk(e,label){
+ const who=window.bftSessionEmail&&bftSessionEmail();
+ if(who&&who.toLowerCase()===e.toLowerCase()){
+  return guideBox(e,label,3,`<div style="font-size:44px">✅</div><h3 style="padding:0">Payment received</h3><p class="m">You are already signed in as <b>${esc(e)}</b>. Your access is switching on now (up to 1 minute).</p><div class="row" style="justify-content:center;margin-top:14px"><button class="btn g" onclick="location.reload()">Start learning →</button></div>`)}
+ guideBox(e,label,1,`<div style="font-size:44px">✅</div><h3 style="padding:0">Payment received. Thank you!</h3><p class="m">${esc(label)} is linked to <b>${esc(e)}</b>. Do these 3 quick steps to start:</p>
+ <div class="gt"><p><b>1. Create your account</b><br>Use the <u>same email</u> (<b>${esc(e)}</b>) and choose a password (8+ characters).</p><p><b>2. Confirm your email</b><br>We send you a link. Open it (check <u>Spam / Promotions</u> too). You come back here signed in.</p><p><b>3. Start learning</b><br>Your course is already unlocked. If it asks, sign in with that email and password.</p></div>
+ <div class="row" style="justify-content:center;margin-top:14px"><button class="btn g" id="gc">Create my account →</button></div>
+ <p class="m" style="font-size:13px;margin-top:10px">Already have an account here? <a href="#" id="gs" style="text-decoration:underline">Sign in</a></p>`);
+ setTimeout(()=>{const a=$('#gc'),b=$('#gs');if(a)a.onclick=()=>window.authBox?authBox('up',e):location.reload();if(b)b.onclick=ev=>{ev.preventDefault();window.authBox?authBox('in',e):location.reload()}},0)}
 function manualPay(pid,label,amt,e){const UPI=CFG.upi||'6350566010@axl',WA=CFG.wa||'916350566010',link='upi://pay?pa='+UPI+'&pn='+encodeURIComponent('BFT Academy')+'&am='+amt+'&cu=INR&tn='+encodeURIComponent(label.slice(0,40));
  open(`<div style="text-align:center;padding:6px"><h3 style="padding:0">${esc(label)}: ${rs(amt)}</h3><p class="m"><b>Step 1.</b> Pay by UPI. On mobile tap the button; on a computer scan the QR with any UPI app.</p><a class="btn s" href="${link}">Pay ${rs(amt)} in my UPI app</a><div style="margin:12px 0"><img src="upi-qr.jpg" alt="UPI QR code" style="width:200px;max-width:70%;border-radius:10px;background:#fff"></div><p class="m">UPI ID: <b>${UPI}</b></p><p class="m"><b>Step 2.</b> Send the payment screenshot on WhatsApp. We unlock <b>${esc(e)}</b>, usually within a few hours.</p><button class="btn s g" id="pw">Send screenshot on WhatsApp</button></div>`,'n');
  setTimeout(()=>{const b=$('#pw');if(b)b.onclick=()=>{fb('Lead');_wo('https://wa.me/'+WA+'?text='+encodeURIComponent('Hi, I paid \u20b9'+amt+' for '+label+' (code '+pid+'). My email: '+e+' (screenshot attached)'),'_blank','noopener')}},0)}
@@ -542,7 +554,7 @@ let session=null,member=null,isAdmin=false;
 paid=false;try{localStorage.removeItem('bftA_paid')}catch(e){}
 const here=location.origin+location.pathname;
 /* ---- sign in / create account / reset ---- */
-function authBox(mode){mode=mode||'in';
+function authBox(mode,pre){mode=mode||'in';
  const T={in:['Sign in','Use the email you paid with.','Sign in'],up:['Create your account','Use the same email you paid with, then confirm it from the email we send.','Create account'],reset:['Reset password','We will email you a link to set a new password.','Send reset link']}[mode];
  open(`<div style="text-align:center;padding:6px"><h3 style="padding:0">${T[0]}</h3><p class="m">${T[1]}</p><input type="email" id="ae" placeholder="you@email.com" autocomplete="email" inputmode="email" aria-label="Email">${mode!=='reset'?`<input type="password" id="ap" placeholder="Password (min 8 characters)" autocomplete="${mode==='up'?'new':'current'}-password" aria-label="Password">`:''}<button class="btn" id="ab" style="width:100%;margin-top:6px">${T[2]}</button>
  <div class="row" style="justify-content:center;margin-top:10px;gap:2px">${mode!=='in'?'<button class="lnk" data-m="in">I have an account</button>':''}${mode!=='up'?'<button class="lnk" data-m="up">Create account</button>':''}${mode!=='reset'?'<button class="lnk" data-m="reset">Forgot password?</button>':''}</div>
@@ -556,10 +568,14 @@ function authBox(mode){mode=mode||'in';
    else{const r=mode==='up'?await sb.auth.signUp({email:e,password:p,options:{emailRedirectTo:here}}):await sb.auth.signInWithPassword({email:e,password:p});
     if(r.error)toast(/not confirmed/i.test(r.error.message)?'Please confirm your email first (check your inbox and spam).':r.error.message);
     else if(r.data.session)location.reload();
-    else toast('Account created. Confirm the email we sent, then sign in.')}
+    else mailSent(e)}
   }catch(x){toast(x.message||'Something went wrong')}
   b.disabled=false};
- $('#ab').onclick=go;$('#md').onkeydown=e=>{if(e.key==='Enter'&&e.target.tagName==='INPUT')go()};setTimeout(()=>$('#ae')&&$('#ae').focus(),60)}
+ $('#ab').onclick=go;$('#md').onkeydown=e=>{if(e.key==='Enter'&&e.target.tagName==='INPUT')go()};setTimeout(()=>{const a=$('#ae');if(a){if(pre){a.value=pre;const pw=$('#ap');pw&&pw.focus()}else a.focus()}},60)}
+function mailSent(e){const dom=(e.split('@')[1]||'').toLowerCase(),gm=/^(gmail|googlemail)\.com$/.test(dom);
+ guideBox(e,'',2,`<div style="font-size:44px">📩</div><h3 style="padding:0">Check your email</h3><p class="m">We sent a confirmation link to <b>${esc(e)}</b>.<br>Open it and tap <b>Confirm</b>. You will come back here already signed in.</p><p class="m" style="font-size:13px">Not in your inbox? Look in <b>Spam</b> or <b>Promotions</b>. It can take 1-2 minutes.</p><div class="row" style="justify-content:center;margin-top:14px">${gm?'<a class="btn g" href="https://mail.google.com" target="_blank" rel="noopener">Open Gmail</a>':''}<button class="btn s o" id="gr">Resend email</button><button class="btn s o" id="gl">I confirmed → Sign in</button></div>`);
+ setTimeout(()=>{const r=$('#gr'),l=$('#gl');if(r)r.onclick=async()=>{r.disabled=true;const x=await sb.auth.resend({type:'signup',email:e,options:{emailRedirectTo:here}});toast(x.error?x.error.message:'Email sent again. Check your inbox and spam.');setTimeout(()=>{r.disabled=false},20000)};if(l)l.onclick=()=>authBox('in',e)},0)}
+window.authBox=authBox;window.bftSessionEmail=()=>session&&session.user&&session.user.email||'';
 window.codeBox=()=>authBox('in');
 function newPass(){open(`<div style="text-align:center;padding:6px"><h3 style="padding:0">Set a new password</h3><p class="m">Choose a password with at least 8 characters.</p><input type="password" id="np" placeholder="New password" autocomplete="new-password" aria-label="New password"><button class="btn" id="nb" style="width:100%;margin-top:6px">Save password</button></div>`,'n');
  $('#nb').onclick=async()=>{const p=$('#np').value;if(p.length<8)return toast('Password must be at least 8 characters');const r=await sb.auth.updateUser({password:p});if(r.error)return toast(r.error.message);toast('Password updated ✓');history.replaceState(null,'',here);setTimeout(()=>location.reload(),800)}}
@@ -577,7 +593,7 @@ if(session){window.WM=session.user.email;
  const[m,a]=await Promise.all([sb.from('students').select('email,expires_at').eq('email',(session.user.email||'').toLowerCase()).maybeSingle(),sb.from('admins').select('email')]);
  member=m.data||null;isAdmin=!!(a.data&&a.data.length);
  paid=isAdmin||!!(member&&(!member.expires_at||new Date(member.expires_at)>new Date()));
- if(!paid)toast(member?'Your access has expired.':'No purchase found for '+session.user.email)}
+ if(!paid)toast(member?'Your access has expired.':'Signed in as '+session.user.email+'. If you just paid, wait 1 minute and refresh. Paid with another email? Contact us.')}
 
 /* ---- progress sync: lessons done, notes, last lesson. Saved to the account; this device is the fallback ---- */
 const UU=/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;let pend={},pt=null,lastSent=null;

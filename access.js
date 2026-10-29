@@ -31,7 +31,7 @@ function show(o){close();const msg=h('div',{style:'font-size:13px;margin-top:8px
  const pw=h('input',{type:'password',placeholder:'Password',style:'width:100%;padding:11px;border-radius:10px;border:1px solid #3a4666;background:#0b1220;color:#e8eefb;margin-top:6px'});
  const sign=async(up)=>{if(!sb)return;const e=em.value.trim().toLowerCase();if(!e||!pw.value)return msg.textContent='Enter email and password';
   const r=up?await sb.auth.signUp({email:e,password:pw.value}):await sb.auth.signInWithPassword({email:e,password:pw.value});
-  if(r.error)return msg.textContent=r.error.message;if(up&&!r.data.session)return msg.textContent='Check your email to confirm, then sign in.';
+  if(r.error)return msg.textContent=r.error.message;if(up&&!r.data.session)return msg.textContent='📩 Confirmation email sent to '+e+'. Open it (check Spam/Promotions), then come back and tap Sign in.';
   await loadEnt();if(o.blocking?entitled():o.owned&&o.owned()){close();upBadge()}else msg.textContent='Signed in. No active plan on this email yet.'};
  box=h('div',{style:'position:fixed;inset:0;z-index:99999;background:rgba(3,6,14,.82);display:flex;align-items:center;justify-content:center;padding:16px;font:15px/1.5 system-ui,sans-serif'},
   h('div',{style:'background:#0f1626;color:#e8eefb;border:1px solid #3a4666;border-radius:18px;padding:22px;max-width:440px;width:100%;max-height:92vh;overflow:auto'},
@@ -49,7 +49,7 @@ async function pay(op,e,ph,msg){e=(e||'').trim().toLowerCase();if(!/\S+@\S+\.\S+
   try{if(!window.Razorpay)await new Promise((ok,no)=>{const s=document.createElement('script');s.src='https://checkout.razorpay.com/v1/checkout.js';s.onload=ok;s.onerror=no;document.head.appendChild(s)});
    const r=await fetch(CFG.orderUrl,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:e,phone,product_id:op.pid,plan:op.plan,ref:(window.BFT_REF&&BFT_REF())||undefined})});const d=await r.json();if(!r.ok||!d.order_id)throw new Error(d.error||'Could not start payment');
    new Razorpay({key:CFG.razorpayKey,order_id:d.order_id,amount:d.amount,currency:'INR',name:'BFT Trade Lab',description:op.label,prefill:{email:e,contact:phone},theme:{color:'#6aa5ff'},
-    handler:()=>{msg.textContent='Payment received ✅ Sign in with '+e+'. Access turns on within a minute.'}}).open()}catch(x){msg.textContent=x.message||'Payment could not start'}return}
+    handler:()=>{msg.style.cssText='font-size:13px;margin-top:10px;color:#e8eefb;text-align:left;line-height:1.6;background:#0b1220;border:1px solid #3a4666;border-radius:10px;padding:10px';msg.innerHTML='<b>✅ Payment received! Next steps:</b><br>1. Open <b>Already paid? Sign in</b> below and tap <b>Create account</b> with the <u>same email</u> ('+e.replace(/</g,'&lt;')+') + a password.<br>2. Confirm the email we send (check Spam/Promotions).<br>3. Sign in. Your plan is already active.';const d=box&&box.querySelector('details');if(d)d.open=true}}).open()}catch(x){msg.textContent=x.message||'Payment could not start'}return}
  // WhatsApp flow: the message already carries product, plan and amount, so you know exactly what they want
  const t=`Hi, I want ${op.label}${op.plan==='month'?' (monthly)':op.plan==='once'?' (one-time)':''}. Amount: ${rs(op.amount)}. Product code: ${op.pid}. My email: ${e}${phone?'. Mobile: '+phone:''}`;
  window.open('https://wa.me/'+CFG.wa+'?text='+encodeURIComponent(t),'_blank','noopener');msg.textContent='Pay by UPI, send the screenshot on WhatsApp. We switch it on for '+e+'.'}
